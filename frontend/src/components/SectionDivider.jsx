@@ -1,67 +1,53 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 /**
- * SectionDivider — perceptual smooth transitions between adjacent sections.
+ * SectionDivider — hard color cut with a neon mint line separator.
  *
- *  Key upgrades over naive RGB gradients:
- *    1. Interpolation in **OKLAB** color space (via CSS `in oklab`) — kills the
- *       muddy grey/brown middle that appears when going dark→light in RGB.
- *    2. Layered gradient — the primary gradient carries color, a second
- *       gradient overlays a very soft mint glow at the seam so the eye
- *       reads it as light, not as a band.
- *    3. SVG grain overlay — masks residual GPU banding with organic noise.
+ *  Behaviour:
+ *    - Section above and below meet at a HARD edge (no gradient bleed).
+ *    - A thin (2px) neon mint line sits exactly at the seam with glow.
+ *    - On scroll into view: line reveals from center out (scaleX 0→1) with easing.
+ *    - A subtle horizontal sweep of light continuously travels along the line.
  *
  *  Props:
- *    - from / to:  hex/CSS colors of the two adjacent sections
- *    - height:     divider height in px
- *    - glow:       "auto" (default) | "off" — whether to add the mint mid-glow
+ *    - top:    background color of the section above (rendered as the divider top half)
+ *    - bottom: background color of the section below (rendered as the divider bottom half)
+ *    - height: total divider height in px (default 6 — very thin cut zone)
  */
-const SectionDivider = ({ from, to, height = 220, glow = "auto", id = "" }) => {
-  const testId = id ? `divider-${id}` : "section-divider";
+const SectionDivider = ({ top, bottom, height = 4, id = "" }) => {
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            setVisible(true);
+            io.disconnect();
+          }
+        });
+      },
+      { rootMargin: "-10% 0px -10% 0px", threshold: 0.01 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
 
   return (
     <div
+      ref={ref}
       aria-hidden="true"
-      data-testid={testId}
-      style={{ height, position: "relative", overflow: "hidden" }}
+      data-testid={id ? `divider-${id}` : "section-divider"}
+      className="sc-cut"
+      style={{ background: top }}
     >
-      {/* Base gradient in OKLAB — perceptually smooth */}
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          background: `linear-gradient(in oklab to bottom, ${from} 0%, ${to} 100%)`,
-        }}
-      />
-
-      {/* Soft mid-glow — a wide radial mint hint sitting exactly on the seam.
-          Keeps the transition visually alive, avoids the "flat rectangle" feel. */}
-      {glow !== "off" && (
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            background:
-              "radial-gradient(ellipse 65% 100% at 50% 50%, rgba(73,173,165,0.10) 0%, rgba(73,173,165,0) 65%)",
-            mixBlendMode: "screen",
-            pointerEvents: "none",
-          }}
-        />
-      )}
-
-      {/* Grain — 3% opacity SVG noise breaks up GPU banding organically */}
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          backgroundImage:
-            "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.29 0 0 0 0 0.68 0 0 0 0 0.65 0 0 0 0.5 0'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.35'/></svg>\")",
-          backgroundSize: "160px 160px",
-          opacity: 0.35,
-          mixBlendMode: "overlay",
-          pointerEvents: "none",
-        }}
-      />
+      {/* the "bottom" half is just under the neon line */}
+      <div className="sc-cut__below" style={{ background: bottom, height: `${height}px` }} />
+      {/* the neon line */}
+      <div className={`sc-cut__line ${visible ? "is-in" : ""}`} />
     </div>
   );
 };

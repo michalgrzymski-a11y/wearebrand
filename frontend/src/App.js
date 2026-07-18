@@ -15,15 +15,15 @@ const Home = () => (
   <main data-testid="home-main" className="sc-app">
     <Navbar />
     <HeroSection />
-    <SectionDivider id="hero-about"        from="#040709" to="#FFFFFF" height={260} />
+    <SectionDivider id="hero-about"         top="#040709" bottom="#FFFFFF" />
     <AboutSection />
-    <SectionDivider id="about-trusted"     from="#FFFFFF" to="#F8FAFA" height={120} />
+    <SectionDivider id="about-trusted"      top="#FFFFFF" bottom="#F8FAFA" />
     <TrustedBySection />
-    <SectionDivider id="trusted-portfolio" from="#F8FAFA" to="#040709" height={260} />
+    <SectionDivider id="trusted-portfolio"  top="#F8FAFA" bottom="#040709" />
     <PortfolioSection />
-    <SectionDivider id="portfolio-partners" from="#040709" to="#F8FAFA" height={260} />
+    <SectionDivider id="portfolio-partners" top="#040709" bottom="#F8FAFA" />
     <PartnersSection />
-    <SectionDivider id="partners-contact"  from="#F8FAFA" to="#FFFFFF" height={120} />
+    <SectionDivider id="partners-contact"   top="#F8FAFA" bottom="#FFFFFF" />
     <ContactSection />
   </main>
 );
