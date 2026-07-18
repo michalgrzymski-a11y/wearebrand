@@ -1,35 +1,91 @@
-import React from "react";
-import IsometricDatacenter from "./IsometricDatacenter";
+import React, { useEffect, useRef } from "react";
 import { useLang } from "@/i18n/LanguageContext";
 import { ArrowRight, Zap } from "lucide-react";
 
 /**
- * Hero — full-bleed constellation (option D)
- *  The Isometric datacenter scene occupies the entire hero. Grid & devices
- *  are visually shifted to the right half, so the copy on the left sits over
- *  a clean darker area. No frame, no boundaries — the grid dissolves radially
- *  across the whole viewport.
+ * Hero — cinematic datacenter photograph as full-bleed background.
+ *  Animations:
+ *    - Ken-Burns slow zoom + drift on the image
+ *    - Mouse parallax (translates the image by a few px in the opposite direction)
+ *    - Sweep light gradient traversing the image
+ *    - Floating data-packet dots overlay drifting to the right
+ *    - Scanline overlay + corner brackets
  */
 const HeroSection = () => {
-  const { t, lang } = useLang();
+  const { t } = useLang();
+  const imgRef = useRef(null);
+  const heroRef = useRef(null);
+
+  useEffect(() => {
+    const hero = heroRef.current;
+    const img = imgRef.current;
+    if (!hero || !img) return;
+
+    let raf = 0;
+    let tx = 0, ty = 0, cx = 0, cy = 0;
+
+    const onMove = (e) => {
+      const r = hero.getBoundingClientRect();
+      tx = ((e.clientX - r.left) / r.width - 0.5) * 2;
+      ty = ((e.clientY - r.top) / r.height - 0.5) * 2;
+    };
+    const onLeave = () => {
+      tx = 0;
+      ty = 0;
+    };
+    hero.addEventListener("mousemove", onMove);
+    hero.addEventListener("mouseleave", onLeave);
+
+    const loop = () => {
+      cx += (tx - cx) * 0.04;
+      cy += (ty - cy) * 0.04;
+      // Parallax translation on top of the CSS keyframe animation.
+      img.style.setProperty("--sc-px", `${(-cx * 12).toFixed(2)}px`);
+      img.style.setProperty("--sc-py", `${(-cy * 8).toFixed(2)}px`);
+      raf = requestAnimationFrame(loop);
+    };
+    loop();
+
+    return () => {
+      cancelAnimationFrame(raf);
+      hero.removeEventListener("mousemove", onMove);
+      hero.removeEventListener("mouseleave", onLeave);
+    };
+  }, []);
 
   return (
     <section
       id="top"
+      ref={heroRef}
       data-testid="hero-section"
       className="relative w-full overflow-hidden sc-hero"
-      style={{
-        background:
-          "radial-gradient(1500px 900px at 72% 48%, rgba(12,92,98,0.5) 0%, rgba(12,92,98,0) 60%), radial-gradient(900px 600px at 15% 85%, rgba(73,173,165,0.12) 0%, transparent 60%), #060B12",
-      }}
+      style={{ background: "#040709" }}
     >
-      {/* Full-bleed WebGL scene */}
-      <div className="absolute inset-0 sc-hero-scene-bleed">
-        <IsometricDatacenter lang={lang} />
+      {/* Background image — animated Ken Burns + parallax */}
+      <div className="absolute inset-0 sc-hero-photo-wrap" data-testid="hero-photo">
+        <div
+          ref={imgRef}
+          className="sc-hero-photo"
+          style={{ backgroundImage: `url("${process.env.PUBLIC_URL}/hero-datacenter.jpg")` }}
+        />
       </div>
 
-      {/* Left-side darkening for text readability */}
-      <div className="pointer-events-none absolute inset-0 sc-hero-lreadable" aria-hidden="true" />
+      {/* Sweep light + floating particles overlay */}
+      <div className="pointer-events-none absolute inset-0 sc-hero-sweep" aria-hidden="true" />
+      <div className="pointer-events-none absolute inset-0 sc-hero-particles" aria-hidden="true">
+        {Array.from({ length: 24 }).map((_, i) => (
+          <span key={i} className="sc-hero-particle" style={{
+            top: `${(i * 4.13) % 100}%`,
+            left: `${(i * 7.7) % 100}%`,
+            animationDelay: `${(i * 0.4) % 8}s`,
+            animationDuration: `${9 + (i % 5) * 1.5}s`,
+            opacity: 0.3 + (i % 4) * 0.15,
+          }} />
+        ))}
+      </div>
+
+      {/* Readability gradient over the whole scene */}
+      <div className="pointer-events-none absolute inset-0 sc-hero-photo-readable" aria-hidden="true" />
 
       {/* Corner tech brackets */}
       <div className="sc-hero-bracket sc-hero-bracket--tl" aria-hidden="true" />
@@ -40,7 +96,7 @@ const HeroSection = () => {
       {/* Scanline overlay */}
       <div className="pointer-events-none absolute inset-0 sc-hero-scan" aria-hidden="true" />
 
-      {/* Copy overlay */}
+      {/* Copy */}
       <div className="relative z-10 mx-auto flex w-full max-w-7xl items-center px-6 pb-16 pt-24 md:px-10 md:pt-28">
         <div className="flex max-w-2xl flex-col">
           <div
@@ -48,7 +104,7 @@ const HeroSection = () => {
             className="inline-flex items-center self-start gap-3 rounded-full border px-4 py-1.5 text-[11px] uppercase tracking-[0.28em] text-white/85"
             style={{
               borderColor: "rgba(73,173,165,0.4)",
-              background: "rgba(6,11,18,0.55)",
+              background: "rgba(4,7,9,0.55)",
               backdropFilter: "blur(6px)",
             }}
           >
@@ -66,7 +122,7 @@ const HeroSection = () => {
 
           <p
             data-testid="hero-subtitle"
-            className="mt-6 max-w-xl text-base md:text-lg text-white/75"
+            className="mt-6 max-w-xl text-base md:text-lg text-white/80"
           >
             {t.hero.subtitle}
           </p>
@@ -76,7 +132,7 @@ const HeroSection = () => {
               href="#contact"
               data-testid="hero-cta-primary"
               className="group inline-flex items-center gap-3 rounded-full px-6 py-3 text-sm font-semibold transition-all duration-300"
-              style={{ background: "#49ADA5", color: "#0A1524" }}
+              style={{ background: "#49ADA5", color: "#040709" }}
               onMouseEnter={(e) => (e.currentTarget.style.background = "#FFFFFF")}
               onMouseLeave={(e) => (e.currentTarget.style.background = "#49ADA5")}
             >
@@ -87,13 +143,13 @@ const HeroSection = () => {
               href="#portfolio"
               data-testid="hero-cta-secondary"
               className="inline-flex items-center gap-3 rounded-full border px-6 py-3 text-sm font-semibold text-white transition-all duration-300"
-              style={{ borderColor: "rgba(255,255,255,0.25)" }}
+              style={{ borderColor: "rgba(255,255,255,0.3)" }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.borderColor = "#49ADA5";
                 e.currentTarget.style.color = "#49ADA5";
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = "rgba(255,255,255,0.25)";
+                e.currentTarget.style.borderColor = "rgba(255,255,255,0.3)";
                 e.currentTarget.style.color = "#ffffff";
               }}
             >
@@ -101,7 +157,7 @@ const HeroSection = () => {
             </a>
           </div>
 
-          <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-2 text-[11px] uppercase tracking-[0.28em] text-white/50">
+          <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-2 text-[11px] uppercase tracking-[0.28em] text-white/55">
             <span className="inline-flex items-center gap-2">
               <span className="sc-tick-dot" />
               SYSTEMS ONLINE

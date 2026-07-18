@@ -193,6 +193,73 @@ body {
 }
 .sc-hero-scene-bleed { z-index: 0; }
 
+/* ------------------------------------------------------------
+   Photo Hero — cinematic datacenter with animated overlays
+   ------------------------------------------------------------ */
+.sc-hero-photo-wrap {
+  overflow: hidden;
+}
+.sc-hero-photo {
+  position: absolute;
+  inset: -6% -4%;
+  background-size: cover;
+  background-position: center center;
+  transform: translate(var(--sc-px, 0px), var(--sc-py, 0px)) scale(1.06);
+  will-change: transform;
+  animation: sc-hero-photo-kenburns 26s ease-in-out infinite alternate;
+}
+@keyframes sc-hero-photo-kenburns {
+  0%   { transform: translate(var(--sc-px, 0px), var(--sc-py, 0px)) scale(1.05); background-position: 48% 52%; }
+  100% { transform: translate(var(--sc-px, 0px), var(--sc-py, 0px)) scale(1.14); background-position: 55% 46%; }
+}
+
+/* Readability gradient over the photo — subtle, doesn't kill the image */
+.sc-hero-photo-readable {
+  background:
+    radial-gradient(ellipse 55% 85% at 12% 50%, rgba(4,7,9,0.85) 0%, rgba(4,7,9,0) 62%),
+    linear-gradient(90deg, rgba(4,7,9,0.55) 0%, rgba(4,7,9,0) 45%, rgba(4,7,9,0) 100%),
+    linear-gradient(180deg, rgba(4,7,9,0.5) 0%, rgba(4,7,9,0) 20%, rgba(4,7,9,0) 70%, rgba(4,7,9,0.95) 100%);
+}
+
+/* Sweep light — a soft mint band traversing the image diagonally */
+.sc-hero-sweep {
+  background:
+    linear-gradient(120deg,
+      rgba(73,173,165,0) 0%,
+      rgba(73,173,165,0) 40%,
+      rgba(73,173,165,0.14) 50%,
+      rgba(73,173,165,0) 60%,
+      rgba(73,173,165,0) 100%);
+  background-size: 300% 100%;
+  mix-blend-mode: screen;
+  animation: sc-hero-sweep 11s linear infinite;
+  opacity: 0.9;
+}
+@keyframes sc-hero-sweep {
+  from { background-position: 180% 0; }
+  to   { background-position: -80% 0; }
+}
+
+/* Floating data-packet dots overlay */
+.sc-hero-particles { z-index: 1; }
+.sc-hero-particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #49ADA5;
+  box-shadow: 0 0 8px #49ADA5, 0 0 22px rgba(73,173,165,0.6);
+  animation: sc-hero-particle-drift 12s linear infinite;
+  will-change: transform, opacity;
+}
+@keyframes sc-hero-particle-drift {
+  0%   { transform: translate(-40px, 0) scale(0.4); opacity: 0; }
+  10%  { opacity: 1; transform: translate(-30px, 2px) scale(1); }
+  50%  { opacity: 0.8; }
+  90%  { opacity: 1; }
+  100% { transform: translate(220px, -20px) scale(0.4); opacity: 0; }
+}
+
 /* Subtle horizontal scanlines — hair-thin, animated */
 .sc-hero-scan {
   background: repeating-linear-gradient(
