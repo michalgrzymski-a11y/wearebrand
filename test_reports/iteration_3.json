@@ -1,0 +1,60 @@
+{
+  "summary": "Iteration 4 frontend-only regression for IT SMARTCLOUT hero rework (compact hero + Three.js 3D datacenter scene). Most acceptance items PASS: hero-topology + hero-webgl-canvas + all 7 topo-node-* testids exist; central 'DATACENTER' core label present and clickable; clicking topo-node-security adds 'is-active' and it persists after mouseleave; contact form UI POST /api/contact returns 200; PL/EN toggle updates hero title (Infrastruktura IT... -> IT infrastructure...) and satellite labels (Sieć -> Network); all 6 sections render (hero, about, trusted, portfolio, partners, contact); no console errors or page errors. Two functional/spec deviations found: (1) Hover on topo-node-storage does NOT reliably add 'is-active' (nor 'is-dim' on siblings) because the animation-loop raycaster in Datacenter3DScene.jsx clears hovered state every frame when the mouse is over the HTML label (labels are painted ABOVE the mesh in world Y+1.05, so the ray misses the mesh below and setHovered(null) wins). (2) The hero is not quite small enough: hero bottom is at y=702 in a 1920x900 viewport, but the About metrics (20+/500+/130+) sit at y=929.5 — 29px BELOW the visible viewport. Only the 'O NAS' eyebrow of About is visible. Also flagged: duplicate data-testid='hero-webgl-canvas' on TWO elements (HeroCanvas background AND Datacenter3DScene canvas) — breaks Playwright strict-mode locators.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "Datacenter3DScene.jsx (animation loop raycaster)",
+        "issue": "Hover on satellite label does not persistently add 'is-active' class. The animate() loop calls setHovered(null) every frame when raycaster.intersectObjects(deviceMeshes) misses, which is always the case while the mouse is over the HTML label (labels sit at world y+1.05 above the device mesh, so the projected screen ray passes ABOVE the mesh). Label's own onMouseEnter fires setHovered('storage') then the next animation frame clobbers it back to null. Net effect: the requested 'hovering topo-node-storage adds is-active' behavior is NOT observable via DOM class in Playwright, and other labels never receive 'is-dim'. Click-based selection (setSelected) is unaffected and works correctly.",
+        "selector": "[data-testid='topo-node-storage']",
+        "priority": "MEDIUM"
+      },
+      {
+        "component": "Datacenter3DScene.jsx line 543 / HeroCanvas.jsx line 158",
+        "issue": "Duplicate data-testid='hero-webgl-canvas' — used by BOTH the ambient background canvas (HeroCanvas) and the 3D scene canvas div (Datacenter3DScene). Playwright strict mode raises 'resolved to 2 elements'. Recommend renaming the HeroCanvas one (e.g. 'hero-bg-canvas') or the inner div (e.g. 'hero-3d-canvas').",
+        "selector": "[data-testid='hero-webgl-canvas']",
+        "priority": "MEDIUM"
+      },
+      {
+        "component": "HeroSection.jsx / sc-hero height",
+        "issue": "Hero is not small enough per spec. In a 1920x900 viewport hero occupies 0..702px, but the About metrics (20+/500+/130+) start at top=929.5 which is 29px BELOW the visible viewport. Only the 'O NAS' eyebrow is peeking (~y=684 relative to about-section). Spec explicitly required 'metrics 20+ / 500+ / 130+ should be at least partially visible at the bottom of a 1920x900 viewport when scrolled to top'. Suggest reducing hero pt-24/pb-14 padding further or capping sc-hero max-height near ~700px so the metrics band lands within 900px.",
+        "selector": "[data-testid='hero-section']",
+        "priority": "MEDIUM"
+      }
+    ],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/test_reports/iteration_1.json",
+    "/app/test_reports/iteration_2.json",
+    "/app/backend/tests/test_contact_api.py"
+  ],
+  "action_items": [
+    "Fix hover state race in Datacenter3DScene.jsx: don't reset hovered from the animation-loop raycaster when isMouseInside is false, or only reset when a mesh miss is confirmed while a label is not hovered. Simplest patch: only call setHovered(null) if isMouseInside is true AND no ray hit AND no label is currently hovered (track a labelHoverRef).",
+    "Rename one of the two data-testid='hero-webgl-canvas' elements to avoid Playwright strict-mode conflicts. Suggest changing HeroCanvas.jsx testid to 'hero-bg-canvas'.",
+    "Shrink the hero further so About metrics band (currently at y=929 in 1920x900) is at least partially inside the initial 900px viewport. Target: metrics top <= ~880-890px."
+  ],
+  "critical_code_review_comments": [
+    "Datacenter3DScene.jsx (~600 lines) mixes Three.js setup, animation loop, raycaster, DOM label positioning, cleanup. Consider splitting into useThreeScene() hook (scene/camera/renderer), useDeviceGraph(scene) (device meshes + tubes + packets), and useLabelProjection(camera, refs) (label DOM positioning).",
+    "Hover state authority is split between two systems (label onMouseEnter/onMouseLeave AND the animate-loop raycaster) which fight each other. Consolidate: labels should be the sole source of truth for hoveredId when the mouse is over a label; the raycaster is only relevant when hovering directly on 3D meshes (which is very hard because labels overlay them). Or: forward mouse events from labels to the raycaster and let raycaster be sole owner.",
+    "Duplicate data-testid values violate the design guideline that all interactive/informational elements have unique testids for automation.",
+    "The '7 warstw / 7 layers' legend contradicts the 6 satellites + 1 core = 7 topology nodes labeling, but the DEVICE_META array only has 6 satellites. If '7 layers' is a marketing figure it's fine; otherwise keep the numbers in sync via a constant.",
+    "camera.lookAt(0, 0.4, 0) vs camera.lookAt(0, 0.5, 0) — two slightly different look-at targets (init vs animate). Harmless but sloppy; unify.",
+    "Cleanup: ringMat is disposed once but ringB/ringC use .clone() material — those clones are never disposed. Small leak on unmount."
+  ],
+  "updated_files": [],
+  "success_rate": {
+    "backend": "100% (regression via UI POST /api/contact = 200)",
+    "frontend": "8/10 checklist items PASS. Failing: (a) hover-on-storage is-active + is-dim propagation; (b) About metrics partial-visibility at 1920x900."
+  },
+  "test_credentials": "N/A (no auth)",
+  "seed_data_creation": "1 TEST_-prefixed contact_messages doc via UI submit (test_iter3@example.com, name=TEST_iter3). Harmless.",
+  "retest_needed": true,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Iter4 hero rework verified. Key facts: (1) There are TWO elements with data-testid='hero-webgl-canvas' — use '[data-testid=\"hero-topology\"] .sc-3d__canvas' to scope to the 3D one until renamed. (2) Hover on labels can flip class briefly but the animate() raycaster resets hovered=null every frame when mouse is over label (labels are y+1.05 above the mesh so the ray misses). Click-to-select works reliably (selected state persists). (3) Hero height in 1920x900 = 702px; About metrics start at y=929.5 — 29px below fold. (4) Contact form testids: contact-input-name, contact-input-email, contact-input-message, contact-submit. Lang toggle: click 'EN'/'PL' text in header (no dedicated testid).",
+  "rca of the issue": "HOVER-NOT-STICKY RCA: In Datacenter3DScene.jsx animate() loop (lines 428-437), every frame runs: `raycaster.setFromCamera(ndc, camera); let hoverId = null; if (isMouseInside) { const hits = raycaster.intersectObjects(deviceMeshes); if (hits.length > 0) hoverId = hits[0].object.userData.deviceId; } if (hoverId !== hoveredRef.current) { hoveredRef.current = hoverId; setHovered(hoverId); }`. When user hovers a label (positioned at world Y+1.05 above the mesh, translated -110% up in screen space), (a) if mouse is still outside the canvas area entirely, isMouseInside=false → hoverId always null → clobbers label-set hover to null; (b) if mouse enters the canvas over the label, the ndc points ABOVE the mesh in world → raycaster misses all deviceMeshes → hoverId=null → clobbers. Only way label-set state survives is if the ray happens to hit the same mesh, which is geometrically unlikely for the label region. Repro: 1) load page, 2) hover any topo-node-* label, 3) inspect element class in DOM — 'is-active' won't appear, or flickers only for <1 frame. FIX: gate the raycaster's setHovered(null) so it only clears when there's no label-owned hover, e.g. maintain a labelHoveredRef set by label onMouseEnter/onMouseLeave and skip the clobber when it's truthy. ABOUT-METRICS-VISIBILITY RCA: HeroSection uses `pt-24 pb-14 md:pt-28 md:pb-16` (=112px top, 64px bottom padding) plus a grid with 3D topology frame min height. Resulting hero = 702px in 1920x900. About section eyebrow lands at ~y=730, metric cards further down at y=929. Trim ~30px of vertical padding (e.g. md:pt-20 md:pb-10) or reduce sc-topo-frame--compact height."
+}

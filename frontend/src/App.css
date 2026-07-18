@@ -142,11 +142,25 @@ body {
 /* ============================================================
    HERO
    ============================================================ */
+/* ============================================================
+   HERO layout (compact)
+   ============================================================ */
+.sc-hero {
+  min-height: 640px;
+  display: flex;
+  align-items: center;
+}
+@media (min-width: 768px) {
+  .sc-hero {
+    min-height: min(78vh, 780px);
+  }
+}
+
 .sc-hero-title {
   font-family: "Manrope", sans-serif;
   font-weight: 700;
-  font-size: clamp(2.2rem, 4.4vw, 4.2rem);
-  line-height: 1.02;
+  font-size: clamp(1.9rem, 3.4vw, 3.3rem);
+  line-height: 1.05;
   letter-spacing: -0.03em;
   text-wrap: balance;
 }
@@ -258,7 +272,7 @@ body {
 }
 
 /* ============================================================
-   DATACENTER TOPOLOGY
+   DATACENTER TOPOLOGY (SVG legacy — replaced by 3D scene, kept for other cases)
    ============================================================ */
 .sc-topo-frame {
   position: relative;
@@ -276,6 +290,10 @@ body {
     inset 0 0 60px rgba(73,173,165,0.08),
     0 40px 80px -50px rgba(0,0,0,0.5);
   overflow: hidden;
+}
+.sc-topo-frame--compact {
+  aspect-ratio: 1 / 0.82;
+  max-height: 500px;
 }
 .sc-topo-frame__label {
   position: absolute;
@@ -497,6 +515,124 @@ body {
 .sc-topo__core.is-hovered .sc-topo__core-inner {
   transform: scale(1.04);
   box-shadow: 0 40px 80px -20px rgba(73,173,165,0.75);
+}
+
+/* ============================================================
+   3D DATACENTER SCENE — overlay labels
+   ============================================================ */
+.sc-3d {
+  position: absolute;
+  inset: 0;
+}
+.sc-3d__canvas {
+  position: absolute;
+  inset: 0;
+  cursor: grab;
+}
+.sc-3d__canvas:active {
+  cursor: grabbing;
+}
+.sc-3d-label {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px 6px 8px;
+  background: rgba(6, 11, 18, 0.72);
+  border: 1px solid rgba(73, 173, 165, 0.38);
+  border-radius: 10px;
+  color: #ffffff;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease,
+              box-shadow 0.3s ease, opacity 0.3s ease, transform 0.25s ease;
+  z-index: 5;
+  white-space: nowrap;
+  pointer-events: auto;
+  will-change: transform, left, top;
+}
+.sc-3d-label.is-dim {
+  opacity: 0.35;
+}
+.sc-3d-label.is-active,
+.sc-3d-label:hover {
+  background: #ffffff;
+  color: #0C5C62;
+  border-color: #ffffff;
+  box-shadow: 0 12px 30px -12px rgba(73,173,165,0.75),
+              0 0 0 1px rgba(73,173,165,0.4);
+}
+.sc-3d-label__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  background: rgba(73, 173, 165, 0.22);
+  color: #49ADA5;
+  flex: 0 0 auto;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+.sc-3d-label.is-active .sc-3d-label__icon,
+.sc-3d-label:hover .sc-3d-label__icon {
+  background: #49ADA5;
+  color: #ffffff;
+}
+.sc-3d-label__body {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+  align-items: flex-start;
+}
+.sc-3d-label__name {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+.sc-3d-label__sub {
+  font-size: 8.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  opacity: 0.6;
+  margin-top: 2px;
+}
+
+/* Central "core" label */
+.sc-3d-core-label {
+  position: absolute;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 6px 14px;
+  background: rgba(6, 11, 18, 0.55);
+  border: 1px solid rgba(73, 173, 165, 0.35);
+  border-radius: 10px;
+  color: #ffffff;
+  pointer-events: auto;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+.sc-3d-core-label__inner {
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.28em;
+}
+.sc-3d-core-label__sub {
+  font-size: 8.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+.sc-3d-core-label.is-active,
+.sc-3d-core-label:hover {
+  background: rgba(73,173,165,0.95);
+  border-color: #ffffff;
+  color: #ffffff;
 }
 
 /* ============================================================
