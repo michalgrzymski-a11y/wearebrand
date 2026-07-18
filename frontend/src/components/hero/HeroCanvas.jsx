@@ -16,7 +16,7 @@ const HeroAmbient = () => {
     const height = mount.clientHeight;
 
     const scene = new THREE.Scene();
-    scene.fog = new THREE.Fog(0x0c5c62, 8, 24);
+    scene.fog = new THREE.Fog(0x060b12, 8, 24);
 
     const camera = new THREE.PerspectiveCamera(60, width / height, 0.1, 100);
     camera.position.set(0, 0, 10);

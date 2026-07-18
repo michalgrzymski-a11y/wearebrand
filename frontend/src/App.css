@@ -167,12 +167,54 @@ body {
 
 .sc-hero-grid {
   background-image:
-    linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+    linear-gradient(rgba(73,173,165,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(73,173,165,0.06) 1px, transparent 1px);
   background-size: 80px 80px;
   mask-image: radial-gradient(closest-side, black, transparent 100%);
   -webkit-mask-image: radial-gradient(closest-side, black, transparent 100%);
-  opacity: 0.5;
+  opacity: 0.75;
+}
+
+/* Subtle horizontal scanlines — hair-thin, animated */
+.sc-hero-scan {
+  background: repeating-linear-gradient(
+    180deg,
+    rgba(255,255,255,0) 0px,
+    rgba(255,255,255,0) 3px,
+    rgba(73,173,165,0.035) 4px,
+    rgba(255,255,255,0) 5px
+  );
+  mix-blend-mode: screen;
+  opacity: 0.35;
+  animation: sc-scan-drift 18s linear infinite;
+}
+@keyframes sc-scan-drift {
+  from { background-position: 0 0; }
+  to { background-position: 0 200px; }
+}
+
+/* Corner tech brackets */
+.sc-hero-bracket {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  border-color: rgba(73,173,165,0.55);
+  pointer-events: none;
+  z-index: 2;
+}
+.sc-hero-bracket--tl { top: 24px; left: 24px; border-top: 1.5px solid; border-left: 1.5px solid; }
+.sc-hero-bracket--tr { top: 24px; right: 24px; border-top: 1.5px solid; border-right: 1.5px solid; }
+.sc-hero-bracket--bl { bottom: 24px; left: 24px; border-bottom: 1.5px solid; border-left: 1.5px solid; }
+.sc-hero-bracket--br { bottom: 24px; right: 24px; border-bottom: 1.5px solid; border-right: 1.5px solid; }
+
+/* Status ticker dot */
+.sc-tick-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #49ADA5;
+  box-shadow: 0 0 10px #49ADA5, 0 0 22px rgba(73,173,165,0.6);
+  animation: sc-blink 1.4s ease-in-out infinite;
 }
 
 /* Interactive word-node (legacy chip) */
