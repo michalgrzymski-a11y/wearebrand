@@ -478,13 +478,27 @@ const IsometricDatacenter = ({ lang = "pl" }) => {
     const root = new THREE.Group();
     scene.add(root);
 
-    // Ground grid (subtle)
-    const grid = new THREE.GridHelper(18, 18, ACCENT, ACCENT);
+    // Ground grid — very subtle, blends into background with edge fade via material opacity
+    const grid = new THREE.GridHelper(20, 20, ACCENT, ACCENT);
     grid.material.transparent = true;
-    grid.material.opacity = 0.14;
+    grid.material.opacity = 0.09;
     grid.material.depthWrite = false;
     grid.position.y = 0;
     root.add(grid);
+
+    // Faint radial glow disc under the scene — helps the grid fade organically toward edges
+    const floorGlow = new THREE.Mesh(
+      new THREE.CircleGeometry(6, 48),
+      new THREE.MeshBasicMaterial({
+        color: ACCENT,
+        transparent: true,
+        opacity: 0.06,
+        depthWrite: false,
+      }),
+    );
+    floorGlow.rotation.x = -Math.PI / 2;
+    floorGlow.position.y = 0.005;
+    root.add(floorGlow);
 
     // Central server rack
     const rack = buildServerRack();

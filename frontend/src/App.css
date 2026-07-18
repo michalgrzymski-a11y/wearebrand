@@ -146,14 +146,14 @@ body {
    HERO layout (compact)
    ============================================================ */
 .sc-hero {
-  min-height: 600px;
+  min-height: 780px;
   display: flex;
   align-items: center;
 }
 @media (min-width: 768px) {
   .sc-hero {
-    min-height: 620px;
-    max-height: 760px;
+    min-height: 820px;
+    max-height: 980px;
   }
 }
 
@@ -182,12 +182,14 @@ body {
 
 .sc-hero-grid {
   background-image:
-    linear-gradient(rgba(73,173,165,0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(73,173,165,0.06) 1px, transparent 1px);
-  background-size: 80px 80px;
-  mask-image: radial-gradient(closest-side, black, transparent 100%);
-  -webkit-mask-image: radial-gradient(closest-side, black, transparent 100%);
-  opacity: 0.75;
+    linear-gradient(rgba(73,173,165,0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(73,173,165,0.045) 1px, transparent 1px);
+  background-size: 90px 90px;
+  mask-image:
+    radial-gradient(ellipse 90% 70% at 70% 50%, rgba(0,0,0,0.85), transparent 75%);
+  -webkit-mask-image:
+    radial-gradient(ellipse 90% 70% at 70% 50%, rgba(0,0,0,0.85), transparent 75%);
+  opacity: 0.6;
 }
 
 /* Subtle horizontal scanlines — hair-thin, animated */
@@ -566,12 +568,11 @@ body {
   box-shadow: 0 40px 80px -20px rgba(73,173,165,0.75);
 }
 
-/* 3D scene rendered without a frame — blends into hero background */
 .sc-topo-open {
   position: relative;
   width: 100%;
   aspect-ratio: 1 / 0.9;
-  max-height: 520px;
+  max-height: 680px;
 }
 
 /* ============================================================
