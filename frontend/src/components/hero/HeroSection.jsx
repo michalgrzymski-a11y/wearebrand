@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { useLang } from "@/i18n/LanguageContext";
-import { ArrowRight, Zap } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 /**
  * Hero — cinematic datacenter photograph as full-bleed background.
@@ -97,24 +97,9 @@ const HeroSection = () => {
       <div className="pointer-events-none absolute inset-0 sc-hero-scan" aria-hidden="true" />
 
       {/* Copy */}
-      <div className="relative z-10 mx-auto flex w-full max-w-7xl items-center px-6 pb-16 pt-24 md:px-10 md:pt-28">
+      <div className="relative z-10 mx-auto flex w-full max-w-7xl items-center px-6 pb-16 pt-28 md:px-10 md:pt-32">
         <div className="flex max-w-2xl flex-col">
-          <div
-            data-testid="hero-eyebrow"
-            className="inline-flex items-center self-start gap-3 rounded-full border px-4 py-1.5 text-[11px] uppercase tracking-[0.28em] text-white/85"
-            style={{
-              borderColor: "rgba(73,173,165,0.4)",
-              background: "rgba(4,7,9,0.55)",
-              backdropFilter: "blur(6px)",
-            }}
-          >
-            <span className="inline-block h-1.5 w-1.5 rounded-full" style={{ background: "#49ADA5" }} />
-            {t.hero.eyebrow}
-            <span className="opacity-40">·</span>
-            <span className="text-white/50">v.2026</span>
-          </div>
-
-          <h1 data-testid="hero-title" className="sc-hero-title mt-7 text-white">
+          <h1 data-testid="hero-title" className="sc-hero-title text-white">
             {t.hero.title_pre}{" "}
             <span className="sc-hero-accent">{t.hero.title_accent}</span>{" "}
             {t.hero.title_post}
@@ -155,21 +140,6 @@ const HeroSection = () => {
             >
               {t.hero.cta_secondary}
             </a>
-          </div>
-
-          <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-2 text-[11px] uppercase tracking-[0.28em] text-white/55">
-            <span className="inline-flex items-center gap-2">
-              <span className="sc-tick-dot" />
-              SYSTEMS ONLINE
-            </span>
-            <span className="inline-flex items-center gap-2">
-              <Zap size={12} style={{ color: "#49ADA5" }} />
-              Latency &lt; 4ms
-            </span>
-            <span className="inline-flex items-center gap-2 text-white/40">
-              <span className="inline-block h-px w-3 bg-white/30" />
-              PL / EU-CENTRAL
-            </span>
           </div>
         </div>
       </div>

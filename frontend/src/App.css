@@ -42,23 +42,8 @@ body {
    NAVBAR
    ============================================================ */
 .sc-nav {
-  background: #04070A;
-  border-bottom: 1px solid rgba(73, 173, 165, 0.14);
-  transition: background 0.4s ease, border-color 0.4s ease;
-}
-.sc-nav--scrolled {
-  background: #04070A;
-  border-bottom-color: rgba(73, 173, 165, 0.28);
-  box-shadow: 0 6px 30px -10px rgba(0,0,0,0.6);
-}
-.sc-nav__glow {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -1px;
-  height: 1px;
-  background: linear-gradient(90deg, transparent 0%, rgba(73,173,165,0.55) 50%, transparent 100%);
-  opacity: 0.7;
+  background: transparent;
+  border-bottom: none;
 }
 
 .sc-brand-mark {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useLang } from "@/i18n/LanguageContext";
 
 const NAV_LINKS = [
@@ -9,37 +9,25 @@ const NAV_LINKS = [
 ];
 
 /**
- * Navbar — extracted top menu bar.
- *  Always on solid black (`#04070A`) so it reads as a distinct top strip
- *  regardless of what section is scrolled behind it. Uses the WHITE brand logo.
+ * Navbar — sits above the Hero on its dark background (transparent, not fixed).
+ * It scrolls away with the Hero so light sections below stay clean.
  */
 const Navbar = () => {
   const { t, lang, toggle } = useLang();
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   return (
-    <header
-      data-testid="site-navbar"
-      className={`fixed inset-x-0 top-0 z-50 sc-nav ${scrolled ? "sc-nav--scrolled" : ""}`}
-    >
-      <div className="mx-auto max-w-7xl px-6 md:px-10 py-3.5 flex items-center justify-between">
+    <header data-testid="site-navbar" className="absolute inset-x-0 top-0 z-50 sc-nav">
+      <div className="mx-auto max-w-7xl px-6 md:px-10 py-5 md:py-6 flex items-center justify-between">
         <a href="#top" data-testid="nav-brand" className="flex items-center gap-2 group">
           <img
             src={`${process.env.PUBLIC_URL}/logo-white.webp`}
             alt="Smart Clout"
-            className="h-6 w-auto md:h-7 select-none"
+            className="h-9 md:h-10 w-auto select-none"
             draggable="false"
           />
         </a>
 
-        <nav className="hidden md:flex items-center gap-8">
+        <nav className="hidden md:flex items-center gap-9">
           {NAV_LINKS.map((l) => (
             <a
               key={l.id}
@@ -64,16 +52,11 @@ const Navbar = () => {
             <span className="sc-lang-toggle__sep">/</span>
             <span className={lang === "en" ? "is-active" : ""}>EN</span>
           </button>
-          <a
-            href="#contact"
-            data-testid="nav-cta"
-            className="sc-nav-cta"
-          >
+          <a href="#contact" data-testid="nav-cta" className="sc-nav-cta">
             {t.nav.cta}
           </a>
         </div>
       </div>
-      <div className="sc-nav__glow" aria-hidden="true" />
     </header>
   );
 };
