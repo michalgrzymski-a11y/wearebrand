@@ -8,6 +8,11 @@ const NAV_LINKS = [
   { id: "contact", key: "contact" },
 ];
 
+/**
+ * Navbar — extracted top menu bar.
+ *  Always on solid black (`#04070A`) so it reads as a distinct top strip
+ *  regardless of what section is scrolled behind it. Uses the WHITE brand logo.
+ */
 const Navbar = () => {
   const { t, lang, toggle } = useLang();
   const [scrolled, setScrolled] = useState(false);
@@ -22,22 +27,16 @@ const Navbar = () => {
   return (
     <header
       data-testid="site-navbar"
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
-        scrolled ? "sc-nav sc-nav--scrolled" : "sc-nav"
-      }`}
+      className={`fixed inset-x-0 top-0 z-50 sc-nav ${scrolled ? "sc-nav--scrolled" : ""}`}
     >
-      <div className="mx-auto max-w-7xl px-6 md:px-10 py-4 flex items-center justify-between">
-        <a
-          href="#top"
-          data-testid="nav-brand"
-          className="flex items-center gap-2.5 text-white group"
-        >
-          <span className="sc-brand-mark" aria-hidden="true">
-            <span className="sc-brand-mark__inner" />
-          </span>
-          <span className="text-[13px] tracking-[0.28em] uppercase font-semibold">
-            IT Smartclout
-          </span>
+      <div className="mx-auto max-w-7xl px-6 md:px-10 py-3.5 flex items-center justify-between">
+        <a href="#top" data-testid="nav-brand" className="flex items-center gap-2 group">
+          <img
+            src={`${process.env.PUBLIC_URL}/logo-white.webp`}
+            alt="Smart Clout"
+            className="h-6 w-auto md:h-7 select-none"
+            draggable="false"
+          />
         </a>
 
         <nav className="hidden md:flex items-center gap-8">
@@ -74,6 +73,7 @@ const Navbar = () => {
           </a>
         </div>
       </div>
+      <div className="sc-nav__glow" aria-hidden="true" />
     </header>
   );
 };
