@@ -146,13 +146,14 @@ body {
    HERO layout (compact)
    ============================================================ */
 .sc-hero {
-  min-height: 640px;
+  min-height: 600px;
   display: flex;
   align-items: center;
 }
 @media (min-width: 768px) {
   .sc-hero {
-    min-height: min(78vh, 780px);
+    min-height: 620px;
+    max-height: 760px;
   }
 }
 
@@ -292,8 +293,8 @@ body {
   overflow: hidden;
 }
 .sc-topo-frame--compact {
-  aspect-ratio: 1 / 0.82;
-  max-height: 500px;
+  aspect-ratio: 1 / 0.75;
+  max-height: 440px;
 }
 .sc-topo-frame__label {
   position: absolute;

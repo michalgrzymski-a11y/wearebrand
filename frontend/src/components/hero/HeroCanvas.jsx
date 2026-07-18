@@ -157,7 +157,7 @@ const HeroAmbient = () => {
   return (
     <div
       ref={mountRef}
-      data-testid="hero-webgl-canvas"
+      data-testid="hero-bg-canvas"
       className="absolute inset-0 w-full h-full pointer-events-none"
       aria-hidden="true"
     />

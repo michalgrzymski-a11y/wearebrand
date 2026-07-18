@@ -36,6 +36,7 @@ const DEVICE_META = [
 const Datacenter3DScene = ({ lang = "pl" }) => {
   const mountRef = useRef(null);
   const labelRefs = useRef({});
+  const labelHoveredRef = useRef(null); // id of currently label-hovered node
   const [hovered, setHovered] = useState(null);
   const [selected, setSelected] = useState(null);
   const hoveredRef = useRef(null);
@@ -47,6 +48,16 @@ const Datacenter3DScene = ({ lang = "pl" }) => {
   useEffect(() => {
     selectedRef.current = selected;
   }, [selected]);
+
+  // Wrappers so label onMouseEnter/Leave also updates the ref immediately
+  const enterLabel = (id) => {
+    labelHoveredRef.current = id;
+    setHovered(id);
+  };
+  const leaveLabel = () => {
+    labelHoveredRef.current = null;
+    setHovered(null);
+  };
 
   useEffect(() => {
     const mount = mountRef.current;
@@ -72,7 +83,7 @@ const Datacenter3DScene = ({ lang = "pl" }) => {
 
     const camera = new THREE.PerspectiveCamera(42, width / height, 0.1, 100);
     camera.position.set(0, 5.8, 11);
-    camera.lookAt(0, 0.4, 0);
+    camera.lookAt(0, 0.5, 0);
 
     // ---- Lights
     scene.add(new THREE.AmbientLight(0xffffff, 0.35));
@@ -132,17 +143,12 @@ const Datacenter3DScene = ({ lang = "pl" }) => {
     coreGroup.add(coreWire);
 
     // Rotating rings around the core
-    const ringMat = new THREE.MeshBasicMaterial({
-      color: ACCENT_COLOR,
-      transparent: true,
-      opacity: 0.6,
-      side: THREE.DoubleSide,
-    });
-    const ringA = new THREE.Mesh(new THREE.TorusGeometry(1.6, 0.02, 8, 96), ringMat);
-    const ringB = new THREE.Mesh(new THREE.TorusGeometry(2.0, 0.02, 8, 96), ringMat.clone());
-    ringB.material.opacity = 0.35;
-    const ringC = new THREE.Mesh(new THREE.TorusGeometry(2.4, 0.015, 8, 96), ringMat.clone());
-    ringC.material.opacity = 0.2;
+    const ringMatA = new THREE.MeshBasicMaterial({ color: ACCENT_COLOR, transparent: true, opacity: 0.6, side: THREE.DoubleSide });
+    const ringMatB = new THREE.MeshBasicMaterial({ color: ACCENT_COLOR, transparent: true, opacity: 0.35, side: THREE.DoubleSide });
+    const ringMatC = new THREE.MeshBasicMaterial({ color: ACCENT_COLOR, transparent: true, opacity: 0.2, side: THREE.DoubleSide });
+    const ringA = new THREE.Mesh(new THREE.TorusGeometry(1.6, 0.02, 8, 96), ringMatA);
+    const ringB = new THREE.Mesh(new THREE.TorusGeometry(2.0, 0.02, 8, 96), ringMatB);
+    const ringC = new THREE.Mesh(new THREE.TorusGeometry(2.4, 0.015, 8, 96), ringMatC);
     ringA.rotation.x = Math.PI / 2.3;
     ringB.rotation.x = Math.PI / 3;
     ringB.rotation.y = Math.PI / 4;
@@ -424,12 +430,14 @@ const Datacenter3DScene = ({ lang = "pl" }) => {
       const corePulse = 1 + Math.sin(t * 1.6) * 0.03;
       coreMesh.scale.setScalar(corePulse);
 
-      // Raycast for hover
-      raycaster.setFromCamera(ndc, camera);
-      let hoverId = null;
-      if (isMouseInside) {
-        const hits = raycaster.intersectObjects(deviceMeshes, false);
-        if (hits.length > 0) hoverId = hits[0].object.userData.deviceId;
+      // Raycast for hover (only if no label is currently owning hover)
+      let hoverId = labelHoveredRef.current;
+      if (!hoverId) {
+        raycaster.setFromCamera(ndc, camera);
+        if (isMouseInside) {
+          const hits = raycaster.intersectObjects(deviceMeshes, false);
+          if (hits.length > 0) hoverId = hits[0].object.userData.deviceId;
+        }
       }
       if (hoverId !== hoveredRef.current) {
         hoveredRef.current = hoverId;
@@ -510,7 +518,9 @@ const Datacenter3DScene = ({ lang = "pl" }) => {
       dustTex.dispose();
       coreGeom.dispose();
       coreMat.dispose();
-      ringMat.dispose();
+      ringMatA.dispose();
+      ringMatB.dispose();
+      ringMatC.dispose();
       discGeom.dispose();
       discMat.dispose();
       tubes.forEach(({ tube, mat }) => {
@@ -555,8 +565,8 @@ const Datacenter3DScene = ({ lang = "pl" }) => {
             }}
             type="button"
             data-testid={`topo-node-${m.id}`}
-            onMouseEnter={() => setHovered(m.id)}
-            onMouseLeave={() => setHovered(null)}
+            onMouseEnter={() => enterLabel(m.id)}
+            onMouseLeave={() => leaveLabel()}
             onClick={() => setSelected((s) => (s === m.id ? null : m.id))}
             style={{ transform: "translate(-50%, -110%)" }}
             className={`sc-3d-label ${isActive ? "is-active" : ""} ${isDim ? "is-dim" : ""}`}
@@ -581,8 +591,8 @@ const Datacenter3DScene = ({ lang = "pl" }) => {
         data-testid="topo-node-core"
         className={`sc-3d-core-label ${activeId === "core" ? "is-active" : ""}`}
         style={{ transform: "translate(-50%, -50%)" }}
-        onMouseEnter={() => setHovered("core")}
-        onMouseLeave={() => setHovered(null)}
+        onMouseEnter={() => enterLabel("core")}
+        onMouseLeave={() => leaveLabel()}
         onClick={() =>
           setSelected((s) => (s === "core" ? null : "core"))
         }

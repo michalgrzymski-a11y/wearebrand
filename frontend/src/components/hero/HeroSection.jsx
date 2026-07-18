@@ -33,7 +33,7 @@ const HeroSection = () => {
       <div className="pointer-events-none absolute inset-0 sc-hero-grid" />
       <div className="pointer-events-none absolute inset-0 sc-hero-scan" aria-hidden="true" />
 
-      <div className="relative z-10 mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-8 px-6 pb-14 pt-24 md:grid-cols-12 md:gap-6 md:px-10 md:pb-16 md:pt-28">
+      <div className="relative z-10 mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-6 px-6 pb-8 pt-20 md:grid-cols-12 md:gap-6 md:px-10 md:pb-10 md:pt-24">
         {/* LEFT copy */}
         <div className="flex flex-col md:col-span-6">
           <div
