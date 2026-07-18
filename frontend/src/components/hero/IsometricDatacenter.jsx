@@ -478,26 +478,67 @@ const IsometricDatacenter = ({ lang = "pl" }) => {
     const root = new THREE.Group();
     scene.add(root);
 
-    // Ground grid — very subtle, blends into background with edge fade via material opacity
-    const grid = new THREE.GridHelper(20, 20, ACCENT, ACCENT);
-    grid.material.transparent = true;
-    grid.material.opacity = 0.09;
-    grid.material.depthWrite = false;
-    grid.position.y = 0;
-    root.add(grid);
+    // Ground grid — procedural shader with radial fade (no hard edges)
+    const gridSize = 14;
+    const gridPlane = new THREE.Mesh(
+      new THREE.PlaneGeometry(gridSize * 2, gridSize * 2, 1, 1),
+      new THREE.ShaderMaterial({
+        transparent: true,
+        depthWrite: false,
+        uniforms: {
+          uColor:   { value: new THREE.Color(ACCENT) },
+          uSpacing: { value: 1.0 },
+          uOpacity: { value: 0.35 },
+          uRadius:  { value: gridSize * 0.85 },
+        },
+        vertexShader: `
+          varying vec3 vLocal;
+          void main() {
+            vLocal = position;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+          }
+        `,
+        fragmentShader: `
+          uniform vec3 uColor;
+          uniform float uSpacing;
+          uniform float uOpacity;
+          uniform float uRadius;
+          varying vec3 vLocal;
 
-    // Faint radial glow disc under the scene — helps the grid fade organically toward edges
+          void main() {
+            // Grid lines: distance from nearest gridline in screen-space units
+            vec2 coord = vLocal.xy / uSpacing;
+            vec2 grid = abs(fract(coord - 0.5) - 0.5) / fwidth(coord);
+            float line = min(grid.x, grid.y);
+            float lineAlpha = 1.0 - min(line, 1.0);
+
+            // Soft radial fade
+            float d = length(vLocal.xy);
+            float fade = 1.0 - smoothstep(uRadius * 0.35, uRadius, d);
+
+            float alpha = lineAlpha * fade * uOpacity;
+            if (alpha < 0.01) discard;
+            gl_FragColor = vec4(uColor, alpha);
+          }
+        `,
+      }),
+    );
+    gridPlane.rotation.x = -Math.PI / 2;
+    gridPlane.position.y = 0;
+    root.add(gridPlane);
+
+    // Very soft mint glow disc under the scene — helps the grid dissolve into the background
     const floorGlow = new THREE.Mesh(
-      new THREE.CircleGeometry(6, 48),
+      new THREE.CircleGeometry(7, 64),
       new THREE.MeshBasicMaterial({
         color: ACCENT,
         transparent: true,
-        opacity: 0.06,
+        opacity: 0.05,
         depthWrite: false,
       }),
     );
     floorGlow.rotation.x = -Math.PI / 2;
-    floorGlow.position.y = 0.005;
+    floorGlow.position.y = 0.002;
     root.add(floorGlow);
 
     // Central server rack
