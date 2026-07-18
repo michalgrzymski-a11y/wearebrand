@@ -293,8 +293,56 @@ body {
   overflow: hidden;
 }
 .sc-topo-frame--compact {
-  aspect-ratio: 1 / 0.75;
-  max-height: 440px;
+  aspect-ratio: 1 / 0.85;
+  max-height: 500px;
+}
+
+/* CSS-only Hero background (lighter than Three.js particles) */
+.sc-hero-stars {
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(255,255,255,0.4) 0, rgba(255,255,255,0) 1px),
+    radial-gradient(circle at 65% 15%, rgba(73,173,165,0.6) 0, rgba(73,173,165,0) 1.5px),
+    radial-gradient(circle at 85% 70%, rgba(255,255,255,0.35) 0, rgba(255,255,255,0) 1px),
+    radial-gradient(circle at 30% 80%, rgba(73,173,165,0.4) 0, rgba(73,173,165,0) 1.5px),
+    radial-gradient(circle at 50% 50%, rgba(255,255,255,0.3) 0, rgba(255,255,255,0) 1px),
+    radial-gradient(circle at 10% 60%, rgba(73,173,165,0.4) 0, rgba(73,173,165,0) 1.5px),
+    radial-gradient(circle at 75% 40%, rgba(255,255,255,0.3) 0, rgba(255,255,255,0) 1px),
+    radial-gradient(circle at 40% 20%, rgba(73,173,165,0.35) 0, rgba(73,173,165,0) 1.5px);
+  background-size: 400px 400px, 500px 500px, 600px 600px, 350px 350px, 550px 550px, 450px 450px, 500px 500px, 400px 400px;
+  opacity: 0.5;
+  animation: sc-stars-drift 60s linear infinite;
+}
+@keyframes sc-stars-drift {
+  from { background-position: 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0; }
+  to   { background-position: 400px 400px, -500px 500px, 600px -600px, -350px 350px, 550px 0, 0 -450px, 500px 500px, -400px 400px; }
+}
+.sc-hero-orb {
+  filter: blur(60px);
+  border-radius: 50%;
+  pointer-events: none;
+  will-change: transform;
+}
+.sc-hero-orb--a {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  background: rgba(73,173,165,0.18);
+  left: 60%;
+  top: 20%;
+  animation: sc-orb-float 22s ease-in-out infinite;
+}
+.sc-hero-orb--b {
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  background: rgba(12,92,98,0.35);
+  left: 10%;
+  top: 60%;
+  animation: sc-orb-float 28s ease-in-out infinite reverse;
+}
+@keyframes sc-orb-float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(30px, -20px) scale(1.1); }
 }
 .sc-topo-frame__label {
   position: absolute;
@@ -518,8 +566,16 @@ body {
   box-shadow: 0 40px 80px -20px rgba(73,173,165,0.75);
 }
 
+/* 3D scene rendered without a frame — blends into hero background */
+.sc-topo-open {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 0.9;
+  max-height: 520px;
+}
+
 /* ============================================================
-   3D DATACENTER SCENE — overlay labels
+   3D DATACENTER SCENE — overlay labels (icon-only, pinned to device)
    ============================================================ */
 .sc-3d {
   position: absolute;
@@ -533,107 +589,106 @@ body {
 .sc-3d__canvas:active {
   cursor: grabbing;
 }
+/* Icon-only chip that sits on top of the 3D device */
 .sc-3d-label {
   position: absolute;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 6px 10px 6px 8px;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
   background: rgba(6, 11, 18, 0.72);
-  border: 1px solid rgba(73, 173, 165, 0.38);
-  border-radius: 10px;
-  color: #ffffff;
+  border: 1px solid rgba(73, 173, 165, 0.45);
+  border-radius: 50%;
+  color: #49ADA5;
   cursor: pointer;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease,
-              box-shadow 0.3s ease, opacity 0.3s ease, transform 0.25s ease;
+  transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease,
+              box-shadow 0.25s ease, opacity 0.25s ease, transform 0.2s ease;
   z-index: 5;
-  white-space: nowrap;
   pointer-events: auto;
   will-change: transform, left, top;
 }
+.sc-3d-label::after {
+  /* small pulse ring */
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(73, 173, 165, 0.55);
+  animation: sc-pulse-ring 2.4s ease-out infinite;
+  pointer-events: none;
+}
 .sc-3d-label.is-dim {
-  opacity: 0.35;
+  opacity: 0.3;
 }
 .sc-3d-label.is-active,
 .sc-3d-label:hover {
   background: #ffffff;
   color: #0C5C62;
   border-color: #ffffff;
-  box-shadow: 0 12px 30px -12px rgba(73,173,165,0.75),
-              0 0 0 1px rgba(73,173,165,0.4);
+  transform: translate(-50%, -50%) scale(1.15);
+  box-shadow: 0 10px 28px -8px rgba(73,173,165,0.7);
 }
-.sc-3d-label__icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 22px;
-  height: 22px;
-  border-radius: 6px;
-  background: rgba(73, 173, 165, 0.22);
-  color: #49ADA5;
-  flex: 0 0 auto;
-  transition: background 0.3s ease, color 0.3s ease;
+.sc-3d-label.is-active::after,
+.sc-3d-label:hover::after {
+  border-color: #ffffff;
 }
-.sc-3d-label.is-active .sc-3d-label__icon,
-.sc-3d-label:hover .sc-3d-label__icon {
-  background: #49ADA5;
-  color: #ffffff;
-}
-.sc-3d-label__body {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.1;
-  align-items: flex-start;
-}
-.sc-3d-label__name {
-  font-size: 11px;
+/* Tooltip on hover (shows the name) */
+.sc-3d-label__tooltip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 4px 10px;
+  background: #ffffff;
+  color: #0C5C62;
+  font-size: 10px;
   font-weight: 700;
-  letter-spacing: 0.02em;
-}
-.sc-3d-label__sub {
-  font-size: 8.5px;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  opacity: 0.6;
-  margin-top: 2px;
+  border-radius: 999px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.sc-3d-label.is-active .sc-3d-label__tooltip,
+.sc-3d-label:hover .sc-3d-label__tooltip {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-2px);
 }
 
-/* Central "core" label */
+/* Central "core" label — pinned to top of the rack */
 .sc-3d-core-label {
   position: absolute;
   z-index: 4;
-  display: flex;
-  flex-direction: column;
+  display: inline-flex;
   align-items: center;
-  gap: 3px;
-  padding: 6px 14px;
-  background: rgba(6, 11, 18, 0.55);
-  border: 1px solid rgba(73, 173, 165, 0.35);
-  border-radius: 10px;
+  gap: 6px;
+  padding: 5px 12px;
+  background: rgba(6, 11, 18, 0.7);
+  border: 1px solid rgba(73, 173, 165, 0.4);
+  border-radius: 999px;
   color: #ffffff;
   pointer-events: auto;
   cursor: pointer;
-  backdrop-filter: blur(6px);
-  transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+  backdrop-filter: blur(8px);
+  transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease;
 }
 .sc-3d-core-label__inner {
-  font-size: 10.5px;
+  font-size: 9.5px;
   font-weight: 800;
   letter-spacing: 0.28em;
 }
-.sc-3d-core-label__sub {
-  font-size: 8.5px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  opacity: 0.7;
-}
+.sc-3d-core-label__sub { display: none; }
 .sc-3d-core-label.is-active,
 .sc-3d-core-label:hover {
-  background: rgba(73,173,165,0.95);
+  background: #ffffff;
+  color: #0C5C62;
   border-color: #ffffff;
-  color: #ffffff;
 }
 
 /* ============================================================

@@ -1,14 +1,14 @@
 import React from "react";
 import HeroCanvas from "./HeroCanvas";
-import Datacenter3DScene from "./Datacenter3DScene";
+import IsometricDatacenter from "./IsometricDatacenter";
 import { useLang } from "@/i18n/LanguageContext";
 import { ArrowRight, Zap } from "lucide-react";
 
 /**
  * Compact deep-tech Hero
- *  - Reduced height (min 620px, max ~78vh) instead of full-screen
- *  - 3D Three.js datacenter scene on the right
- *  - Clean left copy with CTAs + status ticker
+ *  - Reduced height (min 620px, max ~78vh)
+ *  - Isometric 3D datacenter scene on the right — no frame, blends into background
+ *  - Ambient Three.js particle field + soft CSS orbs
  */
 const HeroSection = () => {
   const { t, lang } = useLang();
@@ -109,29 +109,10 @@ const HeroSection = () => {
           </div>
         </div>
 
-        {/* RIGHT topology */}
-        <div className="relative md:col-span-6">
-          <div className="sc-topo-frame sc-topo-frame--compact" data-testid="topology-frame">
-            <div className="sc-topo-frame__label">
-              <span className="sc-topo-frame__dot" />
-              {lang === "pl"
-                ? "LIVE — Topologia 3D"
-                : "LIVE — 3D topology"}
-            </div>
-            <Datacenter3DScene lang={lang} />
-            <div className="sc-topo-frame__legend">
-              <span>
-                <b>7</b> {lang === "pl" ? "warstw" : "layers"}
-              </span>
-              <span className="sc-topo-frame__legend-sep">—</span>
-              <span>
-                <b>24/7</b> monitoring
-              </span>
-              <span className="sc-topo-frame__legend-sep">—</span>
-              <span>
-                <b>99.99%</b> {lang === "pl" ? "dostępność" : "uptime"}
-              </span>
-            </div>
+        {/* RIGHT topology — no frame */}
+        <div className="relative md:col-span-6" data-testid="topology-frame">
+          <div className="sc-topo-open">
+            <IsometricDatacenter lang={lang} />
           </div>
         </div>
       </div>
