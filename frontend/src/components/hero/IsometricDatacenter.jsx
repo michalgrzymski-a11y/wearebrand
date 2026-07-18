@@ -452,7 +452,7 @@ const IsometricDatacenter = ({ lang = "pl" }) => {
 
     // Orthographic camera for isometric look
     const aspect = width / height;
-    const camSize = 5.2;
+    const camSize = 5.5;
     const camera = new THREE.OrthographicCamera(
       -camSize * aspect,
       camSize * aspect,
@@ -461,9 +461,9 @@ const IsometricDatacenter = ({ lang = "pl" }) => {
       0.1,
       100,
     );
-    // Classic iso: 30°, 45° yaw
+    // Classic iso angle
     camera.position.set(9, 8, 9);
-    camera.lookAt(0, 0.8, 0);
+    camera.lookAt(0, 0.5, 0);
 
     // Lights — flat but colorful
     scene.add(new THREE.AmbientLight(0xffffff, 0.85));
@@ -474,12 +474,15 @@ const IsometricDatacenter = ({ lang = "pl" }) => {
     rim.position.set(-6, 4, -3);
     scene.add(rim);
 
-    // Root — allows scene-wide slow rotation
+    // Root — allows scene-wide slow rotation + horizontal offset for full-bleed layout
     const root = new THREE.Group();
+    // Shift the whole datacenter to the right half of the hero so the left column
+    // (headline + CTAs) sits over a clean dark area.
+    root.position.x = 4.5;
     scene.add(root);
 
     // Ground grid — procedural shader with radial fade (no hard edges)
-    const gridSize = 14;
+    const gridSize = 22;
     const gridPlane = new THREE.Mesh(
       new THREE.PlaneGeometry(gridSize * 2, gridSize * 2, 1, 1),
       new THREE.ShaderMaterial({
@@ -488,8 +491,8 @@ const IsometricDatacenter = ({ lang = "pl" }) => {
         uniforms: {
           uColor:   { value: new THREE.Color(ACCENT) },
           uSpacing: { value: 1.0 },
-          uOpacity: { value: 0.35 },
-          uRadius:  { value: gridSize * 0.85 },
+          uOpacity: { value: 0.32 },
+          uRadius:  { value: gridSize * 0.9 },
         },
         vertexShader: `
           varying vec3 vLocal;
@@ -506,15 +509,13 @@ const IsometricDatacenter = ({ lang = "pl" }) => {
           varying vec3 vLocal;
 
           void main() {
-            // Grid lines: distance from nearest gridline in screen-space units
             vec2 coord = vLocal.xy / uSpacing;
             vec2 grid = abs(fract(coord - 0.5) - 0.5) / fwidth(coord);
             float line = min(grid.x, grid.y);
             float lineAlpha = 1.0 - min(line, 1.0);
 
-            // Soft radial fade
             float d = length(vLocal.xy);
-            float fade = 1.0 - smoothstep(uRadius * 0.35, uRadius, d);
+            float fade = 1.0 - smoothstep(uRadius * 0.3, uRadius, d);
 
             float alpha = lineAlpha * fade * uOpacity;
             if (alpha < 0.01) discard;
@@ -527,9 +528,9 @@ const IsometricDatacenter = ({ lang = "pl" }) => {
     gridPlane.position.y = 0;
     root.add(gridPlane);
 
-    // Very soft mint glow disc under the scene — helps the grid dissolve into the background
+    // Very soft mint glow disc under the scene
     const floorGlow = new THREE.Mesh(
-      new THREE.CircleGeometry(7, 64),
+      new THREE.CircleGeometry(9, 64),
       new THREE.MeshBasicMaterial({
         color: ACCENT,
         transparent: true,

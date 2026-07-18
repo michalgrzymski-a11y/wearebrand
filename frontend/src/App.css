@@ -181,16 +181,17 @@ body {
 }
 
 .sc-hero-grid {
-  background-image:
-    linear-gradient(rgba(73,173,165,0.045) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(73,173,165,0.045) 1px, transparent 1px);
-  background-size: 90px 90px;
-  mask-image:
-    radial-gradient(ellipse 90% 70% at 70% 50%, rgba(0,0,0,0.85), transparent 75%);
-  -webkit-mask-image:
-    radial-gradient(ellipse 90% 70% at 70% 50%, rgba(0,0,0,0.85), transparent 75%);
-  opacity: 0.6;
+  /* legacy — kept for backward compat, unused in new full-bleed hero */
+  display: none;
 }
+
+/* Full-bleed hero — left-side darkening for text readability over the scene */
+.sc-hero-lreadable {
+  background:
+    radial-gradient(ellipse 45% 75% at 18% 45%, rgba(6,11,18,0.78) 0%, rgba(6,11,18,0) 70%),
+    linear-gradient(180deg, rgba(6,11,18,0.35) 0%, rgba(6,11,18,0) 15%, rgba(6,11,18,0) 75%, rgba(6,11,18,0.9) 100%);
+}
+.sc-hero-scene-bleed { z-index: 0; }
 
 /* Subtle horizontal scanlines — hair-thin, animated */
 .sc-hero-scan {
