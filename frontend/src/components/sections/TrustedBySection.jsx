@@ -30,7 +30,7 @@ const TrustedBySection = () => {
       className="relative w-full"
       style={{ background: "#F8FAFA", color: "#1C2833" }}
     >
-      <div className="mx-auto max-w-7xl px-6 md:px-10 pt-16 pb-6">
+      <div className="mx-auto max-w-7xl px-6 md:px-10 pt-10 pb-2">
         <div className="flex items-center gap-4 text-[11px] uppercase tracking-[0.32em]" style={{ color: "#0C5C62" }}>
           <span className="inline-block h-px w-10" style={{ background: "#49ADA5" }} />
           {t.trusted.title}

@@ -994,7 +994,7 @@ body {
   display: flex;
   align-items: center;
   gap: 64px;
-  padding: 28px 0;
+  padding: 18px 0;
   width: max-content;
   animation: sc-marquee-rtl 40s linear infinite;
 }
@@ -1150,6 +1150,66 @@ body {
   background: var(--sc-primary);
   color: #ffffff;
   border-color: var(--sc-primary);
+}
+
+/* Dark variant used in Portfolio section on dark hero-style background */
+.sc-bento--dark {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(73, 173, 165, 0.18);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.sc-bento--dark:hover {
+  border-color: rgba(73, 173, 165, 0.55);
+  box-shadow:
+    0 40px 80px -40px rgba(73, 173, 165, 0.5),
+    0 0 0 1px rgba(73,173,165,0.25),
+    inset 0 0 40px rgba(73,173,165,0.05);
+}
+.sc-bento--dark .sc-bento__icon {
+  background: rgba(73, 173, 165, 0.14);
+  color: #49ADA5;
+}
+.sc-bento--dark:hover .sc-bento__icon {
+  background: #49ADA5;
+  color: #04070A !important;
+}
+.sc-chip--dark {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(73, 173, 165, 0.2);
+  color: rgba(255, 255, 255, 0.85);
+}
+.sc-bento--dark:hover .sc-chip--dark {
+  background: rgba(73, 173, 165, 0.12);
+  border-color: rgba(73, 173, 165, 0.4);
+  color: #ffffff;
+}
+.sc-bento--dark:hover .sc-chip--dark:hover {
+  background: #49ADA5;
+  color: #04070A;
+  border-color: #49ADA5;
+}
+
+/* Very subtle grid pattern to match the Hero atmosphere */
+.sc-portfolio-dark {
+  position: relative;
+}
+.sc-portfolio-dark::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(73,173,165,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(73,173,165,0.05) 1px, transparent 1px);
+  background-size: 90px 90px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(0,0,0,0.9), transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(0,0,0,0.9), transparent 75%);
+  opacity: 0.5;
+  pointer-events: none;
+}
+.sc-portfolio-dark > * {
+  position: relative;
+  z-index: 1;
 }
 
 /* ============================================================

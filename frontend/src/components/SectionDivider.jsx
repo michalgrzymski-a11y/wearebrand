@@ -16,14 +16,34 @@ import React from "react";
 const SectionDivider = ({ from, to, variant = "curve", height = 120, id = "" }) => {
   const uid = React.useId().replace(/:/g, "");
 
+  // Simple hex-color mixer for building smooth multi-stop gradient bridges.
+  const mix = (aHex, bHex, t) => {
+    const parse = (h) => {
+      const s = h.replace("#", "");
+      const full = s.length === 3 ? s.split("").map((c) => c + c).join("") : s;
+      return [0, 2, 4].map((i) => parseInt(full.slice(i, i + 2), 16));
+    };
+    const a = parse(aHex);
+    const b = parse(bHex);
+    const out = a.map((v, i) => Math.round(v + (b[i] - v) * t));
+    return `rgb(${out[0]}, ${out[1]}, ${out[2]})`;
+  };
+
   if (variant === "gradient") {
+    // Smooth multi-stop gradient — imperceptible band, closer to organic transition
     return (
       <div
         aria-hidden="true"
         data-testid={id ? `divider-${id}` : "section-divider"}
         style={{
           height,
-          background: `linear-gradient(180deg, ${from} 0%, ${to} 100%)`,
+          background: `linear-gradient(180deg,
+            ${from} 0%,
+            ${from} 8%,
+            ${mix(from, to, 0.35)} 45%,
+            ${mix(from, to, 0.7)} 72%,
+            ${to} 92%,
+            ${to} 100%)`,
         }}
       />
     );
