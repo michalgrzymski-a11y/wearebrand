@@ -40,6 +40,20 @@ export const translations = {
     trusted: {
       title: "Zaufali nam",
     },
+    sectors: {
+      section_label: "Sektory rynku",
+      title: "Zaufali nam liderzy z różnych branż",
+      subtitle:
+        "Realizujemy projekty IT dla przedsiębiorstw i instytucji z sektorów o najwyższych wymaganiach jakości, ciągłości i bezpieczeństwa.",
+      items: [
+        { id: "services", name: "Usługi", desc: "Sieci detaliczne, retail, e-commerce, transport." },
+        { id: "media", name: "Media", desc: "Wydawcy, produkcja i dystrybucja treści." },
+        { id: "manufacturing", name: "Produkcja", desc: "Przemysł ciężki, chemia, motoryzacja." },
+        { id: "finance", name: "Finanse", desc: "Banki, ubezpieczenia, fintech." },
+        { id: "telecom", name: "Telekomunikacja", desc: "Operatorzy, sieci szerokopasmowe, ISP." },
+        { id: "government", name: "Administracja", desc: "Instytucje publiczne, samorządy." },
+      ],
+    },
     portfolio: {
       section_label: "Portfolio Usług",
       title: "Kompleksowe portfolio dla wymagających infrastruktur",
@@ -171,6 +185,20 @@ export const translations = {
     },
     trusted: {
       title: "Trusted by",
+    },
+    sectors: {
+      section_label: "Market sectors",
+      title: "Leaders from many industries trust us",
+      subtitle:
+        "We deliver IT projects for enterprises and institutions with the highest requirements in quality, continuity and security.",
+      items: [
+        { id: "services", name: "Services", desc: "Retail chains, e-commerce, transport." },
+        { id: "media", name: "Media", desc: "Publishers, content production and distribution." },
+        { id: "manufacturing", name: "Manufacturing", desc: "Heavy industry, chemicals, automotive." },
+        { id: "finance", name: "Financial services", desc: "Banking, insurance, fintech." },
+        { id: "telecom", name: "Telecommunications", desc: "Operators, broadband networks, ISPs." },
+        { id: "government", name: "Government", desc: "Public institutions, local authorities." },
+      ],
     },
     portfolio: {
       section_label: "Service portfolio",

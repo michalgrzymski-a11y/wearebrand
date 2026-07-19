@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import { useLang } from "@/i18n/LanguageContext";
 import {
   Compass,
@@ -81,7 +81,6 @@ const BlueprintPanel = ({ pillar, index, total, lang }) => {
 
   return (
     <div className="sc-blueprint" key={pillar.id}>
-      {/* header row: index + status */}
       <div className="sc-blueprint__row">
         <span className="sc-blueprint__idx">
           {String(index + 1).padStart(2, "0")}
@@ -93,12 +92,10 @@ const BlueprintPanel = ({ pillar, index, total, lang }) => {
         </span>
       </div>
 
-      {/* title */}
       <div className="sc-blueprint__title">
         {lang === "pl" ? pillar.label_pl : pillar.label_en}
       </div>
 
-      {/* segmented progress */}
       <div className="sc-blueprint__bar">
         {Array.from({ length: 24 }).map((_, i) => {
           const filled = i / 24 * 100 < pillar.load;
@@ -110,7 +107,6 @@ const BlueprintPanel = ({ pillar, index, total, lang }) => {
         <b>{pillar.load}%</b>
       </div>
 
-      {/* spec rows */}
       <div className="sc-blueprint__specs">
         {metrics.map((m) => (
           <div key={m.k} className="sc-blueprint__spec">
@@ -121,7 +117,6 @@ const BlueprintPanel = ({ pillar, index, total, lang }) => {
         ))}
       </div>
 
-      {/* mini schematic (SVG blueprint) */}
       <svg className="sc-blueprint__schema" viewBox="0 0 240 90" preserveAspectRatio="none">
         <defs>
           <linearGradient id="bp-line" x1="0" y1="0" x2="1" y2="0">
@@ -131,9 +126,7 @@ const BlueprintPanel = ({ pillar, index, total, lang }) => {
             <stop offset="100%" stopColor="#49ADA5" stopOpacity="0" />
           </linearGradient>
         </defs>
-        {/* baseline */}
         <line x1="0" y1="75" x2="240" y2="75" stroke="url(#bp-line)" strokeWidth="0.6" strokeDasharray="1 3" />
-        {/* activity curve based on pillar id */}
         <path
           d={
             pillar.id === "listen"
@@ -148,7 +141,6 @@ const BlueprintPanel = ({ pillar, index, total, lang }) => {
           strokeLinecap="round"
           strokeLinejoin="round"
         />
-        {/* node dots */}
         {[0, 40, 80, 120, 160, 200, 240].map((x, i) => (
           <circle
             key={i}
@@ -166,7 +158,6 @@ const BlueprintPanel = ({ pillar, index, total, lang }) => {
         ))}
       </svg>
 
-      {/* corner brackets — blueprint feel */}
       <span className="sc-blueprint__bracket sc-blueprint__bracket--tl" />
       <span className="sc-blueprint__bracket sc-blueprint__bracket--tr" />
       <span className="sc-blueprint__bracket sc-blueprint__bracket--bl" />
@@ -175,164 +166,11 @@ const BlueprintPanel = ({ pillar, index, total, lang }) => {
   );
 };
 
-/**
- * NarrativeReveal — editorial word-by-word cinematic reveal.
- *  - Splits each segment into words, each word animates staggered on scroll.
- *  - Accent segments render with mint color + subtle italic emphasis.
- *  - First word carries a large Fraunces drop-cap on the first character.
- */
-const NarrativeReveal = ({ segments }) => {
-  const ref = useRef(null);
-  const [seen, setSeen] = useState(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            setSeen(true);
-            io.disconnect();
-          }
-        });
-      },
-      { threshold: 0.15, rootMargin: "0px 0px -8% 0px" },
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
-
-  // Build a flat list of tokens across all segments while preserving type.
-  let wordCounter = 0;
-  const tokens = [];
-  segments.forEach((seg, si) => {
-    const parts = seg.text.split(/(\s+)/); // keep whitespace
-    parts.forEach((part, pi) => {
-      if (part.match(/^\s+$/)) {
-        tokens.push({ kind: "space", key: `s-${si}-${pi}`, value: part });
-      } else if (part.length > 0) {
-        tokens.push({
-          kind: "word",
-          key: `w-${si}-${pi}`,
-          value: part,
-          type: seg.type || "plain",
-          index: wordCounter++,
-        });
-      }
-    });
-  });
-
-  return (
-    <p
-      ref={ref}
-      data-testid="about-narrative"
-      className={`sc-narr ${seen ? "is-in" : ""}`}
-    >
-      {tokens.map((tk, i) => {
-        if (tk.kind === "space") return tk.value;
-        const isFirstWord = tk.index === 0;
-        const cls =
-          tk.type === "accent"
-            ? "sc-narr__w sc-narr__w--accent"
-            : "sc-narr__w";
-        const delay = Math.min(tk.index * 22, 900);
-
-        // First word: split into dropcap (first char) + rest of the word.
-        if (isFirstWord && tk.value.length >= 1) {
-          const head = tk.value.charAt(0);
-          const tail = tk.value.slice(1);
-          return (
-            <span
-              key={tk.key}
-              className={cls}
-              style={{ transitionDelay: `${delay}ms` }}
-            >
-              <span className="sc-narr__dropcap">{head}</span>
-              {tail}
-            </span>
-          );
-        }
-        return (
-          <span
-            key={tk.key}
-            className={cls}
-            style={{ transitionDelay: `${delay}ms` }}
-          >
-            {tk.value}
-          </span>
-        );
-      })}
-    </p>
-  );
-};
-
-const NARRATIVE_PL = [
-  { text: "W", type: "plain" },
-  { text: "IT SMARTCLOUT", type: "accent" },
-  {
-    text:
-      "doświadczenie nauczyło nas jednego: najlepsze rozwiązania rodzą się z wyciągania wniosków. Jako partner",
-    type: "plain",
-  },
-  { text: "NetApp", type: "accent" },
-  {
-    text:
-      ", wykraczamy poza standardowe wdrożenia. Posiadamy kompetencje do realizacji najbardziej wymagających projektów, ale naszą prawdziwą wartością dodaną jest",
-    type: "plain",
-  },
-  { text: "uważność na głos klienta", type: "accent" },
-  {
-    text:
-      ". Dzięki holistycznemu spojrzeniu na ekosystem IT, projektujemy infrastrukturę",
-    type: "plain",
-  },
-  { text: "„szytą na miarę”", type: "accent" },
-  {
-    text:
-      "– taką, która chroni dane, przyspiesza biznes i szanuje budżet. Nie szukamy najdroższych rozwiązań, szukamy tych",
-    type: "plain",
-  },
-  { text: "najbardziej zoptymalizowanych", type: "accent" },
-  { text: ".", type: "plain" },
-];
-
-const NARRATIVE_EN = [
-  { text: "At", type: "plain" },
-  { text: "IT SMARTCLOUT", type: "accent" },
-  {
-    text:
-      "experience taught us one thing: the best solutions are born from drawing conclusions. As a",
-    type: "plain",
-  },
-  { text: "NetApp", type: "accent" },
-  {
-    text:
-      "partner we go beyond standard rollouts. We have the competencies to deliver the most demanding projects, but our true added value is",
-    type: "plain",
-  },
-  { text: "attentiveness to the client's voice", type: "accent" },
-  {
-    text:
-      ". Thanks to a holistic view of the IT ecosystem, we design",
-    type: "plain",
-  },
-  { text: "“tailor-made”", type: "accent" },
-  {
-    text:
-      "infrastructure – one that protects data, accelerates business and respects the budget. We do not seek the most expensive solutions, we seek the",
-    type: "plain",
-  },
-  { text: "most optimised ones", type: "accent" },
-  { text: ".", type: "plain" },
-];
-
 const AboutSection = () => {
   const { t, lang } = useLang();
   const [active, setActive] = useState(PILLARS[1].id);
   const activePillar = PILLARS.find((p) => p.id === active) || PILLARS[0];
   const activeIndex = PILLARS.findIndex((p) => p.id === active);
-  const narrativeSegments = lang === "pl" ? NARRATIVE_PL : NARRATIVE_EN;
 
   return (
     <section
@@ -353,35 +191,40 @@ const AboutSection = () => {
           </div>
         </Reveal>
 
-        {/* 2. Facts band directly under the label */}
+        {/* 2. Metrics — minimalist Apple-style row (no band, no card, just typography) */}
         <Reveal>
           <div
-            data-testid="about-metrics-band"
-            className="sc-facts-band sc-facts-band--top mt-8"
+            data-testid="about-metrics-row"
+            className="sc-metrics-row mt-10 md:mt-12"
           >
             {t.about.metrics.map((m, i) => (
               <div
                 key={m.label}
                 data-testid={`about-metric-${i}`}
-                className="sc-facts-band__item"
+                className="sc-metric"
               >
-                <span className="sc-facts-band__val">{m.value}</span>
-                <span className="sc-facts-band__lbl">{m.label}</span>
+                <span className="sc-metric__val">{m.value}</span>
+                <span className="sc-metric__lbl">{m.label}</span>
               </div>
             ))}
           </div>
         </Reveal>
 
-        {/* 3. Editorial narrative with word-by-word cinematic reveal */}
-        <div className="mt-14 md:mt-16 max-w-4xl">
-          <NarrativeReveal segments={narrativeSegments} />
-        </div>
+        {/* 3. Narrative — clean justified paragraph, full section width, no effects */}
+        <Reveal>
+          <p
+            data-testid="about-narrative"
+            className="sc-about-copy mt-14 md:mt-16"
+          >
+            {t.about.narrative}
+          </p>
+        </Reveal>
 
         {/* 4. Title — Trzy filary, jedno podejście. */}
         <Reveal>
           <h2
             data-testid="about-narrative-title"
-            className="mt-16 md:mt-20 text-3xl md:text-5xl font-semibold leading-[1.05] tracking-tight max-w-3xl"
+            className="mt-20 md:mt-24 text-3xl md:text-5xl font-semibold leading-[1.05] tracking-tight max-w-3xl"
             style={{ color: "#0C5C62" }}
           >
             {lang === "pl"

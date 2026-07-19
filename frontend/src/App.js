@@ -7,6 +7,7 @@ import HeroSection from "@/components/hero/HeroSection";
 import AboutSection from "@/components/sections/AboutSection";
 import TrustedBySection from "@/components/sections/TrustedBySection";
 import PortfolioSection from "@/components/sections/PortfolioSection";
+import SectorsSection from "@/components/sections/SectorsSection";
 import PartnersSection from "@/components/sections/PartnersSection";
 import ContactSection from "@/components/sections/ContactSection";
 import SectionDivider from "@/components/SectionDivider";
@@ -21,7 +22,9 @@ const Home = () => (
     <TrustedBySection />
     <SectionDivider id="trusted-portfolio"  top="#F8FAFA" bottom="#FFFFFF" />
     <PortfolioSection />
-    <SectionDivider id="portfolio-partners" top="#FFFFFF" bottom="#F8FAFA" />
+    <SectionDivider id="portfolio-sectors"  top="#FFFFFF" bottom="#FFFFFF" />
+    <SectorsSection />
+    <SectionDivider id="sectors-partners"   top="#FFFFFF" bottom="#F8FAFA" />
     <PartnersSection />
     <SectionDivider id="partners-contact"   top="#F8FAFA" bottom="#040709" />
     <ContactSection />
