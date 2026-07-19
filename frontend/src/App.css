@@ -42,8 +42,20 @@ body {
    NAVBAR
    ============================================================ */
 .sc-nav {
-  background: transparent;
-  border-bottom: none;
+  background: #040709;
+  border-bottom: 1px solid rgba(73, 173, 165, 0.12);
+  position: relative;
+}
+.sc-nav::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(73,173,165,0.55) 35%, rgba(73,173,165,0.55) 65%, transparent 100%);
+  opacity: 0.7;
+  pointer-events: none;
 }
 
 .sc-brand-mark {
@@ -147,14 +159,14 @@ body {
    HERO layout (compact)
    ============================================================ */
 .sc-hero {
-  min-height: 780px;
+  min-height: 860px;
   display: flex;
   align-items: center;
 }
 @media (min-width: 768px) {
   .sc-hero {
-    min-height: 820px;
-    max-height: 980px;
+    min-height: 940px;
+    max-height: 1100px;
   }
 }
 
@@ -1243,6 +1255,97 @@ body {
   line-height: 1.75;
   text-align: justify;
   hyphens: auto;
+}
+
+/* ============================================================
+   Editorial NarrativeReveal — cinematic word-by-word entrance
+   ============================================================ */
+.sc-narr {
+  font-family: "Manrope", sans-serif;
+  font-size: clamp(1.15rem, 1.55vw, 1.6rem);
+  line-height: 1.55;
+  letter-spacing: -0.012em;
+  color: #1C2833;
+  text-wrap: pretty;
+  position: relative;
+}
+/* Drop cap on the very first character */
+.sc-narr__dropcap {
+  font-family: "Fraunces", serif;
+  font-weight: 500;
+  font-style: italic;
+  font-size: 4.2em;
+  line-height: 0.82;
+  float: left;
+  padding: 8px 14px 0 0;
+  margin-top: 6px;
+  background: linear-gradient(180deg, #0C5C62 0%, #49ADA5 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: #0C5C62;
+  letter-spacing: -0.04em;
+}
+/* Each word — invisible until parent gains .is-in, then staggered fade+rise */
+.sc-narr__w {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(14px);
+  filter: blur(6px);
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 0.61, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1),
+    filter 0.7s cubic-bezier(0.22, 0.61, 0.36, 1),
+    color 0.35s ease;
+  will-change: opacity, transform, filter;
+}
+.sc-narr.is-in .sc-narr__w {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+/* Accent words — mint color, italic Fraunces, subtle underline draw */
+.sc-narr__w--accent {
+  font-family: "Fraunces", serif;
+  font-style: italic;
+  font-weight: 500;
+  color: #0C5C62;
+  background: linear-gradient(120deg, #0C5C62 0%, #49ADA5 60%, #0C5C62 100%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  position: relative;
+  padding: 0 2px;
+}
+.sc-narr__w--accent::after {
+  content: "";
+  position: absolute;
+  left: 2px;
+  right: 2px;
+  bottom: 2px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(73,173,165,0.55), transparent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.8s ease 0.5s;
+}
+.sc-narr.is-in .sc-narr__w--accent::after {
+  transform: scaleX(1);
+}
+/* Very subtle animated gradient shift on accent, only when visible */
+.sc-narr.is-in .sc-narr__w--accent {
+  animation: sc-narr-accent-shift 8s ease-in-out infinite alternate;
+}
+@keyframes sc-narr-accent-shift {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+
+/* Facts band variant used at the top of the section (no border-radius mismatch) */
+.sc-facts-band--top {
+  padding-top: 22px;
+  padding-bottom: 22px;
 }
 
 /* ============================================================

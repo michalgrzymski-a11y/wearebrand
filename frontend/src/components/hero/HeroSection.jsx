@@ -97,7 +97,7 @@ const HeroSection = () => {
       <div className="pointer-events-none absolute inset-0 sc-hero-scan" aria-hidden="true" />
 
       {/* Copy */}
-      <div className="relative z-10 mx-auto flex w-full max-w-7xl items-center px-6 pb-16 pt-28 md:px-10 md:pt-32">
+      <div className="relative z-10 mx-auto flex w-full max-w-7xl items-center px-6 pb-16 pt-16 md:px-10 md:pt-20">
         <div className="flex max-w-2xl flex-col">
           <h1 data-testid="hero-title" className="sc-hero-title text-white">
             {t.hero.title_pre}{" "}

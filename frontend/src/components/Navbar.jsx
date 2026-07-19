@@ -16,8 +16,8 @@ const Navbar = () => {
   const { t, lang, toggle } = useLang();
 
   return (
-    <header data-testid="site-navbar" className="absolute inset-x-0 top-0 z-50 sc-nav">
-      <div className="mx-auto max-w-7xl px-6 md:px-10 py-5 md:py-6 flex items-center justify-between">
+    <header data-testid="site-navbar" className="relative z-50 sc-nav">
+      <div className="mx-auto max-w-7xl px-6 md:px-10 py-4 md:py-5 flex items-center justify-between">
         <a href="#top" data-testid="nav-brand" className="flex items-center gap-2 group">
           <img
             src={`${process.env.PUBLIC_URL}/logo-white.webp`}
