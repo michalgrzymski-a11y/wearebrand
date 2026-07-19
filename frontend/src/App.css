@@ -817,6 +817,10 @@ body {
   border-radius: 14px;
   overflow: hidden;
   min-height: 460px;
+  width: 100%;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
   font-family: "Manrope", sans-serif;
 }
 .sc-blueprint::before {
@@ -936,9 +940,11 @@ body {
 }
 
 .sc-blueprint__schema {
-  margin-top: 22px;
+  margin-top: auto;
+  padding-top: 22px;
   width: 100%;
   height: 90px;
+  flex-shrink: 0;
 }
 
 .sc-blueprint__bracket {
@@ -1037,6 +1043,78 @@ body {
 .sc-pillar:hover .sc-pillar__arrow {
   color: #49ADA5;
   transform: translate(2px, -2px);
+}
+
+/* Flex variant — makes 3 pillars share the same total height as the blueprint column */
+.sc-pillar--flex {
+  flex: 1 1 0;
+  min-height: 0;
+}
+
+/* Ensure blueprint panel stretches to match pillars column height */
+.sc-pillar--flex + .sc-pillar--flex { margin-top: 0; }
+
+/* ============================================================
+   Facts band — cohesive strip of key metrics under the row
+   Sits full-width below pillars + blueprint. Apple-like calm.
+   ============================================================ */
+.sc-facts-band {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0;
+  padding: 28px 8px;
+  background:
+    linear-gradient(180deg, rgba(12,92,98,0.02) 0%, rgba(255,255,255,0) 100%),
+    #ffffff;
+  border-top: 1px solid rgba(73,173,165,0.25);
+  border-bottom: 1px solid rgba(73,173,165,0.15);
+}
+.sc-facts-band::before,
+.sc-facts-band::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(73,173,165,0.5) 20%, rgba(73,173,165,0.5) 80%, transparent 100%);
+  pointer-events: none;
+}
+.sc-facts-band::before { top: -1px; }
+.sc-facts-band::after { bottom: -1px; }
+.sc-facts-band__item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 6px 28px;
+}
+.sc-facts-band__item + .sc-facts-band__item {
+  border-left: 1px solid rgba(12,92,98,0.1);
+}
+.sc-facts-band__val {
+  font-family: "Fraunces", serif;
+  font-weight: 400;
+  font-size: 44px;
+  line-height: 1;
+  letter-spacing: -0.035em;
+  color: #0C5C62;
+}
+.sc-facts-band__lbl {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  color: rgba(28,40,51,0.6);
+  max-width: 220px;
+  line-height: 1.5;
+}
+@media (max-width: 640px) {
+  .sc-facts-band__item + .sc-facts-band__item {
+    border-left: none;
+    border-top: 1px solid rgba(12,92,98,0.08);
+  }
+  .sc-facts-band__val { font-size: 34px; }
 }
 
 .sc-about-graphic {

@@ -189,96 +189,81 @@ const AboutSection = () => {
       style={{ background: "#FFFFFF", color: "#1C2833" }}
     >
       <div className="mx-auto max-w-7xl px-6 md:px-10 py-24 md:py-32">
-        {/* Header row with inline metrics */}
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
-          <div>
-            <div
-              className="flex items-center gap-4 text-[11px] uppercase tracking-[0.32em]"
-              style={{ color: "#0C5C62" }}
-            >
-              <span className="inline-block h-px w-10" style={{ background: "#49ADA5" }} />
-              {t.about.section_label}
-            </div>
-            <h2
-              data-testid="about-narrative-title"
-              className="mt-4 text-3xl md:text-5xl font-semibold leading-[1.05] tracking-tight max-w-2xl"
-              style={{ color: "#0C5C62" }}
-            >
-              {lang === "pl"
-                ? "Trzy filary, jedno podejście."
-                : "Three pillars, one approach."}
-            </h2>
+        {/* Header — label + title + narrative (clean, no metrics here) */}
+        <Reveal>
+          <div
+            className="flex items-center gap-4 text-[11px] uppercase tracking-[0.32em]"
+            style={{ color: "#0C5C62" }}
+          >
+            <span className="inline-block h-px w-10" style={{ background: "#49ADA5" }} />
+            {t.about.section_label}
           </div>
+          <h2
+            data-testid="about-narrative-title"
+            className="mt-4 text-3xl md:text-5xl font-semibold leading-[1.05] tracking-tight max-w-3xl"
+            style={{ color: "#0C5C62" }}
+          >
+            {lang === "pl"
+              ? "Trzy filary, jedno podejście."
+              : "Three pillars, one approach."}
+          </h2>
+          <p
+            data-testid="about-narrative"
+            className="sc-narrative mt-6 max-w-3xl"
+            style={{ color: "#1C2833" }}
+          >
+            {t.about.narrative}
+          </p>
+        </Reveal>
 
-          {/* inline metrics — subtle, right-aligned */}
-          <div className="flex gap-6 md:gap-8">
-            {t.about.metrics.map((m, i) => (
-              <div key={m.label} data-testid={`about-metric-${i}`} className="sc-metric-inline">
-                <span className="sc-metric-inline__val">{m.value}</span>
-                <span className="sc-metric-inline__lbl">{m.label}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Body: left narrative + pillars, right blueprint panel */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-14 items-start">
-          {/* Left — narrative + pillars */}
-          <div className="md:col-span-7">
-            <p
-              data-testid="about-narrative"
-              className="sc-narrative"
-              style={{ color: "#1C2833" }}
-            >
-              {t.about.narrative}
-            </p>
-
-            <div className="mt-10 flex flex-col gap-3">
-              {PILLARS.map((p) => {
-                const isActive = p.id === active;
-                const Icon = p.Icon;
-                return (
-                  <button
-                    key={p.id}
-                    type="button"
-                    onMouseEnter={() => setActive(p.id)}
-                    onClick={() => setActive(p.id)}
-                    className={`sc-pillar ${isActive ? "is-active" : ""}`}
-                    data-testid={`about-pillar-${p.id}`}
-                  >
-                    <span className="sc-pillar__icon">
-                      <Icon size={20} strokeWidth={1.8} />
+        {/* Body: pillars (left) + blueprint (right) — aligned on same horizontal axis */}
+        <div className="mt-14 md:mt-16 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-stretch">
+          {/* Left — three pillars, equal height */}
+          <div className="lg:col-span-7 flex flex-col gap-3">
+            {PILLARS.map((p) => {
+              const isActive = p.id === active;
+              const Icon = p.Icon;
+              return (
+                <button
+                  key={p.id}
+                  type="button"
+                  onMouseEnter={() => setActive(p.id)}
+                  onClick={() => setActive(p.id)}
+                  className={`sc-pillar sc-pillar--flex ${isActive ? "is-active" : ""}`}
+                  data-testid={`about-pillar-${p.id}`}
+                >
+                  <span className="sc-pillar__icon">
+                    <Icon size={20} strokeWidth={1.8} />
+                  </span>
+                  <span className="sc-pillar__body">
+                    <span className="sc-pillar__label">
+                      {lang === "pl" ? p.label_pl : p.label_en}
                     </span>
-                    <span className="sc-pillar__body">
-                      <span className="sc-pillar__label">
-                        {lang === "pl" ? p.label_pl : p.label_en}
-                      </span>
-                      <span className="sc-pillar__desc">
-                        {lang === "pl" ? p.desc_pl : p.desc_en}
-                      </span>
-                      <span className="sc-pillar__badges">
-                        {(lang === "pl" ? p.badges_pl : p.badges_en).map((b) => (
-                          <span key={b} className="sc-pillar__badge">
-                            <CheckCircle2 size={11} strokeWidth={2.4} />
-                            {b}
-                          </span>
-                        ))}
-                      </span>
+                    <span className="sc-pillar__desc">
+                      {lang === "pl" ? p.desc_pl : p.desc_en}
                     </span>
-                    <ArrowUpRight
-                      size={18}
-                      className="sc-pillar__arrow"
-                      strokeWidth={1.8}
-                    />
-                  </button>
-                );
-              })}
-            </div>
+                    <span className="sc-pillar__badges">
+                      {(lang === "pl" ? p.badges_pl : p.badges_en).map((b) => (
+                        <span key={b} className="sc-pillar__badge">
+                          <CheckCircle2 size={11} strokeWidth={2.4} />
+                          {b}
+                        </span>
+                      ))}
+                    </span>
+                  </span>
+                  <ArrowUpRight
+                    size={18}
+                    className="sc-pillar__arrow"
+                    strokeWidth={1.8}
+                  />
+                </button>
+              );
+            })}
           </div>
 
-          {/* Right — futuristic blueprint panel */}
-          <div className="md:col-span-5 md:sticky md:top-24">
-            <Reveal>
+          {/* Right — futuristic blueprint panel, matches pillars column height */}
+          <div className="lg:col-span-5 flex">
+            <Reveal className="w-full flex">
               <BlueprintPanel
                 pillar={activePillar}
                 index={activeIndex}
@@ -288,6 +273,25 @@ const AboutSection = () => {
             </Reveal>
           </div>
         </div>
+
+        {/* Bottom band — cohesive strip of facts spanning full width */}
+        <Reveal>
+          <div
+            data-testid="about-metrics-band"
+            className="sc-facts-band mt-14 md:mt-16"
+          >
+            {t.about.metrics.map((m, i) => (
+              <div
+                key={m.label}
+                data-testid={`about-metric-${i}`}
+                className="sc-facts-band__item"
+              >
+                <span className="sc-facts-band__val">{m.value}</span>
+                <span className="sc-facts-band__lbl">{m.label}</span>
+              </div>
+            ))}
+          </div>
+        </Reveal>
       </div>
     </section>
   );

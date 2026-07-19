@@ -27,7 +27,7 @@ Deep Teal `#0C5C62`, Accent Mint `#49ADA5`, White, Light gray `#F8FAFA`, Charcoa
    - **Raycaster hover** with label-fallback so hover state persists over the label region
    - Bilingual title with Fraunces italic accent
    - Corner tech brackets + scanline overlay + status ticker
-2. **About** — 3 metric cards with sparklines + 3 interactive pillars (Uważność / Holistyczne spojrzenie / Optymalizacja) driving a rotating hex infographic
+2. **About** (2026-02-19 update) — clean header (label + title + narrative), then a two-column row **perfectly aligned on same axis**: 3 interactive pillars (Uważność / Holistyczne spojrzenie / Optymalizacja) on the left equally distributed vs futuristic blueprint spec-panel on the right (driven by active pillar). Below the row sits a full-width **facts band** (20+ lat / 500+ projektów / 130+ klientów) as a cohesive Apple-style strip with mint hairlines top/bottom.
 3. **Trusted-By** — RTL marquee with 11 monochrome text-logos, coloured on hover
 4. **Portfolio (bento)** — 4 tiles (Sprzęt IT, Security, Oprogramowanie, Usługi & DataCenter) with chip lists, hover lift + under-glow
 5. **Strategic Partners** — RTL marquee, 13 vendor cards; NetApp highlighted with `#0C5C62` border + badge
