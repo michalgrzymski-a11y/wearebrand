@@ -7,6 +7,7 @@ import {
   ArrowUpRight,
   CheckCircle2,
 } from "lucide-react";
+import Reveal from "@/components/Reveal";
 
 /**
  * Interactive infographic — three pillars of the SmartClout approach.
@@ -177,11 +178,11 @@ const AboutSection = () => {
         {/* Metrics row */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6 mb-16">
           {t.about.metrics.map((m, i) => (
-            <div
-              key={m.label}
-              data-testid={`about-metric-${i}`}
-              className="sc-metric-card group"
-            >
+            <Reveal key={m.label} delay={i * 120}>
+              <div
+                data-testid={`about-metric-${i}`}
+                className="sc-metric-card group"
+              >
               <div className="flex items-baseline justify-between gap-4">
                 <span className="sc-metric-value" style={{ color: "#0C5C62" }}>
                   {m.value}
@@ -213,7 +214,8 @@ const AboutSection = () => {
                 </svg>
               </div>
               <div className="sc-metric-underline" />
-            </div>
+              </div>
+            </Reveal>
           ))}
         </div>
 

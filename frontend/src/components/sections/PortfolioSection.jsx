@@ -1,6 +1,7 @@
 import React from "react";
 import { useLang } from "@/i18n/LanguageContext";
 import { Server, ShieldCheck, Code2, Building2 } from "lucide-react";
+import Reveal from "@/components/Reveal";
 
 const ICONS = [Server, ShieldCheck, Code2, Building2];
 
@@ -38,11 +39,11 @@ const PortfolioSection = () => {
           {t.portfolio.tiles.map((tile, i) => {
             const Icon = ICONS[i % ICONS.length];
             return (
-              <div
-                key={tile.title}
-                data-testid={`portfolio-tile-${i}`}
-                className="sc-bento group"
-              >
+              <Reveal key={tile.title} delay={i * 140}>
+                <div
+                  data-testid={`portfolio-tile-${i}`}
+                  className="sc-bento group"
+                >
                 <div className="flex items-start justify-between">
                   <div className="sc-bento__icon" style={{ color: "#0C5C62" }}>
                     <Icon size={28} strokeWidth={1.7} />
@@ -69,7 +70,8 @@ const PortfolioSection = () => {
                 </ul>
 
                 <div className="sc-bento__glow" />
-              </div>
+                </div>
+              </Reveal>
             );
           })}
         </div>

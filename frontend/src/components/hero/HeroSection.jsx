@@ -70,14 +70,6 @@ const HeroSection = () => {
         />
       </div>
 
-      {/* Aurora Borealis overlay — drifting mint/emerald/violet bands */}
-      <div className="sc-aurora" aria-hidden="true">
-        <div className="sc-aurora__band sc-aurora__band--a" />
-        <div className="sc-aurora__band sc-aurora__band--b" />
-        <div className="sc-aurora__band sc-aurora__band--c" />
-        <div className="sc-aurora__streaks" />
-      </div>
-
       {/* Sweep light + floating particles overlay */}
       <div className="pointer-events-none absolute inset-0 sc-hero-sweep" aria-hidden="true" />
       <div className="pointer-events-none absolute inset-0 sc-hero-particles" aria-hidden="true">
@@ -121,31 +113,11 @@ const HeroSection = () => {
           </p>
 
           <div className="mt-8 flex flex-wrap items-center gap-3">
-            <a
-              href="#contact"
-              data-testid="hero-cta-primary"
-              className="group inline-flex items-center gap-3 rounded-full px-6 py-3 text-sm font-semibold transition-all duration-300"
-              style={{ background: "#49ADA5", color: "#040709" }}
-              onMouseEnter={(e) => (e.currentTarget.style.background = "#FFFFFF")}
-              onMouseLeave={(e) => (e.currentTarget.style.background = "#49ADA5")}
-            >
+            <a href="#contact" data-testid="hero-cta-primary" className="sc-btn-glass sc-btn-glass--primary">
               {t.hero.cta_primary}
-              <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
+              <ArrowRight size={16} className="transition-transform duration-300" />
             </a>
-            <a
-              href="#portfolio"
-              data-testid="hero-cta-secondary"
-              className="inline-flex items-center gap-3 rounded-full border px-6 py-3 text-sm font-semibold text-white transition-all duration-300"
-              style={{ borderColor: "rgba(255,255,255,0.3)" }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = "#49ADA5";
-                e.currentTarget.style.color = "#49ADA5";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = "rgba(255,255,255,0.3)";
-                e.currentTarget.style.color = "#ffffff";
-              }}
-            >
+            <a href="#portfolio" data-testid="hero-cta-secondary" className="sc-btn-glass">
               {t.hero.cta_secondary}
             </a>
           </div>
