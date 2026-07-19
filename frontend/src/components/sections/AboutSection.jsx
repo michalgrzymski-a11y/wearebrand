@@ -9,150 +9,168 @@ import {
 } from "lucide-react";
 import Reveal from "@/components/Reveal";
 
-/**
- * Interactive infographic — three pillars of the SmartClout approach.
- * The active pillar drives an animated hex diagram on the right.
- */
 const PILLARS = [
   {
     id: "listen",
     Icon: Compass,
     label_pl: "Uważność",
     label_en: "Attentiveness",
-    desc_pl:
-      "Wsłuchujemy się w głos klienta — projektujemy pod jego procesy, ludzi i budżet.",
-    desc_en:
-      "We listen to the client — designing around their people, processes and budget.",
+    desc_pl: "Wsłuchujemy się w głos klienta — projektujemy pod jego procesy, ludzi i budżet.",
+    desc_en: "We listen to the client — designing around their people, processes and budget.",
     badges_pl: ["Discovery", "Workshopy", "Mapowanie procesów"],
     badges_en: ["Discovery", "Workshops", "Process mapping"],
-    hex: ["OBSERWACJA", "WYWIAD", "AUDYT"],
-    hex_en: ["OBSERVE", "INTERVIEW", "AUDIT"],
+    metrics_pl: [
+      { k: "Session", v: "Workshopy 1-on-1" },
+      { k: "Deliverable", v: "Discovery Report" },
+      { k: "Timeframe", v: "2–4 tygodnie" },
+    ],
+    metrics_en: [
+      { k: "Session", v: "1-on-1 workshops" },
+      { k: "Deliverable", v: "Discovery report" },
+      { k: "Timeframe", v: "2–4 weeks" },
+    ],
+    load: 62,
   },
   {
     id: "holistic",
     Icon: Layers,
     label_pl: "Holistyczne spojrzenie",
     label_en: "Holistic view",
-    desc_pl:
-      "Widzimy ekosystem IT jako całość — sieć, storage, backup i security współpracujące spójnie.",
-    desc_en:
-      "We view IT as one ecosystem — network, storage, backup and security acting as one.",
+    desc_pl: "Widzimy ekosystem IT jako całość — sieć, storage, backup i security współpracujące spójnie.",
+    desc_en: "We see IT as one ecosystem — network, storage, backup and security acting as one.",
     badges_pl: ["Architektura", "Integracja", "Bezpieczeństwo"],
     badges_en: ["Architecture", "Integration", "Security"],
-    hex: ["COMPUTE", "STORAGE", "NETWORK", "SECURITY"],
-    hex_en: ["COMPUTE", "STORAGE", "NETWORK", "SECURITY"],
+    metrics_pl: [
+      { k: "Warstwy", v: "Compute · Storage · Net · Sec · BR" },
+      { k: "Standardy", v: "ISO 27001 · NIS2 · GDPR" },
+      { k: "Deliverable", v: "Architektura HLD/LLD" },
+    ],
+    metrics_en: [
+      { k: "Layers", v: "Compute · Storage · Net · Sec · BR" },
+      { k: "Standards", v: "ISO 27001 · NIS2 · GDPR" },
+      { k: "Deliverable", v: "HLD/LLD architecture" },
+    ],
+    load: 84,
   },
   {
     id: "optimize",
     Icon: Target,
     label_pl: "Optymalizacja",
     label_en: "Optimisation",
-    desc_pl:
-      "Nie szukamy najdroższych rozwiązań — szukamy tych najbardziej zoptymalizowanych.",
-    desc_en:
-      "We do not chase the most expensive solutions — we chase the most optimised ones.",
+    desc_pl: "Nie szukamy najdroższych rozwiązań — szukamy tych najbardziej zoptymalizowanych.",
+    desc_en: "We do not chase the most expensive solutions — we chase the most optimised ones.",
     badges_pl: ["TCO", "Skalowalność", "SLA"],
     badges_en: ["TCO", "Scalability", "SLA"],
-    hex: ["KOSZT", "WYDAJNOŚĆ", "RYZYKO"],
-    hex_en: ["COST", "PERFORMANCE", "RISK"],
+    metrics_pl: [
+      { k: "Redukcja TCO", v: "18–35%" },
+      { k: "Uptime SLA", v: "99.95–99.99%" },
+      { k: "RTO / RPO", v: "≤ 15 min / ≤ 5 min" },
+    ],
+    metrics_en: [
+      { k: "TCO reduction", v: "18–35%" },
+      { k: "Uptime SLA", v: "99.95–99.99%" },
+      { k: "RTO / RPO", v: "≤ 15 min / ≤ 5 min" },
+    ],
+    load: 91,
   },
 ];
 
-const HexInfographic = ({ pillar, lang }) => {
-  const items = lang === "pl" ? pillar.hex : pillar.hex_en;
+/** Technical blueprint panel — futuristic spec-sheet driven by the active pillar. */
+const BlueprintPanel = ({ pillar, index, total, lang }) => {
+  const metrics = lang === "pl" ? pillar.metrics_pl : pillar.metrics_en;
+
   return (
-    <div className="sc-hex" key={pillar.id}>
-      <svg viewBox="0 0 200 200" className="sc-hex__svg" aria-hidden="true">
-        <defs>
-          <linearGradient id="hexFill" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="#49ADA5" stopOpacity="0.9" />
-            <stop offset="100%" stopColor="#0C5C62" stopOpacity="0.9" />
-          </linearGradient>
-        </defs>
-        {/* Outer hex frame */}
-        <polygon
-          points="100,10 175,52 175,148 100,190 25,148 25,52"
-          fill="none"
-          stroke="#49ADA5"
-          strokeOpacity="0.35"
-          strokeWidth="0.8"
-        />
-        {/* Rotating tick marks */}
-        <g className="sc-hex__ticks">
-          {Array.from({ length: 24 }).map((_, i) => {
-            const angle = (i / 24) * Math.PI * 2;
-            const x1 = 100 + Math.cos(angle) * 72;
-            const y1 = 100 + Math.sin(angle) * 72;
-            const x2 = 100 + Math.cos(angle) * 78;
-            const y2 = 100 + Math.sin(angle) * 78;
-            return (
-              <line
-                key={i}
-                x1={x1}
-                y1={y1}
-                x2={x2}
-                y2={y2}
-                stroke="#49ADA5"
-                strokeOpacity={i % 3 === 0 ? 0.6 : 0.2}
-                strokeWidth="0.7"
-              />
-            );
-          })}
-        </g>
-        {/* Center core */}
-        <circle
-          cx="100"
-          cy="100"
-          r="26"
-          fill="url(#hexFill)"
-          className="sc-hex__core"
-        />
-        <circle
-          cx="100"
-          cy="100"
-          r="36"
-          fill="none"
-          stroke="#49ADA5"
-          strokeOpacity="0.55"
-          strokeWidth="0.6"
-          className="sc-hex__ring"
-        />
-        {/* Orbiting dots for each item */}
-        {items.map((label, i) => {
-          const angle = (i / items.length) * Math.PI * 2 - Math.PI / 2;
-          const x = 100 + Math.cos(angle) * 60;
-          const y = 100 + Math.sin(angle) * 60;
-          return (
-            <g key={label}>
-              <line
-                x1="100"
-                y1="100"
-                x2={x}
-                y2={y}
-                stroke="#49ADA5"
-                strokeOpacity="0.55"
-                strokeWidth="0.6"
-              />
-              <circle cx={x} cy={y} r="4.5" fill="#0C5C62" stroke="#49ADA5" strokeWidth="1.2" />
-              <text
-                x={x}
-                y={y - 8}
-                textAnchor="middle"
-                fill="#0C5C62"
-                fontSize="7"
-                fontWeight="700"
-                fontFamily="Manrope, sans-serif"
-                letterSpacing="1.5"
-              >
-                {label}
-              </text>
-            </g>
-          );
-        })}
-      </svg>
-      <div className="sc-hex__core-label">
+    <div className="sc-blueprint" key={pillar.id}>
+      {/* header row: index + status */}
+      <div className="sc-blueprint__row">
+        <span className="sc-blueprint__idx">
+          {String(index + 1).padStart(2, "0")}
+          <em>/ {String(total).padStart(2, "0")}</em>
+        </span>
+        <span className="sc-blueprint__status">
+          <span className="sc-blueprint__pulse" />
+          {lang === "pl" ? "AKTYWNE" : "ACTIVE"}
+        </span>
+      </div>
+
+      {/* title */}
+      <div className="sc-blueprint__title">
         {lang === "pl" ? pillar.label_pl : pillar.label_en}
       </div>
+
+      {/* segmented progress */}
+      <div className="sc-blueprint__bar">
+        {Array.from({ length: 24 }).map((_, i) => {
+          const filled = i / 24 * 100 < pillar.load;
+          return <span key={i} className={filled ? "on" : ""} />;
+        })}
+      </div>
+      <div className="sc-blueprint__bar-caption">
+        <span>{lang === "pl" ? "Zaawansowanie procesu" : "Process coverage"}</span>
+        <b>{pillar.load}%</b>
+      </div>
+
+      {/* spec rows */}
+      <div className="sc-blueprint__specs">
+        {metrics.map((m) => (
+          <div key={m.k} className="sc-blueprint__spec">
+            <span className="sc-blueprint__spec-k">{m.k}</span>
+            <span className="sc-blueprint__spec-dots" aria-hidden="true" />
+            <span className="sc-blueprint__spec-v">{m.v}</span>
+          </div>
+        ))}
+      </div>
+
+      {/* mini schematic (SVG blueprint) */}
+      <svg className="sc-blueprint__schema" viewBox="0 0 240 90" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="bp-line" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stopColor="#49ADA5" stopOpacity="0" />
+            <stop offset="20%" stopColor="#49ADA5" stopOpacity="1" />
+            <stop offset="80%" stopColor="#49ADA5" stopOpacity="1" />
+            <stop offset="100%" stopColor="#49ADA5" stopOpacity="0" />
+          </linearGradient>
+        </defs>
+        {/* baseline */}
+        <line x1="0" y1="75" x2="240" y2="75" stroke="url(#bp-line)" strokeWidth="0.6" strokeDasharray="1 3" />
+        {/* activity curve based on pillar id */}
+        <path
+          d={
+            pillar.id === "listen"
+              ? "M0 70 L 40 66 L 80 55 L 120 60 L 160 45 L 200 50 L 240 40"
+              : pillar.id === "holistic"
+                ? "M0 70 L 40 60 L 80 40 L 120 45 L 160 25 L 200 30 L 240 15"
+                : "M0 70 L 40 55 L 80 42 L 120 30 L 160 22 L 200 15 L 240 8"
+          }
+          fill="none"
+          stroke="#49ADA5"
+          strokeWidth="1.4"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        {/* node dots */}
+        {[0, 40, 80, 120, 160, 200, 240].map((x, i) => (
+          <circle
+            key={i}
+            cx={x}
+            cy={
+              pillar.id === "listen"
+                ? [70, 66, 55, 60, 45, 50, 40][i]
+                : pillar.id === "holistic"
+                  ? [70, 60, 40, 45, 25, 30, 15][i]
+                  : [70, 55, 42, 30, 22, 15, 8][i]
+            }
+            r="1.6"
+            fill="#49ADA5"
+          />
+        ))}
+      </svg>
+
+      {/* corner brackets — blueprint feel */}
+      <span className="sc-blueprint__bracket sc-blueprint__bracket--tl" />
+      <span className="sc-blueprint__bracket sc-blueprint__bracket--tr" />
+      <span className="sc-blueprint__bracket sc-blueprint__bracket--bl" />
+      <span className="sc-blueprint__bracket sc-blueprint__bracket--br" />
     </div>
   );
 };
@@ -161,6 +179,7 @@ const AboutSection = () => {
   const { t, lang } = useLang();
   const [active, setActive] = useState(PILLARS[1].id);
   const activePillar = PILLARS.find((p) => p.id === active) || PILLARS[0];
+  const activeIndex = PILLARS.findIndex((p) => p.id === active);
 
   return (
     <section
@@ -170,78 +189,50 @@ const AboutSection = () => {
       style={{ background: "#FFFFFF", color: "#1C2833" }}
     >
       <div className="mx-auto max-w-7xl px-6 md:px-10 py-24 md:py-32">
-        <div className="mb-14 flex items-center gap-4 text-[11px] uppercase tracking-[0.32em]" style={{ color: "#0C5C62" }}>
-          <span className="inline-block h-px w-10" style={{ background: "#49ADA5" }} />
-          {t.about.section_label}
-        </div>
-
-        {/* Metrics row */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6 mb-16">
-          {t.about.metrics.map((m, i) => (
-            <Reveal key={m.label} delay={i * 120}>
-              <div
-                data-testid={`about-metric-${i}`}
-                className="sc-metric-card group"
-              >
-              <div className="flex items-baseline justify-between gap-4">
-                <span className="sc-metric-value" style={{ color: "#0C5C62" }}>
-                  {m.value}
-                </span>
-                <span
-                  className="text-[10px] uppercase tracking-[0.32em]"
-                  style={{ color: "#49ADA5" }}
-                >
-                  0{i + 1}
-                </span>
-              </div>
-              <div className="mt-2 text-sm md:text-base" style={{ color: "#1C2833" }}>
-                {m.label}
-              </div>
-              <div className="sc-metric-spark" aria-hidden="true">
-                <svg viewBox="0 0 100 20" preserveAspectRatio="none">
-                  <path
-                    d={
-                      i === 0
-                        ? "M0 15 Q 20 10 40 12 T 100 3"
-                        : i === 1
-                          ? "M0 18 Q 25 14 50 10 T 100 4"
-                          : "M0 16 Q 30 12 60 8 T 100 2"
-                    }
-                    fill="none"
-                    stroke="#49ADA5"
-                    strokeWidth="1.5"
-                  />
-                </svg>
-              </div>
-              <div className="sc-metric-underline" />
-              </div>
-            </Reveal>
-          ))}
-        </div>
-
-        {/* Interactive split */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-14 items-start">
-          {/* Narrative + pillars */}
-          <div className="md:col-span-7">
+        {/* Header row with inline metrics */}
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
+          <div>
+            <div
+              className="flex items-center gap-4 text-[11px] uppercase tracking-[0.32em]"
+              style={{ color: "#0C5C62" }}
+            >
+              <span className="inline-block h-px w-10" style={{ background: "#49ADA5" }} />
+              {t.about.section_label}
+            </div>
             <h2
               data-testid="about-narrative-title"
-              className="text-3xl md:text-5xl font-semibold leading-[1.05] tracking-tight"
+              className="mt-4 text-3xl md:text-5xl font-semibold leading-[1.05] tracking-tight max-w-2xl"
               style={{ color: "#0C5C62" }}
             >
               {lang === "pl"
                 ? "Trzy filary, jedno podejście."
                 : "Three pillars, one approach."}
             </h2>
+          </div>
 
+          {/* inline metrics — subtle, right-aligned */}
+          <div className="flex gap-6 md:gap-8">
+            {t.about.metrics.map((m, i) => (
+              <div key={m.label} data-testid={`about-metric-${i}`} className="sc-metric-inline">
+                <span className="sc-metric-inline__val">{m.value}</span>
+                <span className="sc-metric-inline__lbl">{m.label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Body: left narrative + pillars, right blueprint panel */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-14 items-start">
+          {/* Left — narrative + pillars */}
+          <div className="md:col-span-7">
             <p
               data-testid="about-narrative"
-              className="sc-narrative mt-6"
+              className="sc-narrative"
               style={{ color: "#1C2833" }}
             >
               {t.about.narrative}
             </p>
 
-            {/* Pillars accordion-like list */}
             <div className="mt-10 flex flex-col gap-3">
               {PILLARS.map((p) => {
                 const isActive = p.id === active;
@@ -285,17 +276,16 @@ const AboutSection = () => {
             </div>
           </div>
 
-          {/* Interactive infographic */}
-          <div className="md:col-span-5">
-            <div className="sc-about-graphic">
-              <div className="sc-about-graphic__tag">
-                <span className="sc-topo-frame__dot" />
-                {lang === "pl"
-                  ? "Model współpracy"
-                  : "Delivery model"}
-              </div>
-              <HexInfographic pillar={activePillar} lang={lang} />
-            </div>
+          {/* Right — futuristic blueprint panel */}
+          <div className="md:col-span-5 md:sticky md:top-24">
+            <Reveal>
+              <BlueprintPanel
+                pillar={activePillar}
+                index={activeIndex}
+                total={PILLARS.length}
+                lang={lang}
+              />
+            </Reveal>
           </div>
         </div>
       </div>
