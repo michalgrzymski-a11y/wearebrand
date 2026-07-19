@@ -28,7 +28,7 @@ const PartnersSection = () => {
       className="relative w-full"
       style={{ background: "#F8FAFA", color: "#1C2833" }}
     >
-      <div className="mx-auto max-w-7xl px-6 md:px-10 pt-24">
+      <div className="mx-auto max-w-7xl px-6 md:px-10 pt-14">
         <div
           className="flex items-center gap-4 text-[11px] uppercase tracking-[0.32em]"
           style={{ color: "#0C5C62" }}
@@ -38,7 +38,7 @@ const PartnersSection = () => {
         </div>
         <h2
           data-testid="partners-title"
-          className="mt-5 max-w-3xl text-3xl md:text-5xl font-semibold leading-[1.05] tracking-tight"
+          className="mt-4 max-w-3xl text-2xl md:text-3xl font-semibold leading-[1.1] tracking-tight"
           style={{ color: "#0C5C62" }}
         >
           {t.partners.title}
@@ -46,7 +46,7 @@ const PartnersSection = () => {
       </div>
 
       <div
-        className="sc-marquee-wrap mt-14 pb-24"
+        className="sc-marquee-wrap mt-8 pb-14"
         style={{
           maskImage:
             "linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent)",
@@ -55,7 +55,7 @@ const PartnersSection = () => {
         }}
       >
         <div
-          className="sc-marquee sc-marquee--rtl sc-marquee--slow"
+          className="sc-marquee sc-marquee--rtl sc-marquee--slow sc-marquee--muted"
           data-testid="partners-marquee"
         >
           {doubled.map((p, i) => (

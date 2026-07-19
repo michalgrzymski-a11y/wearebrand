@@ -70,6 +70,14 @@ const HeroSection = () => {
         />
       </div>
 
+      {/* Aurora Borealis overlay — drifting mint/emerald/violet bands */}
+      <div className="sc-aurora" aria-hidden="true">
+        <div className="sc-aurora__band sc-aurora__band--a" />
+        <div className="sc-aurora__band sc-aurora__band--b" />
+        <div className="sc-aurora__band sc-aurora__band--c" />
+        <div className="sc-aurora__streaks" />
+      </div>
+
       {/* Sweep light + floating particles overlay */}
       <div className="pointer-events-none absolute inset-0 sc-hero-sweep" aria-hidden="true" />
       <div className="pointer-events-none absolute inset-0 sc-hero-particles" aria-hidden="true">

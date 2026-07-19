@@ -1212,6 +1212,168 @@ body {
   z-index: 1;
 }
 
+/* Muted partners marquee — grayscale + reduced opacity for hierarchy */
+.sc-marquee--muted .sc-partner-card {
+  min-width: 170px;
+  padding: 14px 26px;
+  filter: grayscale(1);
+  opacity: 0.55;
+  transition: filter 0.35s ease, opacity 0.35s ease, transform 0.35s ease,
+              border-color 0.35s ease, box-shadow 0.35s ease;
+}
+.sc-marquee--muted .sc-partner-card:hover {
+  filter: grayscale(0);
+  opacity: 1;
+}
+.sc-marquee--muted .sc-partner-name {
+  font-size: clamp(1rem, 1.15vw, 1.3rem);
+}
+.sc-marquee--muted .sc-partner-card--highlight {
+  filter: grayscale(0.4);
+  opacity: 0.85;
+}
+.sc-marquee--muted .sc-partner-card--highlight:hover {
+  filter: grayscale(0);
+  opacity: 1;
+}
+.sc-marquee--muted .sc-partner-badge {
+  font-size: 8px;
+  padding: 3px 10px;
+}
+
+/* ============================================================
+   Aurora Borealis overlay for the Hero
+   ============================================================ */
+.sc-aurora {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 2;
+  mix-blend-mode: screen;
+  opacity: 0.85;
+}
+.sc-aurora__band {
+  position: absolute;
+  left: -30%;
+  right: -30%;
+  height: 70%;
+  filter: blur(90px);
+  will-change: transform, opacity;
+}
+.sc-aurora__band--a {
+  top: -15%;
+  background: linear-gradient(120deg,
+    rgba(73, 220, 165, 0) 0%,
+    rgba(73, 220, 165, 0.55) 25%,
+    rgba(73, 173, 165, 0.55) 50%,
+    rgba(60, 190, 205, 0.45) 75%,
+    rgba(73, 220, 165, 0) 100%);
+  transform: rotate(-8deg) translateX(0);
+  animation: sc-aurora-drift-a 18s ease-in-out infinite alternate;
+  opacity: 0.75;
+}
+.sc-aurora__band--b {
+  top: 5%;
+  background: linear-gradient(100deg,
+    rgba(120, 250, 200, 0) 0%,
+    rgba(120, 250, 200, 0.45) 30%,
+    rgba(73, 173, 165, 0.4) 60%,
+    rgba(50, 140, 160, 0.5) 85%,
+    rgba(120, 250, 200, 0) 100%);
+  transform: rotate(4deg);
+  animation: sc-aurora-drift-b 22s ease-in-out infinite alternate;
+  opacity: 0.6;
+}
+.sc-aurora__band--c {
+  top: -5%;
+  height: 90%;
+  background: linear-gradient(160deg,
+    rgba(180, 100, 220, 0) 0%,
+    rgba(180, 100, 220, 0.2) 30%,
+    rgba(90, 160, 210, 0.25) 55%,
+    rgba(73, 173, 165, 0.35) 80%,
+    rgba(180, 100, 220, 0) 100%);
+  transform: rotate(-3deg);
+  animation: sc-aurora-drift-c 30s ease-in-out infinite alternate;
+  opacity: 0.5;
+}
+@keyframes sc-aurora-drift-a {
+  0%   { transform: rotate(-8deg) translate(-8%, 0%) scale(1); }
+  50%  { transform: rotate(-4deg) translate(6%, 4%) scale(1.15); }
+  100% { transform: rotate(-10deg) translate(-4%, -2%) scale(1.05); }
+}
+@keyframes sc-aurora-drift-b {
+  0%   { transform: rotate(4deg) translate(10%, 2%) scale(1.05); }
+  50%  { transform: rotate(-2deg) translate(-6%, -3%) scale(0.95); }
+  100% { transform: rotate(6deg) translate(4%, 5%) scale(1.1); }
+}
+@keyframes sc-aurora-drift-c {
+  0%   { transform: rotate(-3deg) translate(0%, 0%) scale(1); }
+  50%  { transform: rotate(2deg) translate(-8%, 3%) scale(1.1); }
+  100% { transform: rotate(-5deg) translate(6%, -2%) scale(1); }
+}
+/* Curtain vertical streaks — mimic the falling light of real aurora */
+.sc-aurora__streaks {
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgba(73, 220, 165, 0) 0px,
+    rgba(73, 220, 165, 0.08) 3px,
+    rgba(73, 220, 165, 0) 12px
+  );
+  mask-image: radial-gradient(ellipse 80% 60% at 55% 30%, black 0%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 55% 30%, black 0%, transparent 75%);
+  animation: sc-aurora-streaks 14s ease-in-out infinite alternate;
+  opacity: 0.55;
+}
+@keyframes sc-aurora-streaks {
+  0%   { opacity: 0.35; transform: translateX(-2%); }
+  100% { opacity: 0.65; transform: translateX(2%); }
+}
+
+/* ============================================================
+   Contact — dark theme (matches Hero footer)
+   ============================================================ */
+.sc-contact-dark .sc-contact-block__label { color: #49ADA5; }
+.sc-contact-dark .sc-contact-block__value { color: #FFFFFF; }
+.sc-contact-dark .sc-contact-block__icon {
+  background: rgba(73, 173, 165, 0.18);
+  color: #49ADA5;
+}
+.sc-contact-dark .sc-link { color: #49ADA5; }
+.sc-contact-dark .sc-link:hover { color: #FFFFFF; }
+.sc-contact-dark h2[data-testid="contact-title"] { color: #FFFFFF !important; }
+.sc-contact-dark .sc-form {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(73, 173, 165, 0.18);
+}
+.sc-contact-dark .sc-field label { color: #49ADA5; }
+.sc-contact-dark .sc-field input,
+.sc-contact-dark .sc-field textarea {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #FFFFFF;
+}
+.sc-contact-dark .sc-field input:focus,
+.sc-contact-dark .sc-field textarea:focus {
+  border-color: #49ADA5;
+  background: rgba(255, 255, 255, 0.08);
+}
+.sc-contact-dark .sc-field input::placeholder,
+.sc-contact-dark .sc-field textarea::placeholder {
+  color: rgba(255,255,255,0.35);
+}
+.sc-contact-dark .sc-form__submit {
+  background: #49ADA5;
+  color: #04070A;
+}
+.sc-contact-dark .sc-form__submit:hover {
+  background: #FFFFFF;
+  color: #04070A;
+}
+
 /* ============================================================
    Section cut divider — hard edge + animated neon mint line
    ============================================================ */

@@ -41,8 +41,8 @@ const ContactSection = () => {
     <section
       id="contact"
       data-testid="contact-section"
-      className="relative w-full"
-      style={{ background: "#FFFFFF", color: "#1C2833" }}
+      className="relative w-full sc-contact-dark"
+      style={{ background: "#040709", color: "#FFFFFF" }}
     >
       <div className="mx-auto max-w-7xl px-6 md:px-10 py-24 md:py-32">
         <div className="mb-14 flex items-center gap-4 text-[11px] uppercase tracking-[0.32em]" style={{ color: "#0C5C62" }}>
@@ -190,13 +190,13 @@ const ContactSection = () => {
       {/* Footer strip */}
       <footer
         className="border-t"
-        style={{ borderColor: "rgba(28,40,51,0.08)", background: "#F8FAFA" }}
+        style={{ borderColor: "rgba(73,173,165,0.15)", background: "#040709" }}
       >
         <div className="mx-auto max-w-7xl px-6 md:px-10 py-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-          <div className="text-sm" style={{ color: "#1C2833", opacity: 0.7 }}>
+          <div className="text-sm text-white/60">
             © {new Date().getFullYear()} IT SMARTCLOUT SP. Z O.O. — {t.footer.rights}
           </div>
-          <div className="text-[11px] uppercase tracking-[0.28em]" style={{ color: "#0C5C62" }}>
+          <div className="text-[11px] uppercase tracking-[0.28em]" style={{ color: "#49ADA5" }}>
             {t.footer.tagline}
           </div>
         </div>

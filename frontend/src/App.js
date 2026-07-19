@@ -19,11 +19,11 @@ const Home = () => (
     <AboutSection />
     <SectionDivider id="about-trusted"      top="#FFFFFF" bottom="#F8FAFA" />
     <TrustedBySection />
-    <SectionDivider id="trusted-portfolio"  top="#F8FAFA" bottom="#040709" />
+    <SectionDivider id="trusted-portfolio"  top="#F8FAFA" bottom="#FFFFFF" />
     <PortfolioSection />
-    <SectionDivider id="portfolio-partners" top="#040709" bottom="#F8FAFA" />
+    <SectionDivider id="portfolio-partners" top="#FFFFFF" bottom="#F8FAFA" />
     <PartnersSection />
-    <SectionDivider id="partners-contact"   top="#F8FAFA" bottom="#FFFFFF" />
+    <SectionDivider id="partners-contact"   top="#F8FAFA" bottom="#040709" />
     <ContactSection />
   </main>
 );
