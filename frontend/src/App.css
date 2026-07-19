@@ -1278,6 +1278,183 @@ body {
   gap: 0;
   padding: 8px 0;
 }
+
+/* ============================================================
+   FuturisticMetric — smaller, tech spec-panel with count-up
+   ============================================================ */
+.sc-fx-metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+.sc-fx-metric {
+  position: relative;
+  padding: 22px 24px 20px;
+  background:
+    linear-gradient(180deg, rgba(12,92,98,0.025) 0%, rgba(12,92,98,0.005) 100%),
+    #ffffff;
+  border: 1px solid rgba(12,92,98,0.12);
+  border-radius: 10px;
+  overflow: hidden;
+  min-height: 158px;
+  transition: border-color 0.4s ease, transform 0.4s ease, box-shadow 0.4s ease;
+}
+.sc-fx-metric::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(73,173,165,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(73,173,165,0.06) 1px, transparent 1px);
+  background-size: 18px 18px;
+  mask-image: radial-gradient(ellipse 90% 90% at 50% 45%, black 0%, transparent 85%);
+  -webkit-mask-image: radial-gradient(ellipse 90% 90% at 50% 45%, black 0%, transparent 85%);
+  pointer-events: none;
+  opacity: 0.6;
+}
+.sc-fx-metric:hover {
+  border-color: rgba(73,173,165,0.55);
+  transform: translateY(-2px);
+  box-shadow: 0 22px 40px -32px rgba(12,92,98,0.4);
+}
+
+/* Tech brackets in corners */
+.sc-fx-metric__bk {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-color: rgba(73,173,165,0.55);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.sc-fx-metric.is-in .sc-fx-metric__bk { opacity: 1; }
+.sc-fx-metric__bk--tl { top: 8px; left: 8px; border-top: 1.4px solid; border-left: 1.4px solid; transform: translate(-4px, -4px); }
+.sc-fx-metric__bk--tr { top: 8px; right: 8px; border-top: 1.4px solid; border-right: 1.4px solid; transform: translate(4px, -4px); }
+.sc-fx-metric__bk--bl { bottom: 8px; left: 8px; border-bottom: 1.4px solid; border-left: 1.4px solid; transform: translate(-4px, 4px); }
+.sc-fx-metric__bk--br { bottom: 8px; right: 8px; border-bottom: 1.4px solid; border-right: 1.4px solid; transform: translate(4px, 4px); }
+.sc-fx-metric.is-in .sc-fx-metric__bk--tl,
+.sc-fx-metric.is-in .sc-fx-metric__bk--tr,
+.sc-fx-metric.is-in .sc-fx-metric__bk--bl,
+.sc-fx-metric.is-in .sc-fx-metric__bk--br { transform: translate(0, 0); }
+
+/* Header row: pulse dot + LIVE code */
+.sc-fx-metric__row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: "Manrope", sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(12,92,98,0.7);
+}
+.sc-fx-metric__pulse {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #49ADA5;
+  box-shadow: 0 0 0 3px rgba(73,173,165,0.18);
+  animation: sc-fx-pulse 2s ease-in-out infinite;
+}
+@keyframes sc-fx-pulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 3px rgba(73,173,165,0.18); }
+  50%      { opacity: 0.7; box-shadow: 0 0 0 5px rgba(73,173,165,0.04); }
+}
+
+/* Numeric value */
+.sc-fx-metric__value {
+  position: relative;
+  margin-top: 12px;
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+  font-family: "Fraunces", serif;
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: #0C5C62;
+  background: linear-gradient(180deg, #0C5C62 0%, #49ADA5 130%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.sc-fx-metric__num {
+  font-size: clamp(44px, 4.4vw, 60px);
+  font-variant-numeric: tabular-nums;
+}
+.sc-fx-metric__suf {
+  font-size: clamp(28px, 2.6vw, 38px);
+  font-family: "Manrope", sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  color: #49ADA5;
+  -webkit-text-fill-color: #49ADA5;
+}
+
+/* Sweeping scanline over the value */
+.sc-fx-metric__scan {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 62px;
+  height: 26px;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent 0%, rgba(73,173,165,0) 20%, rgba(73,173,165,0.28) 50%, rgba(73,173,165,0) 80%, transparent 100%);
+  transform: translateX(-100%);
+  mix-blend-mode: screen;
+}
+.sc-fx-metric.is-in .sc-fx-metric__scan {
+  animation: sc-fx-scan 2.4s cubic-bezier(0.4, 0, 0.2, 1) 0.4s 1;
+}
+@keyframes sc-fx-scan {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* Spec-line under the number: draws mint dot + line on reveal */
+.sc-fx-metric__spec {
+  position: relative;
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 6px;
+}
+.sc-fx-metric__spec-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #49ADA5;
+  transform: scale(0);
+  transition: transform 0.5s ease 0.4s;
+}
+.sc-fx-metric__spec-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, #49ADA5 0%, rgba(73,173,165,0.25) 60%, transparent 100%);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.9s cubic-bezier(0.22, 0.61, 0.36, 1) 0.55s;
+}
+.sc-fx-metric.is-in .sc-fx-metric__spec-dot { transform: scale(1); }
+.sc-fx-metric.is-in .sc-fx-metric__spec-line { transform: scaleX(1); }
+
+/* Caption */
+.sc-fx-metric__label {
+  position: relative;
+  margin-top: 10px;
+  font-family: "Manrope", sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: rgba(28,40,51,0.65);
+  line-height: 1.5;
+}
 .sc-metric {
   position: relative;
   display: flex;
@@ -1346,8 +1523,8 @@ body {
 .sc-marquee {
   display: flex;
   align-items: center;
-  gap: 64px;
-  padding: 18px 0;
+  gap: 40px;
+  padding: 10px 0;
   width: max-content;
   animation: sc-marquee-rtl 40s linear infinite;
 }
@@ -1389,16 +1566,16 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  height: 56px;
-  min-width: 120px;
-  padding: 0 12px;
+  height: 32px;
+  min-width: 80px;
+  padding: 0 8px;
   filter: grayscale(1);
   opacity: 0.55;
   transition: filter 0.4s ease, opacity 0.4s ease, transform 0.4s ease;
 }
 .sc-logo-img img {
   max-height: 100%;
-  max-width: 220px;
+  max-width: 140px;
   width: auto;
   height: auto;
   object-fit: contain;

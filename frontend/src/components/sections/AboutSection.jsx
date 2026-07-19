@@ -8,6 +8,7 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import Reveal from "@/components/Reveal";
+import FuturisticMetric from "@/components/FuturisticMetric";
 
 const PILLARS = [
   {
@@ -191,24 +192,20 @@ const AboutSection = () => {
           </div>
         </Reveal>
 
-        {/* 2. Metrics — minimalist Apple-style row (no band, no card, just typography) */}
-        <Reveal>
-          <div
-            data-testid="about-metrics-row"
-            className="sc-metrics-row mt-10 md:mt-12"
-          >
-            {t.about.metrics.map((m, i) => (
-              <div
-                key={m.label}
-                data-testid={`about-metric-${i}`}
-                className="sc-metric"
-              >
-                <span className="sc-metric__val">{m.value}</span>
-                <span className="sc-metric__lbl">{m.label}</span>
-              </div>
-            ))}
-          </div>
-        </Reveal>
+        {/* 2. Metrics — futuristic count-up with tech brackets & scanline */}
+        <div
+          data-testid="about-metrics-row"
+          className="sc-fx-metrics mt-10 md:mt-12"
+        >
+          {t.about.metrics.map((m, i) => (
+            <FuturisticMetric
+              key={m.label}
+              value={m.value}
+              label={m.label}
+              delay={i * 140}
+            />
+          ))}
+        </div>
 
         {/* 3. Narrative — clean justified paragraph, full section width, no effects */}
         <Reveal>
