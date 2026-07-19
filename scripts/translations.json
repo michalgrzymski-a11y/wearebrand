@@ -1,0 +1,362 @@
+{
+  "pl": {
+    "nav": {
+      "about": "O nas",
+      "services": "Usługi",
+      "partners": "Partnerzy",
+      "contact": "Kontakt",
+      "cta": "Napisz do nas"
+    },
+    "hero": {
+      "eyebrow": "IT SMARTCLOUT",
+      "title_pre": "Infrastruktura IT stworzona dla",
+      "title_accent": "ciągłości",
+      "title_post": "Twojego biznesu",
+      "subtitle": "Projektujemy rozwiązania szyte na miarę, które chronią dane, przyspieszają biznes i szanują budżet.",
+      "cta_primary": "Zaplanuj konsultację",
+      "cta_secondary": "Poznaj usługi",
+      "nodes_hint": "Klikaj węzły, aby poznać obszary",
+      "terms": [
+        "TECHNOLOGIA IT",
+        "USŁUGI",
+        "DANE",
+        "SECURITY",
+        "DATACENTER",
+        "BUSINESS CONTINUITY",
+        "DISASTER RECOVERY"
+      ]
+    },
+    "about": {
+      "section_label": "O nas",
+      "metrics": [
+        {
+          "value": "20+",
+          "label": "lat doświadczenia"
+        },
+        {
+          "value": "500+",
+          "label": "zrealizowanych projektów"
+        },
+        {
+          "value": "130+",
+          "label": "klientów"
+        }
+      ],
+      "narrative": "W IT SMARTCLOUT doświadczenie nauczyło nas jednego: najlepsze rozwiązania rodzą się z wyciągania wniosków. Jako partner NetApp, wykraczamy poza standardowe wdrożenia. Posiadamy kompetencje do realizacji najbardziej wymagających projektów, ale naszą prawdziwą wartością dodaną jest uważność na głos klienta. Dzięki holistycznemu spojrzeniu na ekosystem IT, projektujemy infrastrukturę „szytą na miarę” – taką, która chroni dane, przyspiesza biznes i szanuje budżet. Nie szukamy najdroższych rozwiązań, szukamy tych najbardziej zoptymalizowanych."
+    },
+    "trusted": {
+      "title": "Zaufali nam"
+    },
+    "sectors": {
+      "section_label": "Sektory rynku",
+      "title": "Zaufali nam liderzy z różnych branż",
+      "subtitle": "Realizujemy projekty IT dla przedsiębiorstw i instytucji z sektorów o najwyższych wymaganiach jakości, ciągłości i bezpieczeństwa.",
+      "items": [
+        {
+          "id": "services",
+          "name": "Usługi",
+          "desc": "Sieci detaliczne, retail, e-commerce, transport."
+        },
+        {
+          "id": "media",
+          "name": "Media",
+          "desc": "Wydawcy, produkcja i dystrybucja treści."
+        },
+        {
+          "id": "manufacturing",
+          "name": "Produkcja",
+          "desc": "Przemysł ciężki, chemia, motoryzacja."
+        },
+        {
+          "id": "finance",
+          "name": "Finanse",
+          "desc": "Banki, ubezpieczenia, fintech."
+        },
+        {
+          "id": "telecom",
+          "name": "Telekomunikacja",
+          "desc": "Operatorzy, sieci szerokopasmowe, ISP."
+        },
+        {
+          "id": "government",
+          "name": "Administracja",
+          "desc": "Instytucje publiczne, samorządy."
+        }
+      ]
+    },
+    "portfolio": {
+      "section_label": "Portfolio Usług",
+      "title": "Kompleksowe portfolio dla wymagających infrastruktur",
+      "tiles": [
+        {
+          "tag": "01",
+          "title": "Sprzęt IT",
+          "subtitle": "Hardware",
+          "items": [
+            "Serwery",
+            "Macierze Dyskowe",
+            "Przełączniki Sieciowe",
+            "Biblioteki Taśmowe LTO",
+            "Deduplikatory"
+          ]
+        },
+        {
+          "tag": "02",
+          "title": "Security",
+          "subtitle": "Bezpieczeństwo",
+          "items": [
+            "DLP",
+            "IDM",
+            "UEM/MDM",
+            "Firewall"
+          ]
+        },
+        {
+          "tag": "03",
+          "title": "Oprogramowanie",
+          "subtitle": "Software",
+          "items": [
+            "Licencje",
+            "Oprogramowanie firm trzecich",
+            "Bazy danych",
+            "Modern Workspace",
+            "Hypervisor"
+          ]
+        },
+        {
+          "tag": "04",
+          "title": "Usługi & DataCenter",
+          "subtitle": "Services",
+          "items": [
+            "Utrzymanie",
+            "Serwis",
+            "Wdrożenie",
+            "Konfiguracja",
+            "Instalacja",
+            "Inwentaryzacja",
+            "Migracja",
+            "Usługi budowlane"
+          ]
+        }
+      ]
+    },
+    "partners": {
+      "section_label": "Partnerzy strategiczni",
+      "title": "Współpracujemy z liderami technologii",
+      "netapp_badge": "Partner NetApp"
+    },
+    "contact": {
+      "section_label": "Kontakt",
+      "title": "Porozmawiajmy o Twojej infrastrukturze",
+      "subtitle": "Odpowiadamy na wiadomości w ciągu 24 godzin roboczych.",
+      "form": {
+        "name": "Imię i nazwisko / Firma",
+        "email": "E-mail",
+        "message": "W czym możemy pomóc?",
+        "submit": "Wyślij wiadomość",
+        "submitting": "Wysyłanie…",
+        "success": "Dziękujemy! Odezwiemy się wkrótce.",
+        "error": "Coś poszło nie tak. Spróbuj ponownie."
+      },
+      "company": {
+        "name": "IT SMARTCLOUT SP. Z O.O.",
+        "address": "ul. Leona Lubomira Kruszyńskiego 19, 62-700 Turek",
+        "krs": "KRS 0000952777",
+        "nip": "NIP 5842813752",
+        "regon": "REGON 521229601",
+        "phone": "+48 533 956 934",
+        "email": "kontakt@smartclout.pl",
+        "labels": {
+          "address": "Adres",
+          "registry": "Rejestr",
+          "phone": "Telefon",
+          "email": "E-mail"
+        }
+      }
+    },
+    "footer": {
+      "rights": "Wszelkie prawa zastrzeżone.",
+      "tagline": "Business continuity, projektowana ze świadomością."
+    }
+  },
+  "en": {
+    "nav": {
+      "about": "About",
+      "services": "Services",
+      "partners": "Partners",
+      "contact": "Contact",
+      "cta": "Get in touch"
+    },
+    "hero": {
+      "eyebrow": "IT SMARTCLOUT",
+      "title_pre": "IT infrastructure built for the",
+      "title_accent": "continuity",
+      "title_post": "of your business",
+      "subtitle": "Tailor-made solutions that protect data, accelerate business and respect the budget.",
+      "cta_primary": "Book a consultation",
+      "cta_secondary": "Explore services",
+      "nodes_hint": "Click a node to explore",
+      "terms": [
+        "IT TECHNOLOGY",
+        "SERVICES",
+        "DATA",
+        "SECURITY",
+        "DATACENTER",
+        "BUSINESS CONTINUITY",
+        "DISASTER RECOVERY"
+      ]
+    },
+    "about": {
+      "section_label": "About us",
+      "metrics": [
+        {
+          "value": "20+",
+          "label": "years of experience"
+        },
+        {
+          "value": "500+",
+          "label": "completed projects"
+        },
+        {
+          "value": "130+",
+          "label": "clients"
+        }
+      ],
+      "narrative": "At IT SMARTCLOUT experience has taught us one thing: the best solutions are born from lessons learned. As a NetApp partner we go beyond standard deployments. We have the competence to deliver the most demanding projects, but our real added value is our attentiveness to the client’s voice. Thanks to a holistic view of the IT ecosystem, we design bespoke infrastructure — one that protects data, accelerates business and respects the budget. We do not chase the most expensive solutions, we chase the most optimised ones."
+    },
+    "trusted": {
+      "title": "Trusted by"
+    },
+    "sectors": {
+      "section_label": "Market sectors",
+      "title": "Leaders from many industries trust us",
+      "subtitle": "We deliver IT projects for enterprises and institutions with the highest requirements in quality, continuity and security.",
+      "items": [
+        {
+          "id": "services",
+          "name": "Services",
+          "desc": "Retail chains, e-commerce, transport."
+        },
+        {
+          "id": "media",
+          "name": "Media",
+          "desc": "Publishers, content production and distribution."
+        },
+        {
+          "id": "manufacturing",
+          "name": "Manufacturing",
+          "desc": "Heavy industry, chemicals, automotive."
+        },
+        {
+          "id": "finance",
+          "name": "Financial services",
+          "desc": "Banking, insurance, fintech."
+        },
+        {
+          "id": "telecom",
+          "name": "Telecommunications",
+          "desc": "Operators, broadband networks, ISPs."
+        },
+        {
+          "id": "government",
+          "name": "Government",
+          "desc": "Public institutions, local authorities."
+        }
+      ]
+    },
+    "portfolio": {
+      "section_label": "Service portfolio",
+      "title": "A complete portfolio for demanding infrastructures",
+      "tiles": [
+        {
+          "tag": "01",
+          "title": "IT Hardware",
+          "subtitle": "Hardware",
+          "items": [
+            "Servers",
+            "Disk Arrays",
+            "Network Switches",
+            "LTO Tape Libraries",
+            "Deduplicators"
+          ]
+        },
+        {
+          "tag": "02",
+          "title": "Security",
+          "subtitle": "Security",
+          "items": [
+            "DLP",
+            "IDM",
+            "UEM/MDM",
+            "Firewall"
+          ]
+        },
+        {
+          "tag": "03",
+          "title": "Software",
+          "subtitle": "Software",
+          "items": [
+            "Licences",
+            "Third-party software",
+            "Databases",
+            "Modern Workspace",
+            "Hypervisor"
+          ]
+        },
+        {
+          "tag": "04",
+          "title": "Services & DataCenter",
+          "subtitle": "Services",
+          "items": [
+            "Maintenance",
+            "Service",
+            "Deployment",
+            "Configuration",
+            "Installation",
+            "Inventory",
+            "Migration",
+            "Construction services"
+          ]
+        }
+      ]
+    },
+    "partners": {
+      "section_label": "Strategic partners",
+      "title": "We collaborate with technology leaders",
+      "netapp_badge": "NetApp partner"
+    },
+    "contact": {
+      "section_label": "Contact",
+      "title": "Let’s talk about your infrastructure",
+      "subtitle": "We reply to all messages within 24 business hours.",
+      "form": {
+        "name": "Full name / Company",
+        "email": "E-mail",
+        "message": "How can we help?",
+        "submit": "Send message",
+        "submitting": "Sending…",
+        "success": "Thank you! We’ll be in touch shortly.",
+        "error": "Something went wrong. Please try again."
+      },
+      "company": {
+        "name": "IT SMARTCLOUT SP. Z O.O.",
+        "address": "ul. Leona Lubomira Kruszyńskiego 19, 62-700 Turek, Poland",
+        "krs": "KRS 0000952777",
+        "nip": "NIP 5842813752",
+        "regon": "REGON 521229601",
+        "phone": "+48 533 956 934",
+        "email": "kontakt@smartclout.pl",
+        "labels": {
+          "address": "Address",
+          "registry": "Registry",
+          "phone": "Phone",
+          "email": "E-mail"
+        }
+      }
+    },
+    "footer": {
+      "rights": "All rights reserved.",
+      "tagline": "Business continuity, designed with intent."
+    }
+  }
+}
