@@ -142,6 +142,7 @@ const SwitchSection = () => {
                 const Icon = p.Icon;
                 const isActive = currentId === p.id;
                 const isLocked = locked === p.id;
+                const sector = copy.sectors[p.id];
                 return (
                   <button
                     key={p.id}
@@ -155,7 +156,7 @@ const SwitchSection = () => {
                       setLocked((prev) => (prev === p.id ? null : p.id))
                     }
                     aria-pressed={isLocked}
-                    aria-label={copy.sectors[p.id].name}
+                    aria-label={sector.name}
                     data-testid={`switch-port-${p.id}`}
                   >
                     <span className="sc-port__icon">
@@ -172,6 +173,24 @@ const SwitchSection = () => {
                         ))}
                       </span>
                       <span className="sc-port__tab" aria-hidden="true" />
+                      {/* Ethernet cable boot + cable + label */}
+                      <span className="sc-port__boot" aria-hidden="true" />
+                      <span className="sc-port__cable" aria-hidden="true">
+                        <svg viewBox="0 0 40 100" preserveAspectRatio="none" width="100%" height="100%">
+                          <path
+                            d={idx < 3
+                              ? "M 20 0 C 20 30 8 60 8 100"
+                              : "M 20 0 C 20 30 32 60 32 100"}
+                            stroke="currentColor"
+                            strokeWidth="4"
+                            fill="none"
+                            strokeLinecap="round"
+                          />
+                        </svg>
+                      </span>
+                    </span>
+                    <span className="sc-port__label" data-testid={`switch-label-${p.id}`}>
+                      {sector.name}
                     </span>
                     <span className="sc-port__num">
                       {String(idx + 1).padStart(2, "0")}
@@ -201,7 +220,7 @@ const SwitchSection = () => {
           </div>
         </div>
 
-        {/* Info panel — reuses .sc-vinfo styling from Values section */}
+        {/* Sector detail — appears on hover / click as extra copy */}
         <div
           data-testid="switch-info"
           className={`sc-vinfo ${active ? "is-open" : ""}`}

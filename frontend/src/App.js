@@ -6,14 +6,15 @@ import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/hero/HeroSection";
 import ValuesSection from "@/components/sections/ValuesSection";
 import AboutSection from "@/components/sections/AboutSection";
+import RackServerSection from "@/components/sections/RackServerSection";
 import TrustedBySection from "@/components/sections/TrustedBySection";
 import PortfolioSection from "@/components/sections/PortfolioSection";
+import TapeLibrarySection from "@/components/sections/TapeLibrarySection";
 import SectorsSection from "@/components/sections/SectorsSection";
 import SwitchSection from "@/components/sections/SwitchSection";
 import PartnersV2Section from "@/components/sections/PartnersV2Section";
 import PartnersSection from "@/components/sections/PartnersSection";
 import ContactSection from "@/components/sections/ContactSection";
-import SectionDivider from "@/components/SectionDivider";
 import PartnerDetailPage from "@/pages/PartnerDetailPage";
 
 const Home = () => (
@@ -21,20 +22,15 @@ const Home = () => (
     <Navbar />
     <HeroSection />
     <ValuesSection />
-    <SectionDivider id="values-about"       top="#040709" bottom="#FFFFFF" />
     <AboutSection />
-    <SectionDivider id="about-trusted"      top="#FFFFFF" bottom="#F8FAFA" />
+    <RackServerSection />
     <TrustedBySection />
-    <SectionDivider id="trusted-portfolio"  top="#F8FAFA" bottom="#FFFFFF" />
     <PortfolioSection />
-    <SectionDivider id="portfolio-sectors"  top="#FFFFFF" bottom="#FFFFFF" />
+    <TapeLibrarySection />
     <SectorsSection />
-    <SectionDivider id="sectors-switch"     top="#FFFFFF" bottom="#040709" />
     <SwitchSection />
     <PartnersV2Section />
-    <SectionDivider id="rack-partners"      top="#040709" bottom="#F8FAFA" />
     <PartnersSection />
-    <SectionDivider id="partners-contact"   top="#F8FAFA" bottom="#040709" />
     <ContactSection />
   </main>
 );
