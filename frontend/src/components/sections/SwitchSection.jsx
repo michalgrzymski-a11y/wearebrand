@@ -87,7 +87,7 @@ const SwitchSection = () => {
         }}
       />
 
-      <div className="relative z-10 mx-auto max-w-7xl px-6 md:px-10 py-14 md:py-20 pb-56 md:pb-64">
+      <div className="relative z-10 mx-auto max-w-7xl px-6 md:px-10 py-14 md:py-20 pb-72 md:pb-80">
         <Reveal>
           <div
             className="flex items-center gap-4 text-[11px] uppercase tracking-[0.32em]"
@@ -147,7 +147,7 @@ const SwitchSection = () => {
                   <button
                     key={p.id}
                     type="button"
-                    className={`sc-port ${isActive ? "is-active" : ""} ${isLocked ? "is-locked" : ""}`}
+                    className={`sc-port ${idx % 2 === 1 ? "sc-port--low" : ""} ${isActive ? "is-active" : ""} ${isLocked ? "is-locked" : ""}`}
                     onMouseEnter={() => setHovered(p.id)}
                     onFocus={() => setHovered(p.id)}
                     onMouseLeave={() => setHovered(null)}

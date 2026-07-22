@@ -220,11 +220,14 @@ html { scroll-padding-top: 92px; }
   text-wrap: balance;
 }
 .sc-hero-accent {
-  font-family: "Fraunces", serif;
-  font-weight: 500;
-  font-style: italic;
-  color: var(--sc-accent);
-  letter-spacing: -0.04em;
+  font-family: "Manrope", sans-serif;
+  font-weight: 700;
+  background: linear-gradient(135deg, #06FFE0 0%, #00B8D4 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  letter-spacing: -0.03em;
 }
 
 .sc-hero-vignette {
@@ -1472,7 +1475,7 @@ html { scroll-padding-top: 92px; }
   gap: 2px;
   font-family: "Fraunces", serif;
   font-weight: 400;
-  font-style: italic;
+  font-style: normal;
   line-height: 1;
   letter-spacing: -0.04em;
   color: #0C5C62;
@@ -1587,7 +1590,7 @@ html { scroll-padding-top: 92px; }
 .sc-metric__val {
   font-family: "Fraunces", serif;
   font-weight: 400;
-  font-style: italic;
+  font-style: normal;
   font-size: clamp(64px, 6.4vw, 96px);
   line-height: 0.92;
   letter-spacing: -0.045em;
@@ -3431,7 +3434,7 @@ html { scroll-padding-top: 92px; }
 .sc-partners2__title {
   margin-top: 6px;
   font-family: "Fraunces", serif;
-  font-style: italic;
+  font-style: normal;
   font-size: clamp(24px, 2.4vw, 32px);
   line-height: 1.15;
   color: #06FFE0;
@@ -3838,7 +3841,7 @@ html { scroll-padding-top: 92px; }
 }
 .sc-statcard__value {
   font-family: "Fraunces", "Manrope", serif;
-  font-style: italic;
+  font-style: normal;
   font-weight: 600;
   font-size: 28px;
   line-height: 1;
@@ -4242,7 +4245,7 @@ html { scroll-padding-top: 92px; }
 }
 .sc-vbay__x-name {
   font-family: "Fraunces", "Manrope", serif;
-  font-style: italic;
+  font-style: normal;
   font-weight: 500;
   font-size: 22px;
   line-height: 1.15;
@@ -4352,7 +4355,7 @@ html { scroll-padding-top: 92px; }
 }
 .sc-vinfo__name {
   font-family: "Fraunces", "Manrope", serif;
-  font-style: italic;
+  font-style: normal;
   font-weight: 500;
   font-size: 26px;
   line-height: 1.2;
@@ -4510,7 +4513,7 @@ html { scroll-padding-top: 92px; }
   flex-direction: column;
   align-items: center;
   gap: 8px;
-  min-width: 120px;
+  min-width: 150px;
   padding: 6px 8px 10px;
   background: transparent;
   border: 1px solid transparent;
@@ -4589,16 +4592,21 @@ html { scroll-padding-top: 92px; }
 /* Cable extending downward from the boot toward the label (beyond chassis) */
 .sc-port__cable {
   position: absolute;
-  bottom: -128px;
+  bottom: -120px;
   left: 50%;
   transform: translateX(-50%);
   width: 44px;
-  height: 120px;
+  height: 112px;
   color: #06FFE0;
   z-index: 4;
   pointer-events: none;
   filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.55));
   overflow: visible;
+}
+/* Longer cable for staggered ports — label sits deeper */
+.sc-port--low .sc-port__cable {
+  bottom: -184px;
+  height: 176px;
 }
 /* Label tag attached directly to the cable termination */
 .sc-port__label {
@@ -4606,21 +4614,21 @@ html { scroll-padding-top: 92px; }
   top: 100%;
   left: 50%;
   transform: translateX(-50%);
-  padding: 6px 10px;
+  padding: 10px 14px;
   border-radius: 6px;
   background: linear-gradient(180deg, #F4F1E8 0%, #E8E3D1 100%);
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  box-shadow: 0 6px 14px -4px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(0, 0, 0, 0.18);
+  box-shadow: 0 8px 18px -4px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.75);
   font-family: "Manrope", sans-serif;
-  font-size: 10px;
+  font-size: 13px;
   font-weight: 700;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.03em;
   color: #1C2833;
   text-transform: uppercase;
   text-align: center;
   line-height: 1.2;
-  max-width: 110px;
-  width: 110px;
+  max-width: 148px;
+  width: 148px;
   z-index: 5;
   pointer-events: auto;
   transition: transform 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
@@ -4630,11 +4638,11 @@ html { scroll-padding-top: 92px; }
    creating a real physical connection. */
 .sc-port__label-clip {
   position: absolute;
-  top: -8px;
+  top: -10px;
   left: 50%;
   transform: translateX(-50%);
-  width: 14px;
-  height: 12px;
+  width: 18px;
+  height: 14px;
   background: linear-gradient(180deg, #d9d6c9 0%, #8a8570 100%);
   border: 1px solid rgba(0, 0, 0, 0.35);
   border-radius: 3px 3px 2px 2px;
@@ -4644,18 +4652,18 @@ html { scroll-padding-top: 92px; }
   content: "";
   position: absolute;
   left: 50%;
-  top: -6px;
+  top: -8px;
   transform: translateX(-50%);
-  width: 4px;
-  height: 8px;
+  width: 5px;
+  height: 10px;
   background: #06FFE0;
   border-radius: 2px 2px 0 0;
-  box-shadow: 0 0 4px rgba(6, 255, 224, 0.6);
+  box-shadow: 0 0 6px rgba(6, 255, 224, 0.7);
 }
 .sc-port:hover .sc-port__label,
 .sc-port.is-active .sc-port__label {
   transform: translateX(-50%) translateY(3px);
-  box-shadow: 0 12px 22px -6px rgba(6, 255, 224, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  box-shadow: 0 14px 24px -6px rgba(6, 255, 224, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.7);
   color: #0C5C62;
 }
 .sc-port__leds {
@@ -4911,7 +4919,7 @@ html { scroll-padding-top: 92px; }
 .sc-runit.is-active .sc-runit__body { opacity: 1; }
 .sc-runit__name {
   font-family: "Fraunces", "Manrope", serif;
-  font-style: italic; font-weight: 500; font-size: 16px;
+  font-style: normal; font-weight: 500; font-size: 16px;
   color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .sc-runit__desc {
@@ -5098,7 +5106,7 @@ html { scroll-padding-top: 92px; }
 .sc-tape__x-title {
   display: flex; align-items: baseline; gap: 10px;
   font-family: "Fraunces", "Manrope", serif;
-  font-style: italic; font-weight: 500; font-size: 22px;
+  font-style: normal; font-weight: 500; font-size: 22px;
   color: #ffffff;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
@@ -5234,7 +5242,7 @@ html { scroll-padding-top: 92px; }
 }
 .sc-drive__title {
   font-family: "Fraunces", "Manrope", serif;
-  font-style: italic; font-weight: 500; font-size: 17px;
+  font-style: normal; font-weight: 500; font-size: 17px;
   line-height: 1.15;
   color: #ffffff;
 }
@@ -5264,7 +5272,7 @@ html { scroll-padding-top: 92px; }
 }
 .sc-tapelib2__tapes-title {
   font-family: "Fraunces", "Manrope", serif;
-  font-style: italic; font-weight: 500; font-size: 20px;
+  font-style: normal; font-weight: 500; font-size: 20px;
   color: #ffffff;
 }
 .sc-tapelib2__tapes-line { flex: 1 1 auto; height: 1px; background: linear-gradient(90deg, rgba(6,255,224,0.45), rgba(6,255,224,0)); }
@@ -5273,26 +5281,26 @@ html { scroll-padding-top: 92px; }
 }
 .sc-lto {
   position: relative;
-  width: 130px; height: 92px;
-  border-radius: 4px;
+  width: 180px; height: 128px;
+  border-radius: 5px;
   background: linear-gradient(180deg, #1a1f24 0%, #0a0e12 100%);
   border: 1px solid rgba(0, 0, 0, 0.5);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.06),
     inset 0 -2px 0 rgba(0, 0, 0, 0.6),
-    0 6px 14px -6px rgba(0, 0, 0, 0.6);
+    0 8px 20px -8px rgba(0, 0, 0, 0.7);
   overflow: hidden;
-  padding: 6px 8px 8px;
+  padding: 8px 12px 10px;
   display: flex; flex-direction: column; justify-content: space-between;
   opacity: 0;
   animation: sc-lto-in 0.45s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
   transition: transform 0.28s ease, box-shadow 0.28s ease;
 }
 .sc-lto:hover {
-  transform: translateY(-3px);
+  transform: translateY(-4px);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.1),
-    0 12px 22px -6px rgba(0, 0, 0, 0.7);
+    0 16px 28px -8px rgba(0, 0, 0, 0.75);
 }
 @keyframes sc-lto-in {
   0%   { opacity: 0; transform: translateY(6px); }
@@ -5300,56 +5308,56 @@ html { scroll-padding-top: 92px; }
 }
 .sc-lto__top {
   position: absolute; top: 0; left: 0; right: 0;
-  height: 12px;
+  height: 18px;
   background: var(--lto-top, #06FFE0);
   border-bottom: 1px solid rgba(0, 0, 0, 0.4);
   box-shadow: inset 0 -3px 6px rgba(0, 0, 0, 0.25);
 }
 .sc-lto__label {
-  margin-top: 14px;
+  margin-top: 22px;
   background: #F4F1E8;
-  border-radius: 2px;
-  padding: 4px 6px;
+  border-radius: 3px;
+  padding: 6px 10px;
   border: 1px solid rgba(0, 0, 0, 0.25);
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.35);
-  display: flex; flex-direction: column; gap: 2px;
-  min-height: 30px;
+  display: flex; flex-direction: column; gap: 3px;
+  min-height: 46px;
 }
 .sc-lto__label-tag {
   font-family: "JetBrains Mono", monospace;
-  font-size: 8px; letter-spacing: 0.16em;
+  font-size: 10px; letter-spacing: 0.2em;
   color: rgba(28, 40, 51, 0.55);
   text-transform: uppercase;
 }
 .sc-lto__label-name {
   font-family: "Manrope", sans-serif;
-  font-size: 10.5px; font-weight: 700; letter-spacing: 0.02em;
+  font-size: 13.5px; font-weight: 700; letter-spacing: 0.01em;
   color: #1C2833;
-  line-height: 1.2;
+  line-height: 1.22;
   display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
 }
 .sc-lto__hub {
-  position: absolute; bottom: 10px; right: 12px;
-  width: 18px; height: 18px; border-radius: 50%;
+  position: absolute; bottom: 14px; right: 18px;
+  width: 24px; height: 24px; border-radius: 50%;
   background: radial-gradient(circle at 40% 40%, #2a343e 0%, #0a0e12 70%);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: inset 0 0 0 3px rgba(0, 0, 0, 0.35);
+  box-shadow: inset 0 0 0 4px rgba(0, 0, 0, 0.35);
 }
 .sc-lto__notch {
-  position: absolute; bottom: 0; left: 20px;
-  width: 12px; height: 4px;
+  position: absolute; bottom: 0; left: 28px;
+  width: 16px; height: 5px;
   background: rgba(0, 0, 0, 0.65);
   border-radius: 1px 1px 0 0;
 }
 
 @media (max-width: 900px) {
   .sc-tapelib2__drives { grid-template-columns: repeat(2, 1fr); }
-  .sc-lto { width: 110px; height: 82px; }
+  .sc-lto { width: 156px; height: 116px; }
 }
 @media (max-width: 600px) {
   .sc-tapelib2__drives { grid-template-columns: 1fr; }
   .sc-tapelib2__tapes { padding: 16px; }
-  .sc-lto { width: 100px; height: 76px; }
+  .sc-lto { width: 140px; height: 106px; }
 }
 
 
@@ -5511,7 +5519,7 @@ html { scroll-padding-top: 92px; }
 }
 .sc-svr-info__name {
   font-family: "Fraunces", "Manrope", serif;
-  font-style: italic; font-weight: 500; font-size: 26px;
+  font-style: normal; font-weight: 500; font-size: 26px;
   line-height: 1.15; color: #ffffff; margin-bottom: 10px;
 }
 .sc-svr-info__desc {
@@ -5826,13 +5834,13 @@ html { scroll-padding-top: 92px; }
    ============================================================ */
 .sc-pdu {
   display: grid;
-  grid-template-columns: 26px 1fr 26px;
+  grid-template-columns: 32px 1fr 32px;
   gap: 0;
-  border-radius: 6px;
+  border-radius: 8px;
   overflow: hidden;
   box-shadow:
-    0 30px 60px -30px rgba(12, 92, 98, 0.35),
-    0 20px 40px -24px rgba(0, 0, 0, 0.45);
+    0 40px 80px -40px rgba(12, 92, 98, 0.4),
+    0 24px 50px -28px rgba(0, 0, 0, 0.5);
 }
 .sc-pdu__ear {
   background: linear-gradient(180deg, #1a2129 0%, #0d1218 100%);
@@ -5840,12 +5848,12 @@ html { scroll-padding-top: 92px; }
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  padding: 12px 0;
+  padding: 18px 0;
   border-top: 1px solid rgba(255, 255, 255, 0.06);
   border-bottom: 1px solid rgba(0, 0, 0, 0.6);
 }
 .sc-pdu__mount {
-  width: 8px; height: 8px; border-radius: 50%;
+  width: 10px; height: 10px; border-radius: 50%;
   background: radial-gradient(circle at 30% 30%, #05080a 0%, #14181c 60%, #2a343e 100%);
   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.9);
 }
@@ -5859,8 +5867,8 @@ html { scroll-padding-top: 92px; }
 .sc-pdu__head {
   display: flex;
   align-items: center;
-  gap: 18px;
-  padding: 10px 16px;
+  gap: 24px;
+  padding: 16px 22px;
   background: rgba(0, 0, 0, 0.35);
   border-bottom: 1px solid rgba(255, 255, 255, 0.04);
 }
@@ -5869,105 +5877,107 @@ html { scroll-padding-top: 92px; }
   display: inline-flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
 }
 .sc-pdu__breaker-toggle {
-  width: 18px;
-  height: 26px;
-  background: linear-gradient(180deg, #ff6b3d 0%, #b23a12 100%);
-  border-radius: 2px;
-  border: 1px solid rgba(0, 0, 0, 0.6);
+  width: 26px;
+  height: 36px;
+  background: linear-gradient(180deg, #06FFE0 0%, #00B8D4 100%);
+  border-radius: 3px;
+  border: 1px solid rgba(0, 0, 0, 0.5);
   box-shadow:
-    inset 0 2px 0 rgba(255, 255, 255, 0.25),
-    0 0 6px rgba(255, 107, 61, 0.5);
+    inset 0 2px 0 rgba(255, 255, 255, 0.35),
+    0 0 10px rgba(6, 255, 224, 0.65);
 }
 .sc-pdu__breaker-label {
   font-family: "JetBrains Mono", monospace;
-  font-size: 8.5px;
+  font-size: 9.5px;
   letter-spacing: 0.28em;
-  color: rgba(232, 244, 245, 0.55);
+  color: rgba(232, 244, 245, 0.6);
   text-transform: uppercase;
 }
 .sc-pdu__display {
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  padding: 8px 14px;
-  min-width: 200px;
+  gap: 6px;
+  padding: 14px 22px;
+  min-width: 260px;
   background: linear-gradient(180deg, #071012 0%, #050a0b 100%);
-  border: 1px solid rgba(6, 255, 224, 0.28);
-  border-radius: 4px;
-  box-shadow: inset 0 0 12px rgba(6, 255, 224, 0.1), 0 0 8px rgba(6, 255, 224, 0.15);
+  border: 1px solid rgba(6, 255, 224, 0.32);
+  border-radius: 6px;
+  box-shadow: inset 0 0 18px rgba(6, 255, 224, 0.14), 0 0 12px rgba(6, 255, 224, 0.18);
 }
 .sc-pdu__display-value {
   font-family: "JetBrains Mono", monospace;
-  font-size: 20px;
-  letter-spacing: 0.12em;
+  font-size: 44px;
+  letter-spacing: 0.06em;
   color: #06FFE0;
-  text-shadow: 0 0 8px rgba(6, 255, 224, 0.65);
+  text-shadow: 0 0 14px rgba(6, 255, 224, 0.7);
   line-height: 1;
+  font-weight: 700;
 }
 .sc-pdu__display-sub {
   font-family: "JetBrains Mono", monospace;
-  font-size: 11px;
+  font-size: 14px;
   letter-spacing: 0.2em;
   color: rgba(6, 255, 224, 0.8);
 }
 .sc-pdu__display-bar {
   position: relative;
   width: 100%;
-  height: 4px;
-  border-radius: 2px;
-  background: rgba(6, 255, 224, 0.1);
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(6, 255, 224, 0.12);
   overflow: hidden;
 }
 .sc-pdu__display-bar-fill {
   position: absolute;
   left: 0; top: 0; bottom: 0;
-  width: 62%;
-  background: linear-gradient(90deg, #06FFE0 0%, #FFC02E 100%);
-  border-radius: 2px;
-  box-shadow: 0 0 6px rgba(6, 255, 224, 0.7);
+  width: 99%;
+  background: linear-gradient(90deg, #06FFE0 0%, #00B8D4 100%);
+  border-radius: 3px;
+  box-shadow: 0 0 8px rgba(6, 255, 224, 0.8);
 }
 .sc-pdu__display-label {
   font-family: "JetBrains Mono", monospace;
-  font-size: 8.5px;
-  letter-spacing: 0.28em;
-  color: rgba(6, 255, 224, 0.55);
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  color: rgba(6, 255, 224, 0.6);
   text-transform: uppercase;
 }
 .sc-pdu__banks {
   display: flex;
   align-items: stretch;
   gap: 0;
-  padding: 14px 16px;
+  padding: 24px 24px;
   background:
-    repeating-linear-gradient(0deg, rgba(255,255,255,0.015) 0 1px, transparent 1px 8px),
+    repeating-linear-gradient(0deg, rgba(255,255,255,0.015) 0 1px, transparent 1px 10px),
     linear-gradient(180deg, #0d1116 0%, #06090c 100%);
 }
 .sc-pdu__bank {
   flex: 1 1 auto;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
 }
 .sc-pdu__bank-label {
   font-family: "JetBrains Mono", monospace;
-  font-size: 9.5px;
-  letter-spacing: 0.3em;
-  color: rgba(232, 244, 245, 0.5);
+  font-size: 11px;
+  letter-spacing: 0.32em;
+  color: rgba(232, 244, 245, 0.6);
   text-transform: uppercase;
+  font-weight: 600;
 }
 .sc-pdu__divider {
   width: 1px;
-  margin: 0 16px;
-  background: linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.12) 50%, transparent 100%);
+  margin: 0 24px;
+  background: linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.14) 50%, transparent 100%);
 }
 .sc-pdu__outlets {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  gap: 8px;
+  gap: 12px;
 }
 .sc-pdu__outlet {
   position: relative;

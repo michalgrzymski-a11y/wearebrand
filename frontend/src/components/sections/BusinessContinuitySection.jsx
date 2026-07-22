@@ -13,76 +13,76 @@ import useSectionParallax from "@/hooks/useSectionParallax";
 const COPY = {
   pl: {
     section_label: "Ciągłość działania",
-    title: "Zasilanie, które nie",
-    title_accent: "zawodzi.",
+    title: "Biznes, który nigdy",
+    title_accent: "nie milknie.",
     subtitle:
-      "Projektujemy warstwę zasilania i monitoringu tak, aby jeden awaryjny scenariusz nigdy nie dotknął produkcji. Redundantne tory A/B, UPS-y, agregaty i inteligentne PDU pod stałym nadzorem.",
-    pdu_code: "SC · 1U · PDU · 12× C13/C19",
-    pdu_meter: "230 V",
-    pdu_amps: "12.4 A",
-    pdu_load: "LOAD 62%",
+      "Projektujemy infrastrukturę tak, aby awaria pojedynczego elementu nigdy nie oznaczała przerwy w usłudze. Redundantne ścieżki danych, geo-replikacja i mierzalne parametry SLA — ciągłość nie z hasła, a z architektury.",
+    pdu_code: "SC · CORE · UPTIME 99.99%",
+    pdu_meter: "99.99",
+    pdu_amps: "% SLA",
+    pdu_load: "UPTIME · Q4",
     values: [
       {
         id: "redundancy",
         Icon: Zap,
-        title: "Redundancja N+1",
-        desc: "Dwa niezależne tory zasilania A/B, dwa PSU w każdym serwerze, dwa niezależne obwody w rozdzielni.",
+        title: "Architektura N+1 i active-active",
+        desc: "Dwa niezależne tory produkcyjne, replikacja synchroniczna między lokalizacjami, brak pojedynczego punktu awarii w warstwie krytycznej.",
       },
       {
-        id: "ups",
+        id: "geo",
         Icon: ShieldCheck,
-        title: "UPS i agregat",
-        desc: "UPS online double-conversion + agregat prądotwórczy z automatycznym SZR — realne minuty i godziny podtrzymania.",
+        title: "Geo-redundancja",
+        desc: "Dane i usługi rozproszone między co najmniej dwoma ośrodkami. Przełączenie ruchu użytkowników w minutach, nie w godzinach.",
       },
       {
         id: "monitor",
         Icon: Activity,
         title: "Monitoring 24/7",
-        desc: "Inteligentne PDU raportują zużycie per gniazdo, temperaturę i status. Alarmy do NOC zanim użytkownik zauważy problem.",
+        desc: "Obserwowalność end-to-end — od aplikacji po infrastrukturę. Alarmy trafiają do NOC zanim użytkownik zdąży zauważyć problem.",
       },
       {
         id: "dr",
         Icon: Server,
         title: "RTO / RPO w SLA",
-        desc: "Mierzalne parametry disaster recovery — geo-redundantna replikacja i test-fail-over kwartalny w kontrakcie.",
+        desc: "Mierzalne parametry disaster recovery zapisane w kontrakcie. Kwartalne testy fail-over potwierdzają, że plan działa, gdy jest potrzebny.",
       },
     ],
     cta: "Zaplanuj audyt ciągłości",
   },
   en: {
     section_label: "Business continuity",
-    title: "Power that",
-    title_accent: "never fails.",
+    title: "A business that",
+    title_accent: "never goes silent.",
     subtitle:
-      "We engineer the power and monitoring layer so a single failure scenario never touches production. Redundant A/B feeds, UPS units, gensets and smart PDUs under constant supervision.",
-    pdu_code: "SC · 1U · PDU · 12× C13/C19",
-    pdu_meter: "230 V",
-    pdu_amps: "12.4 A",
-    pdu_load: "LOAD 62%",
+      "We design infrastructure so a single failure never means a service outage. Redundant data paths, geo-replication and measurable SLA parameters — continuity by architecture, not by slogan.",
+    pdu_code: "SC · CORE · UPTIME 99.99%",
+    pdu_meter: "99.99",
+    pdu_amps: "% SLA",
+    pdu_load: "UPTIME · Q4",
     values: [
       {
         id: "redundancy",
         Icon: Zap,
-        title: "N+1 redundancy",
-        desc: "Two independent A/B power paths, dual PSUs in every server, two independent circuits in the switchgear.",
+        title: "N+1 & active-active architecture",
+        desc: "Two independent production paths, synchronous replication between sites, no single point of failure in the critical layer.",
       },
       {
-        id: "ups",
+        id: "geo",
         Icon: ShieldCheck,
-        title: "UPS & generator",
-        desc: "Online double-conversion UPS plus a genset with automatic transfer switch — real minutes and hours of runtime.",
+        title: "Geo-redundancy",
+        desc: "Data and services spread across at least two sites. User traffic can be switched over in minutes, not hours.",
       },
       {
         id: "monitor",
         Icon: Activity,
         title: "24/7 monitoring",
-        desc: "Smart PDUs report per-outlet draw, temperature and status. Alerts reach NOC before your users notice a thing.",
+        desc: "End-to-end observability — from application to infrastructure. Alerts reach NOC before a user notices anything is wrong.",
       },
       {
         id: "dr",
         Icon: Server,
         title: "RTO / RPO in SLA",
-        desc: "Measurable disaster recovery parameters — geo-redundant replication and quarterly fail-over tests in contract.",
+        desc: "Measurable disaster recovery parameters written in the contract. Quarterly fail-over tests prove the plan works when it matters.",
       },
     ],
     cta: "Plan a continuity audit",
@@ -130,8 +130,8 @@ const BusinessContinuitySection = () => {
           >
             {copy.title}{" "}
             <span
-              className="italic font-medium"
-              style={{ fontFamily: '"Fraunces", serif', color: "#0C5C62" }}
+              className="font-semibold"
+              style={{ color: "#0C5C62" }}
             >
               {copy.title_accent}
             </span>
@@ -154,9 +154,9 @@ const BusinessContinuitySection = () => {
                 <div className="sc-pdu__head">
                   <span className="sc-pdu__breaker" aria-hidden="true">
                     <span className="sc-pdu__breaker-toggle" />
-                    <span className="sc-pdu__breaker-label">MAIN · 32A</span>
+                    <span className="sc-pdu__breaker-label">CORE · ONLINE</span>
                   </span>
-                  <span className="sc-pdu__display" aria-label="PDU meter">
+                  <span className="sc-pdu__display" aria-label="Continuity meter">
                     <span className="sc-pdu__display-value">{copy.pdu_meter}</span>
                     <span className="sc-pdu__display-sub">{copy.pdu_amps}</span>
                     <span className="sc-pdu__display-bar">
@@ -168,7 +168,7 @@ const BusinessContinuitySection = () => {
 
                 <div className="sc-pdu__banks">
                   <div className="sc-pdu__bank" data-testid="pdu-bank-a">
-                    <span className="sc-pdu__bank-label">BANK A</span>
+                    <span className="sc-pdu__bank-label">SITE A · PRIMARY</span>
                     <div className="sc-pdu__outlets">
                       {Array.from({ length: BANK_A_OUTLETS }).map((_, i) => (
                         <span
@@ -187,7 +187,7 @@ const BusinessContinuitySection = () => {
                   <div className="sc-pdu__divider" aria-hidden="true" />
 
                   <div className="sc-pdu__bank" data-testid="pdu-bank-b">
-                    <span className="sc-pdu__bank-label">BANK B</span>
+                    <span className="sc-pdu__bank-label">SITE B · DR</span>
                     <div className="sc-pdu__outlets">
                       {Array.from({ length: BANK_B_OUTLETS }).map((_, i) => (
                         <span
@@ -216,14 +216,14 @@ const BusinessContinuitySection = () => {
               </div>
             </div>
 
-            {/* Power feeds */}
+            {/* Site links (primary / DR) */}
             <div className="sc-pdu-feeds" aria-hidden="true">
               <span className="sc-pdu-feed sc-pdu-feed--a">
-                <span className="sc-pdu-feed__tag">FEED A</span>
+                <span className="sc-pdu-feed__tag">SITE A</span>
                 <span className="sc-pdu-feed__line" />
               </span>
               <span className="sc-pdu-feed sc-pdu-feed--b">
-                <span className="sc-pdu-feed__tag">FEED B</span>
+                <span className="sc-pdu-feed__tag">SITE B · DR</span>
                 <span className="sc-pdu-feed__line" />
               </span>
             </div>

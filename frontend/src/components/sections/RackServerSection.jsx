@@ -124,8 +124,8 @@ const RackServerSection = () => {
           >
             {copy.title}{" "}
             <span
-              className="italic font-medium"
-              style={{ fontFamily: '"Fraunces", serif', color: "#06FFE0" }}
+              className="font-semibold"
+              style={{ color: "#06FFE0" }}
             >
               {copy.title_accent}
             </span>
