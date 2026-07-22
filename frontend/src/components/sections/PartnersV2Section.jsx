@@ -84,6 +84,19 @@ const PartnersV2Section = () => {
   const [hoveredCat, setHoveredCat] = useState(null);
   const parallaxRef = useSectionParallax();
 
+  // Flat, deduped vendor list — order preserved by first occurrence across categories.
+  // Each entry carries the set of categories it supports for hover-driven highlight.
+  const flatVendors = React.useMemo(() => {
+    const seen = new Map(); // name -> { name, cats: Set }
+    CATEGORIES.forEach((cat) => {
+      cat.partners.forEach((p) => {
+        if (!seen.has(p)) seen.set(p, { name: p, cats: new Set([cat.id]) });
+        else seen.get(p).cats.add(cat.id);
+      });
+    });
+    return Array.from(seen.values());
+  }, []);
+
   return (
     <section
       id="partners-rack"
@@ -162,54 +175,38 @@ const PartnersV2Section = () => {
             </div>
           </div>
 
-          {/* Right — ALL partners, grouped by category, transparent bg */}
+          {/* Right — ALL partners in ONE flat monochromatic list.
+              Hover a rack slot to highlight the matching vendors. */}
           <div className="sc-partners2 lg:col-span-7" data-testid="partners-vendors">
-            {CATEGORIES.map((cat) => {
-              const isHighlighted = hoveredCat === cat.id;
-              const isDimmed = hoveredCat && hoveredCat !== cat.id;
-              return (
-                <div
-                  key={cat.id}
-                  className={`sc-vendor-group ${isHighlighted ? "is-highlighted" : ""} ${isDimmed ? "is-dimmed" : ""}`}
-                  data-testid={`vendor-group-${cat.id}`}
-                  onMouseEnter={() => setHoveredCat(cat.id)}
-                  onMouseLeave={() => setHoveredCat(null)}
-                >
-                  <div className="sc-vendor-group__head">
-                    <cat.Icon size={12} strokeWidth={2} className="sc-vendor-group__icon" />
-                    <span className="sc-vendor-group__label">
-                      {lang === "pl" ? cat.name_pl : cat.name_en}
-                    </span>
-                    <span className="sc-vendor-group__rule" />
-                  </div>
-                  <div className="sc-vendor-group__list">
-                    {cat.partners.map((p, i) => {
-                      const src = VENDOR_LOGOS[p];
-                      return (
-                        <span
-                          key={p}
-                          className="sc-vendor"
-                          data-testid={`vendor-${cat.id}-${i}`}
-                          title={p}
-                        >
-                          {src ? (
-                            <img
-                              src={src}
-                              alt={p}
-                              className="sc-vendor__img"
-                              loading="lazy"
-                              draggable="false"
-                            />
-                          ) : (
-                            <span className="sc-vendor__text">{p}</span>
-                          )}
-                        </span>
-                      );
-                    })}
-                  </div>
-                </div>
-              );
-            })}
+            <div className="sc-vendor-flat">
+              {flatVendors.map((v) => {
+                const src = VENDOR_LOGOS[v.name];
+                const isHighlighted =
+                  !!hoveredCat && v.cats.has(hoveredCat);
+                const isDimmed =
+                  !!hoveredCat && !v.cats.has(hoveredCat);
+                return (
+                  <span
+                    key={v.name}
+                    className={`sc-vendor ${isHighlighted ? "is-highlighted" : ""} ${isDimmed ? "is-dimmed" : ""}`}
+                    data-testid={`vendor-${v.name.replace(/\s+/g, "-").toLowerCase()}`}
+                    title={v.name}
+                  >
+                    {src ? (
+                      <img
+                        src={src}
+                        alt={v.name}
+                        className="sc-vendor__img"
+                        loading="lazy"
+                        draggable="false"
+                      />
+                    ) : (
+                      <span className="sc-vendor__text">{v.name}</span>
+                    )}
+                  </span>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>

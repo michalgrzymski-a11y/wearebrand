@@ -3408,8 +3408,15 @@ body {
 }
 
 /* ============================================================
-   Vendor list — all groups visible, transparent bg, monochromatic
+   Vendor list — flat by default, category-driven highlight on rack hover
    ============================================================ */
+.sc-vendor-flat {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 26px 34px;
+  padding-top: 6px;
+}
 .sc-vendor-group {
   margin-top: 22px;
   padding: 14px 0;
@@ -3476,7 +3483,10 @@ body {
   justify-content: center;
   min-height: 30px;
   padding: 4px 2px;
-  transition: transform 0.28s ease;
+  transition: transform 0.28s ease, opacity 0.35s ease;
+}
+.sc-vendor.is-dimmed {
+  opacity: 0.28;
 }
 .sc-vendor:hover {
   transform: translateY(-2px);
@@ -3494,6 +3504,7 @@ body {
   -webkit-user-drag: none;
 }
 .sc-vendor:hover .sc-vendor__img,
+.sc-vendor.is-highlighted .sc-vendor__img,
 .sc-vendor-group.is-highlighted .sc-vendor__img {
   filter: none;
   opacity: 1;
@@ -3508,10 +3519,12 @@ body {
   transition: color 0.35s ease;
 }
 .sc-vendor:hover .sc-vendor__text,
+.sc-vendor.is-highlighted .sc-vendor__text,
 .sc-vendor-group.is-highlighted .sc-vendor__text {
   color: #ffffff;
 }
 @media (max-width: 768px) {
+  .sc-vendor-flat { gap: 18px 22px; }
   .sc-vendor-group__list { gap: 14px 20px; }
   .sc-vendor__img { height: 22px; }
 }
