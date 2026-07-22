@@ -40,13 +40,14 @@ Deep Teal `#0C5C62`, Accent Mint `#49ADA5`, White, Light gray `#F8FAFA`, Charcoa
 - ✅ All interactive elements have unique `data-testid` attributes
 - ✅ No console errors on load or interaction
 
-## What has been implemented (2026-02, iterations 5–6)
+## What has been implemented (2026-02, iterations 5–7)
 - ✅ **SectionDivider (2026-02-22)** — pixel-dither mosaic (COLS=512 × ROWS=8, ~4096 span cells) for dark↔light transitions only; `.sc-blend` gradient for light↔light. CSS syntax fix (stray `*/` removed).
 - ✅ **About redesign (2026-02-22)** — 3-column layout: narrative on left (lg:col-span-8) + 3 clean stat cards on right (lg:col-span-4) in unified `.sc-pillar`-style (white bg, radius 16, mint borders, hover translateX + glow + brackets). Cards contain only icon + value + label (no accordion). Values updated: 20+ / 350+ / 130+.
 - ✅ **About narrative expanded (2026-02-22)** — was single dry paragraph, now **3 storytelling paragraphs** (PL + EN) covering 20-year experience, NetApp partnership + client-first attentiveness, holistic ecosystem view + optimisation philosophy.
 - ✅ **PartnersV2 rack (2026-02-22)** — layout re-balanced: rack `lg:col-span-5` (moved slightly left), vendors column `lg:col-span-7` (more breathing room). Right column is now **frameless** (no border/background/padding).
 - ✅ **PartnersV2 scatter (2026-02-22)** — pre-interaction shows 8 floating vendor logotypes on a virtual 2×4 grid so tiles **never overlap**. Each slot has an **independent cycle 3.5–6s** with per-slot setTimeout recursion (not synchronised). After hover on any rack slot → scatter is replaced by the picked category grid; scatter never returns.
-- ✅ **Testing agent** — iteration 6 report: 17/17 acceptance items PASS, 0 console errors, no overlap in scatter, all dividers correctly split by contrast.
+- ✅ **Real vendor logos (2026-02-22, iter 7)** — 18 brand `.webp` logotypes added to `/app/frontend/public/logos/vendors/` (NetApp, DELL, ASUS, Lenovo, Nutanix, Microsoft, VMware, Commvault, Veeam, ARISTA, HPE, Extreme Networks, Cisco, Brocade, SailPoint, baramundi, Google, AWS). Rendered inside white "pill" tiles in PartnersV2 (scatter + grid) and PartnersSection (marquee). Text fallback preserved for vendors without logo (proxmox, Huawei, Pure Storage, uptime DC, xorux, F5).
+- ✅ **Testing agent** — iter 6 (17/17 PASS), iter 7 (11/11 PASS). All 18 logo files HTTP 200, 0 console errors, 0 scatter overlap pairs, mobile 390px 0 overflow.
 
 ## Backlog / next actions
 - `/app/backend/server.py`, `/app/backend/tests/test_contact_api.py`
