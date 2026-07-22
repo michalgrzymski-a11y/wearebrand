@@ -213,12 +213,19 @@ const AboutSection = () => {
           className="mt-10 md:mt-14 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start"
         >
           <Reveal className="lg:col-span-8">
-            <p
+            <div
               data-testid="about-narrative"
               className="sc-about-copy"
             >
-              {t.about.narrative}
-            </p>
+              {(Array.isArray(t.about.narrative)
+                ? t.about.narrative
+                : [t.about.narrative]
+              ).map((para, i) => (
+                <p key={i} data-testid={`about-narrative-p-${i}`}>
+                  {para}
+                </p>
+              ))}
+            </div>
           </Reveal>
 
           <Reveal className="lg:col-span-4">

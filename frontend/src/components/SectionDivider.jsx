@@ -1,14 +1,12 @@
 import React, { useMemo } from "react";
 
 /**
- * SectionDivider — pixel-dither mosaic used for EVERY section transition.
+ * SectionDivider — pixel-dither mosaic for dark ↔ light transitions,
+ * subtle gradient blend for light ↔ light.
  *
  * Cells render as **perfect squares** (aspect-ratio 1:1); the divider's
  * total height is derived from the column count so the mosaic always tiles
  * cleanly across the section width.
- *
- * For low-contrast (light ↔ light) pairs, a subtle mint accent is used
- * as the "bottom" tone so the pixel texture stays visible without shouting.
  *
  * Hover UX: each cell inverts its color on hover (top→bottom, bottom→top),
  * giving the pattern a tactile "flip the bit" feel.
@@ -23,7 +21,6 @@ const luminance = (hex) => {
 
 const COLS = 512;
 const ROWS = 8;
-const LIGHT_ACCENT = "rgba(73, 173, 165, 0.14)"; // subtle mint tint
 
 const buildDitherMap = (seed) => {
   const map = new Uint8Array(COLS * ROWS);
@@ -43,34 +40,50 @@ const buildDitherMap = (seed) => {
 
 const SectionDivider = ({ top, bottom, id = "" }) => {
   const contrast = Math.abs(luminance(top) - luminance(bottom));
-  const lowContrast = contrast < 40;
-  const effectiveBottom = lowContrast ? LIGHT_ACCENT : bottom;
+  const useDither = contrast >= 100;
 
   const map = useMemo(() => {
+    if (!useDither) return null;
     const seed =
       parseInt(top.replace("#", ""), 16) ^
       parseInt(bottom.replace("#", ""), 16);
     return buildDitherMap(seed || 1);
-  }, [top, bottom]);
+  }, [top, bottom, useDither]);
+
+  if (useDither) {
+    return (
+      <div
+        aria-hidden="true"
+        data-testid={id ? `divider-${id}` : "section-divider"}
+        className="sc-dither"
+        style={{
+          "--sc-top": top,
+          "--sc-bot": bottom,
+          "--sc-cols": COLS,
+          "--sc-cols-mobile": COLS / 2,
+        }}
+      >
+        {Array.from(map).map((v, i) => (
+          <span
+            key={i}
+            className={`sc-dither__cell ${v ? "is-bot" : "is-top"}`}
+          />
+        ))}
+      </div>
+    );
+  }
 
   return (
     <div
       aria-hidden="true"
       data-testid={id ? `divider-${id}` : "section-divider"}
-      className="sc-dither"
+      className="sc-blend"
       style={{
-        "--sc-top": top,
-        "--sc-bot": effectiveBottom,
-        "--sc-cols": COLS,
-        "--sc-cols-mobile": COLS / 2,
+        height: `40px`,
+        background: `linear-gradient(180deg, ${top} 0%, ${top} 12%, ${bottom} 88%, ${bottom} 100%)`,
       }}
     >
-      {Array.from(map).map((v, i) => (
-        <span
-          key={i}
-          className={`sc-dither__cell ${v ? "is-bot" : "is-top"}`}
-        />
-      ))}
+      <span className="sc-blend__line" />
     </div>
   );
 };

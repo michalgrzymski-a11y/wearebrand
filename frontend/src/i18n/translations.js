@@ -60,8 +60,11 @@ export const translations = {
             "Ponad 130 organizacji z sektorów finansów, mediów, produkcji, telekomunikacji, retail i administracji. Wielu klientów wraca do nas przy kolejnych fazach modernizacji infrastruktury — to najlepsza rekomendacja.",
         },
       ],
-      narrative:
-        "W IT SMARTCLOUT doświadczenie nauczyło nas jednego: najlepsze rozwiązania rodzą się z wyciągania wniosków. Jako partner NetApp, wykraczamy poza standardowe wdrożenia. Posiadamy kompetencje do realizacji najbardziej wymagających projektów, ale naszą prawdziwą wartością dodaną jest uważność na głos klienta. Dzięki holistycznemu spojrzeniu na ekosystem IT, projektujemy infrastrukturę „szytą na miarę” – taką, która chroni dane, przyspiesza biznes i szanuje budżet. Nie szukamy najdroższych rozwiązań, szukamy tych najbardziej zoptymalizowanych.",
+      narrative: [
+        "W IT SMARTCLOUT doświadczenie nauczyło nas jednego: najlepsze rozwiązania rodzą się z wyciągania wniosków. Od dwóch dekad projektujemy infrastrukturę dla polskich przedsiębiorstw — od pierwszych macierzy dyskowych, przez konsolidacje datacenter, po dzisiejsze środowiska hybrydowe i multi-cluster. Każdy zamknięty projekt to lekcja, którą wnosimy do następnego.",
+        "Jako partner NetApp wykraczamy poza standardowe wdrożenia. Posiadamy kompetencje do realizacji najbardziej wymagających projektów, ale naszą prawdziwą wartością dodaną jest uważność na głos klienta. Zanim narysujemy pierwszą linię architektury, rozumiemy Twoje procesy, ludzi, ograniczenia i tempo, w jakim biznes musi się rozwijać.",
+        "Dzięki holistycznemu spojrzeniu na ekosystem IT — sieć, storage, backup, security i business continuity jako jedną całość — projektujemy infrastrukturę szytą na miarę. Taką, która chroni dane, przyspiesza biznes i szanuje budżet. Nie szukamy najdroższych rozwiązań, szukamy tych najbardziej zoptymalizowanych. To różnica, którą widać w każdym z 350+ zrealizowanych wdrożeń.",
+      ],
     },
     trusted: {
       title: "Zaufali nam",
@@ -290,8 +293,11 @@ export const translations = {
             "More than 130 organisations from finance, media, manufacturing, telecommunications, retail and government. Many of our clients return for the next phase of their modernisation — the best recommendation we could ask for.",
         },
       ],
-      narrative:
-        "At IT SMARTCLOUT experience has taught us one thing: the best solutions are born from lessons learned. As a NetApp partner we go beyond standard deployments. We have the competence to deliver the most demanding projects, but our real added value is our attentiveness to the client’s voice. Thanks to a holistic view of the IT ecosystem, we design bespoke infrastructure — one that protects data, accelerates business and respects the budget. We do not chase the most expensive solutions, we chase the most optimised ones.",
+      narrative: [
+        "At IT SMARTCLOUT experience has taught us one thing: the best solutions are born from lessons learned. For two decades we have been designing infrastructure for Polish enterprises — from the first storage arrays, through datacenter consolidations, to today's hybrid and multi-cluster environments. Every closed project is a lesson we carry into the next one.",
+        "As a NetApp partner we go beyond standard deployments. We have the competence to deliver the most demanding projects, but our real added value is our attentiveness to the client's voice. Before we draw the first architectural line, we understand your processes, your people, your constraints and the pace at which the business must evolve.",
+        "Thanks to a holistic view of the IT ecosystem — network, storage, backup, security and business continuity as one — we design bespoke infrastructure. Infrastructure that protects data, accelerates business and respects the budget. We do not chase the most expensive solutions, we chase the most optimised ones. That difference is visible in every one of our 350+ delivered deployments.",
+      ],
     },
     trusted: {
       title: "Trusted by",

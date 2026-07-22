@@ -79,25 +79,35 @@ const PartnersV2Section = () => {
     return list;
   }, []);
 
-  // Random scatter — 10 floating logos. Each slot lives an INDEPENDENT lifecycle
-  // (own duration 1–3s, own delay); tiles fade in/out asynchronously.
-  const SLOT_COUNT = 10;
+  // Random scatter — 8 floating logos on a virtual 2×4 grid (no overlap).
+  // Each slot lives an INDEPENDENT lifecycle (own duration 3.5–6s).
+  const SLOT_COUNT = 8;
+  const GRID_COLS = 2;
+  const GRID_ROWS = 4;
   const tickRef = useRef(0);
-  const makeSlot = (bandIndex) => {
+  const makeSlot = (slotIndex) => {
+    // Pick a random entry from the pool
     const entry = pool[Math.floor(Math.random() * pool.length)];
-    const band = bandIndex / SLOT_COUNT;
-    const y = band * 88 + Math.random() * 6 + 2; // 2..96%
-    const x = 6 + Math.random() * 78;            // 6..84%
-    const rot = (Math.random() - 0.5) * 4;
-    const duration = 1000 + Math.random() * 2000; // 1000–3000 ms visible
+    // Fixed cell in the virtual grid based on slotIndex, with small jitter
+    const col = slotIndex % GRID_COLS;
+    const row = Math.floor(slotIndex / GRID_COLS);
+    const cellW = 100 / GRID_COLS;
+    const cellH = 100 / GRID_ROWS;
+    const cx = col * cellW + cellW / 2;
+    const cy = row * cellH + cellH / 2;
+    // Jitter kept small so tiles never overlap into neighbouring cells
+    const jx = (Math.random() - 0.5) * (cellW * 0.35);
+    const jy = (Math.random() - 0.5) * (cellH * 0.35);
+    const rot = (Math.random() - 0.5) * 3;
+    const duration = 3500 + Math.random() * 2500; // 3.5–6s visible
     tickRef.current += 1;
     return {
-      key: `${tickRef.current}-${bandIndex}-${entry.cat}-${entry.name}`,
-      slotIndex: bandIndex,
+      key: `${tickRef.current}-${slotIndex}-${entry.cat}-${entry.name}`,
+      slotIndex,
       name: entry.name,
       cat: entry.cat,
-      x,
-      y,
+      x: cx + jx,
+      y: cy + jy,
       rot,
       duration,
     };
@@ -109,8 +119,7 @@ const PartnersV2Section = () => {
     if (hasInteracted) return undefined;
     const timeouts = [];
     const cycleSlot = (i) => {
-      // Fade-out margin so animation completes before swap
-      const fadeMargin = 320;
+      const fadeMargin = 400;
       const slot = makeSlot(i);
       setScatter((prev) => {
         const next = prev.slice();
@@ -120,8 +129,8 @@ const PartnersV2Section = () => {
       timeouts[i] = setTimeout(() => cycleSlot(i), slot.duration + fadeMargin);
     };
     for (let i = 0; i < SLOT_COUNT; i++) {
-      // Kick each slot off with its own initial delay so they never sync
-      const initialDelay = 200 + Math.random() * 1400;
+      // Stagger initial kick-off so tiles never sync
+      const initialDelay = 400 + i * 320 + Math.random() * 400;
       timeouts[i] = setTimeout(() => cycleSlot(i), initialDelay);
     }
     return () => timeouts.forEach((t) => clearTimeout(t));
@@ -165,9 +174,9 @@ const PartnersV2Section = () => {
           </p>
         </Reveal>
 
-        <div className="mt-14 md:mt-16 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-start">
+        <div className="mt-14 md:mt-16 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
           {/* Left — rack cabinet with 6 tiles */}
-          <div className="sc-rack" data-testid="rack-cabinet">
+          <div className="sc-rack lg:col-span-5" data-testid="rack-cabinet">
             <div className="sc-rack__frame">
               <div className="sc-rack__head">
                 <span className="sc-rack__pulse" />
@@ -211,7 +220,7 @@ const PartnersV2Section = () => {
           </div>
 
           {/* Right — partners list */}
-          <div className="sc-partners2" data-testid="partners-vendors">
+          <div className="sc-partners2 lg:col-span-7" data-testid="partners-vendors">
             <div className="sc-partners2__head">
               <span className="sc-partners2__kicker">
                 {hasInteracted
