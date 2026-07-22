@@ -8,6 +8,7 @@ import AboutSection from "@/components/sections/AboutSection";
 import TrustedBySection from "@/components/sections/TrustedBySection";
 import PortfolioSection from "@/components/sections/PortfolioSection";
 import SectorsSection from "@/components/sections/SectorsSection";
+import PartnersV2Section from "@/components/sections/PartnersV2Section";
 import PartnersSection from "@/components/sections/PartnersSection";
 import ContactSection from "@/components/sections/ContactSection";
 import SectionDivider from "@/components/SectionDivider";
@@ -16,17 +17,19 @@ const Home = () => (
   <main data-testid="home-main" className="sc-app">
     <Navbar />
     <HeroSection />
-    <SectionDivider id="hero-about"         top="#040709" bottom="#FFFFFF" height={40} />
+    <SectionDivider id="hero-about"         top="#040709" bottom="#FFFFFF" />
     <AboutSection />
-    <SectionDivider id="about-trusted"      top="#FFFFFF" bottom="#F8FAFA" height={40} />
+    <SectionDivider id="about-trusted"      top="#FFFFFF" bottom="#F8FAFA" />
     <TrustedBySection />
-    <SectionDivider id="trusted-portfolio"  top="#F8FAFA" bottom="#FFFFFF" height={40} />
+    <SectionDivider id="trusted-portfolio"  top="#F8FAFA" bottom="#FFFFFF" />
     <PortfolioSection />
-    <SectionDivider id="portfolio-sectors"  top="#FFFFFF" bottom="#FFFFFF" height={30} />
+    <SectionDivider id="portfolio-sectors"  top="#FFFFFF" bottom="#FFFFFF" />
     <SectorsSection />
-    <SectionDivider id="sectors-partners"   top="#FFFFFF" bottom="#F8FAFA" height={40} />
+    <SectionDivider id="sectors-rack"       top="#FFFFFF" bottom="#040709" />
+    <PartnersV2Section />
+    <SectionDivider id="rack-partners"      top="#040709" bottom="#F8FAFA" />
     <PartnersSection />
-    <SectionDivider id="partners-contact"   top="#F8FAFA" bottom="#040709" height={50} />
+    <SectionDivider id="partners-contact"   top="#F8FAFA" bottom="#040709" />
     <ContactSection />
   </main>
 );

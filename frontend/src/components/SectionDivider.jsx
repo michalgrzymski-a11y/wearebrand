@@ -1,19 +1,15 @@
 import React, { useMemo } from "react";
 
 /**
- * SectionDivider — smart transition between two colored sections.
+ * SectionDivider — pixel-dither mosaic OR gradient blend depending on the
+ * luminance contrast between the two adjacent sections.
  *
- * Behaviour depends on the contrast between `top` and `bottom`:
- *  - **High contrast** (dark ↔ light, ≥ 100 luminance delta): renders a
- *    **pixel dither** mosaic — a grid of 48x8 tiny squares that gradually
- *    interleave from `top` color to `bottom` color. Rows in the middle mix
- *    both colors so the eye sees a "bit-pattern" hand-off.
- *  - **Low contrast** (same tone family): renders a soft linear gradient.
+ * Cells render as **perfect squares** (aspect-ratio 1:1); the divider's
+ * total height is derived from the column count so the mosaic always tiles
+ * cleanly across the section width.
  *
- * Props:
- *  - top / bottom : background colors of adjacent sections
- *  - height       : divider height in px
- *  - id           : test id suffix
+ * Hover UX: each cell inverts its color on hover (top→bottom, bottom→top),
+ * giving the pattern a tactile "flip the bit" feel.
  */
 const luminance = (hex) => {
   const h = hex.replace("#", "");
@@ -23,11 +19,10 @@ const luminance = (hex) => {
   return 0.2126 * r + 0.7152 * g + 0.0722 * b;
 };
 
-const COLS = 128;
-const ROWS = 8;
+const COLS = 256;
+const ROWS = 16;
 
 const buildDitherMap = (seed) => {
-  // Deterministic pattern per seed to avoid re-renders shuffling the mosaic.
   const map = new Uint8Array(COLS * ROWS);
   let s = seed >>> 0;
   const rand = () => {
@@ -35,7 +30,6 @@ const buildDitherMap = (seed) => {
     return s / 0xffffffff;
   };
   for (let y = 0; y < ROWS; y++) {
-    // Probability of being `bottom` color grows from row 0 (0) to row ROWS-1 (1)
     const pBottom = y / (ROWS - 1);
     for (let x = 0; x < COLS; x++) {
       map[y * COLS + x] = rand() < pBottom ? 1 : 0;
@@ -44,13 +38,12 @@ const buildDitherMap = (seed) => {
   return map;
 };
 
-const SectionDivider = ({ top, bottom, height = 100, id = "" }) => {
+const SectionDivider = ({ top, bottom, id = "" }) => {
   const contrast = Math.abs(luminance(top) - luminance(bottom));
   const useDither = contrast >= 100;
 
   const map = useMemo(() => {
     if (!useDither) return null;
-    // Seed the mosaic from the colors so it's stable across renders.
     const seed =
       parseInt(top.replace("#", ""), 16) ^
       parseInt(bottom.replace("#", ""), 16);
@@ -63,13 +56,12 @@ const SectionDivider = ({ top, bottom, height = 100, id = "" }) => {
         aria-hidden="true"
         data-testid={id ? `divider-${id}` : "section-divider"}
         className="sc-dither"
-        style={{ height: `${height}px`, aspectRatio: "unset" }}
+        style={{ "--sc-top": top, "--sc-bot": bottom }}
       >
         {Array.from(map).map((v, i) => (
           <span
             key={i}
-            className="sc-dither__cell"
-            style={{ background: v ? bottom : top }}
+            className={`sc-dither__cell ${v ? "is-bot" : "is-top"}`}
           />
         ))}
       </div>
@@ -82,7 +74,7 @@ const SectionDivider = ({ top, bottom, height = 100, id = "" }) => {
       data-testid={id ? `divider-${id}` : "section-divider"}
       className="sc-blend"
       style={{
-        height: `${height}px`,
+        height: `40px`,
         background: `linear-gradient(180deg, ${top} 0%, ${top} 12%, ${bottom} 88%, ${bottom} 100%)`,
       }}
     >

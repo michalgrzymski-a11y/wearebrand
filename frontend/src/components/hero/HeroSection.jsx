@@ -60,8 +60,6 @@ const HeroSection = () => {
         partRef.current.style.transform = `translate3d(${(cx * -8).toFixed(2)}px, ${(scrollY * 0.75).toFixed(1)}px, 0)`;
       if (bracketsRef.current)
         bracketsRef.current.style.transform = `translate3d(0, ${(scrollY * -0.10).toFixed(1)}px, 0)`;
-      if (copyRef.current)
-        copyRef.current.style.transform = `translate3d(0, calc(-50% + ${(scrollY * -0.15).toFixed(1)}px), 0)`;
 
       raf = requestAnimationFrame(loop);
     };
