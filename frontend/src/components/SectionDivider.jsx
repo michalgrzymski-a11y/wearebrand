@@ -23,7 +23,7 @@ const luminance = (hex) => {
   return 0.2126 * r + 0.7152 * g + 0.0722 * b;
 };
 
-const COLS = 48;
+const COLS = 128;
 const ROWS = 8;
 
 const buildDitherMap = (seed) => {

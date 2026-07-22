@@ -578,7 +578,6 @@ const AiAssistant = ({ t, lang }) => {
             placeholder={placeholder}
             className="sc-chat-input"
             data-testid="ai-input"
-            autoFocus
           />
           <button
             type="submit"

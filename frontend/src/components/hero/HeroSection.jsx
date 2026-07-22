@@ -61,7 +61,7 @@ const HeroSection = () => {
       if (bracketsRef.current)
         bracketsRef.current.style.transform = `translate3d(0, ${(scrollY * -0.10).toFixed(1)}px, 0)`;
       if (copyRef.current)
-        copyRef.current.style.transform = `translate3d(0, ${(scrollY * -0.20).toFixed(1)}px, 0)`;
+        copyRef.current.style.transform = `translate3d(0, calc(-50% + ${(scrollY * -0.15).toFixed(1)}px), 0)`;
 
       raf = requestAnimationFrame(loop);
     };
@@ -140,37 +140,35 @@ const HeroSection = () => {
       {/* Scanline overlay */}
       <div className="pointer-events-none absolute inset-0 sc-hero-scan" aria-hidden="true" />
 
-      {/* L5 — copy (floats up slightly on scroll) */}
+      {/* L5 — copy (absolute-centered, floats up slightly on scroll) */}
       <div
         ref={copyRef}
-        className="relative z-20 mx-auto flex w-full max-w-7xl items-center px-6 pb-16 pt-16 md:px-10 md:pt-20"
+        className="sc-hero-copy"
       >
-        <div className="sc-hero-panel">
-          <div className="sc-hero-panel__head">
-            <span className="sc-hero-panel__pulse" />
-            <span className="sc-hero-panel__code">IT SMARTCLOUT · LIVE</span>
-          </div>
-          <h1 data-testid="hero-title" className="sc-hero-title text-white">
-            {t.hero.title_pre}{" "}
-            <span className="sc-hero-accent">{t.hero.title_accent}</span>{" "}
-            {t.hero.title_post}
-          </h1>
+        <div className="mx-auto w-full max-w-7xl">
+          <div className="flex max-w-2xl flex-col">
+            <h1 data-testid="hero-title" className="sc-hero-title text-white">
+              {t.hero.title_pre}{" "}
+              <span className="sc-hero-accent">{t.hero.title_accent}</span>{" "}
+              {t.hero.title_post}
+            </h1>
 
-          <p
-            data-testid="hero-subtitle"
-            className="mt-6 max-w-xl text-base md:text-lg text-white/85"
-          >
-            {t.hero.subtitle}
-          </p>
+            <p
+              data-testid="hero-subtitle"
+              className="mt-6 max-w-xl text-base md:text-lg text-white/85"
+            >
+              {t.hero.subtitle}
+            </p>
 
-          <div className="mt-8 flex flex-wrap items-center gap-3">
-            <a href="#contact" data-testid="hero-cta-primary" className="sc-chat-send">
-              {t.hero.cta_primary}
-              <ArrowRight size={16} strokeWidth={2} />
-            </a>
-            <a href="#portfolio" data-testid="hero-cta-secondary" className="sc-chat-pill">
-              {t.hero.cta_secondary}
-            </a>
+            <div className="mt-8 flex flex-wrap items-center gap-3">
+              <a href="#contact" data-testid="hero-cta-primary" className="sc-btn-glass sc-btn-glass--primary">
+                {t.hero.cta_primary}
+                <ArrowRight size={16} className="transition-transform duration-300" />
+              </a>
+              <a href="#portfolio" data-testid="hero-cta-secondary" className="sc-btn-glass">
+                {t.hero.cta_secondary}
+              </a>
+            </div>
           </div>
         </div>
       </div>

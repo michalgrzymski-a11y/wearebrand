@@ -16,17 +16,17 @@ const Home = () => (
   <main data-testid="home-main" className="sc-app">
     <Navbar />
     <HeroSection />
-    <SectionDivider id="hero-about"         top="#040709" bottom="#FFFFFF" height={140} />
+    <SectionDivider id="hero-about"         top="#040709" bottom="#FFFFFF" height={40} />
     <AboutSection />
-    <SectionDivider id="about-trusted"      top="#FFFFFF" bottom="#F8FAFA" height={80}  />
+    <SectionDivider id="about-trusted"      top="#FFFFFF" bottom="#F8FAFA" height={40} />
     <TrustedBySection />
-    <SectionDivider id="trusted-portfolio"  top="#F8FAFA" bottom="#FFFFFF" height={80}  />
+    <SectionDivider id="trusted-portfolio"  top="#F8FAFA" bottom="#FFFFFF" height={40} />
     <PortfolioSection />
-    <SectionDivider id="portfolio-sectors"  top="#FFFFFF" bottom="#FFFFFF" height={40}  />
+    <SectionDivider id="portfolio-sectors"  top="#FFFFFF" bottom="#FFFFFF" height={30} />
     <SectorsSection />
-    <SectionDivider id="sectors-partners"   top="#FFFFFF" bottom="#F8FAFA" height={80}  />
+    <SectionDivider id="sectors-partners"   top="#FFFFFF" bottom="#F8FAFA" height={40} />
     <PartnersSection />
-    <SectionDivider id="partners-contact"   top="#F8FAFA" bottom="#040709" height={160} />
+    <SectionDivider id="partners-contact"   top="#F8FAFA" bottom="#040709" height={50} />
     <ContactSection />
   </main>
 );
