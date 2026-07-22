@@ -10,6 +10,7 @@ import RackServerSection from "@/components/sections/RackServerSection";
 import TrustedBySection from "@/components/sections/TrustedBySection";
 import PortfolioSection from "@/components/sections/PortfolioSection";
 import TapeLibrarySection from "@/components/sections/TapeLibrarySection";
+import BusinessContinuitySection from "@/components/sections/BusinessContinuitySection";
 import SectorsSection from "@/components/sections/SectorsSection";
 import SwitchSection from "@/components/sections/SwitchSection";
 import PartnersV2Section from "@/components/sections/PartnersV2Section";
@@ -27,6 +28,7 @@ const Home = () => (
     <TrustedBySection />
     <PortfolioSection />
     <TapeLibrarySection />
+    <BusinessContinuitySection />
     <SectorsSection />
     <SwitchSection />
     <PartnersV2Section />

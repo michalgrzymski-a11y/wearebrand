@@ -21,6 +21,7 @@ const SECTION_THEMES = {
   "trusted": "light",
   portfolio: "light",
   "tape-library": "dark",
+  continuity: "light",
   sectors: "light",
   "markets-switch": "dark",
   "partners-rack": "dark",
