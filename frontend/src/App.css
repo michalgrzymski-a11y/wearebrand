@@ -4160,33 +4160,39 @@ body {
   align-items: center;
   gap: 8px;
   opacity: 1;
-  transition: opacity 0.35s ease;
+  transition: opacity 0.25s ease;
 }
-.sc-varray.is-hovered .sc-vbay:not(.is-active) .sc-vbay__compact {
+.sc-varray.is-hovered .sc-vbay .sc-vbay__compact {
   opacity: 0;
+  pointer-events: none;
 }
+.sc-varray.is-hovered .sc-vbay:not(.is-active) .sc-vbay__ridges,
+.sc-varray.is-hovered .sc-vbay:not(.is-active) .sc-vbay__led--on { opacity: 0.4; }
 
 /* Expanded face — visible only when this drive is hovered */
 .sc-vbay__expanded {
   position: absolute;
-  inset: 12px 14px 24px 14px;
+  inset: 12px 18px 16px 18px;
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: 20px;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.4s ease 0.15s;
+  transition: opacity 0.4s ease 0.2s;
 }
 .sc-vbay--value.is-active .sc-vbay__expanded { opacity: 1; }
 .sc-vbay--value.is-active .sc-vbay__handle,
 .sc-vbay--value.is-active .sc-vbay__ridges { opacity: 0; }
+.sc-vbay--value.is-active .sc-vbay__led--on {
+  transform: translateY(-2px);
+}
 .sc-vbay__x-icon {
   flex: 0 0 auto;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 46px;
-  height: 46px;
+  width: 42px;
+  height: 42px;
   border-radius: 10px;
   color: #06FFE0;
   background: rgba(6, 255, 224, 0.14);
@@ -4196,13 +4202,14 @@ body {
   display: flex;
   flex-direction: column;
   gap: 6px;
+  flex: 1 1 auto;
   min-width: 0;
 }
 .sc-vbay__x-name {
   font-family: "Fraunces", "Manrope", serif;
   font-style: italic;
   font-weight: 500;
-  font-size: 20px;
+  font-size: 22px;
   line-height: 1.15;
   color: #ffffff;
   white-space: nowrap;
@@ -4211,11 +4218,11 @@ body {
 }
 .sc-vbay__x-desc {
   font-family: "Manrope", sans-serif;
-  font-size: 13.5px;
+  font-size: 13px;
   line-height: 1.55;
   color: rgba(255, 255, 255, 0.78);
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -4448,13 +4455,18 @@ body {
   display: flex;
   align-items: flex-start;
   gap: 10px;
-  padding: 22px 20px 130px;
+  padding: 12px 20px 20px;
   background:
     repeating-linear-gradient(90deg, rgba(255,255,255,0.015) 0 1px, transparent 1px 8px),
     linear-gradient(180deg, #0a0e12 0%, #05080a 100%);
   position: relative;
-  min-height: 260px;
+  min-height: 110px;
+  overflow: visible;
 }
+.sc-switch {
+  overflow: visible;
+}
+.sc-switch__body { overflow: visible; }
 
 /* Individual port */
 .sc-port {
@@ -4539,23 +4551,23 @@ body {
   background: rgba(255, 255, 255, 0.35);
   border-radius: 1px;
 }
-/* Cable extending downward from the boot toward the label */
+/* Cable extending downward from the boot toward the label (beyond chassis) */
 .sc-port__cable {
   position: absolute;
-  bottom: -108px;
+  bottom: -128px;
   left: 50%;
   transform: translateX(-50%);
-  width: 40px;
-  height: 100px;
+  width: 44px;
+  height: 120px;
   color: #06FFE0;
-  z-index: 2;
+  z-index: 4;
   pointer-events: none;
-  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.5));
+  filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.55));
 }
-/* Label tag hanging under the cable */
+/* Label tag hanging under the cable (below chassis) */
 .sc-port__label {
   position: absolute;
-  bottom: -178px;
+  bottom: -192px;
   left: 50%;
   transform: translateX(-50%);
   padding: 6px 10px;
@@ -4573,7 +4585,7 @@ body {
   line-height: 1.2;
   max-width: 110px;
   width: 110px;
-  z-index: 2;
+  z-index: 4;
   transition: transform 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
 }
 .sc-port__label::before {
@@ -5072,5 +5084,219 @@ body {
   .sc-tapelib__cartridges { min-height: 200px; padding: 8px; }
   .sc-tape__meta { display: none; }
   .sc-tape__x-items li { font-size: 12px; }
+}
+
+
+/* ============================================================
+   TapeLibrary v2 — 4 horizontal DRIVES + LTO cartridges below
+   ============================================================ */
+.sc-tapelib2 { display: flex; flex-direction: column; gap: 32px; }
+
+/* Top row — horizontal tape drives (napędy) */
+.sc-tapelib2__drives {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+.sc-drive {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 0;
+  background: linear-gradient(180deg, #1c232a 0%, #0d1116 55%, #05080a 100%);
+  border: 1px solid rgba(73, 173, 165, 0.22);
+  border-radius: 6px;
+  overflow: hidden;
+  cursor: pointer;
+  text-align: left;
+  color: inherit;
+  transition: border-color 0.35s ease, box-shadow 0.35s ease, transform 0.35s ease;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), inset 0 -1px 0 rgba(0, 0, 0, 0.55);
+}
+.sc-drive:hover, .sc-drive.is-active {
+  border-color: var(--drive-accent, rgba(6, 255, 224, 0.65));
+  transform: translateY(-3px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    0 14px 32px -18px var(--drive-accent, rgba(6, 255, 224, 0.55));
+}
+.sc-drive__strip {
+  height: 4px;
+  background: linear-gradient(90deg, var(--drive-top) 0%, rgba(255, 255, 255, 0) 100%);
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+}
+.sc-drive.is-active .sc-drive__strip { opacity: 1; }
+.sc-drive__head {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 12px 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  background: rgba(0, 0, 0, 0.35);
+}
+.sc-drive__leds { display: flex; gap: 4px; }
+.sc-drive__led { width: 5px; height: 5px; border-radius: 50%; background: #1a1f24; }
+.sc-drive__led--pwr { background: #06FFE0; box-shadow: 0 0 4px rgba(6,255,224,0.7); }
+.sc-drive__led--rw { background: rgba(255, 192, 46, 0.5); }
+.sc-drive.is-active .sc-drive__led--rw { background: #FFC02E; box-shadow: 0 0 4px #FFC02E; animation: sc-varray-blink 0.8s ease-in-out infinite; }
+.sc-drive__code {
+  font-family: "JetBrains Mono", "Manrope", monospace;
+  font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase;
+  color: rgba(232, 244, 245, 0.45);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.sc-drive__slot {
+  height: 20px; margin: 12px 12px 8px;
+  border-radius: 3px;
+  background: linear-gradient(180deg, #05080a 0%, #14181c 100%);
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.7);
+  display: flex; align-items: center;
+  padding: 0 6px;
+}
+.sc-drive__slot-inner {
+  flex: 1 1 auto; height: 8px;
+  background: linear-gradient(90deg, transparent 0%, rgba(6, 255, 224, 0.15) 50%, transparent 100%);
+  border-radius: 1px;
+}
+.sc-drive.is-active .sc-drive__slot-inner {
+  background: linear-gradient(90deg, transparent, var(--drive-accent, rgba(6, 255, 224, 0.5)), transparent);
+  animation: sc-drive-scan 2s linear infinite;
+}
+@keyframes sc-drive-scan {
+  0%   { transform: translateX(-30%); }
+  100% { transform: translateX(30%); }
+}
+.sc-drive__body {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px 14px;
+  flex: 1 1 auto;
+}
+.sc-drive__icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px; border-radius: 8px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(73, 173, 165, 0.2);
+  flex: 0 0 auto;
+  transition: color 0.28s ease;
+}
+.sc-drive__title {
+  font-family: "Fraunces", "Manrope", serif;
+  font-style: italic; font-weight: 500; font-size: 17px;
+  line-height: 1.15;
+  color: #ffffff;
+}
+.sc-drive__foot {
+  display: flex; gap: 4px;
+  padding: 4px 12px 8px;
+  background: rgba(0, 0, 0, 0.35);
+}
+.sc-drive__vent {
+  flex: 1 1 auto; height: 3px; border-radius: 1px;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+/* Bottom row — LTO cartridges of the active drive */
+.sc-tapelib2__tapes {
+  display: flex; flex-direction: column; gap: 16px;
+  padding: 22px 24px;
+  background: linear-gradient(180deg, rgba(6, 255, 224, 0.02), rgba(3, 63, 72, 0.2));
+  border: 1px solid rgba(73, 173, 165, 0.18);
+  border-radius: 8px;
+}
+.sc-tapelib2__tapes-head { display: flex; align-items: center; gap: 12px; }
+.sc-tapelib2__tapes-kicker {
+  font-family: "JetBrains Mono", "Manrope", monospace;
+  font-size: 10px; letter-spacing: 0.28em; text-transform: uppercase;
+  color: rgba(6, 255, 224, 0.75);
+}
+.sc-tapelib2__tapes-title {
+  font-family: "Fraunces", "Manrope", serif;
+  font-style: italic; font-weight: 500; font-size: 20px;
+  color: #ffffff;
+}
+.sc-tapelib2__tapes-line { flex: 1 1 auto; height: 1px; background: linear-gradient(90deg, rgba(6,255,224,0.45), rgba(6,255,224,0)); }
+.sc-tapelib2__tapes-row {
+  display: flex; flex-wrap: wrap; gap: 14px;
+}
+.sc-lto {
+  position: relative;
+  width: 130px; height: 92px;
+  border-radius: 4px;
+  background: linear-gradient(180deg, #1a1f24 0%, #0a0e12 100%);
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.6),
+    0 6px 14px -6px rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+  padding: 6px 8px 8px;
+  display: flex; flex-direction: column; justify-content: space-between;
+  opacity: 0;
+  animation: sc-lto-in 0.45s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+  transition: transform 0.28s ease, box-shadow 0.28s ease;
+}
+.sc-lto:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 12px 22px -6px rgba(0, 0, 0, 0.7);
+}
+@keyframes sc-lto-in {
+  0%   { opacity: 0; transform: translateY(6px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.sc-lto__top {
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 12px;
+  background: var(--lto-top, #06FFE0);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+  box-shadow: inset 0 -3px 6px rgba(0, 0, 0, 0.25);
+}
+.sc-lto__label {
+  margin-top: 14px;
+  background: #F4F1E8;
+  border-radius: 2px;
+  padding: 4px 6px;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.35);
+  display: flex; flex-direction: column; gap: 2px;
+  min-height: 30px;
+}
+.sc-lto__label-tag {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 8px; letter-spacing: 0.16em;
+  color: rgba(28, 40, 51, 0.55);
+  text-transform: uppercase;
+}
+.sc-lto__label-name {
+  font-family: "Manrope", sans-serif;
+  font-size: 10.5px; font-weight: 700; letter-spacing: 0.02em;
+  color: #1C2833;
+  line-height: 1.2;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.sc-lto__hub {
+  position: absolute; bottom: 10px; right: 12px;
+  width: 18px; height: 18px; border-radius: 50%;
+  background: radial-gradient(circle at 40% 40%, #2a343e 0%, #0a0e12 70%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 0 0 3px rgba(0, 0, 0, 0.35);
+}
+.sc-lto__notch {
+  position: absolute; bottom: 0; left: 20px;
+  width: 12px; height: 4px;
+  background: rgba(0, 0, 0, 0.65);
+  border-radius: 1px 1px 0 0;
+}
+
+@media (max-width: 900px) {
+  .sc-tapelib2__drives { grid-template-columns: repeat(2, 1fr); }
+  .sc-lto { width: 110px; height: 82px; }
+}
+@media (max-width: 600px) {
+  .sc-tapelib2__drives { grid-template-columns: 1fr; }
+  .sc-tapelib2__tapes { padding: 16px; }
+  .sc-lto { width: 100px; height: 76px; }
 }
 

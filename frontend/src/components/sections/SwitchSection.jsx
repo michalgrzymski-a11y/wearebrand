@@ -87,7 +87,7 @@ const SwitchSection = () => {
         }}
       />
 
-      <div className="relative z-10 mx-auto max-w-7xl px-6 md:px-10 py-14 md:py-20">
+      <div className="relative z-10 mx-auto max-w-7xl px-6 md:px-10 py-14 md:py-20 pb-56 md:pb-64">
         <Reveal>
           <div
             className="flex items-center gap-4 text-[11px] uppercase tracking-[0.32em]"
@@ -220,37 +220,7 @@ const SwitchSection = () => {
           </div>
         </div>
 
-        {/* Sector detail — appears on hover / click as extra copy */}
-        <div
-          data-testid="switch-info"
-          className={`sc-vinfo ${active ? "is-open" : ""}`}
-        >
-          {active ? (
-            <div className="sc-vinfo__inner">
-              <div className="sc-vinfo__kicker">
-                {lang === "pl" ? "Port aktywny" : "Active port"}
-                <span className="sc-vinfo__blink" aria-hidden="true" />
-              </div>
-              <div
-                data-testid="switch-info-name"
-                className="sc-vinfo__name"
-              >
-                {active.name}
-              </div>
-              <p
-                data-testid="switch-info-desc"
-                className="sc-vinfo__desc"
-              >
-                {active.desc}
-              </p>
-            </div>
-          ) : (
-            <div className="sc-vinfo__idle" data-testid="switch-info-idle">
-              <span className="sc-vinfo__blink" aria-hidden="true" />
-              {copy.idle_hint}
-            </div>
-          )}
-        </div>
+        {/* Info panel removed — cable labels already carry the sector names. */}
       </div>
     </section>
   );

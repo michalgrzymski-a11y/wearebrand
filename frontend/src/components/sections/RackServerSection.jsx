@@ -1,59 +1,59 @@
 import React, { useState } from "react";
 import { useLang } from "@/i18n/LanguageContext";
 import {
-  ClipboardList,
-  DraftingCompass,
-  FlaskConical,
-  Rocket,
-  Wrench,
-  TrendingUp,
+  Award,
+  ShieldCheck,
+  GraduationCap,
+  Zap,
+  UsersRound,
+  BarChart3,
 } from "lucide-react";
 import Reveal from "@/components/Reveal";
 import useSectionParallax from "@/hooks/useSectionParallax";
 
 /**
  * RackServerSection — vertical stack of 6 × 1U rack servers.
- * Each server represents one phase of our project lifecycle with a client.
- * Hover a server → the row expands in place, revealing the phase name and
- * a short copy inside the same rack unit. Other rows compress.
+ * Each server represents a certification / competency tier of our team.
+ * Hover a server → the row expands in place, revealing the badge name
+ * + a short copy inside the same rack unit.
  */
 
 const PHASES = [
-  { id: "audit",    Icon: ClipboardList,   u: 1 },
-  { id: "design",   Icon: DraftingCompass, u: 2 },
-  { id: "poc",      Icon: FlaskConical,    u: 3 },
-  { id: "deploy",   Icon: Rocket,          u: 4 },
-  { id: "operate",  Icon: Wrench,          u: 5 },
-  { id: "grow",     Icon: TrendingUp,      u: 6 },
+  { id: "netapp",     Icon: Award,          u: 1 },
+  { id: "vmware",     Icon: ShieldCheck,    u: 2 },
+  { id: "cisco",      Icon: GraduationCap,  u: 3 },
+  { id: "microsoft",  Icon: Zap,            u: 4 },
+  { id: "dell",       Icon: UsersRound,     u: 5 },
+  { id: "audit",      Icon: BarChart3,      u: 6 },
 ];
 
 const COPY = {
   pl: {
-    section_label: "Cykl życia projektu",
-    title:         "Sześć rackowych jednostek. Jedna historia współpracy.",
-    subtitle:      "Nasze projekty są długoterminowe. Najedź na wybraną fazę, aby zobaczyć co dokładnie robimy dla Ciebie w tym etapie.",
-    chassis_code:  "SC · 6U · LIFECYCLE",
+    section_label: "Kompetencje i certyfikaty",
+    title:         "Sześć jednostek. Sześć poziomów potwierdzonej wiedzy.",
+    subtitle:      "Nasz zespół nie uczy się na Twoim projekcie. Najedź na jednostkę, aby zobaczyć poziom naszych certyfikacji.",
+    chassis_code:  "SC · 6U · CERTS",
     phases: {
-      audit:   { name: "Audyt & Analiza",           desc: "Zaczynamy od słuchania. Analizujemy Twoje procesy, ograniczenia i cele, potem inwentaryzujemy infrastrukturę i identyfikujemy ryzyka." },
-      design:  { name: "Projekt architektury",      desc: "Projektujemy rozwiązanie szyte na miarę — dokument HLD/LLD, dobór warstw, kalkulacja TCO i harmonogram wdrożenia." },
-      poc:     { name: "PoC & Testy",               desc: "Zanim wydasz jedną złotówkę, sprawdzamy założenia w środowisku testowym. Realne obciążenia, realne dane, realne wyniki." },
-      deploy:  { name: "Wdrożenie",                 desc: "Wdrażamy zgodnie z projektem, ale zawsze z buforem na rzeczywistość. Migracja z zerowym oknem serwisowym tam, gdzie to możliwe." },
-      operate: { name: "Utrzymanie & Serwis",       desc: "Codzienne operacje, monitoring 24/7, patch management, plany DR. Twoje IT po prostu działa — bez zaskoczeń." },
-      grow:    { name: "Optymalizacja & Rozwój",    desc: "Regularne przeglądy, optymalizacja kosztów, roadmap kolejnych etapów. Rośniemy razem z Twoim biznesem." },
+      netapp:    { name: "NetApp Certified",         desc: "Zespół z certyfikacjami NCDA, NCIE Data Protection i NCIE SAN. Referencyjne wdrożenia ONTAP, ASA, StorageGRID." },
+      vmware:    { name: "VMware VCP / VCAP",        desc: "Certyfikowani architekci VMware — vSphere, vSAN i NSX. Doświadczenie w środowiskach multi-cluster i stretched." },
+      cisco:     { name: "Cisco CCNP / CCIE",        desc: "Inżynierowie z uprawnieniami CCNP DC, Enterprise i Security. Nexus, Catalyst, ISE, Meraki." },
+      microsoft: { name: "Microsoft Solutions Partner", desc: "Solutions Partner w obszarach Infrastructure, Data & AI oraz Modern Work. Wdrożenia Azure, M365, Entra ID." },
+      dell:      { name: "Dell Titanium Partner",    desc: "Najwyższy tier partnerski Dell — pełne portfolio PowerEdge, PowerStore, PowerMax i VxRail bezpośrednio z fabryki." },
+      audit:     { name: "Audyty i compliance",      desc: "Zespół z uprawnieniami do audytów KRI, KSC, dyrektyw UE i standardów ISO 27001 oraz PCI DSS." },
     },
   },
   en: {
-    section_label: "Project lifecycle",
-    title:         "Six rack units. One partnership story.",
-    subtitle:      "Our projects are long-term. Hover a phase to see exactly what we do for you at that stage.",
-    chassis_code:  "SC · 6U · LIFECYCLE",
+    section_label: "Competencies & certifications",
+    title:         "Six units. Six levels of proven expertise.",
+    subtitle:      "Our team doesn't learn on your project. Hover a unit to see the depth of our certifications.",
+    chassis_code:  "SC · 6U · CERTS",
     phases: {
-      audit:   { name: "Audit & Analysis",         desc: "We start by listening. We analyse your processes, constraints and goals, then inventory the infrastructure and identify the risks." },
-      design:  { name: "Architecture Design",      desc: "We design a bespoke solution — HLD/LLD documents, layer selection, TCO calculation and rollout plan." },
-      poc:     { name: "PoC & Testing",            desc: "Before you spend a złoty, we validate assumptions in a test environment. Real workloads, real data, real results." },
-      deploy:  { name: "Deployment",               desc: "We deploy per design, always with a buffer for reality. Zero-downtime migration wherever possible." },
-      operate: { name: "Operations & Support",     desc: "Daily operations, 24/7 monitoring, patch management, DR plans. Your IT just works — no surprises." },
-      grow:    { name: "Optimization & Growth",    desc: "Regular reviews, cost optimization, roadmap for the next phases. We grow together with your business." },
+      netapp:    { name: "NetApp Certified",           desc: "Team with NCDA, NCIE Data Protection and NCIE SAN certifications. Reference ONTAP, ASA and StorageGRID deployments." },
+      vmware:    { name: "VMware VCP / VCAP",          desc: "Certified VMware architects — vSphere, vSAN and NSX. Experience with multi-cluster and stretched environments." },
+      cisco:     { name: "Cisco CCNP / CCIE",          desc: "Engineers with CCNP DC, Enterprise and Security. Nexus, Catalyst, ISE and Meraki experts." },
+      microsoft: { name: "Microsoft Solutions Partner",desc: "Solutions Partner in Infrastructure, Data & AI and Modern Work. Azure, M365 and Entra ID deployments." },
+      dell:      { name: "Dell Titanium Partner",      desc: "Dell's highest partner tier — full PowerEdge, PowerStore, PowerMax and VxRail portfolio direct from the factory." },
+      audit:     { name: "Audits & compliance",        desc: "Team qualified for KRI, KSC, EU directive audits and ISO 27001 / PCI DSS standards." },
     },
   },
 };
@@ -66,7 +66,7 @@ const RackServerSection = () => {
 
   return (
     <section
-      id="lifecycle"
+      id="certifications"
       data-testid="lifecycle-section"
       ref={parallaxRef}
       className="relative w-full overflow-hidden"
