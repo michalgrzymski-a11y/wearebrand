@@ -37,7 +37,7 @@ const SectorsSection = () => {
       className="relative w-full overflow-hidden"
       style={{ background: "#FFFFFF", color: "#1C2833" }}
     >
-      <div className="relative z-10 mx-auto max-w-7xl px-6 md:px-10 py-24 md:py-32">
+      <div className="relative z-10 mx-auto max-w-7xl px-6 md:px-10 py-14 md:py-20">
         <Reveal>
           <div
             className="flex items-center gap-4 text-[11px] uppercase tracking-[0.32em]"

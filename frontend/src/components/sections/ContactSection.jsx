@@ -34,7 +34,7 @@ const ContactSection = () => {
         </div>
       </div>
 
-      <div className="relative z-10 mx-auto max-w-7xl px-6 md:px-10 py-24 md:py-32">
+      <div className="relative z-10 mx-auto max-w-7xl px-6 md:px-10 py-14 md:py-20">
         <div className="flex items-center gap-4 text-[11px] uppercase tracking-[0.32em] text-[#7CC4C0]">
           <span className="inline-block h-px w-10 bg-[#49ADA5]" />
           {t.contact.section_label}

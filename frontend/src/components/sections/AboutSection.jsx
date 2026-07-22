@@ -195,7 +195,7 @@ const AboutSection = () => {
         </div>
       </div>
 
-      <div className="relative z-10 mx-auto max-w-7xl px-6 md:px-10 py-24 md:py-32">
+      <div className="relative z-10 mx-auto max-w-7xl px-6 md:px-10 py-14 md:py-20">
         {/* 1. Section label */}
         <Reveal>
           <div

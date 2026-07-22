@@ -18,7 +18,7 @@ const PortfolioSection = () => {
       className="relative w-full overflow-hidden"
       style={{ background: "#FFFFFF", color: "#1C2833" }}
     >
-      <div className="relative z-10 mx-auto max-w-7xl px-6 md:px-10 py-24 md:py-32">
+      <div className="relative z-10 mx-auto max-w-7xl px-6 md:px-10 py-14 md:py-20">
         <div className="mb-14 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
           <div>
             <div
