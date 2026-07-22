@@ -4,17 +4,22 @@ import { ArrowRight } from "lucide-react";
 
 /**
  * Hero — cinematic datacenter photograph as full-bleed background.
- *  Animations:
- *    - Ken-Burns slow zoom + drift on the image
- *    - Mouse parallax (translates the image by a few px in the opposite direction)
- *    - Sweep light gradient traversing the image
- *    - Floating data-packet dots overlay drifting to the right
- *    - Scanline overlay + corner brackets
+ *  Multi-layer parallax (mouse + scroll):
+ *    - L0 photo (Ken-Burns + mouse drift + scroll 0.35x)
+ *    - L1 neon horizon lines (scroll 0.55x)
+ *    - L2 sweep light (mouse 0.6x)
+ *    - L3 particles (scroll 0.75x + drift)
+ *    - L4 corner brackets (scroll -0.10x — anti-parallax, fixed feel)
+ *    - L5 copy (scroll -0.20x — floats up slightly on scroll)
  */
 const HeroSection = () => {
   const { t } = useLang();
-  const imgRef = useRef(null);
   const heroRef = useRef(null);
+  const imgRef = useRef(null);
+  const neonRef = useRef(null);
+  const partRef = useRef(null);
+  const bracketsRef = useRef(null);
+  const copyRef = useRef(null);
 
   useEffect(() => {
     const hero = heroRef.current;
@@ -23,25 +28,40 @@ const HeroSection = () => {
 
     let raf = 0;
     let tx = 0, ty = 0, cx = 0, cy = 0;
+    let scrollY = 0;
 
     const onMove = (e) => {
       const r = hero.getBoundingClientRect();
       tx = ((e.clientX - r.left) / r.width - 0.5) * 2;
       ty = ((e.clientY - r.top) / r.height - 0.5) * 2;
     };
-    const onLeave = () => {
-      tx = 0;
-      ty = 0;
-    };
+    const onLeave = () => { tx = 0; ty = 0; };
+    const onScroll = () => { scrollY = window.scrollY || 0; };
+
     hero.addEventListener("mousemove", onMove);
     hero.addEventListener("mouseleave", onLeave);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
 
     const loop = () => {
       cx += (tx - cx) * 0.04;
       cy += (ty - cy) * 0.04;
-      // Parallax translation on top of the CSS keyframe animation.
+
+      // Mouse parallax on the photo
       img.style.setProperty("--sc-px", `${(-cx * 12).toFixed(2)}px`);
       img.style.setProperty("--sc-py", `${(-cy * 8).toFixed(2)}px`);
+
+      // Scroll parallax — each layer at a different speed
+      img.style.setProperty("--sc-scroll", `${(scrollY * 0.35).toFixed(1)}px`);
+      if (neonRef.current)
+        neonRef.current.style.transform = `translate3d(${(cx * -6).toFixed(2)}px, ${(scrollY * 0.55).toFixed(1)}px, 0)`;
+      if (partRef.current)
+        partRef.current.style.transform = `translate3d(${(cx * -8).toFixed(2)}px, ${(scrollY * 0.75).toFixed(1)}px, 0)`;
+      if (bracketsRef.current)
+        bracketsRef.current.style.transform = `translate3d(0, ${(scrollY * -0.10).toFixed(1)}px, 0)`;
+      if (copyRef.current)
+        copyRef.current.style.transform = `translate3d(0, ${(scrollY * -0.20).toFixed(1)}px, 0)`;
+
       raf = requestAnimationFrame(loop);
     };
     loop();
@@ -50,6 +70,7 @@ const HeroSection = () => {
       cancelAnimationFrame(raf);
       hero.removeEventListener("mousemove", onMove);
       hero.removeEventListener("mouseleave", onLeave);
+      window.removeEventListener("scroll", onScroll);
     };
   }, []);
 
@@ -61,7 +82,7 @@ const HeroSection = () => {
       className="relative w-full overflow-hidden sc-hero"
       style={{ background: "#040709" }}
     >
-      {/* Background image — animated Ken Burns + parallax */}
+      {/* L0 — background photo with Ken Burns + mouse + scroll parallax */}
       <div className="absolute inset-0 sc-hero-photo-wrap" data-testid="hero-photo">
         <div
           ref={imgRef}
@@ -70,9 +91,26 @@ const HeroSection = () => {
         />
       </div>
 
-      {/* Sweep light + floating particles overlay */}
+      {/* L1 — neon horizon lines (mid-depth) */}
+      <div
+        ref={neonRef}
+        className="pointer-events-none absolute inset-0 sc-hero-neon"
+        aria-hidden="true"
+      >
+        <span className="sc-hero-neon__line sc-hero-neon__line--a" />
+        <span className="sc-hero-neon__line sc-hero-neon__line--b" />
+        <span className="sc-hero-neon__line sc-hero-neon__line--c" />
+      </div>
+
+      {/* L2 — sweep light */}
       <div className="pointer-events-none absolute inset-0 sc-hero-sweep" aria-hidden="true" />
-      <div className="pointer-events-none absolute inset-0 sc-hero-particles" aria-hidden="true">
+
+      {/* L3 — floating data particles */}
+      <div
+        ref={partRef}
+        className="pointer-events-none absolute inset-0 sc-hero-particles"
+        aria-hidden="true"
+      >
         {Array.from({ length: 24 }).map((_, i) => (
           <span key={i} className="sc-hero-particle" style={{
             top: `${(i * 4.13) % 100}%`,
@@ -87,17 +125,22 @@ const HeroSection = () => {
       {/* Readability gradient over the whole scene */}
       <div className="pointer-events-none absolute inset-0 sc-hero-photo-readable" aria-hidden="true" />
 
-      {/* Corner tech brackets */}
-      <div className="sc-hero-bracket sc-hero-bracket--tl" aria-hidden="true" />
-      <div className="sc-hero-bracket sc-hero-bracket--tr" aria-hidden="true" />
-      <div className="sc-hero-bracket sc-hero-bracket--bl" aria-hidden="true" />
-      <div className="sc-hero-bracket sc-hero-bracket--br" aria-hidden="true" />
+      {/* L4 — corner tech brackets */}
+      <div ref={bracketsRef} className="pointer-events-none absolute inset-0" aria-hidden="true">
+        <div className="sc-hero-bracket sc-hero-bracket--tl" />
+        <div className="sc-hero-bracket sc-hero-bracket--tr" />
+        <div className="sc-hero-bracket sc-hero-bracket--bl" />
+        <div className="sc-hero-bracket sc-hero-bracket--br" />
+      </div>
 
       {/* Scanline overlay */}
       <div className="pointer-events-none absolute inset-0 sc-hero-scan" aria-hidden="true" />
 
-      {/* Copy */}
-      <div className="relative z-10 mx-auto flex w-full max-w-7xl items-center px-6 pb-16 pt-16 md:px-10 md:pt-20">
+      {/* L5 — copy (floats up slightly on scroll) */}
+      <div
+        ref={copyRef}
+        className="relative z-10 mx-auto flex w-full max-w-7xl items-center px-6 pb-16 pt-16 md:px-10 md:pt-20"
+      >
         <div className="flex max-w-2xl flex-col">
           <h1 data-testid="hero-title" className="sc-hero-title text-white">
             {t.hero.title_pre}{" "}

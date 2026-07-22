@@ -110,6 +110,30 @@ export const translations = {
       title: "Współpracujemy z liderami technologii",
       netapp_badge: "Partner NetApp",
     },
+    support_chat: {
+      section_label: "AI Serwis 24/7",
+      title: "Zapytaj o serwis, utrzymanie lub wynajem",
+      subtitle:
+        "Asystent AI odpowie na pytania o naszych kompetencjach, czasie reakcji, usługach utrzymania w Twoim datacenter oraz wynajmie sprzętu. Prawdziwy inżynier odezwie się w ciągu 24 godzin.",
+      badges: ["Kompetencje", "Szybka reakcja", "Serwis on-site", "Wynajem sprzętu"],
+      pills: [
+        { id: "sla",        label: "Jaki macie czas reakcji?" },
+        { id: "onsite",     label: "Utrzymanie w moim DC?" },
+        { id: "rental",     label: "Wynajem macierzy NetApp" },
+        { id: "netapp",     label: "Certyfikacje NetApp" },
+        { id: "monitoring", label: "Monitoring 24/7" },
+        { id: "dr",         label: "Disaster Recovery" },
+      ],
+      placeholder: "Zadaj własne pytanie — kompetencje, reakcja, serwis, wynajem…",
+      send: "Wyślij",
+      thinking: "Analizuję…",
+      greeting:
+        "Dzień dobry. Jestem asystentem serwisu IT SMARTCLOUT. Zapytaj mnie o kompetencje, czas reakcji, utrzymanie infrastruktury w Twoim datacenter lub wynajem sprzętu.",
+      you: "Ty",
+      assistant: "SmartClout AI",
+      pill_hint: "Szybkie pytania:",
+      error: "Chwilowy problem z asystentem. Odezwij się przez formularz kontaktowy.",
+    },
     contact: {
       section_label: "Kontakt",
       title: "Porozmawiajmy o Twojej infrastrukturze",
@@ -255,6 +279,30 @@ export const translations = {
       section_label: "Strategic partners",
       title: "We collaborate with technology leaders",
       netapp_badge: "NetApp partner",
+    },
+    support_chat: {
+      section_label: "AI Service 24/7",
+      title: "Ask about service, maintenance or rental",
+      subtitle:
+        "The AI assistant answers questions about our competencies, response time, on-site maintenance in your datacenter and equipment rental. A real engineer replies within 24 hours.",
+      badges: ["Competencies", "Fast response", "On-site service", "Equipment rental"],
+      pills: [
+        { id: "sla",        label: "What is your response time?" },
+        { id: "onsite",     label: "On-site maintenance in my DC?" },
+        { id: "rental",     label: "NetApp storage rental" },
+        { id: "netapp",     label: "NetApp certifications" },
+        { id: "monitoring", label: "24/7 monitoring" },
+        { id: "dr",         label: "Disaster Recovery" },
+      ],
+      placeholder: "Ask a custom question — competencies, response, service, rental…",
+      send: "Send",
+      thinking: "Analysing…",
+      greeting:
+        "Hello. I'm the IT SMARTCLOUT service assistant. Ask me about our competencies, response time, on-site maintenance or equipment rental.",
+      you: "You",
+      assistant: "SmartClout AI",
+      pill_hint: "Quick questions:",
+      error: "Temporary problem with the assistant. Please reach out via the contact form.",
     },
     contact: {
       section_label: "Contact",
