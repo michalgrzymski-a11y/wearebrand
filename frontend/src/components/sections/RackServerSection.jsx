@@ -1,59 +1,44 @@
 import React, { useState } from "react";
 import { useLang } from "@/i18n/LanguageContext";
-import {
-  Award,
-  ShieldCheck,
-  GraduationCap,
-  Zap,
-  UsersRound,
-  BarChart3,
-} from "lucide-react";
+import { Cpu, MemoryStick, HardDrive, Network, PlugZap, ShieldCheck } from "lucide-react";
 import Reveal from "@/components/Reveal";
 import useSectionParallax from "@/hooks/useSectionParallax";
 
 /**
- * RackServerSection — vertical stack of 6 × 1U rack servers.
- * Each server represents a certification / competency tier of our team.
- * Hover a server → the row expands in place, revealing the badge name
- * + a short copy inside the same rack unit.
+ * RackServerSection — top-down view of an OPEN 2U server chassis.
+ * Each internal component (CPU, RAM, drives, NIC, PSU, chassis) is clickable
+ * and represents a value proposition of refabricated hardware.
  */
-
-const PHASES = [
-  { id: "netapp",     Icon: Award,          u: 1 },
-  { id: "vmware",     Icon: ShieldCheck,    u: 2 },
-  { id: "cisco",      Icon: GraduationCap,  u: 3 },
-  { id: "microsoft",  Icon: Zap,            u: 4 },
-  { id: "dell",       Icon: UsersRound,     u: 5 },
-  { id: "audit",      Icon: BarChart3,      u: 6 },
-];
 
 const COPY = {
   pl: {
-    section_label: "Kompetencje i certyfikaty",
-    title:         "Sześć jednostek. Sześć poziomów potwierdzonej wiedzy.",
-    subtitle:      "Nasz zespół nie uczy się na Twoim projekcie. Najedź na jednostkę, aby zobaczyć poziom naszych certyfikacji.",
-    chassis_code:  "SC · 6U · CERTS",
-    phases: {
-      netapp:    { name: "NetApp Certified",         desc: "Zespół z certyfikacjami NCDA, NCIE Data Protection i NCIE SAN. Referencyjne wdrożenia ONTAP, ASA, StorageGRID." },
-      vmware:    { name: "VMware VCP / VCAP",        desc: "Certyfikowani architekci VMware — vSphere, vSAN i NSX. Doświadczenie w środowiskach multi-cluster i stretched." },
-      cisco:     { name: "Cisco CCNP / CCIE",        desc: "Inżynierowie z uprawnieniami CCNP DC, Enterprise i Security. Nexus, Catalyst, ISE, Meraki." },
-      microsoft: { name: "Microsoft Solutions Partner", desc: "Solutions Partner w obszarach Infrastructure, Data & AI oraz Modern Work. Wdrożenia Azure, M365, Entra ID." },
-      dell:      { name: "Dell Titanium Partner",    desc: "Najwyższy tier partnerski Dell — pełne portfolio PowerEdge, PowerStore, PowerMax i VxRail bezpośrednio z fabryki." },
-      audit:     { name: "Audyty i compliance",      desc: "Zespół z uprawnieniami do audytów KRI, KSC, dyrektyw UE i standardów ISO 27001 oraz PCI DSS." },
+    section_label: "Sprzęt refabrykowany",
+    title:         "Zajrzyj do środka. Każdy komponent ma swoją wartość.",
+    subtitle:      "Kliknij komponent, aby zobaczyć dlaczego refabrykowany sprzęt to rozsądny wybór — technicznie i finansowo.",
+    chassis_code:  "SC · 2U · REFAB HW",
+    idle_hint:     "Kliknij lub najedź na komponent, aby zobaczyć jego wartość",
+    parts: {
+      cpu:    { name: "Procesor",           desc: "Refabrykowane Xeon Gold i Silver z pełną wydajnością. Ta sama wydajność co nowe, za 40–60% ceny." },
+      ram:    { name: "Pamięć RAM",         desc: "DIMM-y ECC z certyfikatem producenta, przetestowane i gotowe do produkcji. Bez kompromisów jakościowych." },
+      drive:  { name: "Dyski",              desc: "SSD SAS/NVMe i HDD enterprise — od ręki, w Twojej konfiguracji, z gwarancją SMART." },
+      nic:    { name: "Karty sieciowe",     desc: "10/25/100G Intel, Broadcom, Mellanox — kompatybilność end-to-end sprawdzona w naszym labie." },
+      psu:    { name: "Zasilacze",          desc: "Redundantne PSU 80+ Platinum — niższe koszty energii i pełna niezawodność w każdym scenariuszu." },
+      chassis:{ name: "Chassis & gwarancja",desc: "12–36 miesięcy gwarancji SMARTCLOUT, dostępność części zamiennych, wsparcie inżynierskie w Polsce." },
     },
   },
   en: {
-    section_label: "Competencies & certifications",
-    title:         "Six units. Six levels of proven expertise.",
-    subtitle:      "Our team doesn't learn on your project. Hover a unit to see the depth of our certifications.",
-    chassis_code:  "SC · 6U · CERTS",
-    phases: {
-      netapp:    { name: "NetApp Certified",           desc: "Team with NCDA, NCIE Data Protection and NCIE SAN certifications. Reference ONTAP, ASA and StorageGRID deployments." },
-      vmware:    { name: "VMware VCP / VCAP",          desc: "Certified VMware architects — vSphere, vSAN and NSX. Experience with multi-cluster and stretched environments." },
-      cisco:     { name: "Cisco CCNP / CCIE",          desc: "Engineers with CCNP DC, Enterprise and Security. Nexus, Catalyst, ISE and Meraki experts." },
-      microsoft: { name: "Microsoft Solutions Partner",desc: "Solutions Partner in Infrastructure, Data & AI and Modern Work. Azure, M365 and Entra ID deployments." },
-      dell:      { name: "Dell Titanium Partner",      desc: "Dell's highest partner tier — full PowerEdge, PowerStore, PowerMax and VxRail portfolio direct from the factory." },
-      audit:     { name: "Audits & compliance",        desc: "Team qualified for KRI, KSC, EU directive audits and ISO 27001 / PCI DSS standards." },
+    section_label: "Refabricated hardware",
+    title:         "Look inside. Every component has a value.",
+    subtitle:      "Click a component to see why refabricated hardware is a smart choice — technically and financially.",
+    chassis_code:  "SC · 2U · REFAB HW",
+    idle_hint:     "Click or hover a component to see its value",
+    parts: {
+      cpu:    { name: "Processor",         desc: "Refabricated Xeon Gold and Silver with full performance. Same performance as new, at 40–60% of the price." },
+      ram:    { name: "Memory (RAM)",      desc: "ECC DIMMs certified by the vendor, tested and production-ready. No quality compromises." },
+      drive:  { name: "Drives",            desc: "Enterprise SAS/NVMe SSDs and HDDs — off-the-shelf, in your configuration, with SMART warranty." },
+      nic:    { name: "Network cards",     desc: "10/25/100G Intel, Broadcom, Mellanox — end-to-end compatibility validated in our lab." },
+      psu:    { name: "Power supplies",    desc: "Redundant 80+ Platinum PSUs — lower energy costs and full reliability in every scenario." },
+      chassis:{ name: "Chassis & warranty",desc: "12–36 months SMARTCLOUT warranty, spare parts availability and engineering support in Poland." },
     },
   },
 };
@@ -61,12 +46,13 @@ const COPY = {
 const RackServerSection = () => {
   const { lang } = useLang();
   const copy = COPY[lang] || COPY.pl;
-  const [hovered, setHovered] = useState(null);
+  const [active, setActive] = useState(null);
   const parallaxRef = useSectionParallax();
+  const current = active ? copy.parts[active] : null;
 
   return (
     <section
-      id="certifications"
+      id="hardware"
       data-testid="lifecycle-section"
       ref={parallaxRef}
       className="relative w-full overflow-hidden"
@@ -77,116 +63,178 @@ const RackServerSection = () => {
         className="absolute inset-0 opacity-70 pointer-events-none"
         style={{
           background:
-            "radial-gradient(60% 55% at 15% 40%, rgba(6, 255, 224, 0.05) 0%, rgba(6, 255, 224, 0) 60%)," +
-            " radial-gradient(50% 60% at 85% 60%, rgba(6, 184, 212, 0.05) 0%, rgba(6, 184, 212, 0) 60%)",
+            "radial-gradient(60% 55% at 20% 30%, rgba(6,255,224,0.05) 0%, rgba(6,255,224,0) 60%)," +
+            " radial-gradient(50% 60% at 80% 70%, rgba(6,184,212,0.05) 0%, rgba(6,184,212,0) 60%)",
         }}
       />
 
       <div className="relative z-10 mx-auto max-w-7xl px-6 md:px-10 py-14 md:py-20">
         <Reveal>
-          <div
-            className="flex items-center gap-4 text-[11px] uppercase tracking-[0.32em]"
-            style={{ color: "#7CC4C0" }}
-          >
+          <div className="flex items-center gap-4 text-[11px] uppercase tracking-[0.32em]" style={{ color: "#7CC4C0" }}>
             <span className="inline-block h-px w-10" style={{ background: "#49ADA5" }} />
             {copy.section_label}
           </div>
-          <h2
-            data-testid="lifecycle-title"
-            className="mt-4 text-3xl md:text-5xl font-semibold leading-[1.05] tracking-tight text-white max-w-3xl"
-          >
+          <h2 data-testid="hardware-title" className="mt-4 text-3xl md:text-5xl font-semibold leading-[1.05] tracking-tight text-white max-w-3xl">
             {copy.title}
           </h2>
-          <p
-            data-testid="lifecycle-subtitle"
-            className="mt-4 max-w-2xl text-base md:text-lg text-white/70"
-          >
+          <p className="mt-4 max-w-2xl text-base md:text-lg text-white/70">
             {copy.subtitle}
           </p>
         </Reveal>
 
-        <div
-          data-testid="lifecycle-chassis"
-          className={`sc-rserv mt-12 md:mt-14 ${hovered ? "is-hovered" : ""}`}
-          onMouseLeave={() => setHovered(null)}
-        >
-          <div className="sc-rserv__ear sc-rserv__ear--l" aria-hidden="true">
-            <span className="sc-rserv__mount" />
-            <span className="sc-rserv__mount" />
-            <span className="sc-rserv__mount" />
-          </div>
+        <div className="mt-12 md:mt-14 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          {/* Left: top-down server view */}
+          <div className="lg:col-span-8">
+            <div className="sc-svr" data-testid="server-topview">
+              <div className="sc-svr__header">
+                <span className="sc-svr__code">{copy.chassis_code}</span>
+                <span className="sc-svr__badge">TOP-VIEW · OPEN CHASSIS</span>
+              </div>
 
-          <div className="sc-rserv__body">
-            <div className="sc-rserv__head">
-              <span className="sc-rserv__led sc-rserv__led--pwr" />
-              <span className="sc-rserv__code">{copy.chassis_code}</span>
-              <span className="sc-rserv__led sc-rserv__led--act" />
-            </div>
+              <div className="sc-svr__board">
+                {/* Front: 8 drive bays */}
+                <div className="sc-svr__row sc-svr__row--drives">
+                  {Array.from({ length: 8 }).map((_, i) => (
+                    <button
+                      key={i}
+                      type="button"
+                      className={`sc-part sc-part--drive ${active === "drive" ? "is-active" : ""}`}
+                      onMouseEnter={() => setActive("drive")}
+                      onClick={() => setActive(active === "drive" ? null : "drive")}
+                      onFocus={() => setActive("drive")}
+                      data-testid={`server-part-drive-${i}`}
+                      aria-label={copy.parts.drive.name}
+                    >
+                      <span className="sc-part__label">HDD·{String(i + 1).padStart(2, "0")}</span>
+                    </button>
+                  ))}
+                </div>
 
-            <div className="sc-rserv__units">
-              {PHASES.map((phase, idx) => {
-                const Icon = phase.Icon;
-                const isActive = hovered === phase.id;
-                const info = copy.phases[phase.id];
-                return (
+                {/* Fan strip */}
+                <div className="sc-svr__row sc-svr__row--fans" aria-hidden="true">
+                  {Array.from({ length: 4 }).map((_, i) => (
+                    <span key={i} className="sc-fan">
+                      <span className="sc-fan__blades" />
+                    </span>
+                  ))}
+                </div>
+
+                {/* CPU + RAM zone */}
+                <div className="sc-svr__row sc-svr__row--cpu">
                   <button
-                    key={phase.id}
                     type="button"
-                    className={`sc-runit ${isActive ? "is-active" : ""}`}
-                    onMouseEnter={() => setHovered(phase.id)}
-                    onFocus={() => setHovered(phase.id)}
-                    aria-label={info.name}
-                    data-testid={`lifecycle-unit-${phase.id}`}
+                    className={`sc-part sc-part--cpu ${active === "cpu" ? "is-active" : ""}`}
+                    onMouseEnter={() => setActive("cpu")}
+                    onClick={() => setActive(active === "cpu" ? null : "cpu")}
+                    onFocus={() => setActive("cpu")}
+                    data-testid="server-part-cpu"
+                    aria-label={copy.parts.cpu.name}
                   >
-                    <span className="sc-runit__ubadge">
-                      {String(phase.u).padStart(2, "0")}U
-                    </span>
-                    <span className="sc-runit__leds" aria-hidden="true">
-                      <span className="sc-runit__led sc-runit__led--pwr" />
-                      <span className="sc-runit__led sc-runit__led--hdd" />
-                      <span className="sc-runit__led sc-runit__led--net" />
-                    </span>
-                    <span className="sc-runit__icon">
-                      <Icon size={20} strokeWidth={1.7} />
-                    </span>
-                    <span className="sc-runit__vents" aria-hidden="true">
-                      {Array.from({ length: 24 }).map((_, i) => (
-                        <span key={i} />
-                      ))}
-                    </span>
-                    <span className="sc-runit__body">
-                      <span
-                        className="sc-runit__name"
-                        data-testid={`lifecycle-name-${phase.id}`}
-                      >
-                        {info.name}
-                      </span>
-                      <span
-                        className="sc-runit__desc"
-                        data-testid={`lifecycle-desc-${phase.id}`}
-                      >
-                        {info.desc}
-                      </span>
-                    </span>
-                    <span className="sc-runit__eject" aria-hidden="true" />
+                    <span className="sc-part__icon"><Cpu size={22} strokeWidth={1.6} /></span>
+                    <span className="sc-part__tag">CPU · 01</span>
                   </button>
-                );
-              })}
-            </div>
 
-            <div className="sc-rserv__foot" aria-hidden="true">
-              <span className="sc-rserv__foot-line" />
-              <span className="sc-rserv__foot-code">
-                IT SMARTCLOUT · JOURNEY v2.0
-              </span>
+                  <button
+                    type="button"
+                    className={`sc-part sc-part--ram ${active === "ram" ? "is-active" : ""}`}
+                    onMouseEnter={() => setActive("ram")}
+                    onClick={() => setActive(active === "ram" ? null : "ram")}
+                    onFocus={() => setActive("ram")}
+                    data-testid="server-part-ram"
+                    aria-label={copy.parts.ram.name}
+                  >
+                    <span className="sc-part__ram-bank">
+                      {Array.from({ length: 8 }).map((_, i) => <span key={i} />)}
+                    </span>
+                    <span className="sc-part__icon"><MemoryStick size={20} strokeWidth={1.6} /></span>
+                    <span className="sc-part__tag">RAM · 8× DIMM</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    className={`sc-part sc-part--cpu ${active === "cpu" ? "is-active" : ""}`}
+                    onMouseEnter={() => setActive("cpu")}
+                    onClick={() => setActive(active === "cpu" ? null : "cpu")}
+                    onFocus={() => setActive("cpu")}
+                    data-testid="server-part-cpu2"
+                    aria-label={copy.parts.cpu.name}
+                  >
+                    <span className="sc-part__icon"><Cpu size={22} strokeWidth={1.6} /></span>
+                    <span className="sc-part__tag">CPU · 02</span>
+                  </button>
+                </div>
+
+                {/* Rear: NIC + PSU */}
+                <div className="sc-svr__row sc-svr__row--rear">
+                  <button
+                    type="button"
+                    className={`sc-part sc-part--nic ${active === "nic" ? "is-active" : ""}`}
+                    onMouseEnter={() => setActive("nic")}
+                    onClick={() => setActive(active === "nic" ? null : "nic")}
+                    onFocus={() => setActive("nic")}
+                    data-testid="server-part-nic"
+                    aria-label={copy.parts.nic.name}
+                  >
+                    <span className="sc-part__icon"><Network size={18} strokeWidth={1.6} /></span>
+                    <span className="sc-part__tag">NIC · 25G</span>
+                  </button>
+                  <button
+                    type="button"
+                    className={`sc-part sc-part--psu ${active === "psu" ? "is-active" : ""}`}
+                    onMouseEnter={() => setActive("psu")}
+                    onClick={() => setActive(active === "psu" ? null : "psu")}
+                    onFocus={() => setActive("psu")}
+                    data-testid="server-part-psu"
+                    aria-label={copy.parts.psu.name}
+                  >
+                    <span className="sc-part__icon"><PlugZap size={18} strokeWidth={1.6} /></span>
+                    <span className="sc-part__tag">PSU · 01</span>
+                  </button>
+                  <button
+                    type="button"
+                    className={`sc-part sc-part--psu ${active === "psu" ? "is-active" : ""}`}
+                    onMouseEnter={() => setActive("psu")}
+                    onClick={() => setActive(active === "psu" ? null : "psu")}
+                    onFocus={() => setActive("psu")}
+                    data-testid="server-part-psu2"
+                    aria-label={copy.parts.psu.name}
+                  >
+                    <span className="sc-part__icon"><PlugZap size={18} strokeWidth={1.6} /></span>
+                    <span className="sc-part__tag">PSU · 02</span>
+                  </button>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                className={`sc-svr__frame ${active === "chassis" ? "is-active" : ""}`}
+                onClick={() => setActive(active === "chassis" ? null : "chassis")}
+                onMouseEnter={() => !active && setActive("chassis")}
+                aria-label={copy.parts.chassis.name}
+                data-testid="server-part-chassis"
+              >
+                <span className="sc-svr__frame-label">Chassis</span>
+              </button>
             </div>
           </div>
 
-          <div className="sc-rserv__ear sc-rserv__ear--r" aria-hidden="true">
-            <span className="sc-rserv__mount" />
-            <span className="sc-rserv__mount" />
-            <span className="sc-rserv__mount" />
-          </div>
+          {/* Right: info panel */}
+          <aside className="lg:col-span-4">
+            <div className={`sc-svr-info ${current ? "is-open" : ""}`} data-testid="server-info">
+              {current ? (
+                <>
+                  <div className="sc-svr-info__kicker">
+                    <ShieldCheck size={12} strokeWidth={2} />
+                    {lang === "pl" ? "Wartość komponentu" : "Component value"}
+                  </div>
+                  <h3 data-testid="server-info-name" className="sc-svr-info__name">{current.name}</h3>
+                  <p data-testid="server-info-desc" className="sc-svr-info__desc">{current.desc}</p>
+                </>
+              ) : (
+                <div className="sc-svr-info__idle">{copy.idle_hint}</div>
+              )}
+            </div>
+          </aside>
         </div>
       </div>
     </section>
