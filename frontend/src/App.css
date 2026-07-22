@@ -1838,16 +1838,19 @@ body {
   max-width: 150px;
   width: auto;
   object-fit: contain;
-  opacity: 0.85;
-  transition: opacity 0.4s ease, transform 0.4s ease;
+  filter: grayscale(1) brightness(0.85) contrast(0.9);
+  opacity: 0.55;
+  transition: opacity 0.4s ease, filter 0.4s ease, transform 0.4s ease;
   user-select: none;
   -webkit-user-drag: none;
 }
 .sc-partner-card:hover .sc-partner-logo-img {
+  filter: none;
   opacity: 1;
   transform: scale(1.03);
 }
 .sc-partner-card--highlight .sc-partner-logo-img {
+  filter: none;
   opacity: 1;
 }
 
@@ -3402,6 +3405,115 @@ body {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   gap: 10px;
+}
+
+/* ============================================================
+   Vendor list — all groups visible, transparent bg, monochromatic
+   ============================================================ */
+.sc-vendor-group {
+  margin-top: 22px;
+  padding: 14px 0;
+  border-top: 1px solid rgba(73, 173, 165, 0.12);
+  transition: opacity 0.35s ease, filter 0.35s ease;
+}
+.sc-vendor-group:first-child {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+}
+.sc-vendor-group.is-dimmed {
+  opacity: 0.32;
+}
+.sc-vendor-group__head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.sc-vendor-group__icon {
+  color: rgba(232, 244, 245, 0.5);
+  transition: color 0.35s ease;
+}
+.sc-vendor-group__label {
+  font-family: "Manrope", sans-serif;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(232, 244, 245, 0.55);
+  white-space: nowrap;
+  transition: color 0.35s ease;
+}
+.sc-vendor-group.is-highlighted .sc-vendor-group__icon,
+.sc-vendor-group.is-highlighted .sc-vendor-group__label {
+  color: #06FFE0;
+}
+.sc-vendor-group__rule {
+  flex: 1 1 auto;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(73, 173, 165, 0.35) 0%,
+    rgba(73, 173, 165, 0.05) 100%
+  );
+}
+.sc-vendor-group.is-highlighted .sc-vendor-group__rule {
+  background: linear-gradient(
+    90deg,
+    rgba(6, 255, 224, 0.55) 0%,
+    rgba(6, 255, 224, 0.05) 100%
+  );
+}
+.sc-vendor-group__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px 26px;
+  align-items: center;
+}
+.sc-vendor {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 30px;
+  padding: 4px 2px;
+  transition: transform 0.28s ease;
+}
+.sc-vendor:hover {
+  transform: translateY(-2px);
+}
+.sc-vendor__img {
+  display: block;
+  height: 26px;
+  max-width: 130px;
+  width: auto;
+  object-fit: contain;
+  filter: grayscale(1) brightness(1.9) contrast(0.7);
+  opacity: 0.55;
+  transition: filter 0.35s ease, opacity 0.35s ease;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.sc-vendor:hover .sc-vendor__img,
+.sc-vendor-group.is-highlighted .sc-vendor__img {
+  filter: none;
+  opacity: 1;
+}
+.sc-vendor__text {
+  font-family: "Manrope", sans-serif;
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: rgba(232, 244, 245, 0.55);
+  text-transform: uppercase;
+  transition: color 0.35s ease;
+}
+.sc-vendor:hover .sc-vendor__text,
+.sc-vendor-group.is-highlighted .sc-vendor__text {
+  color: #ffffff;
+}
+@media (max-width: 768px) {
+  .sc-vendor-group__list { gap: 14px 20px; }
+  .sc-vendor__img { height: 22px; }
 }
 
 /* Vendor logo image — used inside .sc-partners2__float and .sc-partners2__logo */

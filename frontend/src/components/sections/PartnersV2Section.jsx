@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useRef } from "react";
+import React, { useState } from "react";
 import { useLang } from "@/i18n/LanguageContext";
 import {
   Server, HardDrive, DatabaseBackup, Network, ShieldCheck, Cloud,
@@ -8,8 +8,10 @@ import useSectionParallax from "@/hooks/useSectionParallax";
 
 /**
  * PartnersV2 — interactive rack cabinet section.
- * Left column: rack cabinet with 6 category tiles (server slots).
- * Right column: partner brand logotypes (text-based) filtered by hovered/active tile.
+ * Left column: rack cabinet with 6 category tiles.
+ * Right column: ALL partner logotypes, grouped by category, transparent bg,
+ * monochromatic by default and revealing full brand color on hover
+ * (or when the matching rack layer is hovered).
  */
 const VENDOR_LOGOS = {
   "DELL": "/logos/vendors/dell.webp",
@@ -79,89 +81,8 @@ const CATEGORIES = [
 
 const PartnersV2Section = () => {
   const { lang } = useLang();
-  const [active, setActive] = useState(null); // no category active until first hover
-  const [hasInteracted, setHasInteracted] = useState(false);
-  const activeCat = CATEGORIES.find((c) => c.id === active) || null;
+  const [hoveredCat, setHoveredCat] = useState(null);
   const parallaxRef = useSectionParallax();
-
-  // Pool of all partners across categories (with source category for potential styling)
-  const pool = useMemo(() => {
-    const seen = new Set();
-    const list = [];
-    CATEGORIES.forEach((cat) => {
-      cat.partners.forEach((p) => {
-        const key = `${cat.id}:${p}`;
-        if (!seen.has(key)) {
-          seen.add(key);
-          list.push({ name: p, cat: cat.id });
-        }
-      });
-    });
-    return list;
-  }, []);
-
-  // Random scatter — 8 floating logos on a virtual 2×4 grid (no overlap).
-  // Each slot lives an INDEPENDENT lifecycle (own duration 3.5–6s).
-  const SLOT_COUNT = 8;
-  const GRID_COLS = 2;
-  const GRID_ROWS = 4;
-  const tickRef = useRef(0);
-  const makeSlot = (slotIndex) => {
-    // Pick a random entry from the pool
-    const entry = pool[Math.floor(Math.random() * pool.length)];
-    // Fixed cell in the virtual grid based on slotIndex, with small jitter
-    const col = slotIndex % GRID_COLS;
-    const row = Math.floor(slotIndex / GRID_COLS);
-    const cellW = 100 / GRID_COLS;
-    const cellH = 100 / GRID_ROWS;
-    const cx = col * cellW + cellW / 2;
-    const cy = row * cellH + cellH / 2;
-    // Jitter kept small so tiles never overlap into neighbouring cells
-    const jx = (Math.random() - 0.5) * (cellW * 0.35);
-    const jy = (Math.random() - 0.5) * (cellH * 0.35);
-    const rot = (Math.random() - 0.5) * 3;
-    const duration = 3500 + Math.random() * 2500; // 3.5–6s visible
-    tickRef.current += 1;
-    return {
-      key: `${tickRef.current}-${slotIndex}-${entry.cat}-${entry.name}`,
-      slotIndex,
-      name: entry.name,
-      cat: entry.cat,
-      x: cx + jx,
-      y: cy + jy,
-      rot,
-      duration,
-    };
-  };
-  const [scatter, setScatter] = useState(() =>
-    Array.from({ length: SLOT_COUNT }, (_, i) => makeSlot(i))
-  );
-  useEffect(() => {
-    if (hasInteracted) return undefined;
-    const timeouts = [];
-    const cycleSlot = (i) => {
-      const fadeMargin = 400;
-      const slot = makeSlot(i);
-      setScatter((prev) => {
-        const next = prev.slice();
-        next[i] = slot;
-        return next;
-      });
-      timeouts[i] = setTimeout(() => cycleSlot(i), slot.duration + fadeMargin);
-    };
-    for (let i = 0; i < SLOT_COUNT; i++) {
-      // Stagger initial kick-off so tiles never sync
-      const initialDelay = 400 + i * 320 + Math.random() * 400;
-      timeouts[i] = setTimeout(() => cycleSlot(i), initialDelay);
-    }
-    return () => timeouts.forEach((t) => clearTimeout(t));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hasInteracted]);
-
-  const handlePick = (id) => {
-    setHasInteracted(true);
-    setActive(id);
-  };
 
   return (
     <section
@@ -190,8 +111,8 @@ const PartnersV2Section = () => {
           </h2>
           <p className="mt-5 max-w-2xl text-base md:text-lg text-white/70">
             {lang === "pl"
-              ? "Najedź na moduł w racku, aby zobaczyć producentów, z którymi projektujemy dla Ciebie tę warstwę."
-              : "Hover a rack slot to see the vendors we design that layer with for you."}
+              ? "Najedź na moduł w racku, aby podświetlić producentów wspierających tę warstwę. Ich pełne kolory brandowe ujawnią się także po najechaniu na sam logotyp."
+              : "Hover a rack slot to highlight the vendors we design that layer with. Full brand colors also reveal on individual logo hover."}
           </p>
         </Reveal>
 
@@ -207,14 +128,15 @@ const PartnersV2Section = () => {
               <div className="sc-rack__slots">
                 {CATEGORIES.map((cat) => {
                   const Icon = cat.Icon;
-                  const isActive = cat.id === active;
+                  const isActive = cat.id === hoveredCat;
                   return (
                     <button
                       key={cat.id}
                       type="button"
-                      onMouseEnter={() => handlePick(cat.id)}
-                      onFocus={() => handlePick(cat.id)}
-                      onClick={() => handlePick(cat.id)}
+                      onMouseEnter={() => setHoveredCat(cat.id)}
+                      onFocus={() => setHoveredCat(cat.id)}
+                      onMouseLeave={() => setHoveredCat(null)}
+                      onBlur={() => setHoveredCat(null)}
                       className={`sc-rack__slot ${isActive ? "is-active" : ""}`}
                       data-testid={`rack-slot-${cat.id}`}
                     >
@@ -240,86 +162,54 @@ const PartnersV2Section = () => {
             </div>
           </div>
 
-          {/* Right — partners list */}
+          {/* Right — ALL partners, grouped by category, transparent bg */}
           <div className="sc-partners2 lg:col-span-7" data-testid="partners-vendors">
-            <div className="sc-partners2__head">
-              <span className="sc-partners2__kicker">
-                {hasInteracted
-                  ? (lang === "pl" ? "Producenci warstwy" : "Vendors for layer")
-                  : (lang === "pl" ? "Wybrani producenci" : "Selected vendors")}
-              </span>
-              <div className="sc-partners2__title">
-                {hasInteracted && activeCat
-                  ? (lang === "pl" ? activeCat.name_pl : activeCat.name_en)
-                  : (lang === "pl"
-                      ? "Najedź na warstwę racka →"
-                      : "Hover a rack layer →")}
-              </div>
-            </div>
-
-            {!hasInteracted && (
-              <div
-                className="sc-partners2__scatter"
-                data-testid="partners-scatter"
-                aria-hidden="true"
-              >
-                {scatter.map((it) => {
-                  const src = VENDOR_LOGOS[it.name];
-                  return (
-                    <span
-                      key={it.key}
-                      className="sc-partners2__float"
-                      style={{
-                        left: `${it.x}%`,
-                        top: `${it.y}%`,
-                        transform: `translate(-50%, -50%) rotate(${it.rot}deg)`,
-                        animationDuration: `${it.duration}ms`,
-                      }}
-                    >
-                      {src ? (
-                        <img
-                          src={src}
-                          alt={it.name}
-                          className="sc-partners2__logo-img"
-                          loading="lazy"
-                          draggable="false"
-                        />
-                      ) : (
-                        it.name
-                      )}
+            {CATEGORIES.map((cat) => {
+              const isHighlighted = hoveredCat === cat.id;
+              const isDimmed = hoveredCat && hoveredCat !== cat.id;
+              return (
+                <div
+                  key={cat.id}
+                  className={`sc-vendor-group ${isHighlighted ? "is-highlighted" : ""} ${isDimmed ? "is-dimmed" : ""}`}
+                  data-testid={`vendor-group-${cat.id}`}
+                  onMouseEnter={() => setHoveredCat(cat.id)}
+                  onMouseLeave={() => setHoveredCat(null)}
+                >
+                  <div className="sc-vendor-group__head">
+                    <cat.Icon size={12} strokeWidth={2} className="sc-vendor-group__icon" />
+                    <span className="sc-vendor-group__label">
+                      {lang === "pl" ? cat.name_pl : cat.name_en}
                     </span>
-                  );
-                })}
-              </div>
-            )}
-
-            {hasInteracted && activeCat && (
-              <div key={activeCat.id} className="sc-partners2__grid">
-                {activeCat.partners.map((p, i) => {
-                  const src = VENDOR_LOGOS[p];
-                  return (
-                    <span
-                      key={p}
-                      className="sc-partners2__logo"
-                      style={{ animationDelay: `${i * 60}ms` }}
-                      data-testid={`vendor-${activeCat.id}-${i}`}
-                    >
-                      {src ? (
-                        <img
-                          src={src}
-                          alt={p}
-                          className="sc-partners2__logo-img"
-                          loading="lazy"
-                          draggable="false"
-                        />
-                      ) : (
-                        p
-                      )}
-                    </span>
-                  );
-                })}
-              </div>
-            )}
+                    <span className="sc-vendor-group__rule" />
+                  </div>
+                  <div className="sc-vendor-group__list">
+                    {cat.partners.map((p, i) => {
+                      const src = VENDOR_LOGOS[p];
+                      return (
+                        <span
+                          key={p}
+                          className="sc-vendor"
+                          data-testid={`vendor-${cat.id}-${i}`}
+                          title={p}
+                        >
+                          {src ? (
+                            <img
+                              src={src}
+                              alt={p}
+                              className="sc-vendor__img"
+                              loading="lazy"
+                              draggable="false"
+                            />
+                          ) : (
+                            <span className="sc-vendor__text">{p}</span>
+                          )}
+                        </span>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
