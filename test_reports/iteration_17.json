@@ -1,0 +1,50 @@
+{
+  "summary": "Iter 17 frontend-only smoke test. Verified (a) switch section spacing/label enlargement, (b) dead code cleanup (deleted files + shrunk App.css + removed CSS blocks). All checks passed. No console errors, no horizontal overflow on desktop (1920) or mobile (390).",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "verification_results": {
+    "switch_ports_style": {"gap": "28px", "padding": "12px 32px 20px", "display": "flex", "justifyContent": "space-between", "matches_spec": true},
+    "switch_port_label_style": {"font-size": "15px", "width": "180px", "padding": "12px 16px", "matches_spec": true, "note": "Verified in App.css line 4437-4460; visual screenshot shows all 6 labels readable at 1920px"},
+    "stagger": {"sc-port--low_count": 3, "expected": 3, "pass": true, "note": "USŁUGI/TELEKOMUNIKACJA I ŁĄCZNOŚĆ/ADMINISTRACJA PAŃSTWOWA I UE sit lower — 2 vertical bands"},
+    "label_clips_touching_cables": {"count": 6, "expected": 6, "pass": true},
+    "all_6_sector_labels_visible": true,
+    "sector_names_confirmed_via_screenshot": ["FINANSE", "USŁUGI", "PRZEMYSŁ", "TELEKOMUNIKACJA I ŁĄCZNOŚĆ", "MEDIA I ROZRYWKA", "ADMINISTRACJA PAŃSTWOWA I UE"],
+    "deleted_files_absent": {
+      "SectionDivider.jsx": "absent",
+      "FuturisticMetric.jsx": "absent",
+      "SupportChatSection.jsx": "absent"
+    },
+    "app_css_line_count": {"current": 5667, "threshold": "<5700", "pass": true, "was": 6173},
+    "dead_css_blocks_removed": {
+      "check": "grep -E '^\\.sc-svr|^\\.sc-part[^n]|^\\.sc-fan|^\\.sc-rserv|^\\.sc-runit|^\\.sc-fx-metric' App.css",
+      "matches": 0,
+      "pass": true,
+      "note": "37 raw matches were all legitimate .sc-partners and .sc-particle rules (partners section + particle effects). Strict grep excluding .sc-partners returned 0."
+    },
+    "section_ids_present": ["values", "about", "hardware", "portfolio", "tape-library", "continuity", "sectors", "markets-switch", "partners-rack", "partners", "contact"],
+    "hero_note": "Hero section uses data-testid='hero-section' (no id='hero') — top-of-page anchor, not a regression. Screenshot confirms hero content renders.",
+    "refab_server_present": true,
+    "pdu_device_present": true,
+    "pdu_99_99_meter": true,
+    "console_errors": 0,
+    "horizontal_overflow_desktop_1920": 0,
+    "horizontal_overflow_mobile_390": 0
+  },
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "App.css at 5667 lines is still large; consider modularising by section (switch/rack/partners/etc.) into separate CSS modules in a future iteration.",
+    "Hero section anchors via data-testid rather than id='hero' — if a nav link needs to point to #hero, an id may need to be added. Currently no such link exists so this is not a bug."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A (not tested)", "frontend": "100%"},
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Iter 17 focused only on switch section spacing/label enlargement + dead-code cleanup. All targets met: gap=28px, padding-x=32px, label font-size=15px width=180px padding=12px/16px. Deleted files (SectionDivider, FuturisticMetric, SupportChatSection) confirmed absent. App.css reduced from 6173 → 5667 lines. All 6 sector labels render correctly with stagger (3 low ports). No regressions in refab-server, PDU 99.99 meter, section IDs, or console. Hero uses data-testid not id — intentional. Backend not tested per request scope.",
+  "rca_of_the_issue": "N/A — no bugs found."
+}
