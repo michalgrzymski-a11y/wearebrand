@@ -57,7 +57,13 @@ Deep Teal `#0C5C62`, Accent Mint `#49ADA5`, White, Light gray `#F8FAFA`, Charcoa
 - ✅ **SwitchSection cables (2026-02-22, iter 15)** — z każdego portu wystaje "wkładka" RJ45 (mint boot) + zakrzywiony kabel (SVG) prowadzący do papierowej etykiety z nazwą obszaru rynkowego. Etykiety **zawsze widoczne**, bez potrzeby klikania.
 - ✅ **RackServerSection — Cykl życia projektu (2026-02-22, iter 15)** — nowa sekcja: 6 serwerów 1U w vertykalnym stosie reprezentujących fazy współpracy (Audyt, Architektura, PoC, Wdrożenie, Utrzymanie, Rozwój). Ten sam expand-in-place mechanizm.
 - ✅ **TapeLibrarySection (2026-02-22, iter 15)** — nowa sekcja lustrzana dla Portfolio: 4 kartridże LTO (Hardware/Security/Software/Services & DC) z kolorowymi kręgosłupami. Hover "wyjmuje" taśmę i pokazuje items list wewnątrz obudowy.
-- ✅ **Testing agent** — iter 12 (100% padding fix), iter 13 (100% strukturalne zmiany iter 15). 0 console errors, mobile 390px OK, brak overlap w cable labels.
+- ✅ **Testing agent** — iter 12 (100% padding fix), iter 13 (100% strukturalne zmiany iter 15), **iter 14 (100% P0 batch: fixed navbar + section-aware theme, powiększone logo/typografia, refab rack front-view, etykiety switcha fizycznie zamocowane do kabli — wszystkie 13 kryteriów zdanych)**. 0 console errors, mobile 390px OK, gap=0 przy etykietach kabli.
+
+## Iteration 14 (2026-02-22) — P0 batch delivered
+- **Navbar** (`Navbar.jsx`): teraz `position: fixed` (klasa `sc-nav--fixed`), zawsze widoczny nad każdą sekcją. IntersectionObserver mapuje id sekcji → theme (`dark`/`light`), przełącza klasy `sc-nav--dark`/`sc-nav--light`, wymienia logo (`logo-white.webp` ↔ `logo-black.webp`) i kolor tekstu/CTA. `html { scroll-padding-top: 92px }` zapewnia, że nagłówki sekcji nie chowają się pod navbarem. Logo powiększone do `h-12 md:h-14`.
+- **Section H2 scale**: wszystkie sekcje poza Hero podniesione z `text-3xl md:text-5xl` do `text-4xl md:text-6xl` z `leading-[1.02]`.
+- **RackServerSection** (`RackServerSection.jsx`): kompletny redesign. Duży front-view serwer 2U z panelem SMARTCLOUT, 24 zatokami dyskowymi (część z LEDami PWR/ACT), pasami wentylacyjnymi, uszami rack-mount i CTA. Po prawej kolumna 4 kart wartości refab (CAPEX, gwarancja, dostępność, ESG). Zero klikalnych komponentów wewnętrznych.
+- **SwitchSection labels** (`SwitchSection.jsx`): etykiety `[data-testid=switch-label-*]` przeniesione WEWNĄTRZ `.sc-port__cable` z `top: 100%`, dodany metalowy klip `.sc-port__label-clip` z pinem LED na górze etykiety. Wizualnie i pomiarowo (gap=0 do bottom kabla) etykiety fizycznie chwytają koniec kabla dla wszystkich 6 portów.
 
 ## Backlog / next actions
 - `/app/backend/server.py`, `/app/backend/tests/test_contact_api.py`
@@ -76,7 +82,8 @@ Deep Teal `#0C5C62`, Accent Mint `#49ADA5`, White, Light gray `#F8FAFA`, Charcoa
 - **P2** — Case studies section (strong B2B conversion driver)
 - **P3** — SEO: JSON-LD Organization, sitemap.xml, hreflang PL/EN
 - **P3** — Blog / knowledge base
-- **P3** — Refactor `Datacenter3DScene.jsx` into `useThreeScene`/`useDeviceGraph`/`useLabelProjection` hooks (currently ~600 lines)
+- **P3** — Refactor `Datacenter3DScene.jsx` into hooks (currently ~600 lines)
+- **P3** — Cleanup obsolete CSS/components: `.sc-svr`, `.sc-part*`, `.sc-fan*`, `.sc-rserv*` (dead after refab redesign), `SectionDivider.jsx`, `SupportChatSection.jsx`, `FuturisticMetric.jsx`
 
 ## Test credentials
 N/A — the site has no authentication surface.
