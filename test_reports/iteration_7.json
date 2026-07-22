@@ -1,0 +1,35 @@
+{
+  "summary": "SMARTCLOUT iteration 7 (frontend-only): real vendor logos (18x .webp) integrated in PartnersV2 scatter+grid and PartnersSection marquee, with text fallback for vendors without logo (proxmox, Huawei, Pure Storage, uptime DC, xorux). ALL 11 acceptance items PASS.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "PartnersV2Section.jsx VENDOR_LOGOS map correctly gates <img> vs text fallback. Vendor names must match exactly across CATEGORIES.partners[] and VENDOR_LOGOS keys — case-sensitive (e.g., 'DELL' vs 'Dell', 'vmware' lowercase, 'baramundi' lowercase). This is fragile if partners lists change; consider a normalizer helper or a single source-of-truth vendor registry.",
+    "PartnersSection.jsx uses 'Dell'/'VMware'/'Baramundi' (PascalCase) while PartnersV2Section.jsx uses 'DELL'/'vmware'/'baramundi'. Both work independently but naming inconsistency across sections is a maintenance risk.",
+    "sc-partners2__logo-img in App.css sets height 26px inside scatter/grid but no max-width constraint on some wide logos (e.g., commvault naturalWidth=1146px, aws=255px). object-fit:contain handles it visually but consider explicit max-width to guarantee identical pill widths.",
+    "App.css remains ~3633 lines. Recommend splitting into per-section CSS modules (partners.css, dividers.css, rack.css) for maintainability.",
+    "Random scatter pool.random selection: because pool is a flat list weighted by category size, more common vendors (DELL appears in 3 categories) are 3x more likely to show. Intentional weighting? If not, dedupe by name."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A (frontend-only per request)", "frontend": "11/11 acceptance items PASS"},
+  "test_credentials": "N/A",
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Iteration 7 verified on https://teal-node-visual.preview.emergentagent.com at 1920x1080 + 390x844.\n\nVENDOR ASSETS (curl HTTP 200 all 18): netapp/dell/asus/lenovo/nutanix/microsoft/vmware/commvault/veeam/arista/hpe/extreme-networks/cisco/brocade/sailpoint/baramundi/google/aws .webp all served (878B–12778B).\n\nPARTNERSV2 SCATTER (before interaction): 8 .sc-partners2__float tiles, all bg=rgb(255,255,255), all with <img class=sc-partners2__logo-img> in current sample (naturalWidth>0 for every one), img filter='none'. Overlap pairs=0.\n\nPARTNERSV2 GRID BY CATEGORY (5 tests):\n- storage (5): netapp/lenovo/dell IMG (nw=300) + Huawei/Pure Storage TEXT. bg=rgb(255,255,255), min-height=56px, filter='none'.\n- servers (7): dell/asus/lenovo/nutanix/microsoft/vmware IMG + proxmox TEXT.\n- backup (2): commvault/veeam IMG.\n- network (7): arista/dell/hpe/extreme-networks/cisco/brocade IMG + Huawei TEXT.\n- security (2): sailpoint/baramundi IMG.\n- software (5): microsoft/google/aws IMG + uptime DC/xorux TEXT.\n\nPARTNERSSECTION MARQUEE: 36 cards (18 doubled). All 18 unique cards have <img class=sc-partner-logo-img> with correct src, alt, naturalWidth>0, filter='none' (no aggressive brightness tint). NetApp card [0] has .sc-partner-card--highlight class + badge 'Partner NetApp'.\n\nDIVIDERS (unchanged from iter6): sc-dither present on divider-hero-about/divider-sectors-rack/divider-rack-partners/divider-partners-contact (each 4096 cells). sc-blend elements=3.\n\nMOBILE 390x844: body scrollWidth=390 == window.innerWidth (0 overflow). Marquee animation-name=sc-marquee-rtl, duration=55s (animating).\n\nCONSOLE ERRORS: 0. All sections load (#about, #portfolio, #sectors, #partners-rack, #partners, #contact).",
+  "test_results_detail": {
+    "vendor_logos_http_200": "18/18",
+    "scatter": {"count": 8, "bg": "rgb(255,255,255)", "all_have_img": true, "all_nw_gt_0": true, "filter": "none", "overlap_pairs": 0},
+    "grid_storage": {"count": 5, "img": 3, "text": ["Huawei", "Pure Storage"], "min_height": "56px", "bg": "rgb(255,255,255)"},
+    "grid_servers": {"count": 7, "img": 6, "text": ["proxmox"]},
+    "grid_backup": {"count": 2, "img": 2, "text": []},
+    "grid_network": {"count": 7, "img": 6, "text": ["Huawei"]},
+    "grid_security": {"count": 2, "img": 2, "text": []},
+    "grid_software": {"count": 5, "img": 3, "text": ["uptime DC", "xorux"]},
+    "marquee": {"total_cards_doubled": 36, "unique_18_all_have_img": true, "netapp_highlight": true, "netapp_badge": "Partner NetApp", "filter": "none"},
+    "dividers": {"sectors_rack_dither_cells": 4096, "rack_partners_dither_cells": 4096},
+    "responsive_390": {"overflow_x_px": 0, "marquee_anim": "sc-marquee-rtl 55s"},
+    "console_errors": 0
+  }
+}

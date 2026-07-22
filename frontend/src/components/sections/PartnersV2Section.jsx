@@ -11,6 +11,27 @@ import useSectionParallax from "@/hooks/useSectionParallax";
  * Left column: rack cabinet with 6 category tiles (server slots).
  * Right column: partner brand logotypes (text-based) filtered by hovered/active tile.
  */
+const VENDOR_LOGOS = {
+  "DELL": "/logos/vendors/dell.webp",
+  "ASUS": "/logos/vendors/asus.webp",
+  "Lenovo": "/logos/vendors/lenovo.webp",
+  "Nutanix": "/logos/vendors/nutanix.webp",
+  "Microsoft": "/logos/vendors/microsoft.webp",
+  "vmware": "/logos/vendors/vmware.webp",
+  "NetApp": "/logos/vendors/netapp.webp",
+  "Commvault": "/logos/vendors/commvault.webp",
+  "Veeam": "/logos/vendors/veeam.webp",
+  "ARISTA": "/logos/vendors/arista.webp",
+  "HPE": "/logos/vendors/hpe.webp",
+  "Extreme Networks": "/logos/vendors/extreme-networks.webp",
+  "Cisco": "/logos/vendors/cisco.webp",
+  "Brocade": "/logos/vendors/brocade.webp",
+  "SailPoint": "/logos/vendors/sailpoint.webp",
+  "baramundi": "/logos/vendors/baramundi.webp",
+  "Google": "/logos/vendors/google.webp",
+  "AWS": "/logos/vendors/aws.webp",
+};
+
 const CATEGORIES = [
   {
     id: "servers",
@@ -242,35 +263,61 @@ const PartnersV2Section = () => {
                 data-testid="partners-scatter"
                 aria-hidden="true"
               >
-                {scatter.map((it) => (
-                  <span
-                    key={it.key}
-                    className="sc-partners2__float"
-                    style={{
-                      left: `${it.x}%`,
-                      top: `${it.y}%`,
-                      transform: `translate(-50%, -50%) rotate(${it.rot}deg)`,
-                      animationDuration: `${it.duration}ms`,
-                    }}
-                  >
-                    {it.name}
-                  </span>
-                ))}
+                {scatter.map((it) => {
+                  const src = VENDOR_LOGOS[it.name];
+                  return (
+                    <span
+                      key={it.key}
+                      className="sc-partners2__float"
+                      style={{
+                        left: `${it.x}%`,
+                        top: `${it.y}%`,
+                        transform: `translate(-50%, -50%) rotate(${it.rot}deg)`,
+                        animationDuration: `${it.duration}ms`,
+                      }}
+                    >
+                      {src ? (
+                        <img
+                          src={src}
+                          alt={it.name}
+                          className="sc-partners2__logo-img"
+                          loading="lazy"
+                          draggable="false"
+                        />
+                      ) : (
+                        it.name
+                      )}
+                    </span>
+                  );
+                })}
               </div>
             )}
 
             {hasInteracted && activeCat && (
               <div key={activeCat.id} className="sc-partners2__grid">
-                {activeCat.partners.map((p, i) => (
-                  <span
-                    key={p}
-                    className="sc-partners2__logo"
-                    style={{ animationDelay: `${i * 60}ms` }}
-                    data-testid={`vendor-${activeCat.id}-${i}`}
-                  >
-                    {p}
-                  </span>
-                ))}
+                {activeCat.partners.map((p, i) => {
+                  const src = VENDOR_LOGOS[p];
+                  return (
+                    <span
+                      key={p}
+                      className="sc-partners2__logo"
+                      style={{ animationDelay: `${i * 60}ms` }}
+                      data-testid={`vendor-${activeCat.id}-${i}`}
+                    >
+                      {src ? (
+                        <img
+                          src={src}
+                          alt={p}
+                          className="sc-partners2__logo-img"
+                          loading="lazy"
+                          draggable="false"
+                        />
+                      ) : (
+                        p
+                      )}
+                    </span>
+                  );
+                })}
               </div>
             )}
           </div>
