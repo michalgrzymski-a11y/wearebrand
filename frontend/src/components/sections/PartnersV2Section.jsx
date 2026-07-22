@@ -83,6 +83,9 @@ const PartnersV2Section = () => {
   const { lang } = useLang();
   const [hoveredCat, setHoveredCat] = useState(null);
   const parallaxRef = useSectionParallax();
+  const activeCat = hoveredCat
+    ? CATEGORIES.find((c) => c.id === hoveredCat)
+    : null;
 
   // Flat, deduped vendor list — order preserved by first occurrence across categories.
   // Each entry carries the set of categories it supports for hover-driven highlight.
@@ -175,38 +178,83 @@ const PartnersV2Section = () => {
             </div>
           </div>
 
-          {/* Right — ALL partners in ONE flat monochromatic list.
-              Hover a rack slot to highlight the matching vendors. */}
+          {/* Right — flat monochromatic list when idle; on rack hover switch
+              to a category-scoped responsive grid with LARGER logos. */}
           <div className="sc-partners2 lg:col-span-7" data-testid="partners-vendors">
-            <div className="sc-vendor-flat">
-              {flatVendors.map((v) => {
-                const src = VENDOR_LOGOS[v.name];
-                const isHighlighted =
-                  !!hoveredCat && v.cats.has(hoveredCat);
-                const isDimmed =
-                  !!hoveredCat && !v.cats.has(hoveredCat);
-                return (
-                  <span
-                    key={v.name}
-                    className={`sc-vendor ${isHighlighted ? "is-highlighted" : ""} ${isDimmed ? "is-dimmed" : ""}`}
-                    data-testid={`vendor-${v.name.replace(/\s+/g, "-").toLowerCase()}`}
-                    title={v.name}
-                  >
-                    {src ? (
-                      <img
-                        src={src}
-                        alt={v.name}
-                        className="sc-vendor__img"
-                        loading="lazy"
-                        draggable="false"
-                      />
-                    ) : (
-                      <span className="sc-vendor__text">{v.name}</span>
-                    )}
+            {activeCat ? (
+              <div
+                key={activeCat.id}
+                className="sc-vendor-grid"
+                data-testid={`vendor-grid-${activeCat.id}`}
+              >
+                <div className="sc-vendor-grid__head">
+                  <activeCat.Icon
+                    size={14}
+                    strokeWidth={2}
+                    className="sc-vendor-grid__icon"
+                  />
+                  <span className="sc-vendor-grid__label">
+                    {lang === "pl" ? activeCat.name_pl : activeCat.name_en}
                   </span>
-                );
-              })}
-            </div>
+                  <span className="sc-vendor-grid__rule" />
+                  <span className="sc-vendor-grid__count">
+                    {String(activeCat.partners.length).padStart(2, "0")}
+                  </span>
+                </div>
+                <div className="sc-vendor-grid__list">
+                  {activeCat.partners.map((p, i) => {
+                    const src = VENDOR_LOGOS[p];
+                    return (
+                      <span
+                        key={p}
+                        className="sc-vendor sc-vendor--lg is-highlighted"
+                        data-testid={`vendor-${activeCat.id}-${i}`}
+                        title={p}
+                        style={{ animationDelay: `${i * 55}ms` }}
+                      >
+                        {src ? (
+                          <img
+                            src={src}
+                            alt={p}
+                            className="sc-vendor__img"
+                            loading="lazy"
+                            draggable="false"
+                          />
+                        ) : (
+                          <span className="sc-vendor__text">{p}</span>
+                        )}
+                      </span>
+                    );
+                  })}
+                </div>
+              </div>
+            ) : (
+              <div className="sc-vendor-flat">
+                {flatVendors.map((v) => {
+                  const src = VENDOR_LOGOS[v.name];
+                  return (
+                    <span
+                      key={v.name}
+                      className="sc-vendor"
+                      data-testid={`vendor-${v.name.replace(/\s+/g, "-").toLowerCase()}`}
+                      title={v.name}
+                    >
+                      {src ? (
+                        <img
+                          src={src}
+                          alt={v.name}
+                          className="sc-vendor__img"
+                          loading="lazy"
+                          draggable="false"
+                        />
+                      ) : (
+                        <span className="sc-vendor__text">{v.name}</span>
+                      )}
+                    </span>
+                  );
+                })}
+              </div>
+            )}
           </div>
         </div>
       </div>
