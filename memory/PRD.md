@@ -40,13 +40,22 @@ Deep Teal `#0C5C62`, Accent Mint `#49ADA5`, White, Light gray `#F8FAFA`, Charcoa
 - ✅ All interactive elements have unique `data-testid` attributes
 - ✅ No console errors on load or interaction
 
-## Files of interest
+## What has been implemented (2026-02, iterations 5–6)
+- ✅ **SectionDivider (2026-02-22)** — pixel-dither mosaic (COLS=512 × ROWS=8, ~4096 span cells) for dark↔light transitions only; `.sc-blend` gradient for light↔light. CSS syntax fix (stray `*/` removed).
+- ✅ **About redesign (2026-02-22)** — 3-column layout: narrative on left (lg:col-span-8) + 3 clean stat cards on right (lg:col-span-4) in unified `.sc-pillar`-style (white bg, radius 16, mint borders, hover translateX + glow + brackets). Cards contain only icon + value + label (no accordion). Values updated: 20+ / 350+ / 130+.
+- ✅ **About narrative expanded (2026-02-22)** — was single dry paragraph, now **3 storytelling paragraphs** (PL + EN) covering 20-year experience, NetApp partnership + client-first attentiveness, holistic ecosystem view + optimisation philosophy.
+- ✅ **PartnersV2 rack (2026-02-22)** — layout re-balanced: rack `lg:col-span-5` (moved slightly left), vendors column `lg:col-span-7` (more breathing room). Right column is now **frameless** (no border/background/padding).
+- ✅ **PartnersV2 scatter (2026-02-22)** — pre-interaction shows 8 floating vendor logotypes on a virtual 2×4 grid so tiles **never overlap**. Each slot has an **independent cycle 3.5–6s** with per-slot setTimeout recursion (not synchronised). After hover on any rack slot → scatter is replaced by the picked category grid; scatter never returns.
+- ✅ **Testing agent** — iteration 6 report: 17/17 acceptance items PASS, 0 console errors, no overlap in scatter, all dividers correctly split by contrast.
+
+## Backlog / next actions
 - `/app/backend/server.py`, `/app/backend/tests/test_contact_api.py`
 - `/app/frontend/src/App.js`, `App.css`
 - `/app/frontend/src/i18n/{LanguageContext.jsx, translations.js}`
 - `/app/frontend/src/components/Navbar.jsx`
 - `/app/frontend/src/components/hero/{HeroSection, HeroCanvas, Datacenter3DScene, DatacenterTopology}.jsx`
-- `/app/frontend/src/components/sections/{AboutSection, TrustedBySection, PortfolioSection, PartnersSection, ContactSection}.jsx`
+- `/app/frontend/src/components/SectionDivider.jsx`
+- `/app/frontend/src/components/sections/{AboutSection, TrustedBySection, PortfolioSection, SectorsSection, PartnersV2Section, PartnersSection, ContactSection}.jsx`
 
 ## Backlog / next actions
 - **P1** — Real brand SVG logos for Trusted-By and Partners (once assets provided)
