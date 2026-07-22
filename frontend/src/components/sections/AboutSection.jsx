@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import Reveal from "@/components/Reveal";
 import FuturisticMetric from "@/components/FuturisticMetric";
+import useSectionParallax from "@/hooks/useSectionParallax";
 
 const PILLARS = [
   {
@@ -172,15 +173,32 @@ const AboutSection = () => {
   const [active, setActive] = useState(PILLARS[1].id);
   const activePillar = PILLARS.find((p) => p.id === active) || PILLARS[0];
   const activeIndex = PILLARS.findIndex((p) => p.id === active);
+  const parallaxRef = useSectionParallax();
 
   return (
     <section
       id="about"
       data-testid="about-section"
-      className="relative w-full"
+      ref={parallaxRef}
+      className="relative w-full overflow-hidden"
       style={{ background: "#FFFFFF", color: "#1C2833" }}
     >
-      <div className="mx-auto max-w-7xl px-6 md:px-10 py-24 md:py-32">
+      {/* Parallax decorative layer — subtle mint blob + grid */}
+      <div className="sc-slayer-wrap" aria-hidden="true">
+        <span data-parallax="0.25" className="sc-slayer-grid" />
+        <span
+          data-parallax="-0.15"
+          className="sc-slayer sc-slayer--mint"
+          style={{ width: 520, height: 520, top: "-8%", right: "-6%" }}
+        />
+        <span
+          data-parallax="0.20"
+          className="sc-slayer sc-slayer--cyan"
+          style={{ width: 380, height: 380, bottom: "-4%", left: "-5%", opacity: 0.18 }}
+        />
+      </div>
+
+      <div className="relative z-10 mx-auto max-w-7xl px-6 md:px-10 py-24 md:py-32">
         {/* 1. Section label */}
         <Reveal>
           <div

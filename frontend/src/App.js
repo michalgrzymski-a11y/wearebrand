@@ -9,7 +9,6 @@ import TrustedBySection from "@/components/sections/TrustedBySection";
 import PortfolioSection from "@/components/sections/PortfolioSection";
 import SectorsSection from "@/components/sections/SectorsSection";
 import PartnersSection from "@/components/sections/PartnersSection";
-import SupportChatSection from "@/components/sections/SupportChatSection";
 import ContactSection from "@/components/sections/ContactSection";
 import SectionDivider from "@/components/SectionDivider";
 
@@ -27,9 +26,7 @@ const Home = () => (
     <SectorsSection />
     <SectionDivider id="sectors-partners"   top="#FFFFFF" bottom="#F8FAFA" />
     <PartnersSection />
-    <SectionDivider id="partners-chat"      top="#F8FAFA" bottom="#040709" />
-    <SupportChatSection />
-    <SectionDivider id="chat-contact"       top="#040709" bottom="#040709" />
+    <SectionDivider id="partners-contact"   top="#F8FAFA" bottom="#040709" />
     <ContactSection />
   </main>
 );

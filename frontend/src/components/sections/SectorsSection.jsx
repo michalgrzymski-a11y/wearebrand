@@ -9,6 +9,7 @@ import {
   Building2,
 } from "lucide-react";
 import Reveal from "@/components/Reveal";
+import useSectionParallax from "@/hooks/useSectionParallax";
 
 /**
  * Sectors — market segments where SmartClout delivers IT.
@@ -26,15 +27,26 @@ const ICONS = {
 
 const SectorsSection = () => {
   const { t } = useLang();
+  const parallaxRef = useSectionParallax();
 
   return (
     <section
       id="sectors"
       data-testid="sectors-section"
-      className="relative w-full"
+      ref={parallaxRef}
+      className="relative w-full overflow-hidden"
       style={{ background: "#FFFFFF", color: "#1C2833" }}
     >
-      <div className="mx-auto max-w-7xl px-6 md:px-10 py-24 md:py-32">
+      <div className="sc-slayer-wrap" aria-hidden="true">
+        <span data-parallax="0.20" className="sc-slayer-grid" />
+        <span
+          data-parallax="-0.14"
+          className="sc-slayer sc-slayer--mint"
+          style={{ width: 460, height: 460, top: "-4%", left: "-6%" }}
+        />
+      </div>
+
+      <div className="relative z-10 mx-auto max-w-7xl px-6 md:px-10 py-24 md:py-32">
         <Reveal>
           <div
             className="flex items-center gap-4 text-[11px] uppercase tracking-[0.32em]"

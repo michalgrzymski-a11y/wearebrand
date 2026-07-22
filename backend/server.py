@@ -36,8 +36,10 @@ class ContactMessageCreate(BaseModel):
     name: str = Field(min_length=1, max_length=200)
     email: EmailStr
     company: Optional[str] = Field(default=None, max_length=200)
+    phone: Optional[str] = Field(default=None, max_length=50)
     message: str = Field(min_length=1, max_length=4000)
     lang: Optional[str] = Field(default="pl", max_length=5)
+    source: Optional[str] = Field(default="form", max_length=20)
 
 
 class ContactMessage(BaseModel):
@@ -47,8 +49,10 @@ class ContactMessage(BaseModel):
     name: str
     email: str
     company: Optional[str] = None
+    phone: Optional[str] = None
     message: str
     lang: str = "pl"
+    source: str = "form"
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 
@@ -64,8 +68,10 @@ async def create_contact_message(payload: ContactMessageCreate):
         name=payload.name.strip(),
         email=payload.email.lower().strip(),
         company=(payload.company or "").strip() or None,
+        phone=(payload.phone or "").strip() or None,
         message=payload.message.strip(),
         lang=(payload.lang or "pl"),
+        source=(payload.source or "form"),
     )
     doc = obj.model_dump()
     doc['created_at'] = doc['created_at'].isoformat()
@@ -175,6 +181,50 @@ async def support_chat(payload: SupportChatRequest):
         media_type="text/event-stream",
         headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
     )
+
+
+# ==================== CONTACT AI ASSISTANT (Gemini 3 Flash message refinement) ====================
+REFINE_SYSTEM_PL = (
+    "Jesteś asystentem redakcyjnym IT SMARTCLOUT. Otrzymasz treść wiadomości "
+    "klienta pisaną nieformalnie / skrótowo. Twoje zadanie: przepisz ją w "
+    "języku polskim, w formalnym ale ciepłym tonie biznesowym, "
+    "zachowując 100% oryginalnej intencji i faktów. Nie dodawaj informacji, "
+    "których klient nie podał. Nie zmyślaj cen, terminów, SLA. Nie dodawaj "
+    "powitania ani podpisu. Zwróć TYLKO przepisany tekst, bez komentarza, "
+    "bez markdown, bez cytatów. Maksymalnie 3–5 zdań."
+)
+REFINE_SYSTEM_EN = (
+    "You are an editorial assistant at IT SMARTCLOUT. You will receive a "
+    "client's message written informally / briefly. Your task: rewrite it in "
+    "English, in a formal but warm business tone, preserving 100% of the "
+    "original intent and facts. Do not add information the client did not "
+    "provide. Do not invent prices, deadlines, SLA. Do not add greeting or "
+    "signature. Return ONLY the rewritten text — no commentary, no markdown, "
+    "no quotes. Maximum 3–5 sentences."
+)
+
+
+class RefineRequest(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    message: str = Field(min_length=1, max_length=4000)
+    lang: Optional[str] = Field(default="pl", max_length=5)
+
+
+@api_router.post("/refine-message")
+async def refine_message(payload: RefineRequest):
+    """Rewrite a client's message in a formal business tone using Gemini 3 Flash.
+    Single-turn, non-streaming — response returned as JSON."""
+    try:
+        chat = LlmChat(
+            api_key=os.environ["EMERGENT_LLM_KEY"],
+            session_id=f"refine-{uuid.uuid4()}",
+            system_message=(REFINE_SYSTEM_EN if (payload.lang or "pl") == "en" else REFINE_SYSTEM_PL),
+        ).with_model("gemini", "gemini-3-flash-preview")
+        result = await chat.send_message(UserMessage(text=payload.message))
+        return {"refined": (result or "").strip()}
+    except Exception as e:  # noqa: BLE001
+        logger.error(f"refine_message error: {e}")
+        raise HTTPException(status_code=500, detail="refine failed")
 
 
 # Include the router in the main app

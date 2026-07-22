@@ -2,20 +2,38 @@ import React from "react";
 import { useLang } from "@/i18n/LanguageContext";
 import { Server, ShieldCheck, Code2, Building2 } from "lucide-react";
 import Reveal from "@/components/Reveal";
+import useSectionParallax from "@/hooks/useSectionParallax";
 
 const ICONS = [Server, ShieldCheck, Code2, Building2];
 
 const PortfolioSection = () => {
   const { t } = useLang();
+  const parallaxRef = useSectionParallax();
 
   return (
     <section
       id="portfolio"
       data-testid="portfolio-section"
-      className="relative w-full"
+      ref={parallaxRef}
+      className="relative w-full overflow-hidden"
       style={{ background: "#FFFFFF", color: "#1C2833" }}
     >
-      <div className="mx-auto max-w-7xl px-6 md:px-10 py-24 md:py-32">
+      {/* Parallax deco */}
+      <div className="sc-slayer-wrap" aria-hidden="true">
+        <span data-parallax="0.22" className="sc-slayer-grid" />
+        <span
+          data-parallax="-0.20"
+          className="sc-slayer sc-slayer--cyan"
+          style={{ width: 480, height: 480, top: "10%", left: "-8%", opacity: 0.22 }}
+        />
+        <span
+          data-parallax="0.18"
+          className="sc-slayer sc-slayer--mint"
+          style={{ width: 420, height: 420, bottom: "-6%", right: "-6%" }}
+        />
+      </div>
+
+      <div className="relative z-10 mx-auto max-w-7xl px-6 md:px-10 py-24 md:py-32">
         <div className="mb-14 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
           <div>
             <div
