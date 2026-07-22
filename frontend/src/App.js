@@ -12,6 +12,7 @@ import PartnersV2Section from "@/components/sections/PartnersV2Section";
 import PartnersSection from "@/components/sections/PartnersSection";
 import ContactSection from "@/components/sections/ContactSection";
 import SectionDivider from "@/components/SectionDivider";
+import PartnerDetailPage from "@/pages/PartnerDetailPage";
 
 const Home = () => (
   <main data-testid="home-main" className="sc-app">
@@ -41,6 +42,7 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/partners/:slug" element={<PartnerDetailPage />} />
           </Routes>
         </BrowserRouter>
       </div>

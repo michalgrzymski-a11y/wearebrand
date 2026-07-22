@@ -1,0 +1,37 @@
+{
+  "summary": "Frontend-only smoke of iteration 11 (Partner sub-pages / SPA routing). All 12 requested checks pass: home renders full landing with PartnersV2, all 23 flat vendors are React Router <Link> anchors with data-testid=\"vendor-{slug}\", rack-hover grid renders <Link> anchors with data-testid=\"vendor-{cat}-{i}\", /partners/:slug pages render the full spec (chips, tier, name, tagline, logo, intro, 3 highlights, N products, CTA, back link), Proxmox text-fallback, Pure Storage hyphen slug, 404 fallback and i18n toggle all work, back link navigates to /#partners-rack (SPA), 0 console errors.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "PartnerDetailPage.jsx uses window.scrollTo({behavior: 'instant'}) — 'instant' is not part of the ScrollBehavior enum in the spec (only 'auto' or 'smooth'). Chrome/Firefox tolerate it and fall back to auto, but Safari may warn. Consider {behavior: 'auto'}.",
+    "In /app/frontend/src/data/partners.js the PARTNERS_BY_SLUG uses reduce+spread which is O(n^2). Not a problem at 23 entries but a plain Object.fromEntries(PARTNERS.map(p => [p.slug, p])) is cleaner.",
+    "PartnersV2Section still keeps a local VENDOR_LOGOS map that duplicates data already in partners.js — a future refactor could source logo/name from PARTNERS to avoid drift (e.g. Huawei/Pure Storage/uptime DC/xorux/proxmox all currently rely on text fallback in the rack because they are missing from VENDOR_LOGOS)."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "n/a", "frontend": "100%"},
+  "seed_data_creation": "none",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Iteration 11 added /partners/:slug SPA route. Verified via Playwright at REACT_APP_BACKEND_URL. Key observations for next iterations: (1) rack-slot hover in PartnersV2 must be simulated with page.focus() or dispatched mouseenter — page.hover triggers CSS :hover but the React state uses onMouseEnter which page.hover DOES fire; note that page.click on a vendor-* Link scrolls page but element may still be out of viewport if navbar is fixed — use JS scrollIntoView({block:'center'}) first. (2) Language toggle testid is [data-testid=\"lang-toggle\"], its innerText stays 'PL/EN' but the LanguageContext swaps values. (3) All 23 slugs are exported from PARTNERS_BY_SLUG; slugs verified: netapp, dell, lenovo, asus, nutanix, microsoft, vmware, proxmox, huawei, pure-storage, commvault, veeam, arista, hpe, extreme-networks, cisco, brocade, sailpoint, baramundi, google, aws, uptime-dc, xorux.",
+  "detailed_results": {
+    "home_full_landing": "PASS — home-main + partners-rack-section + title + partners-vendors visible",
+    "flat_mode_links": "PASS — vendor-netapp/vendor-dell tag=A href=/partners/{slug}; total 23 flat vendors",
+    "spa_click_navigation": "PASS — click on [data-testid=vendor-netapp] navigates to /partners/netapp, window marker preserved (no full reload)",
+    "netapp_detail_page": "PASS — name='NetApp', tier='Partner strategiczny', partner-cat-0='Storage', tagline exact match, logo src=/logos/vendors/netapp.webp, 3 highlights, 4 products, cta=/#contact, back=/#partners-rack",
+    "dell_detail_page": "PASS — name='DELL', tier='Titanium Partner', 3 categories (Serwery & Wirtualizacja / Storage / Sieć — verified EN too), 5 products (PowerEdge, PowerStore, PowerMax, VxRail, PowerSwitch)",
+    "proxmox_text_fallback": "PASS — no <img>, .sc-partner-logo-panel__text='proxmox', tier='Community Partner', 1 category",
+    "pure_storage_hyphen": "PASS — name='Pure Storage'",
+    "not_found_page": "PASS — [data-testid=partner-notfound] + [data-testid=notfound-back] render for /partners/nonexistent-vendor",
+    "i18n_switch": "PASS — clicking [data-testid=lang-toggle] on /partners/netapp switches tagline/tier/intro to EN (verified 'Modern data environments...' and 'Strategic Partner')",
+    "back_navigation": "PASS — [data-testid=partner-back] navigates to /#partners-rack, home-main renders, partners-rack-section visible",
+    "random_slugs": "PASS — lenovo, sailpoint, aws, uptime-dc, xorux, extreme-networks all render partner-detail with correct name",
+    "grid_mode_links": "PASS — hovering rack-slot-storage renders vendor-grid-storage with 5 <Link> anchors data-testid=vendor-storage-0..4 pointing to /partners/{netapp,lenovo,dell,huawei,pure-storage}",
+    "console_errors": "0 errors captured across full test run"
+  }
+}

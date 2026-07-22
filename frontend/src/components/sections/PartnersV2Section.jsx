@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { useLang } from "@/i18n/LanguageContext";
 import {
   Server, HardDrive, DatabaseBackup, Network, ShieldCheck, Cloud,
 } from "lucide-react";
 import Reveal from "@/components/Reveal";
 import useSectionParallax from "@/hooks/useSectionParallax";
+import { slugify } from "@/data/partners";
 
 /**
  * PartnersV2 — interactive rack cabinet section.
@@ -204,9 +206,11 @@ const PartnersV2Section = () => {
                 <div className="sc-vendor-grid__list">
                   {activeCat.partners.map((p, i) => {
                     const src = VENDOR_LOGOS[p];
+                    const slug = slugify(p);
                     return (
-                      <span
+                      <Link
                         key={p}
+                        to={`/partners/${slug}`}
                         className="sc-vendor sc-vendor--lg is-highlighted"
                         data-testid={`vendor-${activeCat.id}-${i}`}
                         title={p}
@@ -223,7 +227,7 @@ const PartnersV2Section = () => {
                         ) : (
                           <span className="sc-vendor__text">{p}</span>
                         )}
-                      </span>
+                      </Link>
                     );
                   })}
                 </div>
@@ -232,11 +236,13 @@ const PartnersV2Section = () => {
               <div className="sc-vendor-flat">
                 {flatVendors.map((v) => {
                   const src = VENDOR_LOGOS[v.name];
+                  const slug = slugify(v.name);
                   return (
-                    <span
+                    <Link
                       key={v.name}
+                      to={`/partners/${slug}`}
                       className="sc-vendor"
-                      data-testid={`vendor-${v.name.replace(/\s+/g, "-").toLowerCase()}`}
+                      data-testid={`vendor-${slug}`}
                       title={v.name}
                     >
                       {src ? (
@@ -250,7 +256,7 @@ const PartnersV2Section = () => {
                       ) : (
                         <span className="sc-vendor__text">{v.name}</span>
                       )}
-                    </span>
+                    </Link>
                   );
                 })}
               </div>
