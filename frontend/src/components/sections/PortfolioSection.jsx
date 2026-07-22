@@ -30,7 +30,7 @@ const PortfolioSection = () => {
             </div>
             <h2
               data-testid="portfolio-title"
-              className="mt-5 max-w-2xl text-3xl md:text-5xl font-semibold leading-[1.05] tracking-tight"
+              className="mt-5 max-w-2xl text-4xl md:text-6xl font-semibold leading-[1.02] tracking-tight"
               style={{ color: "#0C5C62" }}
             >
               {t.portfolio.title}

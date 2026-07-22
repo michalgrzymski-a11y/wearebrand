@@ -124,7 +124,7 @@ const PartnersV2Section = () => {
           </div>
           <h2
             data-testid="partners-rack-title"
-            className="mt-4 text-3xl md:text-5xl font-semibold leading-[1.05] tracking-tight text-white max-w-3xl"
+            className="mt-4 text-4xl md:text-6xl font-semibold leading-[1.02] tracking-tight text-white max-w-3xl"
           >
             {lang === "pl"
               ? "Jedna szafa — wszystkie warstwy IT."

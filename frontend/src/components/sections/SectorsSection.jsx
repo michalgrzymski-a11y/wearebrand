@@ -48,7 +48,7 @@ const SectorsSection = () => {
           </div>
           <h2
             data-testid="sectors-title"
-            className="mt-4 text-3xl md:text-5xl font-semibold leading-[1.05] tracking-tight max-w-3xl"
+            className="mt-4 text-4xl md:text-6xl font-semibold leading-[1.02] tracking-tight max-w-3xl"
             style={{ color: "#0C5C62" }}
           >
             {t.sectors.title}
