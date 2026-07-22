@@ -3,6 +3,7 @@ import { useLang } from "@/i18n/LanguageContext";
 import { Server, ShieldCheck, Code2, Building2 } from "lucide-react";
 import Reveal from "@/components/Reveal";
 import useSectionParallax from "@/hooks/useSectionParallax";
+import DigitalHorizonscape from "@/components/fx/DigitalHorizonscape";
 
 const ICONS = [Server, ShieldCheck, Code2, Building2];
 
@@ -18,19 +19,11 @@ const PortfolioSection = () => {
       className="relative w-full overflow-hidden"
       style={{ background: "#FFFFFF", color: "#1C2833" }}
     >
-      {/* Parallax deco */}
+      {/* Digital Horizonscape (scroll-interactive) — perspective grid, subtle on light bg */}
       <div className="sc-slayer-wrap" aria-hidden="true">
-        <span data-parallax="0.22" className="sc-slayer-grid" />
-        <span
-          data-parallax="-0.20"
-          className="sc-slayer sc-slayer--cyan"
-          style={{ width: 480, height: 480, top: "10%", left: "-8%", opacity: 0.22 }}
-        />
-        <span
-          data-parallax="0.18"
-          className="sc-slayer sc-slayer--mint"
-          style={{ width: 420, height: 420, bottom: "-6%", right: "-6%" }}
-        />
+        <div data-parallax="0.15">
+          <DigitalHorizonscape tone="light" scrollReactive />
+        </div>
       </div>
 
       <div className="relative z-10 mx-auto max-w-7xl px-6 md:px-10 py-24 md:py-32">
@@ -70,7 +63,7 @@ const PortfolioSection = () => {
                     className="text-[10px] uppercase tracking-[0.32em]"
                     style={{ color: "#49ADA5" }}
                   >
-                    {tile.tag} — {tile.subtitle}
+                    {tile.subtitle}
                   </span>
                 </div>
 

@@ -159,14 +159,16 @@ body {
    HERO layout (compact)
    ============================================================ */
 .sc-hero {
-  min-height: 860px;
+  min-height: calc(100vh - 72px);
+  height: calc(100vh - 72px);
   display: flex;
   align-items: center;
 }
 @media (min-width: 768px) {
   .sc-hero {
-    min-height: 940px;
-    max-height: 1100px;
+    min-height: calc(100vh - 84px);
+    height: calc(100vh - 84px);
+    max-height: none;
   }
 }
 
@@ -2190,45 +2192,21 @@ body {
 }
 
 /* ============================================================
-   Section cut divider — hard edge + neon mint line (static)
-.sc-cut {
+   Section blend divider — soft gradient transition between colors
+   ============================================================ */
+.sc-blend {
   position: relative;
   width: 100%;
-  height: auto;
   overflow: hidden;
 }
-.sc-cut__below {
-  width: 100%;
-}
-.sc-cut__line {
+.sc-blend__line {
   position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 2px;
-  background: linear-gradient(
-    90deg,
-    rgba(73,173,165,0) 0%,
-    rgba(73,173,165,0.9) 20%,
-    #49ADA5 50%,
-    rgba(73,173,165,0.9) 80%,
-    rgba(73,173,165,0) 100%
-  );
-  box-shadow:
-    0 0 12px rgba(73,173,165,0.75),
-    0 0 30px rgba(73,173,165,0.45),
-    0 0 60px rgba(73,173,165,0.25);
-  transform: scaleX(0);
-  transform-origin: 50% 50%;
-  transition: transform 1.2s cubic-bezier(0.22, 0.61, 0.36, 1);
-  overflow: hidden;
-}
-.sc-cut__line.is-in {
-  transform: scaleX(1);
-}
-/* Continuous scanning sweep travelling along the line after reveal */
-.sc-cut__line.is-in::before {
-  content: none;
+  left: 15%;
+  right: 15%;
+  top: 50%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(73,173,165,0.4), transparent);
+  opacity: 0.55;
 }
 
 /* ============================================================
@@ -2958,6 +2936,156 @@ body {
 }
 .sc-contact-block__label {
   font-family: "Manrope", sans-serif;
+
+/* ============================================================
+   FX layers — canvas / css effect base
+   ============================================================ */
+.sc-fx-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+.sc-fx-canvas--dark { mix-blend-mode: screen; }
+.sc-fx-canvas--light { mix-blend-mode: multiply; opacity: 0.35; }
+
+/* -------- Aurora Borealis Base -------- */
+.sc-fx-aurora {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+  --fx-i: 1;
+}
+.sc-fx-aurora__band {
+  position: absolute;
+  left: -20%;
+  right: -20%;
+  height: 34%;
+  border-radius: 50%;
+  filter: blur(60px);
+  transform-origin: center;
+  will-change: transform, filter;
+  animation-timing-function: cubic-bezier(0.55, 0, 0.45, 1);
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  opacity: calc(0.55 * var(--fx-i));
+}
+.sc-fx-aurora--dark .sc-fx-aurora__band--a {
+  top: -6%;
+  background: radial-gradient(ellipse at 30% 50%, #06FFE0 0%, #49ADA5 40%, transparent 75%);
+  animation: sc-fx-aurora-wave-a 18s;
+}
+.sc-fx-aurora--dark .sc-fx-aurora__band--b {
+  top: 20%;
+  background: radial-gradient(ellipse at 65% 50%, #00B8D4 0%, #037A7A 45%, transparent 78%);
+  animation: sc-fx-aurora-wave-b 22s;
+  opacity: calc(0.45 * var(--fx-i));
+}
+.sc-fx-aurora--dark .sc-fx-aurora__band--c {
+  top: 46%;
+  background: radial-gradient(ellipse at 45% 50%, #7BFFC9 0%, #49ADA5 40%, transparent 75%);
+  animation: sc-fx-aurora-wave-a 26s;
+  opacity: calc(0.35 * var(--fx-i));
+}
+.sc-fx-aurora--dark .sc-fx-aurora__band--d {
+  top: 72%;
+  background: radial-gradient(ellipse at 55% 50%, #06FFE0 0%, transparent 78%);
+  animation: sc-fx-aurora-wave-b 30s;
+  opacity: calc(0.3 * var(--fx-i));
+}
+/* Light aurora — subtle mint waves on white */
+.sc-fx-aurora--light .sc-fx-aurora__band {
+  opacity: calc(0.28 * var(--fx-i));
+  filter: blur(80px);
+}
+.sc-fx-aurora--light .sc-fx-aurora__band--a {
+  top: -4%;
+  background: radial-gradient(ellipse at 30% 50%, #49ADA5 0%, transparent 65%);
+  animation: sc-fx-aurora-wave-a 24s;
+}
+.sc-fx-aurora--light .sc-fx-aurora__band--b {
+  top: 24%;
+  background: radial-gradient(ellipse at 70% 50%, #7CC4C0 0%, transparent 65%);
+  animation: sc-fx-aurora-wave-b 28s;
+}
+.sc-fx-aurora--light .sc-fx-aurora__band--c {
+  top: 52%;
+  background: radial-gradient(ellipse at 40% 50%, #49ADA5 0%, transparent 60%);
+  animation: sc-fx-aurora-wave-a 32s;
+  opacity: calc(0.18 * var(--fx-i));
+}
+.sc-fx-aurora--light .sc-fx-aurora__band--d {
+  top: 78%;
+  background: radial-gradient(ellipse at 55% 50%, #00B8D4 0%, transparent 60%);
+  animation: sc-fx-aurora-wave-b 36s;
+  opacity: calc(0.15 * var(--fx-i));
+}
+@keyframes sc-fx-aurora-wave-a {
+  0%   { transform: translate3d(-6%, 0, 0) scaleY(1)   skewX(-6deg); }
+  100% { transform: translate3d(6%, 0, 0)  scaleY(1.3) skewX(6deg);  }
+}
+@keyframes sc-fx-aurora-wave-b {
+  0%   { transform: translate3d(4%, 0, 0)  scaleY(1.2) skewX(4deg);  }
+  100% { transform: translate3d(-4%, 0, 0) scaleY(0.9) skewX(-4deg); }
+}
+
+/* -------- Digital Horizonscape -------- */
+.sc-fx-horizon {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+.sc-fx-horizon__grid {
+  position: absolute;
+  left: -5%;
+  right: -5%;
+  bottom: -30%;
+  height: 130%;
+  transform-origin: 50% 0%;
+  transform: perspective(700px) rotateX(72deg);
+  will-change: transform;
+  opacity: 0.55;
+}
+.sc-fx-horizon--light .sc-fx-horizon__grid { opacity: 0.25; }
+.sc-fx-horizon__glow {
+  position: absolute;
+  top: 30%;
+  left: 10%;
+  right: 10%;
+  height: 2px;
+  filter: blur(6px);
+  opacity: 0.55;
+  border-radius: 2px;
+}
+.sc-fx-horizon--light .sc-fx-horizon__glow { opacity: 0.28; height: 1.2px; }
+
+/* Global — sections default to a relative positioning + FX children z-order */
+.sc-fx-host { position: relative; overflow: hidden; }
+.sc-fx-host > .sc-fx-canvas,
+.sc-fx-host > .sc-fx-aurora,
+.sc-fx-host > .sc-fx-horizon {
+  z-index: 0;
+}
+
+/* ============================================================
+   Section transitions — smooth fade edges (kill hard cuts)
+   ============================================================ */
+.sc-fade-edge {
+  position: absolute;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+  z-index: 5;
+}
+.sc-fade-edge--top { top: 0; height: 140px; }
+.sc-fade-edge--bottom { bottom: 0; height: 140px; }
+
   font-size: 10px;
   letter-spacing: 0.24em;
   text-transform: uppercase;

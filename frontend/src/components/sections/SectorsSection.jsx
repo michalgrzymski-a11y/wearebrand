@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import Reveal from "@/components/Reveal";
 import useSectionParallax from "@/hooks/useSectionParallax";
+import DataStreamFlow from "@/components/fx/DataStreamFlow";
 
 /**
  * Sectors — market segments where SmartClout delivers IT.
@@ -38,12 +39,9 @@ const SectorsSection = () => {
       style={{ background: "#FFFFFF", color: "#1C2833" }}
     >
       <div className="sc-slayer-wrap" aria-hidden="true">
-        <span data-parallax="0.20" className="sc-slayer-grid" />
-        <span
-          data-parallax="-0.14"
-          className="sc-slayer sc-slayer--mint"
-          style={{ width: 460, height: 460, top: "-4%", left: "-6%" }}
-        />
+        <div data-parallax="0.10">
+          <DataStreamFlow tone="light" density={32} />
+        </div>
       </div>
 
       <div className="relative z-10 mx-auto max-w-7xl px-6 md:px-10 py-24 md:py-32">

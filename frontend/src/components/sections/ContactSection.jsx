@@ -6,6 +6,7 @@ import {
   Sparkles, MessageCircle, ClipboardList, RotateCcw, Send,
 } from "lucide-react";
 import useSectionParallax from "@/hooks/useSectionParallax";
+import AuroraBorealis from "@/components/fx/AuroraBorealis";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -26,20 +27,11 @@ const ContactSection = () => {
       className="relative w-full sc-contact-neon overflow-hidden"
       style={{ background: "#040709", color: "#E8F4F5" }}
     >
-      {/* Neon aurora backdrop with parallax on the blobs */}
-      <div className="sc-chat-aurora" aria-hidden="true">
-        <span
-          data-parallax="-0.25"
-          className="sc-chat-aurora__blob sc-chat-aurora__blob--a"
-        />
-        <span
-          data-parallax="0.22"
-          className="sc-chat-aurora__blob sc-chat-aurora__blob--b"
-        />
-        <span
-          data-parallax="0.15"
-          className="sc-chat-aurora__grid"
-        />
+      {/* Aurora Borealis backdrop (dark tone) with parallax */}
+      <div className="sc-slayer-wrap" aria-hidden="true">
+        <div data-parallax="-0.15">
+          <AuroraBorealis tone="dark" intensity={0.85} />
+        </div>
       </div>
 
       <div className="relative z-10 mx-auto max-w-7xl px-6 md:px-10 py-24 md:py-32">
@@ -53,49 +45,48 @@ const ContactSection = () => {
         >
           {t.contact.title}
         </h2>
-        <p className="mt-5 max-w-2xl text-base md:text-lg text-white/70">
-          {t.contact.subtitle}
-        </p>
 
-        {/* Mode toggle — two visible buttons, AI default */}
-        <div className="mt-10 sc-contact-toggle" role="tablist" aria-label="Contact mode">
-          <button
-            type="button"
-            role="tab"
-            aria-selected={mode === "ai"}
-            data-testid="contact-mode-ai"
-            className={`sc-contact-toggle__btn ${mode === "ai" ? "is-active" : ""}`}
-            onClick={() => setMode("ai")}
-          >
-            <span className="sc-contact-toggle__icon"><Sparkles size={16} strokeWidth={2} /></span>
-            <span className="sc-contact-toggle__label">
-              <span className="sc-contact-toggle__name">{t.contact.mode.ai}</span>
-              <span className="sc-contact-toggle__hint">{t.contact.mode.ai_hint}</span>
-            </span>
-          </button>
-          <button
-            type="button"
-            role="tab"
-            aria-selected={mode === "form"}
-            data-testid="contact-mode-form"
-            className={`sc-contact-toggle__btn ${mode === "form" ? "is-active" : ""}`}
-            onClick={() => setMode("form")}
-          >
-            <span className="sc-contact-toggle__icon"><ClipboardList size={16} strokeWidth={2} /></span>
-            <span className="sc-contact-toggle__label">
-              <span className="sc-contact-toggle__name">{t.contact.mode.form}</span>
-              <span className="sc-contact-toggle__hint">{t.contact.mode.form_hint}</span>
-            </span>
-          </button>
-        </div>
-
-        {/* Two-column grid: content on the left, active mode on the right */}
+        {/* Two-column "table" layout — left: registry info, right: mode toggle + panel */}
         <div className="mt-12 md:mt-14 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14">
           <div className="lg:col-span-5">
             <ContactInfo t={t} />
           </div>
           <div className="lg:col-span-7">
-            {mode === "ai" ? <AiAssistant t={t} lang={lang} /> : <FormPanel t={t} lang={lang} />}
+            {/* Toggle sits INSIDE the right column, above the active panel */}
+            <div className="sc-contact-toggle" role="tablist" aria-label="Contact mode">
+              <button
+                type="button"
+                role="tab"
+                aria-selected={mode === "ai"}
+                data-testid="contact-mode-ai"
+                className={`sc-contact-toggle__btn ${mode === "ai" ? "is-active" : ""}`}
+                onClick={() => setMode("ai")}
+              >
+                <span className="sc-contact-toggle__icon"><Sparkles size={16} strokeWidth={2} /></span>
+                <span className="sc-contact-toggle__label">
+                  <span className="sc-contact-toggle__name">{t.contact.mode.ai}</span>
+                  <span className="sc-contact-toggle__hint">{t.contact.mode.ai_hint}</span>
+                </span>
+              </button>
+              <button
+                type="button"
+                role="tab"
+                aria-selected={mode === "form"}
+                data-testid="contact-mode-form"
+                className={`sc-contact-toggle__btn ${mode === "form" ? "is-active" : ""}`}
+                onClick={() => setMode("form")}
+              >
+                <span className="sc-contact-toggle__icon"><ClipboardList size={16} strokeWidth={2} /></span>
+                <span className="sc-contact-toggle__label">
+                  <span className="sc-contact-toggle__name">{t.contact.mode.form}</span>
+                  <span className="sc-contact-toggle__hint">{t.contact.mode.form_hint}</span>
+                </span>
+              </button>
+            </div>
+
+            <div className="mt-6">
+              {mode === "ai" ? <AiAssistant t={t} lang={lang} /> : <FormPanel t={t} lang={lang} />}
+            </div>
           </div>
         </div>
       </div>

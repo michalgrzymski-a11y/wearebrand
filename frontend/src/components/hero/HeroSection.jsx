@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { useLang } from "@/i18n/LanguageContext";
 import { ArrowRight } from "lucide-react";
+import NeuralNodeNetwork from "@/components/fx/NeuralNodeNetwork";
 
 /**
  * Hero — cinematic datacenter photograph as full-bleed background.
@@ -124,6 +125,9 @@ const HeroSection = () => {
 
       {/* Readability gradient over the whole scene */}
       <div className="pointer-events-none absolute inset-0 sc-hero-photo-readable" aria-hidden="true" />
+
+      {/* Neural Node Network — cursor-reactive particle web on top of the photo */}
+      <NeuralNodeNetwork color="#49ADA5" density={90} interactive opacity={0.6} />
 
       {/* L4 — corner tech brackets */}
       <div ref={bracketsRef} className="pointer-events-none absolute inset-0" aria-hidden="true">

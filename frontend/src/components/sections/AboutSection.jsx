@@ -10,6 +10,7 @@ import {
 import Reveal from "@/components/Reveal";
 import FuturisticMetric from "@/components/FuturisticMetric";
 import useSectionParallax from "@/hooks/useSectionParallax";
+import AuroraBorealis from "@/components/fx/AuroraBorealis";
 
 const PILLARS = [
   {
@@ -183,19 +184,11 @@ const AboutSection = () => {
       className="relative w-full overflow-hidden"
       style={{ background: "#FFFFFF", color: "#1C2833" }}
     >
-      {/* Parallax decorative layer — subtle mint blob + grid */}
+      {/* Aurora Borealis (light tone) + parallax on it */}
       <div className="sc-slayer-wrap" aria-hidden="true">
-        <span data-parallax="0.25" className="sc-slayer-grid" />
-        <span
-          data-parallax="-0.15"
-          className="sc-slayer sc-slayer--mint"
-          style={{ width: 520, height: 520, top: "-8%", right: "-6%" }}
-        />
-        <span
-          data-parallax="0.20"
-          className="sc-slayer sc-slayer--cyan"
-          style={{ width: 380, height: 380, bottom: "-4%", left: "-5%", opacity: 0.18 }}
-        />
+        <div data-parallax="-0.18">
+          <AuroraBorealis tone="light" intensity={1.1} />
+        </div>
       </div>
 
       <div className="relative z-10 mx-auto max-w-7xl px-6 md:px-10 py-24 md:py-32">

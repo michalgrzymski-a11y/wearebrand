@@ -1,53 +1,27 @@
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 
 /**
- * SectionDivider — hard color cut with a neon mint line separator.
+ * SectionDivider — soft gradient blend between two adjacent section
+ * background colors. Replaces the previous hard-cut design so that
+ * transitions look organic and cinematic.
  *
- *  Behaviour:
- *    - Section above and below meet at a HARD edge (no gradient bleed).
- *    - A thin (2px) neon mint line sits exactly at the seam with glow.
- *    - On scroll into view: line reveals from center out (scaleX 0→1) with easing.
- *    - A subtle horizontal sweep of light continuously travels along the line.
- *
- *  Props:
- *    - top:    background color of the section above (rendered as the divider top half)
- *    - bottom: background color of the section below (rendered as the divider bottom half)
- *    - height: total divider height in px (default 6 — very thin cut zone)
+ * Props:
+ *  - top:    background color of the section above
+ *  - bottom: background color of the section below
+ *  - height: divider height in px (default 120 — generous blend)
  */
-const SectionDivider = ({ top, bottom, height = 4, id = "" }) => {
-  const ref = useRef(null);
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            setVisible(true);
-            io.disconnect();
-          }
-        });
-      },
-      { rootMargin: "-10% 0px -10% 0px", threshold: 0.01 },
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
-
+const SectionDivider = ({ top, bottom, height = 120, id = "" }) => {
   return (
     <div
-      ref={ref}
       aria-hidden="true"
       data-testid={id ? `divider-${id}` : "section-divider"}
-      className="sc-cut"
-      style={{ background: top }}
+      className="sc-blend"
+      style={{
+        height: `${height}px`,
+        background: `linear-gradient(180deg, ${top} 0%, ${top} 8%, ${bottom} 92%, ${bottom} 100%)`,
+      }}
     >
-      {/* the "bottom" half is just under the neon line */}
-      <div className="sc-cut__below" style={{ background: bottom, height: `${height}px` }} />
-      {/* the neon line */}
-      <div className={`sc-cut__line ${visible ? "is-in" : ""}`} />
+      <span className="sc-blend__line" />
     </div>
   );
 };
