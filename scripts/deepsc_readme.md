@@ -125,6 +125,69 @@ głębiej, tym gęstsze i bardziej "sekretne" dla klienta.
    warstwie −20 m i głębiej
 7. **Rack element highlights** — każdy komponent (drive/moduł) podświetla
    się gdy jego sekcja jest aktywna, wypuszcza mint tooltip z spec
+8. **Multi-layer Parallax** (kluczowe dla iluzji głębi — patrz sekcja niżej)
+
+## Parallax scroll — pełna specyfikacja
+
+Filmowa iluzja głębi budowana z **7 równoległych warstw**, każda porusza
+się z innym mnożnikiem `speed` (0 = fixed, 1 = normalna prędkość scroll,
+< 1 = wolniej / dalej, > 1 = szybciej / bliżej).
+
+| Warstwa                              | Speed | Uwagi                                          |
+|--------------------------------------|:-----:|------------------------------------------------|
+| L0: Sky / abyss gradient (najdalej)  | 0.15  | Prawie static; delikatne przesunięcie tonalne  |
+| L1: Distant water fog / god rays     | 0.35  | Fog volume + procedural sunrays                |
+| L2: Iceberg-rack (bryła główna)      | 0.65  | Rzeźba centralna; kamera z-panuje              |
+| L3: Waterline & wave reflections     | 0.85  | Odbicia świateł na tafli                       |
+| L4: Foreground bubbles / debris      | 1.30  | Bąbelki, mikroplankton — szybciej niż scroll   |
+| L5: UI overlay (depth-meter, badges) | 1.00  | Fixed pozycja, tekst zmienia się na scroll     |
+| L6: Cursor particles / bloom halo    | 1.60  | Reaguje na kursor + scroll                     |
+
+### Implementacja
+
+**Three.js scene (L0–L4)**:
+- Każda warstwa jako `Group` w R3F z własnym `ref`
+- Hook `useFrame(({clock}) => { ... })` NIE steruje pozycją — steruje
+  kamerą przez `ScrollTrigger.scrub`
+- Dla każdej warstwy: `group.position.z = baseZ + scrollProgress * range * speed`
+- Bąbelki (L4) używają dodatkowo `sin(time)` do horyzontalnego jitteru
+
+**HTML/UI (L5–L6)**:
+- Kontenery z `data-parallax-speed="1.3"`
+- Efekt: `translateY(-scrollY * (speed - 1))` — łatwiej Framer Motion
+  z `useTransform(scrollY, [0, 1000], [0, -300 * (speed - 1)])`
+- Wszystko sync przez wspólny `useLenis()` hook
+
+**Sekcja-specyficzne parallax**:
+- **Hero**: L1 (godrays) idzie w prawo, L4 (bąbelki) w lewo — dając
+  efekt "ruchu wody"
+- **About**: waterline (L3) delikatnie pulsuje z sin(time)
+- **Portfolio**: warstwa hardware ma parallax na kartach usług
+  (tło szuflad rack przesuwa się wolniej niż tekst)
+- **Sektory**: 6 mini-racków ma indywidualne speed (0.4–0.8) — każdy
+  na innej "głębokości"
+- **Trusted By**: logotypy klientów na dnie mają speed 0.5 (są dalej,
+  wolniej reagują) z lekkim bounce
+- **Partnerzy**: kolumny partnerskie speed 0.3 (najgłębiej, statyczne)
+- **Kontakt**: formularz L5 na fixed, tło L0/L1 pulsuje
+
+### Krytyczne zasady wydajnościowe
+
+- Wszystkie parallax transformy przez `transform: translate3d()` +
+  `will-change: transform` (GPU-accelerated)
+- Trigger `translateZ(0)` na kontenerach → nowe layer composite
+- `pointer-events: none` na warstwach dekoracyjnych L0/L1/L4
+- `IntersectionObserver` zatrzymuje `useFrame` dla warstw poza viewportem
+- Debounce resize handler (Lenis + ScrollTrigger.refresh po 200ms)
+- Na mobile: redukcja warstw do 3 (L0 + L2 + L5), speed uproszczone
+
+### Reduced Motion
+
+Respektuj `@media (prefers-reduced-motion: reduce)`:
+- Wyłącz scrub kamery — sekcje pojawiają się fade + slide na
+  IntersectionObserver
+- Wyłącz cursor particles, bubble jitter
+- Utrzymaj static gradient warstwy (bez shaderów)
 
 ## Prompt startowy do wklejenia w nowym projekcie Emergent
 
@@ -170,6 +233,12 @@ EFEKTY MUST-HAVE
 - Waterline crossing: paleta z surface-ice do deep-water
 - Cursor bubble trail w warstwach głębinowych
 - Highlight komponentów rack synchroniczny ze scroll offset
+- **Multi-layer Parallax (7 warstw, speed od 0.15 do 1.60)**:
+  L0 sky/abyss (0.15), L1 fog+godrays (0.35), L2 rack (0.65),
+  L3 waterline (0.85), L4 bubbles (1.30), L5 UI overlay (1.00),
+  L6 cursor bloom (1.60). Implementacja: R3F group.position sterowana
+  ScrollTrigger.scrub + Framer Motion useTransform dla HTML overlays.
+  Respektuj prefers-reduced-motion (redukcja do 3 warstw)
 
 PALETA
 Deep Teal #0C5C62, Accent Mint #49ADA5, Surface Ice #E8F4F5,
