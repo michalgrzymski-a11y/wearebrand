@@ -143,9 +143,13 @@ const HeroSection = () => {
       {/* L5 — copy (floats up slightly on scroll) */}
       <div
         ref={copyRef}
-        className="relative z-10 mx-auto flex w-full max-w-7xl items-center px-6 pb-16 pt-16 md:px-10 md:pt-20"
+        className="relative z-20 mx-auto flex w-full max-w-7xl items-center px-6 pb-16 pt-16 md:px-10 md:pt-20"
       >
-        <div className="flex max-w-2xl flex-col">
+        <div className="sc-hero-panel">
+          <div className="sc-hero-panel__head">
+            <span className="sc-hero-panel__pulse" />
+            <span className="sc-hero-panel__code">IT SMARTCLOUT · LIVE</span>
+          </div>
           <h1 data-testid="hero-title" className="sc-hero-title text-white">
             {t.hero.title_pre}{" "}
             <span className="sc-hero-accent">{t.hero.title_accent}</span>{" "}
@@ -154,17 +158,17 @@ const HeroSection = () => {
 
           <p
             data-testid="hero-subtitle"
-            className="mt-6 max-w-xl text-base md:text-lg text-white/80"
+            className="mt-6 max-w-xl text-base md:text-lg text-white/85"
           >
             {t.hero.subtitle}
           </p>
 
           <div className="mt-8 flex flex-wrap items-center gap-3">
-            <a href="#contact" data-testid="hero-cta-primary" className="sc-btn-glass sc-btn-glass--primary">
+            <a href="#contact" data-testid="hero-cta-primary" className="sc-chat-send">
               {t.hero.cta_primary}
-              <ArrowRight size={16} className="transition-transform duration-300" />
+              <ArrowRight size={16} strokeWidth={2} />
             </a>
-            <a href="#portfolio" data-testid="hero-cta-secondary" className="sc-btn-glass">
+            <a href="#portfolio" data-testid="hero-cta-secondary" className="sc-chat-pill">
               {t.hero.cta_secondary}
             </a>
           </div>

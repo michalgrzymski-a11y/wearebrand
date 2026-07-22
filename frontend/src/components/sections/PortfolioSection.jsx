@@ -3,7 +3,6 @@ import { useLang } from "@/i18n/LanguageContext";
 import { Server, ShieldCheck, Code2, Building2 } from "lucide-react";
 import Reveal from "@/components/Reveal";
 import useSectionParallax from "@/hooks/useSectionParallax";
-import DigitalHorizonscape from "@/components/fx/DigitalHorizonscape";
 
 const ICONS = [Server, ShieldCheck, Code2, Building2];
 
@@ -19,13 +18,6 @@ const PortfolioSection = () => {
       className="relative w-full overflow-hidden"
       style={{ background: "#FFFFFF", color: "#1C2833" }}
     >
-      {/* Digital Horizonscape (scroll-interactive) — perspective grid, subtle on light bg */}
-      <div className="sc-slayer-wrap" aria-hidden="true">
-        <div data-parallax="0.15">
-          <DigitalHorizonscape tone="light" scrollReactive />
-        </div>
-      </div>
-
       <div className="relative z-10 mx-auto max-w-7xl px-6 md:px-10 py-24 md:py-32">
         <div className="mb-14 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
           <div>
