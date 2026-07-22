@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import { useLang } from "@/i18n/LanguageContext";
 import {
   Server, HardDrive, DatabaseBackup, Network, ShieldCheck, Cloud,
@@ -58,9 +58,63 @@ const CATEGORIES = [
 
 const PartnersV2Section = () => {
   const { lang } = useLang();
-  const [active, setActive] = useState(CATEGORIES[0].id);
-  const activeCat = CATEGORIES.find((c) => c.id === active) || CATEGORIES[0];
+  const [active, setActive] = useState(null); // no category active until first hover
+  const [hasInteracted, setHasInteracted] = useState(false);
+  const activeCat = CATEGORIES.find((c) => c.id === active) || null;
   const parallaxRef = useSectionParallax();
+
+  // Pool of all partners across categories (with source category for potential styling)
+  const pool = useMemo(() => {
+    const seen = new Set();
+    const list = [];
+    CATEGORIES.forEach((cat) => {
+      cat.partners.forEach((p) => {
+        const key = `${cat.id}:${p}`;
+        if (!seen.has(key)) {
+          seen.add(key);
+          list.push({ name: p, cat: cat.id });
+        }
+      });
+    });
+    return list;
+  }, []);
+
+  // Random scatter — 10 floating logos, refreshed periodically until first interaction
+  const [scatter, setScatter] = useState([]);
+  const tickRef = useRef(0);
+  const generateScatter = () => {
+    const shuffled = [...pool].sort(() => Math.random() - 0.5).slice(0, 10);
+    // Distribute across 10 vertical bands to avoid overlaps, add jitter
+    const items = shuffled.map((entry, i) => {
+      const band = i / 10; // 0..0.9
+      const y = band * 88 + Math.random() * 6 + 2; // 2..96%
+      const x = 6 + Math.random() * 78; // 6..84%
+      const rot = (Math.random() - 0.5) * 4;
+      return {
+        key: `${tickRef.current}-${i}-${entry.cat}-${entry.name}`,
+        name: entry.name,
+        cat: entry.cat,
+        x,
+        y,
+        rot,
+        delay: i * 60,
+      };
+    });
+    tickRef.current += 1;
+    setScatter(items);
+  };
+  useEffect(() => {
+    generateScatter();
+    if (hasInteracted) return undefined;
+    const id = setInterval(generateScatter, 2600);
+    return () => clearInterval(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hasInteracted]);
+
+  const handlePick = (id) => {
+    setHasInteracted(true);
+    setActive(id);
+  };
 
   return (
     <section
@@ -111,9 +165,9 @@ const PartnersV2Section = () => {
                     <button
                       key={cat.id}
                       type="button"
-                      onMouseEnter={() => setActive(cat.id)}
-                      onFocus={() => setActive(cat.id)}
-                      onClick={() => setActive(cat.id)}
+                      onMouseEnter={() => handlePick(cat.id)}
+                      onFocus={() => handlePick(cat.id)}
+                      onClick={() => handlePick(cat.id)}
                       className={`sc-rack__slot ${isActive ? "is-active" : ""}`}
                       data-testid={`rack-slot-${cat.id}`}
                     >
@@ -143,24 +197,56 @@ const PartnersV2Section = () => {
           <div className="sc-partners2" data-testid="partners-vendors">
             <div className="sc-partners2__head">
               <span className="sc-partners2__kicker">
-                {lang === "pl" ? "Producenci warstwy" : "Vendors for layer"}
+                {hasInteracted
+                  ? (lang === "pl" ? "Producenci warstwy" : "Vendors for layer")
+                  : (lang === "pl" ? "Wybrani producenci" : "Selected vendors")}
               </span>
               <div className="sc-partners2__title">
-                {lang === "pl" ? activeCat.name_pl : activeCat.name_en}
+                {hasInteracted && activeCat
+                  ? (lang === "pl" ? activeCat.name_pl : activeCat.name_en)
+                  : (lang === "pl"
+                      ? "Najedź na warstwę racka →"
+                      : "Hover a rack layer →")}
               </div>
             </div>
-            <div key={activeCat.id} className="sc-partners2__grid">
-              {activeCat.partners.map((p, i) => (
-                <span
-                  key={p}
-                  className="sc-partners2__logo"
-                  style={{ animationDelay: `${i * 60}ms` }}
-                  data-testid={`vendor-${activeCat.id}-${i}`}
-                >
-                  {p}
-                </span>
-              ))}
-            </div>
+
+            {!hasInteracted && (
+              <div
+                className="sc-partners2__scatter"
+                data-testid="partners-scatter"
+                aria-hidden="true"
+              >
+                {scatter.map((it) => (
+                  <span
+                    key={it.key}
+                    className="sc-partners2__float"
+                    style={{
+                      left: `${it.x}%`,
+                      top: `${it.y}%`,
+                      transform: `translate(-50%, -50%) rotate(${it.rot}deg)`,
+                      animationDelay: `${it.delay}ms`,
+                    }}
+                  >
+                    {it.name}
+                  </span>
+                ))}
+              </div>
+            )}
+
+            {hasInteracted && activeCat && (
+              <div key={activeCat.id} className="sc-partners2__grid">
+                {activeCat.partners.map((p, i) => (
+                  <span
+                    key={p}
+                    className="sc-partners2__logo"
+                    style={{ animationDelay: `${i * 60}ms` }}
+                    data-testid={`vendor-${activeCat.id}-${i}`}
+                  >
+                    {p}
+                  </span>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>

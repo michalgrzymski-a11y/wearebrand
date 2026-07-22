@@ -31,8 +31,34 @@ export const translations = {
       section_label: "O nas",
       metrics: [
         { value: "20+", label: "lat doświadczenia" },
-        { value: "500+", label: "zrealizowanych projektów" },
+        { value: "350+", label: "zrealizowanych projektów" },
         { value: "130+", label: "klientów" },
+      ],
+      stat_cards: [
+        {
+          id: "experience",
+          value: "20+",
+          label: "lat doświadczenia",
+          summary: "Od pierwszego wdrożenia do dojrzałej praktyki architektonicznej.",
+          detail:
+            "Dwie dekady projektów w polskim enterprise IT — od pierwszych macierzy dyskowych, przez konsolidację datacenter, po nowoczesne środowiska hybrydowe i wieloklastrowe. Doświadczenie, którego nie da się przeczytać z broszury.",
+        },
+        {
+          id: "projects",
+          value: "350+",
+          label: "zrealizowanych projektów",
+          summary: "Datacenter, storage, backup, DR — od PoC do produkcyjnej skali enterprise.",
+          detail:
+            "Ponad 350 zamkniętych wdrożeń: konsolidacje storage, modernizacje sieci, budowy zapasowych ośrodków przetwarzania, business continuity i disaster recovery. Każdy projekt zamknięty odbiorem, dokumentacją i transferem wiedzy.",
+        },
+        {
+          id: "clients",
+          value: "130+",
+          label: "klientów",
+          summary: "Liderzy z sektorów o najwyższych wymaganiach ciągłości działania.",
+          detail:
+            "Ponad 130 organizacji z sektorów finansów, mediów, produkcji, telekomunikacji, retail i administracji. Wielu klientów wraca do nas przy kolejnych fazach modernizacji infrastruktury — to najlepsza rekomendacja.",
+        },
       ],
       narrative:
         "W IT SMARTCLOUT doświadczenie nauczyło nas jednego: najlepsze rozwiązania rodzą się z wyciągania wniosków. Jako partner NetApp, wykraczamy poza standardowe wdrożenia. Posiadamy kompetencje do realizacji najbardziej wymagających projektów, ale naszą prawdziwą wartością dodaną jest uważność na głos klienta. Dzięki holistycznemu spojrzeniu na ekosystem IT, projektujemy infrastrukturę „szytą na miarę” – taką, która chroni dane, przyspiesza biznes i szanuje budżet. Nie szukamy najdroższych rozwiązań, szukamy tych najbardziej zoptymalizowanych.",
@@ -235,8 +261,34 @@ export const translations = {
       section_label: "About us",
       metrics: [
         { value: "20+", label: "years of experience" },
-        { value: "500+", label: "completed projects" },
+        { value: "350+", label: "completed projects" },
         { value: "130+", label: "clients" },
+      ],
+      stat_cards: [
+        {
+          id: "experience",
+          value: "20+",
+          label: "years of experience",
+          summary: "From the first deployment to a mature architectural practice.",
+          detail:
+            "Two decades of projects in Polish enterprise IT — from the first storage arrays and datacenter consolidations to modern hybrid and multi-cluster environments. The kind of experience you can't get from a brochure.",
+        },
+        {
+          id: "projects",
+          value: "350+",
+          label: "completed projects",
+          summary: "Datacenter, storage, backup, DR — from PoC to production at enterprise scale.",
+          detail:
+            "Over 350 closed deployments: storage consolidations, network modernisations, secondary datacenters, business continuity and disaster recovery programs. Every project closed with acceptance, documentation and a proper knowledge transfer.",
+        },
+        {
+          id: "clients",
+          value: "130+",
+          label: "clients",
+          summary: "Leaders from sectors with the highest continuity requirements.",
+          detail:
+            "More than 130 organisations from finance, media, manufacturing, telecommunications, retail and government. Many of our clients return for the next phase of their modernisation — the best recommendation we could ask for.",
+        },
       ],
       narrative:
         "At IT SMARTCLOUT experience has taught us one thing: the best solutions are born from lessons learned. As a NetApp partner we go beyond standard deployments. We have the competence to deliver the most demanding projects, but our real added value is our attentiveness to the client’s voice. Thanks to a holistic view of the IT ecosystem, we design bespoke infrastructure — one that protects data, accelerates business and respects the budget. We do not chase the most expensive solutions, we chase the most optimised ones.",

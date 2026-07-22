@@ -6,9 +6,12 @@ import {
   Target,
   ArrowUpRight,
   CheckCircle2,
+  Award,
+  Rocket,
+  Users,
+  ChevronDown,
 } from "lucide-react";
 import Reveal from "@/components/Reveal";
-import FuturisticMetric from "@/components/FuturisticMetric";
 import useSectionParallax from "@/hooks/useSectionParallax";
 import AuroraBorealis from "@/components/fx/AuroraBorealis";
 
@@ -172,9 +175,12 @@ const BlueprintPanel = ({ pillar, index, total, lang }) => {
 const AboutSection = () => {
   const { t, lang } = useLang();
   const [active, setActive] = useState(PILLARS[1].id);
+  const [openStat, setOpenStat] = useState("projects");
   const activePillar = PILLARS.find((p) => p.id === active) || PILLARS[0];
   const activeIndex = PILLARS.findIndex((p) => p.id === active);
   const parallaxRef = useSectionParallax();
+
+  const STAT_ICONS = { experience: Award, projects: Rocket, clients: Users };
 
   return (
     <section
@@ -203,30 +209,68 @@ const AboutSection = () => {
           </div>
         </Reveal>
 
-        {/* 2. Metrics — futuristic count-up with tech brackets & scanline */}
+        {/* 2. Three-column row: narrative (left, 2/3) + interactive stat panels (right, 1/3) */}
         <div
-          data-testid="about-metrics-row"
-          className="sc-fx-metrics mt-10 md:mt-12"
+          data-testid="about-intro-grid"
+          className="mt-10 md:mt-14 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start"
         >
-          {t.about.metrics.map((m, i) => (
-            <FuturisticMetric
-              key={m.label}
-              value={m.value}
-              label={m.label}
-              delay={i * 140}
-            />
-          ))}
-        </div>
+          <Reveal className="lg:col-span-8">
+            <p
+              data-testid="about-narrative"
+              className="sc-about-copy"
+            >
+              {t.about.narrative}
+            </p>
+          </Reveal>
 
-        {/* 3. Narrative — clean justified paragraph, full section width, no effects */}
-        <Reveal>
-          <p
-            data-testid="about-narrative"
-            className="sc-about-copy mt-14 md:mt-16"
-          >
-            {t.about.narrative}
-          </p>
-        </Reveal>
+          <Reveal className="lg:col-span-4">
+            <div
+              data-testid="about-stats-panel"
+              className="sc-statcards"
+              role="list"
+            >
+              {t.about.stat_cards.map((card) => {
+                const Icon = STAT_ICONS[card.id];
+                const isOpen = openStat === card.id;
+                return (
+                  <button
+                    key={card.id}
+                    type="button"
+                    role="listitem"
+                    aria-expanded={isOpen}
+                    onClick={() => setOpenStat(isOpen ? null : card.id)}
+                    className={`sc-statcard ${isOpen ? "is-open" : ""}`}
+                    data-testid={`about-stat-${card.id}`}
+                  >
+                    <span className="sc-statcard__glow" aria-hidden="true" />
+                    <span className="sc-statcard__head">
+                      <span className="sc-statcard__icon" aria-hidden="true">
+                        <Icon size={16} strokeWidth={1.8} />
+                      </span>
+                      <span className="sc-statcard__meta">
+                        <span className="sc-statcard__value">{card.value}</span>
+                        <span className="sc-statcard__label">{card.label}</span>
+                      </span>
+                      <ChevronDown
+                        size={16}
+                        className="sc-statcard__chevron"
+                        strokeWidth={1.8}
+                      />
+                    </span>
+                    <span className="sc-statcard__summary">{card.summary}</span>
+                    <span className="sc-statcard__detail" data-testid={`about-stat-detail-${card.id}`}>
+                      {card.detail}
+                    </span>
+                    <span className="sc-statcard__bracket sc-statcard__bracket--tl" aria-hidden="true" />
+                    <span className="sc-statcard__bracket sc-statcard__bracket--tr" aria-hidden="true" />
+                    <span className="sc-statcard__bracket sc-statcard__bracket--bl" aria-hidden="true" />
+                    <span className="sc-statcard__bracket sc-statcard__bracket--br" aria-hidden="true" />
+                  </button>
+                );
+              })}
+            </div>
+          </Reveal>
+        </div>
 
         {/* 4. Title — Trzy filary, jedno podejście. */}
         <Reveal>

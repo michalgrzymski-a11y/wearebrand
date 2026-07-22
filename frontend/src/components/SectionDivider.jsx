@@ -19,8 +19,8 @@ const luminance = (hex) => {
   return 0.2126 * r + 0.7152 * g + 0.0722 * b;
 };
 
-const COLS = 256;
-const ROWS = 16;
+const COLS = 512;
+const ROWS = 8;
 
 const buildDitherMap = (seed) => {
   const map = new Uint8Array(COLS * ROWS);
@@ -56,7 +56,7 @@ const SectionDivider = ({ top, bottom, id = "" }) => {
         aria-hidden="true"
         data-testid={id ? `divider-${id}` : "section-divider"}
         className="sc-dither"
-        style={{ "--sc-top": top, "--sc-bot": bottom }}
+        style={{ "--sc-top": top, "--sc-bot": bottom, "--sc-cols": COLS, "--sc-cols-mobile": COLS / 2 }}
       >
         {Array.from(map).map((v, i) => (
           <span
