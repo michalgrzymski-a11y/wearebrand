@@ -4,10 +4,12 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LanguageProvider } from "@/i18n/LanguageContext";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/hero/HeroSection";
+import ValuesSection from "@/components/sections/ValuesSection";
 import AboutSection from "@/components/sections/AboutSection";
 import TrustedBySection from "@/components/sections/TrustedBySection";
 import PortfolioSection from "@/components/sections/PortfolioSection";
 import SectorsSection from "@/components/sections/SectorsSection";
+import SwitchSection from "@/components/sections/SwitchSection";
 import PartnersV2Section from "@/components/sections/PartnersV2Section";
 import PartnersSection from "@/components/sections/PartnersSection";
 import ContactSection from "@/components/sections/ContactSection";
@@ -18,7 +20,8 @@ const Home = () => (
   <main data-testid="home-main" className="sc-app">
     <Navbar />
     <HeroSection />
-    <SectionDivider id="hero-about"         top="#040709" bottom="#FFFFFF" />
+    <ValuesSection />
+    <SectionDivider id="values-about"       top="#040709" bottom="#FFFFFF" />
     <AboutSection />
     <SectionDivider id="about-trusted"      top="#FFFFFF" bottom="#F8FAFA" />
     <TrustedBySection />
@@ -26,7 +29,8 @@ const Home = () => (
     <PortfolioSection />
     <SectionDivider id="portfolio-sectors"  top="#FFFFFF" bottom="#FFFFFF" />
     <SectorsSection />
-    <SectionDivider id="sectors-rack"       top="#FFFFFF" bottom="#040709" />
+    <SectionDivider id="sectors-switch"     top="#FFFFFF" bottom="#040709" />
+    <SwitchSection />
     <PartnersV2Section />
     <SectionDivider id="rack-partners"      top="#040709" bottom="#F8FAFA" />
     <PartnersSection />

@@ -84,9 +84,12 @@ const CATEGORIES = [
 const PartnersV2Section = () => {
   const { lang } = useLang();
   const [hoveredCat, setHoveredCat] = useState(null);
+  const [lockedCat, setLockedCat] = useState(null);
   const parallaxRef = useSectionParallax();
-  const activeCat = hoveredCat
-    ? CATEGORIES.find((c) => c.id === hoveredCat)
+  // Lock takes precedence over hover.
+  const currentCatId = lockedCat || hoveredCat;
+  const activeCat = currentCatId
+    ? CATEGORIES.find((c) => c.id === currentCatId)
     : null;
 
   // Flat, deduped vendor list — order preserved by first occurrence across categories.
@@ -146,7 +149,8 @@ const PartnersV2Section = () => {
               <div className="sc-rack__slots">
                 {CATEGORIES.map((cat) => {
                   const Icon = cat.Icon;
-                  const isActive = cat.id === hoveredCat;
+                  const isActive = cat.id === currentCatId;
+                  const isLocked = cat.id === lockedCat;
                   return (
                     <button
                       key={cat.id}
@@ -155,8 +159,12 @@ const PartnersV2Section = () => {
                       onFocus={() => setHoveredCat(cat.id)}
                       onMouseLeave={() => setHoveredCat(null)}
                       onBlur={() => setHoveredCat(null)}
-                      className={`sc-rack__slot ${isActive ? "is-active" : ""}`}
+                      onClick={() =>
+                        setLockedCat((prev) => (prev === cat.id ? null : cat.id))
+                      }
+                      className={`sc-rack__slot ${isActive ? "is-active" : ""} ${isLocked ? "is-locked" : ""}`}
                       data-testid={`rack-slot-${cat.id}`}
+                      aria-pressed={isLocked}
                     >
                       <span className="sc-rack__slot-led" />
                       <span className="sc-rack__slot-led sc-rack__slot-led--b" />
@@ -180,15 +188,19 @@ const PartnersV2Section = () => {
             </div>
           </div>
 
-          {/* Right — flat monochromatic list when idle; on rack hover switch
-              to a category-scoped responsive grid with LARGER logos. */}
+          {/* Right — Grid ALWAYS. Default shows every unique vendor (no
+              grouping). On rack hover/focus grid filters to the picked
+              category and reveals its header. All logos are clickable
+              links to /partners/:slug. */}
           <div className="sc-partners2 lg:col-span-7" data-testid="partners-vendors">
-            {activeCat ? (
-              <div
-                key={activeCat.id}
-                className="sc-vendor-grid"
-                data-testid={`vendor-grid-${activeCat.id}`}
-              >
+            <div
+              key={activeCat ? activeCat.id : "all"}
+              className="sc-vendor-grid"
+              data-testid={
+                activeCat ? `vendor-grid-${activeCat.id}` : "vendor-grid-all"
+              }
+            >
+              {activeCat && (
                 <div className="sc-vendor-grid__head">
                   <activeCat.Icon
                     size={14}
@@ -203,64 +215,63 @@ const PartnersV2Section = () => {
                     {String(activeCat.partners.length).padStart(2, "0")}
                   </span>
                 </div>
-                <div className="sc-vendor-grid__list">
-                  {activeCat.partners.map((p, i) => {
-                    const src = VENDOR_LOGOS[p];
-                    const slug = slugify(p);
-                    return (
-                      <Link
-                        key={p}
-                        to={`/partners/${slug}`}
-                        className="sc-vendor sc-vendor--lg is-highlighted"
-                        data-testid={`vendor-${activeCat.id}-${i}`}
-                        title={p}
-                        style={{ animationDelay: `${i * 55}ms` }}
-                      >
-                        {src ? (
-                          <img
-                            src={src}
-                            alt={p}
-                            className="sc-vendor__img"
-                            loading="lazy"
-                            draggable="false"
-                          />
-                        ) : (
-                          <span className="sc-vendor__text">{p}</span>
-                        )}
-                      </Link>
-                    );
-                  })}
-                </div>
+              )}
+              <div className="sc-vendor-grid__list">
+                {activeCat
+                  ? activeCat.partners.map((p, i) => {
+                      const src = VENDOR_LOGOS[p];
+                      const slug = slugify(p);
+                      return (
+                        <Link
+                          key={p}
+                          to={`/partners/${slug}`}
+                          className="sc-vendor sc-vendor--lg is-highlighted"
+                          data-testid={`vendor-${activeCat.id}-${i}`}
+                          title={p}
+                          style={{ animationDelay: `${i * 55}ms` }}
+                        >
+                          {src ? (
+                            <img
+                              src={src}
+                              alt={p}
+                              className="sc-vendor__img"
+                              loading="lazy"
+                              draggable="false"
+                            />
+                          ) : (
+                            <span className="sc-vendor__text">{p}</span>
+                          )}
+                        </Link>
+                      );
+                    })
+                  : flatVendors.map((v, i) => {
+                      const src = VENDOR_LOGOS[v.name];
+                      const slug = slugify(v.name);
+                      return (
+                        <Link
+                          key={v.name}
+                          to={`/partners/${slug}`}
+                          className="sc-vendor sc-vendor--lg"
+                          data-testid={`vendor-${slug}`}
+                          title={v.name}
+                          style={{ animationDelay: `${i * 35}ms` }}
+                        >
+                          {src ? (
+                            <img
+                              src={src}
+                              alt={v.name}
+                              className="sc-vendor__img"
+                              loading="lazy"
+                              draggable="false"
+                            />
+                          ) : (
+                            <span className="sc-vendor__text">{v.name}</span>
+                          )}
+                        </Link>
+                      );
+                    })}
               </div>
-            ) : (
-              <div className="sc-vendor-flat">
-                {flatVendors.map((v) => {
-                  const src = VENDOR_LOGOS[v.name];
-                  const slug = slugify(v.name);
-                  return (
-                    <Link
-                      key={v.name}
-                      to={`/partners/${slug}`}
-                      className="sc-vendor"
-                      data-testid={`vendor-${slug}`}
-                      title={v.name}
-                    >
-                      {src ? (
-                        <img
-                          src={src}
-                          alt={v.name}
-                          className="sc-vendor__img"
-                          loading="lazy"
-                          draggable="false"
-                        />
-                      ) : (
-                        <span className="sc-vendor__text">{v.name}</span>
-                      )}
-                    </Link>
-                  );
-                })}
-              </div>
-            )}
+            </div>
           </div>
         </div>
       </div>
