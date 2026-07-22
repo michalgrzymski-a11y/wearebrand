@@ -79,35 +79,52 @@ const PartnersV2Section = () => {
     return list;
   }, []);
 
-  // Random scatter — 10 floating logos, refreshed periodically until first interaction
-  const [scatter, setScatter] = useState([]);
+  // Random scatter — 10 floating logos. Each slot lives an INDEPENDENT lifecycle
+  // (own duration 1–3s, own delay); tiles fade in/out asynchronously.
+  const SLOT_COUNT = 10;
   const tickRef = useRef(0);
-  const generateScatter = () => {
-    const shuffled = [...pool].sort(() => Math.random() - 0.5).slice(0, 10);
-    // Distribute across 10 vertical bands to avoid overlaps, add jitter
-    const items = shuffled.map((entry, i) => {
-      const band = i / 10; // 0..0.9
-      const y = band * 88 + Math.random() * 6 + 2; // 2..96%
-      const x = 6 + Math.random() * 78; // 6..84%
-      const rot = (Math.random() - 0.5) * 4;
-      return {
-        key: `${tickRef.current}-${i}-${entry.cat}-${entry.name}`,
-        name: entry.name,
-        cat: entry.cat,
-        x,
-        y,
-        rot,
-        delay: i * 60,
-      };
-    });
+  const makeSlot = (bandIndex) => {
+    const entry = pool[Math.floor(Math.random() * pool.length)];
+    const band = bandIndex / SLOT_COUNT;
+    const y = band * 88 + Math.random() * 6 + 2; // 2..96%
+    const x = 6 + Math.random() * 78;            // 6..84%
+    const rot = (Math.random() - 0.5) * 4;
+    const duration = 1000 + Math.random() * 2000; // 1000–3000 ms visible
     tickRef.current += 1;
-    setScatter(items);
+    return {
+      key: `${tickRef.current}-${bandIndex}-${entry.cat}-${entry.name}`,
+      slotIndex: bandIndex,
+      name: entry.name,
+      cat: entry.cat,
+      x,
+      y,
+      rot,
+      duration,
+    };
   };
+  const [scatter, setScatter] = useState(() =>
+    Array.from({ length: SLOT_COUNT }, (_, i) => makeSlot(i))
+  );
   useEffect(() => {
-    generateScatter();
     if (hasInteracted) return undefined;
-    const id = setInterval(generateScatter, 2600);
-    return () => clearInterval(id);
+    const timeouts = [];
+    const cycleSlot = (i) => {
+      // Fade-out margin so animation completes before swap
+      const fadeMargin = 320;
+      const slot = makeSlot(i);
+      setScatter((prev) => {
+        const next = prev.slice();
+        next[i] = slot;
+        return next;
+      });
+      timeouts[i] = setTimeout(() => cycleSlot(i), slot.duration + fadeMargin);
+    };
+    for (let i = 0; i < SLOT_COUNT; i++) {
+      // Kick each slot off with its own initial delay so they never sync
+      const initialDelay = 200 + Math.random() * 1400;
+      timeouts[i] = setTimeout(() => cycleSlot(i), initialDelay);
+    }
+    return () => timeouts.forEach((t) => clearTimeout(t));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hasInteracted]);
 
@@ -224,7 +241,7 @@ const PartnersV2Section = () => {
                       left: `${it.x}%`,
                       top: `${it.y}%`,
                       transform: `translate(-50%, -50%) rotate(${it.rot}deg)`,
-                      animationDelay: `${it.delay}ms`,
+                      animationDuration: `${it.duration}ms`,
                     }}
                   >
                     {it.name}

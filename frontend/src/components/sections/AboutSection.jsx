@@ -9,7 +9,6 @@ import {
   Award,
   Rocket,
   Users,
-  ChevronDown,
 } from "lucide-react";
 import Reveal from "@/components/Reveal";
 import useSectionParallax from "@/hooks/useSectionParallax";
@@ -175,7 +174,6 @@ const BlueprintPanel = ({ pillar, index, total, lang }) => {
 const AboutSection = () => {
   const { t, lang } = useLang();
   const [active, setActive] = useState(PILLARS[1].id);
-  const [openStat, setOpenStat] = useState("projects");
   const activePillar = PILLARS.find((p) => p.id === active) || PILLARS[0];
   const activeIndex = PILLARS.findIndex((p) => p.id === active);
   const parallaxRef = useSectionParallax();
@@ -231,41 +229,26 @@ const AboutSection = () => {
             >
               {t.about.stat_cards.map((card) => {
                 const Icon = STAT_ICONS[card.id];
-                const isOpen = openStat === card.id;
                 return (
-                  <button
+                  <div
                     key={card.id}
-                    type="button"
                     role="listitem"
-                    aria-expanded={isOpen}
-                    onClick={() => setOpenStat(isOpen ? null : card.id)}
-                    className={`sc-statcard ${isOpen ? "is-open" : ""}`}
+                    className="sc-statcard"
                     data-testid={`about-stat-${card.id}`}
                   >
                     <span className="sc-statcard__glow" aria-hidden="true" />
-                    <span className="sc-statcard__head">
-                      <span className="sc-statcard__icon" aria-hidden="true">
-                        <Icon size={16} strokeWidth={1.8} />
-                      </span>
-                      <span className="sc-statcard__meta">
-                        <span className="sc-statcard__value">{card.value}</span>
-                        <span className="sc-statcard__label">{card.label}</span>
-                      </span>
-                      <ChevronDown
-                        size={16}
-                        className="sc-statcard__chevron"
-                        strokeWidth={1.8}
-                      />
+                    <span className="sc-statcard__icon" aria-hidden="true">
+                      <Icon size={18} strokeWidth={1.7} />
                     </span>
-                    <span className="sc-statcard__summary">{card.summary}</span>
-                    <span className="sc-statcard__detail" data-testid={`about-stat-detail-${card.id}`}>
-                      {card.detail}
+                    <span className="sc-statcard__meta">
+                      <span className="sc-statcard__value">{card.value}</span>
+                      <span className="sc-statcard__label">{card.label}</span>
                     </span>
                     <span className="sc-statcard__bracket sc-statcard__bracket--tl" aria-hidden="true" />
                     <span className="sc-statcard__bracket sc-statcard__bracket--tr" aria-hidden="true" />
                     <span className="sc-statcard__bracket sc-statcard__bracket--bl" aria-hidden="true" />
                     <span className="sc-statcard__bracket sc-statcard__bracket--br" aria-hidden="true" />
-                  </button>
+                  </div>
                 );
               })}
             </div>
