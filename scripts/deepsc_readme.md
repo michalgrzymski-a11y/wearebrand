@@ -44,20 +44,62 @@ import translations from "./translations.json";
 export { translations };
 ```
 
-## Paleta kolorów DEEPsc
+## Paleta kolorów DEEPsc — neonowy datacenter
 
-Bazowa paleta SmartClout + dodatkowe tony głębi (od powierzchni do dna):
+Paleta wyekstrahowana **bezpośrednio z hero-datacenter.jpg** (tej samej grafiki
+co w referencyjnym projekcie SmartClout). Dominują odcienie cyjanu, turkusu
+i neonowego mint-green — od głębokiej otchłani do świecącej diody LED.
+Brand deep-teal pozostaje dla nagłówków i podstawowych CTA.
 
-| Rola                     | Hex        | Użycie                            |
-|--------------------------|------------|-----------------------------------|
-| Deep Teal (brand)        | `#0C5C62`  | Nagłówki, CTA, akcenty            |
-| Accent Mint (brand)      | `#49ADA5`  | Highlighty, LED, świecenia        |
-| Charcoal (brand)         | `#1C2833`  | Body copy                         |
-| Surface Ice              | `#E8F4F5`  | Warstwa nad wodą                  |
-| Waterline                | `#7CC4C0`  | Linia zmiany strefy               |
-| Deep Water               | `#0A3E44`  | Warstwa −20 do −80 m              |
-| Abyss                    | `#031316`  | Warstwa −80+ m                    |
-| Bioluminescence          | `#7BFFC9`  | Głęboki mint dla efektów świetlnych |
+### Warstwy głębi (od dna do powierzchni)
+
+| Rola                        | Hex        | Zastosowanie                             |
+|-----------------------------|------------|------------------------------------------|
+| **Abyss Black-Teal**        | `#001B20`  | Tło warstw −80m+ (deep water)            |
+| **Deep Shadow Teal**        | `#003F48`  | Cienie racków, warstwa −40 do −80m       |
+| **Mid Teal**                | `#037A7A`  | Struktura, kable, obramowania paneli     |
+| **Brand Deep Teal**         | `#0C5C62`  | Nagłówki, CTA, brandowe elementy         |
+| **Waterline Teal**          | `#7CC4C0`  | Waterline, przejście stref               |
+
+### Neon glow (świecące elementy — LED, aktywne diody, data flow)
+
+| Rola                        | Hex        | Zastosowanie                             |
+|-----------------------------|------------|------------------------------------------|
+| **Cyan Data Flow**          | `#00B8D4`  | Linie łączące, przepływ danych, wykresy  |
+| **Vibrant Cyan-Green**      | `#00D8E3`  | Highlighty aktywnych komponentów rack    |
+| **Neon Mint (brand mint+)** | `#49ADA5`  | Akcenty brandowe (bazowe)                |
+| **Electric Cyan-Green**     | `#06FFE0`  | Główne świecące LED, data pulses         |
+| **Pure Neon Glow**          | `#33FFEA`  | Najjaśniejsze bloomy, cursor trail       |
+
+### Zasady użycia neonu
+
+1. **Kontrast maksymalny** — neon zawsze na tle `#001B20` lub `#003F48`
+   (nigdy na jasnym). To buduje "svícení w mroku" datacenter.
+2. **Bloom obowiązkowy** — każde świecenie z `#06FFE0` / `#33FFEA` musi
+   mieć `@react-three/postprocessing` **Bloom** (intensity 0.8–1.4,
+   luminanceThreshold 0.65) oraz CSS `box-shadow: 0 0 24px #06FFE080`.
+3. **Warstwowe świecenie** — pojedyncze LED = 3 nakładające się kręgi:
+   rdzeń `#33FFEA` (2px) + halo `#06FFE0` (8px blur) + far glow
+   `#00D8E3` opacity 0.25 (24px blur).
+4. **Pulsowanie synchroniczne** — LED-y pulsują z BPM ok. 60 (sinus,
+   0.6 → 1.0 → 0.6 opacity, 1s cycle). Sekcje ożywają, gdy scroll je
+   aktywuje.
+5. **Data flow lines** — cienkie linie `#00B8D4` (1px) ze scanującym
+   gradientem: gradient mask przesuwa się w prawo, imitując bit-flow.
+6. **UI neon accents** — depth-meter, cyfry metryk, aktywne CTA — subtelny
+   `text-shadow: 0 0 12px #06FFE060` gdy w viewport.
+
+### Sekcyjny plan kolorów (top → bottom)
+
+| Sekcja        | Tło                                | Neon accent dominujący |
+|---------------|------------------------------------|------------------------|
+| HERO          | `#001B20` z gradient promieni      | `#33FFEA` na czubku rack |
+| ABOUT         | `#003F48` (waterline crossing)     | `#06FFE0` na metrykach   |
+| PORTFOLIO     | `#001B20` z rack cross-section     | `#00D8E3` na komponentach|
+| SEKTORY       | `#001B20` mocno abyss              | `#49ADA5` na 6 mini-racków|
+| TRUSTED BY    | `#003F48` z bioluminescencją       | `#33FFEA` glow za logotypami|
+| PARTNERZY     | `#001B20`                          | `#06FFE0` na kolumnach   |
+| KONTAKT       | `#001B20` → `#000` (najgłębiej)    | `#33FFEA` na formularzu i CTA|
 
 ## Typografia
 
@@ -240,9 +282,15 @@ EFEKTY MUST-HAVE
   ScrollTrigger.scrub + Framer Motion useTransform dla HTML overlays.
   Respektuj prefers-reduced-motion (redukcja do 3 warstw)
 
-PALETA
-Deep Teal #0C5C62, Accent Mint #49ADA5, Surface Ice #E8F4F5,
-Waterline #7CC4C0, Deep Water #0A3E44, Abyss #031316, Bioluminescence #7BFFC9
+PALETA (wyekstrahowana z hero-datacenter.jpg — cyjan/turkus/neon)
+Warstwy głębi: Abyss #001B20, Deep Shadow #003F48, Mid Teal #037A7A,
+Brand Deep Teal #0C5C62, Waterline #7CC4C0
+Neon glow: Cyan Data #00B8D4, Vibrant #00D8E3, Brand Mint #49ADA5,
+Electric #06FFE0, Pure Neon Glow #33FFEA
+Zasady: neon TYLKO na ciemnym #001B20/#003F48; Bloom + CSS box-shadow
+obowiązkowe; LED z 3 nakładających się kręgów (rdzeń+halo+far glow);
+pulse sync 60 BPM; data-flow lines #00B8D4 z scanującym gradientem;
+UI text-shadow #06FFE060 na aktywnych elementach w viewport
 
 TYPOGRAFIA
 Fraunces (serif italic dla akcentów, metryk) + Manrope (sans body)
