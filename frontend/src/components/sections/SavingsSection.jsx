@@ -41,7 +41,7 @@ const COPY = {
         id: "lifecycle",
         Icon: GaugeCircle,
         title: "Zarządzanie cyklem życia sprzętu",
-        desc: "Kupujemy odsprzedajemy i redystrybuujemy sprzęt tak, by amortyzacja i moment wymiany były pod kontrolą, a nie narzucone przez producenta.",
+        desc: "Kupujemy, odsprzedajemy i redystrybuujemy sprzęt tak, by amortyzacja i moment wymiany były pod kontrolą, a nie narzucone przez producenta.",
       },
       {
         id: "rightsize",
