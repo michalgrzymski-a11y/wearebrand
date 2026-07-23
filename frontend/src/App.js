@@ -11,6 +11,8 @@ import TrustedBySection from "@/components/sections/TrustedBySection";
 import PortfolioSection from "@/components/sections/PortfolioSection";
 import TapeLibrarySection from "@/components/sections/TapeLibrarySection";
 import BusinessContinuitySection from "@/components/sections/BusinessContinuitySection";
+import ProcessRackSection from "@/components/sections/ProcessRackSection";
+import SavingsSection from "@/components/sections/SavingsSection";
 import SectorsSection from "@/components/sections/SectorsSection";
 import SwitchSection from "@/components/sections/SwitchSection";
 import PartnersV2Section from "@/components/sections/PartnersV2Section";
@@ -24,7 +26,9 @@ const Home = () => (
     <HeroSection />
     <ValuesSection />
     <AboutSection />
+    <ProcessRackSection />
     <RackServerSection />
+    <SavingsSection />
     <TrustedBySection />
     <PortfolioSection />
     <TapeLibrarySection />

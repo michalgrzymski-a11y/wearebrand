@@ -1,0 +1,24 @@
+{
+  "summary": "Iteration 19 frontend testing of new ProcessRackSection and SavingsSection on IT SMARTCLOUT landing page. All requested acceptance criteria verified against public URL. 45/45 checks passed after correcting my own test selectors (initial header selector missed sc-nav header element; hero uses id='top' by design as request states 'hero(top)').",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "ProcessRackSection.jsx: RACK_UNITS uses duplicate 'key' values ('server' twice, 'switch' twice) but React iterates with idx as key so it works; consider unique ids for clarity.",
+    "Two rack-unit-server-* both get is-active when 'design' step is clicked because filter is by kind, not by index — this is intentional per rack layout but worth noting.",
+    "SavingsSection.jsx: 'Kupujemy odsprzedajemy i redystrybuujemy' PL copy is missing a comma (minor copy issue).",
+    "Both new sections use useSectionParallax hook — verify not causing extra scroll listeners; no console errors observed."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A (frontend only)", "frontend": "100%"},
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Iteration 19 fully validated. Verified: process-section (id=process, dark bg #040709), process-rack, kvm-monitor, process-steps, all 5 step buttons (consult/design/quote/deploy/service), consult active by default, quote click updates KVM to '03 · WYCENA' (PL) / QUOTE (EN), service updates to '05 · SERWIS'/SERVICE, design click highlights 2 rack-unit-server-* (is-active). All rack-unit kinds present: kvm(1), server(2), switch(2), storage(1), tape(1). Savings section (id=savings, light bg rgb(248,250,250)) with savings-metric, savings-pillars, savings-cta, 4 pillars (refab/license/lifecycle/rightsize) each with icon+title+desc. savings-cta href='#contact' and scrolls correctly. Section order matches: top,values,about,process,hardware,savings,trusted,portfolio,tape-library,continuity,sectors,markets-switch,partners-rack,partners,contact. Navbar theme: sc-nav--dark at #process, sc-nav--light at #savings, dark again at #hardware — the sc-nav class is on <header>, not the inner <nav>. Bilingual toggle changes labels: 'How we build a project' (EN), 'Cost optimization' (EN), KVM lines to 'Workshops with the customer team.' No console errors. No horizontal overflow on desktop 1440 or mobile 390. Mobile hamburger opens. Regression: refab-server, pdu-device, switch-label-* all still present.",
+  "rca of the issue": "N/A — no bugs found."
+}
