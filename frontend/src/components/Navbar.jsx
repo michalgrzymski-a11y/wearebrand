@@ -28,6 +28,7 @@ const SECTION_THEMES = {
   "values-3d": "dark",
   "compliance-switch": "dark",
   "hardware-gallery": "dark",
+  ngfw: "dark",
 };
 
 /**
