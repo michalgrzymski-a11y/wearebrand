@@ -25,6 +25,9 @@ const SECTION_THEMES = {
   "partners-rack": "dark",
   partners: "light",
   contact: "dark",
+  "values-3d": "dark",
+  "compliance-switch": "dark",
+  "hardware-gallery": "dark",
 };
 
 /**

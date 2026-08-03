@@ -6323,3 +6323,302 @@ html { scroll-padding-top: 92px; }
   transform: translateY(-1px);
   box-shadow: 0 12px 28px -8px rgba(6, 255, 224, 0.8);
 }
+
+
+/* ============================================================
+   3D VALUES MATRIX — obracająca się macierz
+   ============================================================ */
+.sc-matrix3d {
+  margin-top: 60px;
+  height: 420px;
+  perspective: 1400px;
+  perspective-origin: 50% 45%;
+  position: relative;
+  cursor: grab;
+  user-select: none;
+}
+.sc-matrix3d:active { cursor: grabbing; }
+.sc-matrix3d__stage {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 720px;
+  height: 260px;
+  margin-left: -360px;
+  margin-top: -130px;
+  transform-style: preserve-3d;
+  transition: transform 0.06s linear;
+}
+.sc-matrix3d__face {
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(6, 255, 224, 0.28);
+  background: linear-gradient(180deg, #0a0e12 0%, #05080a 100%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+  backface-visibility: hidden;
+}
+.sc-matrix3d__face--back   { transform: translateZ(-120px) rotateY(180deg); }
+.sc-matrix3d__face--left   { width: 240px; transform: translateX(-120px) rotateY(-90deg); background: linear-gradient(90deg, #14181c 0%, #0a0e12 100%); }
+.sc-matrix3d__face--right  { left: auto; right: 0; width: 240px; transform: translateX(120px) rotateY(90deg); background: linear-gradient(90deg, #0a0e12 0%, #14181c 100%); }
+.sc-matrix3d__face--top    { height: 240px; transform: translateY(-120px) rotateX(90deg); background: linear-gradient(180deg, #1a2028 0%, #0d1218 100%); }
+.sc-matrix3d__face--bottom { height: 240px; transform: translateY(120px) rotateX(-90deg); background: linear-gradient(180deg, #0d1218 0%, #05080a 100%); }
+.sc-matrix3d__face--front  {
+  transform: translateZ(120px);
+  padding: 14px 18px;
+  display: flex; flex-direction: column; gap: 12px;
+}
+.sc-matrix3d__brand {
+  display: flex; align-items: center; gap: 14px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.sc-matrix3d__brand-strip { width: 26px; height: 2px; background: #06FFE0; box-shadow: 0 0 8px rgba(6,255,224,0.7); }
+.sc-matrix3d__brand-name { font-family: "Manrope", sans-serif; font-size: 13px; letter-spacing: 0.42em; color: #fff; font-weight: 600; }
+.sc-matrix3d__brand-model { margin-left: auto; font-family: "JetBrains Mono", monospace; font-size: 10px; letter-spacing: 0.28em; color: rgba(232,244,245,0.5); text-transform: uppercase; }
+.sc-matrix3d__bays { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; flex: 1 1 auto; }
+.sc-matrix3d__bay {
+  position: relative;
+  background: linear-gradient(180deg, #1e262e 0%, #06090b 90%);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 3px;
+  padding: 8px 6px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+  min-height: 168px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), inset 0 -1px 0 rgba(0,0,0,0.7);
+}
+.sc-matrix3d__bay--filler { min-height: 168px; }
+.sc-matrix3d__bay-icon { color: #06FFE0; opacity: 0.95; }
+.sc-matrix3d__bay-kicker { font-family: "JetBrains Mono", monospace; font-size: 8.5px; letter-spacing: 0.24em; color: rgba(6,255,224,0.75); text-transform: uppercase; text-align: center; }
+.sc-matrix3d__bay-title { font-family: "Manrope", sans-serif; font-size: 10.5px; font-weight: 700; color: #fff; text-align: center; letter-spacing: 0.02em; }
+.sc-matrix3d__bay-led { position: absolute; bottom: 6px; left: 50%; transform: translateX(-50%); width: 22px; height: 2px; border-radius: 1px; background: rgba(6,255,224,0.75); box-shadow: 0 0 4px rgba(6,255,224,0.7); }
+.sc-matrix3d__bay--filler .sc-matrix3d__bay-led { background: rgba(255,255,255,0.15); box-shadow: none; }
+.sc-matrix3d__hint {
+  position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%);
+  font-family: "JetBrains Mono", monospace; font-size: 10px; letter-spacing: 0.28em;
+  color: rgba(6,255,224,0.55); text-transform: uppercase; pointer-events: none;
+}
+@media (max-width: 900px) {
+  .sc-matrix3d { height: 340px; }
+  .sc-matrix3d__stage { width: 560px; height: 220px; margin-left: -280px; margin-top: -110px; }
+  .sc-matrix3d__face--front { transform: translateZ(100px); }
+  .sc-matrix3d__face--back { transform: translateZ(-100px) rotateY(180deg); }
+  .sc-matrix3d__face--left { width: 200px; transform: translateX(-100px) rotateY(-90deg); }
+  .sc-matrix3d__face--right { width: 200px; transform: translateX(100px) rotateY(90deg); }
+  .sc-matrix3d__face--top { height: 200px; transform: translateY(-100px) rotateX(90deg); }
+  .sc-matrix3d__face--bottom { height: 200px; transform: translateY(100px) rotateX(-90deg); }
+  .sc-matrix3d__bay { min-height: 140px; }
+}
+@media (max-width: 600px) {
+  .sc-matrix3d { height: 300px; }
+  .sc-matrix3d__stage { width: 380px; height: 200px; margin-left: -190px; margin-top: -100px; }
+}
+
+
+/* ============================================================
+   COMPLIANCE-SWITCH — caption for active regulation
+   ============================================================ */
+.sc-compliance-caption {
+  margin-top: 26px;
+  padding: 14px 20px;
+  border-radius: 10px;
+  background: linear-gradient(90deg, rgba(6,255,224,0.10), rgba(3,63,72,0.28));
+  border: 1px solid rgba(6, 255, 224, 0.4);
+  display: inline-flex;
+  align-items: center;
+  gap: 20px;
+  min-height: 52px;
+}
+.sc-compliance-caption__label { font-family: "JetBrains Mono", monospace; font-size: 10px; letter-spacing: 0.28em; color: rgba(6,255,224,0.65); text-transform: uppercase; }
+.sc-compliance-caption__name { font-family: "Manrope", sans-serif; font-size: 15px; font-weight: 700; color: #06FFE0; letter-spacing: 0.06em; }
+.sc-compliance-caption__desc { font-family: "Manrope", sans-serif; font-size: 13px; color: rgba(232,244,245,0.7); }
+
+@media (max-width: 700px) {
+  .sc-compliance-caption { flex-direction: column; align-items: flex-start; gap: 4px; }
+}
+
+
+/* ============================================================
+   HARDWARE GALLERY — 10 miniatur
+   ============================================================ */
+.sc-hw-gallery {
+  list-style: none;
+  margin: 60px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 22px;
+}
+.sc-hw-card {
+  background: linear-gradient(180deg, #0a0e12 0%, #05080a 100%);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  padding: 14px 14px 16px;
+  transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.sc-hw-card:hover {
+  border-color: rgba(6, 255, 224, 0.5);
+  transform: translateY(-3px);
+  box-shadow: 0 20px 40px -22px rgba(6,255,224,0.4);
+}
+.sc-hw-card__head {
+  display: flex; align-items: baseline; gap: 10px;
+}
+.sc-hw-card__u {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px; letter-spacing: 0.28em;
+  color: rgba(6,255,224,0.75);
+  padding: 3px 8px;
+  border: 1px solid rgba(6,255,224,0.4);
+  border-radius: 4px;
+}
+.sc-hw-card__name {
+  font-family: "Manrope", sans-serif;
+  font-size: 14px; font-weight: 600; color: #fff;
+}
+.sc-hw-card__meta {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px; letter-spacing: 0.2em; color: rgba(232,244,245,0.5); text-transform: uppercase;
+}
+
+.sc-hw-device {
+  position: relative;
+  height: 96px;
+  border-radius: 6px;
+  background:
+    linear-gradient(180deg, #14181c 0%, #05080a 100%);
+  border: 1px solid rgba(0,0,0,0.5);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), inset 0 -2px 0 rgba(0,0,0,0.6);
+  padding: 10px 14px;
+  overflow: hidden;
+}
+.sc-hw-ear {
+  position: absolute; left: 4px; top: 6px; bottom: 6px; width: 8px;
+  background: linear-gradient(180deg, #1a2129 0%, #0d1218 100%);
+  border-radius: 2px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+}
+.sc-hw-ear--r { left: auto; right: 4px; }
+.sc-hw-strip--top {
+  position: absolute; top: 0; left: 16px; right: 16px; height: 2px;
+  background: currentColor;
+  box-shadow: 0 0 6px currentColor;
+}
+.sc-hw-badge {
+  position: absolute; top: 8px; left: 20px;
+  font-family: "JetBrains Mono", monospace; font-size: 9px; letter-spacing: 0.28em; color: rgba(6,255,224,0.75); text-transform: uppercase;
+}
+.sc-hw-leds { position: absolute; top: 8px; right: 20px; display: inline-flex; gap: 4px; }
+.sc-hw-led  { width: 4px; height: 4px; border-radius: 50%; background: rgba(255,255,255,0.1); }
+.sc-hw-led.is-mint  { background: #06FFE0; box-shadow: 0 0 4px rgba(6,255,224,0.8); }
+.sc-hw-led.is-amber { background: #FFC02E; box-shadow: 0 0 4px rgba(255,192,46,0.8); }
+.sc-hw-led.is-red   { background: #FF5A4A; box-shadow: 0 0 4px rgba(255,90,74,0.8); }
+
+.sc-hw-ports {
+  position: absolute; left: 20px; right: 20px; bottom: 12px;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(14px, 1fr)); gap: 4px;
+}
+.sc-hw-ports--wan {
+  position: absolute; left: 20px; right: auto; bottom: 36px;
+  grid-template-columns: repeat(4, 14px);
+}
+.sc-hw-port {
+  height: 10px; border-radius: 1px;
+  background: linear-gradient(180deg, #0a0e12 0%, #05080a 100%);
+  border: 1px solid rgba(0,0,0,0.6);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+}
+.sc-hw-port--wan { background: linear-gradient(180deg, rgba(255,192,46,0.25), rgba(255,192,46,0.05)); }
+
+.sc-hw-antennas {
+  position: absolute; top: -4px; right: 60px; display: flex; gap: 8px;
+}
+.sc-hw-antennas span {
+  display: inline-block; width: 2px; height: 14px;
+  background: linear-gradient(180deg, #06FFE0, transparent);
+  border-radius: 2px;
+}
+
+.sc-hw-lcd {
+  position: absolute; left: 20px; top: 30px;
+  padding: 6px 10px;
+  background: #050a0b;
+  border: 1px solid rgba(6,255,224,0.3);
+  border-radius: 3px;
+  display: inline-flex; flex-direction: column; gap: 3px; align-items: flex-start;
+  min-width: 130px;
+}
+.sc-hw-lcd--sm { min-width: 90px; top: 30px; }
+.sc-hw-lcd__value { font-family: "JetBrains Mono", monospace; font-size: 15px; color: #06FFE0; text-shadow: 0 0 4px rgba(6,255,224,0.6); letter-spacing: 0.08em; }
+.sc-hw-lcd__bar { display: block; width: 100%; height: 3px; border-radius: 2px; background: rgba(6,255,224,0.15); overflow: hidden; }
+.sc-hw-lcd__fill { display: block; width: 78%; height: 100%; background: linear-gradient(90deg, #06FFE0, #FFC02E); border-radius: 2px; box-shadow: 0 0 4px rgba(6,255,224,0.7); }
+.sc-hw-lcd__label { font-family: "JetBrains Mono", monospace; font-size: 8px; letter-spacing: 0.24em; color: rgba(6,255,224,0.6); text-transform: uppercase; }
+
+.sc-hw-vents {
+  position: absolute; right: 20px; top: 30px; bottom: 12px;
+  display: grid; grid-template-columns: repeat(4, 4px); grid-auto-rows: 4px; gap: 3px;
+}
+.sc-hw-vents span { background: radial-gradient(circle, rgba(255,255,255,0.08), transparent 70%); border-radius: 50%; }
+
+.sc-hw-fibers {
+  position: absolute; left: 20px; right: 20px; bottom: 12px;
+  display: grid; grid-template-columns: repeat(16, 1fr); gap: 3px;
+}
+.sc-hw-fiber {
+  height: 32px; background: linear-gradient(180deg, #0a0e12, #05080a);
+  border: 1px solid rgba(0,0,0,0.6); border-radius: 2px;
+  position: relative;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+}
+.sc-hw-fiber-tip { position: absolute; top: 4px; left: 50%; transform: translateX(-50%); width: 4px; height: 4px; background: #06FFE0; border-radius: 50%; box-shadow: 0 0 4px rgba(6,255,224,0.85); }
+
+.sc-hw-blades {
+  position: absolute; left: 20px; right: 20px; top: 28px; bottom: 12px;
+  display: grid; grid-template-columns: repeat(16, 1fr); gap: 3px;
+}
+.sc-hw-blade { background: linear-gradient(180deg, #1e262e 0%, #06090b 100%); border: 1px solid rgba(255,255,255,0.05); border-radius: 1px; position: relative; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); }
+.sc-hw-blade-led { position: absolute; top: 3px; left: 50%; transform: translateX(-50%); width: 3px; height: 3px; border-radius: 50%; background: rgba(255,255,255,0.08); }
+.sc-hw-blade.is-on .sc-hw-blade-led { background: #06FFE0; box-shadow: 0 0 4px rgba(6,255,224,0.9); }
+
+.sc-hw-drives {
+  position: absolute; left: 20px; right: 20px; top: 28px; bottom: 12px;
+  display: grid; grid-template-columns: repeat(12, 1fr); gap: 3px;
+}
+.sc-hw-drives--lg { grid-template-columns: repeat(12, 1fr); }
+.sc-hw-drive { background: linear-gradient(180deg, #1a222b 0%, #06090b 100%); border: 1px solid rgba(255,255,255,0.05); border-radius: 1px; position: relative; }
+.sc-hw-drive-led { position: absolute; top: 3px; left: 3px; width: 3px; height: 3px; border-radius: 50%; background: rgba(255,255,255,0.08); }
+.sc-hw-drive.is-on .sc-hw-drive-led { background: #FFC02E; box-shadow: 0 0 4px rgba(255,192,46,0.85); }
+
+.sc-hw-hci {
+  position: absolute; left: 20px; right: 20px; top: 30px; bottom: 12px;
+  display: grid; grid-template-columns: 60px 1fr 70px; gap: 6px; align-items: stretch;
+}
+.sc-hw-hci-cpu, .sc-hw-hci-nic {
+  display: flex; align-items: center; justify-content: center;
+  font-family: "JetBrains Mono", monospace; font-size: 9px; letter-spacing: 0.24em;
+  color: rgba(6,255,224,0.75);
+  background: linear-gradient(180deg, #14181c 0%, #05080a 100%);
+  border: 1px solid rgba(6,255,224,0.28);
+  border-radius: 2px;
+}
+.sc-hw-hci-nvme { display: grid; grid-template-columns: repeat(6, 1fr); gap: 3px; }
+.sc-hw-hci-slot { background: linear-gradient(180deg, #1a222b, #06090b); border: 1px solid rgba(255,255,255,0.05); border-radius: 1px; }
+
+.sc-hw-cloud {
+  position: absolute; left: 20px; top: 30px; right: 20px;
+  display: flex; align-items: center; gap: 10px;
+}
+.sc-hw-cloud-line { flex: 1 1 auto; height: 2px; background: repeating-linear-gradient(90deg, #06FFE0 0 6px, transparent 6px 10px); border-radius: 1px; }
+.sc-hw-cloud-arrow { color: #06FFE0; font-size: 14px; text-shadow: 0 0 6px rgba(6,255,224,0.8); }
+
+/* Tone accents (strip color) */
+.sc-hw-tone--mint  { color: #06FFE0; }
+.sc-hw-tone--cyan  { color: #00B8D4; }
+.sc-hw-tone--amber { color: #FFC02E; }
+.sc-hw-tone--green { color: #4ADE80; }
+.sc-hw-tone--red   { color: #FF5A4A; }
+
+@media (max-width: 600px) {
+  .sc-hw-gallery { grid-template-columns: 1fr; gap: 16px; }
+  .sc-hw-device { height: 88px; }
+}

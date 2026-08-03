@@ -13,6 +13,9 @@ import TapeLibrarySection from "@/components/sections/TapeLibrarySection";
 import BusinessContinuitySection from "@/components/sections/BusinessContinuitySection";
 import ProcessRackSection from "@/components/sections/ProcessRackSection";
 import SavingsSection from "@/components/sections/SavingsSection";
+import Matrix3DSection from "@/components/sections/Matrix3DSection";
+import SwitchComplianceSection from "@/components/sections/SwitchComplianceSection";
+import HardwareGallerySection from "@/components/sections/HardwareGallerySection";
 import SectorsSection from "@/components/sections/SectorsSection";
 import SwitchSection from "@/components/sections/SwitchSection";
 import PartnersV2Section from "@/components/sections/PartnersV2Section";
@@ -38,6 +41,9 @@ const Home = () => (
     <PartnersV2Section />
     <PartnersSection />
     <ContactSection />
+    <Matrix3DSection />
+    <SwitchComplianceSection />
+    <HardwareGallerySection />
   </main>
 );
 
