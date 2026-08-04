@@ -1,45 +1,46 @@
 import React, { useState } from "react";
 import { useLang } from "@/i18n/LanguageContext";
-import { Award, LifeBuoy, Handshake, Users, FolderKanban } from "lucide-react";
+import { Award, LifeBuoy, Handshake, Users, FolderKanban, GraduationCap } from "lucide-react";
 import Reveal from "@/components/Reveal";
 import useSectionParallax from "@/hooks/useSectionParallax";
 
 /**
  * ValuesSection — horizontal 12-bay disk shelf (FAS A30 inspired).
- * Five value "drives" are visible in the chassis; hover expands one drive in
+ * Six value "drives" are visible in the chassis; hover expands one drive in
  * place while the rest collapse to slim strips. Below the array a longer
  * descriptive paragraph explains the SmartClout approach.
  */
 
-// 5 value drives + 7 filler bays = 12 total. Spread the value bays evenly
-// so the shelf feels populated but each drive still stands out visually.
+// 6 value drives + 6 filler bays = 12 total. Values placed at every second
+// slot so each drive stands out visually.
 const VALUES_LAYOUT = [
-  { type: "filler", i: 0 },
-  { type: "value",  id: "experience"  },
-  { type: "filler", i: 2 },
-  { type: "value",  id: "clients"     },
-  { type: "filler", i: 4 },
-  { type: "value",  id: "projects"    },
-  { type: "filler", i: 6 },
-  { type: "value",  id: "partnership" },
-  { type: "filler", i: 8 },
-  { type: "value",  id: "service"     },
-  { type: "filler", i: 10 },
+  { type: "value",  id: "experience"     },
+  { type: "filler", i: 1 },
+  { type: "value",  id: "clients"        },
+  { type: "filler", i: 3 },
+  { type: "value",  id: "projects"       },
+  { type: "filler", i: 5 },
+  { type: "value",  id: "partnership"    },
+  { type: "filler", i: 7 },
+  { type: "value",  id: "service"        },
+  { type: "filler", i: 9 },
+  { type: "value",  id: "certifications" },
   { type: "filler", i: 11 },
 ];
 
 const VALUE_ICONS = {
-  experience:  Award,
-  clients:     Users,
-  projects:    FolderKanban,
-  partnership: Handshake,
-  service:     LifeBuoy,
+  experience:     Award,
+  clients:        Users,
+  projects:       FolderKanban,
+  partnership:    Handshake,
+  service:        LifeBuoy,
+  certifications: GraduationCap,
 };
 
 const COPY = {
   pl: {
     section_label: "Nasze wartości",
-    title:         "Pięć dysków. Jedna filozofia.",
+    title:         "Sześć dysków. Jedna filozofia.",
     chassis_code:  "SC · 12-BAY · VALUES ARRAY",
     story: [
       "Doświadczenie nauczyło nas jednego: najlepsze rozwiązania rodzą się z wyciągania wniosków. Jako integrator IT, wykraczamy poza standardowe wdrożenia.",
@@ -72,11 +73,16 @@ const COPY = {
         desc:  "Pomagamy w rozwoju Twojego IT oraz w codziennym zarządzaniu środowiskiem — od monitoringu po SLA.",
         short: "Obsługa",
       },
+      certifications: {
+        name:  "400+ certyfikatów",
+        desc:  "Ponad 400 uzyskanych certyfikatów potwierdzających nasze kompetencje — od inżynierów po architektów.",
+        short: "400+ certyfikatów",
+      },
     },
   },
   en: {
     section_label: "Our values",
-    title:         "Five drives. One philosophy.",
+    title:         "Six drives. One philosophy.",
     chassis_code:  "SC · 12-BAY · VALUES ARRAY",
     story: [
       "Experience has taught us one thing: the best solutions are born from lessons learned. As an IT integrator, we go beyond standard deployments.",
@@ -108,6 +114,11 @@ const COPY = {
         name:  "Service & support",
         desc:  "We help you grow your IT and manage the day-to-day environment — from monitoring to SLA.",
         short: "Service",
+      },
+      certifications: {
+        name:  "400+ certifications",
+        desc:  "More than 400 earned certifications backing our competence — from engineers to architects.",
+        short: "400+ certs",
       },
     },
   },
@@ -242,6 +253,17 @@ const ValuesSection = () => {
             <span className="sc-varray__mount" />
           </div>
         </div>
+
+        {/* Story paragraph — the SmartClout approach in prose */}
+        <Reveal>
+          <div className="sc-values__story" data-testid="values-story">
+            {copy.story.map((para, i) => (
+              <p key={i} className="sc-values__story-p" data-testid={`values-story-p-${i}`}>
+                {para}
+              </p>
+            ))}
+          </div>
+        </Reveal>
       </div>
     </section>
   );
