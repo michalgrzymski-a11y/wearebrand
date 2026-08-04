@@ -19,6 +19,9 @@ import HardwareGallerySection from "@/components/sections/HardwareGallerySection
 import NGFWSection from "@/components/sections/NGFWSection";
 import ThreatWiseSection from "@/components/sections/ThreatWiseSection";
 import NetAppAFFSection from "@/components/sections/NetAppAFFSection";
+import CorridorHeroSection from "@/components/sections/CorridorHeroSection";
+import ServerAssemblySection from "@/components/sections/ServerAssemblySection";
+import DataReductionSection from "@/components/sections/DataReductionSection";
 import SectorsSection from "@/components/sections/SectorsSection";
 import SwitchSection from "@/components/sections/SwitchSection";
 import PartnersV2Section from "@/components/sections/PartnersV2Section";
@@ -50,6 +53,9 @@ const Home = () => (
     <NGFWSection />
     <ThreatWiseSection />
     <NetAppAFFSection />
+    <CorridorHeroSection />
+    <ServerAssemblySection />
+    <DataReductionSection />
   </main>
 );
 
