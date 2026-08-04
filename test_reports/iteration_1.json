@@ -28,6 +28,6 @@
   "seed_data_creation": "Created ~4 TEST_-prefixed contact_messages documents in MongoDB during tests. Not cleaned up (only ~5 docs total, harmless).",
   "retest_needed": false,
   "main_agent_can_self_test": true,
-  "context_for_next_testing_agent": "Backend tests at /app/backend/tests/test_contact_api.py cover /api/ health and /api/contact CRUD (create+list, invalid email 422, missing fields 422, empty name 422, email lowercasing, limit param). Frontend Playwright coverage: section presence, hero WebGL + 7 nodes, PL↔EN toggle on hero title, About metrics values, Trusted marquee names, portfolio tile ids 0-3, 26 partner logo elements with NetApp badge, contact form E2E POST /api/contact returns 200 & success toast, native email validation. Public URL from frontend/.env: https://teal-node-visual.preview.emergentagent.com.",
+  "context_for_next_testing_agent": "Backend tests at /app/backend/tests/test_contact_api.py cover /api/ health and /api/contact CRUD (create+list, invalid email 422, missing fields 422, empty name 422, email lowercasing, limit param). Frontend Playwright coverage: section presence, hero WebGL + 7 nodes, PL↔EN toggle on hero title, About metrics values, Trusted marquee names, portfolio tile ids 0-3, 26 partner logo elements with NetApp badge, contact form E2E POST /api/contact returns 200 & success toast, native email validation. Public URL from frontend/.env: https://web-from-github.preview.emergentagent.com.",
   "rca of the issue": "No issues found."
 }

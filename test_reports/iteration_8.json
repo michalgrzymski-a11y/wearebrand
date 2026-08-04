@@ -1,5 +1,5 @@
 {
-  "summary": "SMARTCLOUT iteration 8 (frontend-only) verified on https://teal-node-visual.preview.emergentagent.com. PartnersV2 scatter removed; new vendor-groups DOM with monochromatic-by-default logotypes and hover-driven full-color highlight. ALL 11 acceptance items PASS. 0 console errors.",
+  "summary": "SMARTCLOUT iteration 8 (frontend-only) verified on https://web-from-github.preview.emergentagent.com. PartnersV2 scatter removed; new vendor-groups DOM with monochromatic-by-default logotypes and hover-driven full-color highlight. ALL 11 acceptance items PASS. 0 console errors.",
   "backend_issues": {"critical": [], "minor": []},
   "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
   "test_report_links": [],
