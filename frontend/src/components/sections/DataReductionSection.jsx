@@ -54,17 +54,29 @@ const COLOR_MAP = {
 };
 
 // Defaults chosen so the initial numbers match the previous static values
-// (10 TB → 4.2 TB → 0.8 TB, total 12.5:1, savings 92 %).
+// (roughly 10 TiB → ~0.8 TiB usable, total ~12:1). One slider drives the whole
+// reduction chain; internally we split it 50/50 between compression and
+// deduplication for the animation only (comp = dedup = sqrt(total)).
 const DEFAULTS = {
-  compression: 2.4,
-  dedupe: 5.2,
+  ratio: 2.5,   // Default = "Ogólne / General" preset midpoint
   rawTB: 10,
 };
 const LIMITS = {
-  compression: { min: 1.0, max: 6.0, step: 0.1 },
-  dedupe:      { min: 1.0, max: 10.0, step: 0.1 },
-  rawTB:       { min: 1,   max: 1000, step: 1 },
+  ratio: { min: 1.0, max: 6.0, step: 0.1 },
+  rawTB: { min: 1,   max: 1000, step: 1 },
 };
+
+// Industry presets — mid-point of the typical real-world range
+const PRESETS = [
+  { id: "cifs",    label: "CIFS / NFS",       range: "1.5 – 2 : 1", value: 1.75 },
+  { id: "virt",    label: "Wirtualizacja",    range: "3 – 4 : 1",   value: 3.5  },
+  { id: "general", label: "Ogólne",           range: "2 – 2.5 : 1", value: 2.25 },
+];
+const PRESETS_EN = [
+  { id: "cifs",    label: "CIFS / NFS",       range: "1.5 – 2 : 1", value: 1.75 },
+  { id: "virt",    label: "Virtualization",   range: "3 – 4 : 1",   value: 3.5  },
+  { id: "general", label: "General",          range: "2 – 2.5 : 1", value: 2.25 },
+];
 
 const COPY = {
   pl: {
@@ -78,9 +90,9 @@ const COPY = {
     stageRaw: "Bloki surowe",
     stageComp: "Kompresja",
     stageDedup: "Deduplikacja",
-    controlsHead: "Ustaw wskaźniki na żywo",
-    compressionLbl: "Współczynnik kompresji",
-    dedupeLbl: "Współczynnik deduplikacji",
+    controlsHead: "Współczynnik redukcji · na żywo",
+    ratioLbl: "Redukcja danych (kompresja × deduplikacja)",
+    presetsLbl: "Typowe scenariusze",
     resetBtn: "Reset",
     metricsHead: "Efekt redukcji",
     dbHead: "Baza deduplikacji · hash pointers",
@@ -111,9 +123,9 @@ const COPY = {
     stageRaw: "Raw blocks",
     stageComp: "Compression",
     stageDedup: "Deduplication",
-    controlsHead: "Adjust ratios live",
-    compressionLbl: "Compression ratio",
-    dedupeLbl: "Dedupe ratio",
+    controlsHead: "Reduction ratio · live",
+    ratioLbl: "Data reduction (compression × dedupe)",
+    presetsLbl: "Typical scenarios",
     resetBtn: "Reset",
     metricsHead: "Reduction results",
     dbHead: "Dedupe database · hash pointers",
@@ -158,9 +170,29 @@ const DataReductionSection = () => {
   const copy = COPY[lang] || COPY.pl;
   const parallaxRef = useSectionParallax();
 
-  const [compression, setCompression] = useState(DEFAULTS.compression);
-  const [dedupe, setDedupe]           = useState(DEFAULTS.dedupe);
-  const [rawTB, setRawTB]             = useState(DEFAULTS.rawTB);
+  const [ratio, setRatio]   = useState(DEFAULTS.ratio);
+  const [rawTB, setRawTB]   = useState(DEFAULTS.rawTB);
+  const [activePreset, setActivePreset] = useState(null);
+
+  // Split the total ratio evenly between compression and dedupe for the
+  // animation only — sqrt(total) each, so their product equals `ratio`.
+  const compression = Math.sqrt(ratio);
+  const dedupe      = Math.sqrt(ratio);
+
+  const presets = lang === "en" ? PRESETS_EN : PRESETS;
+
+  const applyPreset = (p) => {
+    setRatio(p.value);
+    setActivePreset(p.id);
+  };
+
+  // Handle raw slider changes — if user drags manually, clear active preset
+  const handleRatioChange = (v) => {
+    setRatio(v);
+    // Fuzzy-match: keep the preset highlighted if it lands on that value
+    const match = presets.find((p) => Math.abs(p.value - v) < 0.05);
+    setActivePreset(match ? match.id : null);
+  };
 
   // Number of blocks (out of STREAM_BASE.length) that should be marked as
   // duplicates, based on the current dedupe ratio.
@@ -186,9 +218,9 @@ const DataReductionSection = () => {
   const compScale = Math.max(0.16, Math.min(1, 1 / compression));
 
   // Derived numbers for the metrics panel
-  const totalRatio = compression * dedupe;
+  const totalRatio = ratio;
   const afterCompTB  = rawTB / Math.max(0.01, compression);
-  const afterDedupTB = afterCompTB / Math.max(0.01, dedupe);
+  const afterDedupTB = rawTB / Math.max(0.01, totalRatio);
   const savedTB      = Math.max(0, rawTB - afterDedupTB);
   const savedPct     = (1 - 1 / totalRatio) * 100;
   const remainingPct = 100 - savedPct;
@@ -199,9 +231,9 @@ const DataReductionSection = () => {
   const barFinal = 100 / Math.max(1, totalRatio);
 
   const resetAll = () => {
-    setCompression(DEFAULTS.compression);
-    setDedupe(DEFAULTS.dedupe);
+    setRatio(DEFAULTS.ratio);
     setRawTB(DEFAULTS.rawTB);
+    setActivePreset(null);
   };
 
   // Dedupe DB — top hash entries, refs derived from the stream distribution
@@ -318,9 +350,6 @@ const DataReductionSection = () => {
               <div className="sc-dr__lane-head">
                 <Combine size={14} strokeWidth={2} />
                 <span>{copy.stageComp}</span>
-                <span className="sc-dr__lane-badge" data-testid="dr-lane-comp-badge">
-                  ×{fmt(compression, 1, lang)}
-                </span>
               </div>
               <div className="sc-dr__track">
                 {stream.map((b, i) => (
@@ -341,8 +370,8 @@ const DataReductionSection = () => {
               <div className="sc-dr__lane-head">
                 <Hash size={14} strokeWidth={2} />
                 <span>{copy.stageDedup}</span>
-                <span className="sc-dr__lane-badge" data-testid="dr-lane-dedup-badge">
-                  ×{fmt(dedupe, 1, lang)}
+                <span className="sc-dr__lane-badge" data-testid="dr-lane-total-badge">
+                  {fmt(totalRatio, 1, lang)} : 1
                 </span>
               </div>
               <div className="sc-dr__track">
@@ -390,63 +419,52 @@ const DataReductionSection = () => {
             </button>
           </div>
 
-          <div className="sc-dr__control" data-testid="dr-slider-comp">
+          <div className="sc-dr__control" data-testid="dr-slider-ratio">
             <div className="sc-dr__control-row">
-              <label htmlFor="dr-slider-compression" className="sc-dr__control-lbl">
-                {copy.compressionLbl}
+              <label htmlFor="dr-slider-ratio" className="sc-dr__control-lbl">
+                {copy.ratioLbl}
               </label>
-              <span className="sc-dr__control-val" data-testid="dr-value-comp">
-                ×{fmt(compression, 1, lang)}
+              <span className="sc-dr__control-val" data-testid="dr-value-ratio">
+                {fmt(ratio, 1, lang)} : 1
               </span>
             </div>
             <input
-              id="dr-slider-compression"
+              id="dr-slider-ratio"
               type="range"
-              min={LIMITS.compression.min}
-              max={LIMITS.compression.max}
-              step={LIMITS.compression.step}
-              value={compression}
-              onChange={(e) => setCompression(parseFloat(e.target.value))}
+              min={LIMITS.ratio.min}
+              max={LIMITS.ratio.max}
+              step={LIMITS.ratio.step}
+              value={ratio}
+              onChange={(e) => handleRatioChange(parseFloat(e.target.value))}
               className="sc-dr__range sc-dr__range--comp"
-              aria-label={copy.compressionLbl}
+              aria-label={copy.ratioLbl}
               style={{
-                "--fill": `${((compression - LIMITS.compression.min) /
-                  (LIMITS.compression.max - LIMITS.compression.min)) * 100}%`,
+                "--fill": `${((ratio - LIMITS.ratio.min) /
+                  (LIMITS.ratio.max - LIMITS.ratio.min)) * 100}%`,
               }}
             />
             <div className="sc-dr__control-scale">
-              <span>×{LIMITS.compression.min.toFixed(1)}</span>
-              <span>×{LIMITS.compression.max.toFixed(1)}</span>
+              <span>×{LIMITS.ratio.min.toFixed(1)}</span>
+              <span>×{LIMITS.ratio.max.toFixed(1)}</span>
             </div>
           </div>
 
-          <div className="sc-dr__control" data-testid="dr-slider-dedup">
-            <div className="sc-dr__control-row">
-              <label htmlFor="dr-slider-dedupe" className="sc-dr__control-lbl">
-                {copy.dedupeLbl}
-              </label>
-              <span className="sc-dr__control-val" data-testid="dr-value-dedup">
-                ×{fmt(dedupe, 1, lang)}
-              </span>
-            </div>
-            <input
-              id="dr-slider-dedupe"
-              type="range"
-              min={LIMITS.dedupe.min}
-              max={LIMITS.dedupe.max}
-              step={LIMITS.dedupe.step}
-              value={dedupe}
-              onChange={(e) => setDedupe(parseFloat(e.target.value))}
-              className="sc-dr__range sc-dr__range--dedup"
-              aria-label={copy.dedupeLbl}
-              style={{
-                "--fill": `${((dedupe - LIMITS.dedupe.min) /
-                  (LIMITS.dedupe.max - LIMITS.dedupe.min)) * 100}%`,
-              }}
-            />
-            <div className="sc-dr__control-scale">
-              <span>×{LIMITS.dedupe.min.toFixed(1)}</span>
-              <span>×{LIMITS.dedupe.max.toFixed(1)}</span>
+          <div className="sc-dr__presets" data-testid="dr-presets">
+            <span className="sc-dr__presets-lbl">{copy.presetsLbl}</span>
+            <div className="sc-dr__presets-row">
+              {presets.map((p) => (
+                <button
+                  key={p.id}
+                  type="button"
+                  className={`sc-dr__preset ${activePreset === p.id ? "is-active" : ""}`}
+                  onClick={() => applyPreset(p)}
+                  data-testid={`dr-preset-${p.id}`}
+                  aria-pressed={activePreset === p.id}
+                >
+                  <span className="sc-dr__preset-name">{p.label}</span>
+                  <span className="sc-dr__preset-range">{p.range}</span>
+                </button>
+              ))}
             </div>
           </div>
         </div>
