@@ -89,9 +89,9 @@ const COPY = {
     metricFinal: "Po deduplikacji",
     ratio: "Współczynnik całkowity",
     savings: "Zapisujesz tylko",
-    calcHead: "Kalkulator zapisu fizycznego",
-    calcHint: "Podaj planowany zapis surowy — zobacz, ile realnie trafi na dysk.",
-    calcInput: "Zapis surowy (TB)",
+    calcHead: "Kalkulator pojemności użytkowej",
+    calcHint: "Podaj planowany zapis surowy w TiB — zobacz, ile realnie zajmie na macierzy (pojemność użytkowa liczona binarnie).",
+    calcInput: "Zapis surowy (TiB)",
     calcPhysical: "Zapis fizyczny",
     calcSaved: "Oszczędność miejsca",
     calcSavedPct: "Redukcja",
@@ -122,9 +122,9 @@ const COPY = {
     metricFinal: "After dedupe",
     ratio: "Total reduction ratio",
     savings: "You actually store",
-    calcHead: "Physical-write calculator",
-    calcHint: "Enter a planned raw write and see how much really lands on disk.",
-    calcInput: "Raw write (TB)",
+    calcHead: "Usable-capacity calculator",
+    calcHint: "Enter a planned raw write in TiB — see how much really lands on the array (usable capacity, binary units).",
+    calcInput: "Raw write (TiB)",
     calcPhysical: "Physical write",
     calcSaved: "Capacity saved",
     calcSavedPct: "Reduction",
@@ -144,12 +144,13 @@ const fmt = (n, digits = 2, lang = "pl") => {
   });
   return nf.format(n);
 };
-// Nice TB label — auto switches to GB below 1 TB, PB above 1000 TB.
+// Nice TiB label — auto switches to GiB below 1 TiB, PiB above 1000 TiB.
+// Storage industry uses binary units for usable capacity: 1 TiB = 2^40 bytes.
 const fmtTB = (tb, lang) => {
   if (!isFinite(tb) || tb < 0) return "—";
-  if (tb >= 1000) return `${fmt(tb / 1000, 2, lang)} PB`;
-  if (tb < 1)    return `${fmt(tb * 1000, 1, lang)} GB`;
-  return `${fmt(tb, 2, lang)} TB`;
+  if (tb >= 1024) return `${fmt(tb / 1024, 2, lang)} PiB`;
+  if (tb < 1)    return `${fmt(tb * 1024, 1, lang)} GiB`;
+  return `${fmt(tb, 2, lang)} TiB`;
 };
 
 const DataReductionSection = () => {
@@ -543,7 +544,7 @@ const DataReductionSection = () => {
                   className="sc-dr__calc-input"
                   data-testid="dr-calc-input"
                 />
-                <span className="sc-dr__calc-unit">TB</span>
+                <span className="sc-dr__calc-unit">TiB</span>
               </div>
 
               <div className="sc-dr__calc-results">
