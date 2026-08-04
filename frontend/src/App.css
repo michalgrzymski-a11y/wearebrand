@@ -9626,3 +9626,178 @@ html { scroll-padding-top: 92px; }
   .sc-bar__benefits { grid-template-columns: 1fr; }
   .sc-bar__feed-row { grid-template-columns: 1fr; gap: 4px; }
 }
+
+
+/* =====================================================================
+   AboutV2 — alternative "Three pillars" layout (light / bright style)
+   ===================================================================== */
+.sc-a2__grid {
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  align-items: stretch;
+}
+
+.sc-a2__card {
+  position: relative;
+  padding: 26px 26px 24px;
+  border-radius: 12px;
+  background:
+    radial-gradient(120% 60% at 100% 0%, rgba(73, 173, 165, 0.06) 0%, rgba(73, 173, 165, 0) 65%),
+    linear-gradient(180deg, #FDFEFE 0%, #F3F7F7 100%);
+  border: 1px solid rgba(12, 92, 98, 0.12);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 20px 40px -30px rgba(12, 92, 98, 0.35);
+  transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+  overflow: hidden;
+}
+.sc-a2__card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(12, 92, 98, 0.28);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 30px 60px -30px rgba(12, 92, 98, 0.5);
+}
+.sc-a2__card::before {
+  /* subtle accent stripe on the left edge, colored per pillar */
+  content: "";
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: linear-gradient(180deg, var(--a2-accent, #0C5C62), transparent);
+  opacity: 0.85;
+}
+
+.sc-a2__head {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 18px;
+}
+.sc-a2__idx {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px; letter-spacing: 0.28em;
+  color: var(--a2-accent, #0C5C62);
+  padding: 4px 8px;
+  border: 1px solid rgba(12, 92, 98, 0.2);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.6);
+}
+.sc-a2__icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 42px; height: 42px; border-radius: 10px;
+  color: #FFFFFF;
+  background: linear-gradient(135deg, var(--a2-accent, #0C5C62) 0%, #22B8B0 100%);
+  box-shadow: 0 10px 20px -8px rgba(12, 92, 98, 0.5);
+}
+
+.sc-a2__label {
+  margin: 0 0 8px 0;
+  font-family: "Manrope", sans-serif;
+  font-size: 22px; font-weight: 700; letter-spacing: -0.005em;
+  color: #0C5C62;
+}
+.sc-a2__desc {
+  margin: 0 0 20px 0;
+  color: #3C4A55;
+  font-family: "Manrope", sans-serif;
+  font-size: 14.5px; line-height: 1.55;
+}
+
+/* Blueprint mini-panel inline in each card */
+.sc-a2__panel {
+  padding: 12px 14px;
+  border-radius: 8px;
+  background: rgba(12, 92, 98, 0.04);
+  border: 1px dashed rgba(12, 92, 98, 0.18);
+  margin-bottom: 16px;
+}
+.sc-a2__panel-head {
+  display: flex; justify-content: space-between; align-items: baseline;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10.5px; letter-spacing: 0.22em; text-transform: uppercase;
+  color: #0C5C62;
+  margin-bottom: 6px;
+}
+.sc-a2__panel-head b {
+  font-size: 12.5px;
+  color: var(--a2-accent, #0C5C62);
+  letter-spacing: 0.14em;
+}
+.sc-a2__panel-bar {
+  display: grid;
+  grid-template-columns: repeat(20, 1fr);
+  gap: 2px;
+}
+.sc-a2__panel-bar span {
+  height: 8px;
+  border-radius: 1px;
+  background: rgba(12, 92, 98, 0.1);
+}
+.sc-a2__panel-bar span.on {
+  background: var(--a2-accent, #0C5C62);
+}
+
+/* Spec rows */
+.sc-a2__metrics {
+  list-style: none; margin: 0 0 18px 0; padding: 0;
+  display: flex; flex-direction: column; gap: 4px;
+}
+.sc-a2__metric {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: baseline; gap: 8px;
+  padding: 8px 0;
+  border-bottom: 1px dashed rgba(12, 92, 98, 0.08);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+}
+.sc-a2__metric:last-child { border-bottom: none; }
+.sc-a2__metric-k {
+  color: #6B7A85;
+  letter-spacing: 0.14em; text-transform: uppercase;
+}
+.sc-a2__metric-dots {
+  height: 1px;
+  background-image: linear-gradient(90deg, rgba(12,92,98,0.35) 25%, transparent 25%);
+  background-size: 4px 1px;
+  background-repeat: repeat-x;
+  align-self: center;
+}
+.sc-a2__metric-v {
+  color: #0C5C62;
+  font-weight: 700; letter-spacing: 0.06em;
+  text-align: right;
+}
+
+/* Tags */
+.sc-a2__badges {
+  display: flex; flex-wrap: wrap; gap: 6px;
+}
+.sc-a2__badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(12, 92, 98, 0.2);
+  background: rgba(255, 255, 255, 0.55);
+  color: #0C5C62;
+  font-family: "Manrope", sans-serif;
+  font-size: 12px; font-weight: 600; letter-spacing: 0.01em;
+}
+.sc-a2__badge svg { color: var(--a2-accent, #22B8B0); }
+
+/* Corner brackets — spec-sheet feel */
+.sc-a2__bracket {
+  position: absolute;
+  width: 10px; height: 10px;
+  border: 1.5px solid rgba(12, 92, 98, 0.3);
+  pointer-events: none;
+}
+.sc-a2__bracket--tl { top: 8px;    left: 8px;    border-right: none; border-bottom: none; }
+.sc-a2__bracket--tr { top: 8px;    right: 8px;   border-left: none;  border-bottom: none; }
+.sc-a2__bracket--bl { bottom: 8px; left: 8px;    border-right: none; border-top: none; }
+.sc-a2__bracket--br { bottom: 8px; right: 8px;   border-left: none;  border-top: none; }
+
+@media (max-width: 1024px) {
+  .sc-a2__grid { grid-template-columns: 1fr; gap: 16px; }
+}

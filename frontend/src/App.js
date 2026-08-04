@@ -5,7 +5,7 @@ import { LanguageProvider } from "@/i18n/LanguageContext";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/hero/HeroSection";
 import ValuesSection from "@/components/sections/ValuesSection";
-import AboutSection from "@/components/sections/AboutSection";
+import AboutV2Section from "@/components/sections/AboutV2Section";
 import RackServerSection from "@/components/sections/RackServerSection";
 import TrustedBySection from "@/components/sections/TrustedBySection";
 import PortfolioSection from "@/components/sections/PortfolioSection";
@@ -35,7 +35,7 @@ const Home = () => (
     <Navbar />
     <HeroSection />
     <ValuesSection />
-    <AboutSection />
+    <AboutV2Section />
     <ProcessRackSection />
     <RackServerSection />
     <SavingsSection />

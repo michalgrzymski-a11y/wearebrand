@@ -1,93 +1,113 @@
 import React, { useState } from "react";
 import { useLang } from "@/i18n/LanguageContext";
-import { Award, LifeBuoy, Handshake, Users } from "lucide-react";
+import { Award, LifeBuoy, Handshake, Users, FolderKanban } from "lucide-react";
 import Reveal from "@/components/Reveal";
 import useSectionParallax from "@/hooks/useSectionParallax";
 
 /**
  * ValuesSection — horizontal 12-bay disk shelf (FAS A30 inspired).
- * On hover of a value drive, the hovered drive expands IN-PLACE inside the
- * chassis, revealing the value name + short description as its own content.
- * Filler drives + non-hovered value drives collapse to slim strips at the
- * far right of the chassis (flex-grow: 0.15 vs hovered flex-grow: 22).
+ * Five value "drives" are visible in the chassis; hover expands one drive in
+ * place while the rest collapse to slim strips. Below the array a longer
+ * descriptive paragraph explains the SmartClout approach.
  */
 
+// 5 value drives + 7 filler bays = 12 total. Spread the value bays evenly
+// so the shelf feels populated but each drive still stands out visually.
 const VALUES_LAYOUT = [
   { type: "filler", i: 0 },
-  { type: "value",  id: "competence" },
+  { type: "value",  id: "experience"  },
   { type: "filler", i: 2 },
-  { type: "filler", i: 3 },
-  { type: "value",  id: "service" },
-  { type: "filler", i: 5 },
+  { type: "value",  id: "clients"     },
+  { type: "filler", i: 4 },
+  { type: "value",  id: "projects"    },
   { type: "filler", i: 6 },
   { type: "value",  id: "partnership" },
   { type: "filler", i: 8 },
-  { type: "filler", i: 9 },
-  { type: "value",  id: "trust" },
+  { type: "value",  id: "service"     },
+  { type: "filler", i: 10 },
   { type: "filler", i: 11 },
 ];
 
 const VALUE_ICONS = {
-  competence:  Award,
-  service:     LifeBuoy,
+  experience:  Award,
+  clients:     Users,
+  projects:    FolderKanban,
   partnership: Handshake,
-  trust:       Users,
+  service:     LifeBuoy,
 };
 
 const COPY = {
   pl: {
     section_label: "Nasze wartości",
-    title:         "Cztery dyski. Jedna filozofia.",
-    subtitle:      "Najedź na dysk, aby odczytać wartość zapisaną na nośniku.",
+    title:         "Pięć dysków. Jedna filozofia.",
     chassis_code:  "SC · 12-BAY · VALUES ARRAY",
+    story: [
+      "Doświadczenie nauczyło nas jednego: najlepsze rozwiązania rodzą się z wyciągania wniosków. Jako integrator IT, wykraczamy poza standardowe wdrożenia.",
+      "Posiadamy kompetencje do realizacji najbardziej wymagających projektów, ale naszą prawdziwą wartością dodaną jest uważność na głos klienta.",
+      "Dzięki holistycznemu spojrzeniu na ekosystem IT, projektujemy infrastrukturę „szytą na miarę” – taką, która chroni dane, przyspiesza biznes i szanuje budżet. Nie szukamy najdroższych rozwiązań, szukamy tych najbardziej zoptymalizowanych.",
+    ],
     values: {
-      competence: {
-        name: "Kompetencje i doświadczenie",
-        desc: "Od 20 lat budujemy IT dla klientów — wiedza wyrasta z projektów, nie z ulotek.",
+      experience: {
+        name:  "20+ lat doświadczenia",
+        desc:  "Od dwóch dekad budujemy IT dla realnych klientów — wiedza wyrasta z projektów, nie z ulotek.",
         short: "20+ lat",
       },
-      service: {
-        name: "Obsługa IT / Serwis",
-        desc: "Pomagamy w rozwoju Twojego IT oraz w codziennym zarządzaniu środowiskiem.",
-        short: "Serwis",
+      clients: {
+        name:  "130+ klientów",
+        desc:  "Ponad 130 zaufanych klientów — najlepszy dowód, że działamy tak, jak obiecujemy.",
+        short: "130+ klientów",
+      },
+      projects: {
+        name:  "600+ projektów",
+        desc:  "Ponad 600 zamkniętych projektów — od jednorazowych wdrożeń po wieloletnie programy transformacji IT.",
+        short: "600+ projektów",
       },
       partnership: {
-        name: "Partnerstwa technologiczne",
-        desc: "Oferujemy, wdrażamy i utrzymujemy technologie największych i najbardziej stabilnych producentów na świecie.",
-        short: "Partner",
+        name:  "Partnerstwa technologiczne",
+        desc:  "Oferujemy, wdrażamy i utrzymujemy technologie największych i najbardziej stabilnych producentów na świecie.",
+        short: "Partnerstwa",
       },
-      trust: {
-        name: "Zaufanie klientów",
-        desc: "130+ zaufanych klientów i ponad 400 zamkniętych projektów — najlepszy dowód, że działamy tak, jak obiecujemy.",
-        short: "Zaufanie",
+      service: {
+        name:  "Obsługa i serwis",
+        desc:  "Pomagamy w rozwoju Twojego IT oraz w codziennym zarządzaniu środowiskiem — od monitoringu po SLA.",
+        short: "Obsługa",
       },
     },
   },
   en: {
     section_label: "Our values",
-    title:         "Four drives. One philosophy.",
-    subtitle:      "Hover a drive to read the value stored on it.",
+    title:         "Five drives. One philosophy.",
     chassis_code:  "SC · 12-BAY · VALUES ARRAY",
+    story: [
+      "Experience has taught us one thing: the best solutions are born from lessons learned. As an IT integrator, we go beyond standard deployments.",
+      "We have the competence to deliver the most demanding projects, but our real added value is listening closely to the client.",
+      "With a holistic view of the IT ecosystem, we design “tailor-made” infrastructure — one that protects data, accelerates business and respects the budget. We don't look for the most expensive solutions, we look for the most optimised ones.",
+    ],
     values: {
-      competence: {
-        name: "Competence & Experience",
-        desc: "20 years of building IT for real customers — knowledge grows from projects, not from brochures.",
-        short: "20+ y.",
+      experience: {
+        name:  "20+ years of experience",
+        desc:  "For two decades we've been building IT for real customers — knowledge grows from projects, not from brochures.",
+        short: "20+ years",
       },
-      service: {
-        name: "IT Operations & Support",
-        desc: "We help you grow your IT and manage the day-to-day environment.",
-        short: "Support",
+      clients: {
+        name:  "130+ clients",
+        desc:  "More than 130 trusted clients — the best proof that we deliver what we promise.",
+        short: "130+ clients",
+      },
+      projects: {
+        name:  "600+ projects",
+        desc:  "Over 600 closed projects — from one-off deployments to multi-year IT transformation programs.",
+        short: "600+ projects",
       },
       partnership: {
-        name: "Technology Partnerships",
-        desc: "We deliver, deploy and operate the technologies of the world's largest and most stable vendors.",
-        short: "Partner",
+        name:  "Technology partnerships",
+        desc:  "We deliver, deploy and operate the technologies of the world's largest and most stable vendors.",
+        short: "Partnerships",
       },
-      trust: {
-        name: "Client Trust",
-        desc: "130+ trusted clients and 400+ closed projects — the best proof that we deliver what we promise.",
-        short: "Trust",
+      service: {
+        name:  "Service & support",
+        desc:  "We help you grow your IT and manage the day-to-day environment — from monitoring to SLA.",
+        short: "Service",
       },
     },
   },
@@ -132,12 +152,6 @@ const ValuesSection = () => {
           >
             {copy.title}
           </h2>
-          <p
-            data-testid="values-subtitle"
-            className="mt-4 max-w-2xl text-base md:text-lg text-white/70"
-          >
-            {copy.subtitle}
-          </p>
         </Reveal>
 
         <div
