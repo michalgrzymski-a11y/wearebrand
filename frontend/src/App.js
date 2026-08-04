@@ -22,6 +22,7 @@ import NetAppAFFSection from "@/components/sections/NetAppAFFSection";
 import CorridorHeroSection from "@/components/sections/CorridorHeroSection";
 import ServerAssemblySection from "@/components/sections/ServerAssemblySection";
 import DataReductionSection from "@/components/sections/DataReductionSection";
+import BaramundiSection from "@/components/sections/BaramundiSection";
 import SectorsSection from "@/components/sections/SectorsSection";
 import SwitchSection from "@/components/sections/SwitchSection";
 import PartnersV2Section from "@/components/sections/PartnersV2Section";
@@ -56,6 +57,7 @@ const Home = () => (
     <CorridorHeroSection />
     <ServerAssemblySection />
     <DataReductionSection />
+    <BaramundiSection />
   </main>
 );
 
