@@ -1,47 +1,16 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Menu, X, ChevronDown, Sparkles, Wrench } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { Menu, X } from "lucide-react";
 import { useLang } from "@/i18n/LanguageContext";
 
-/* Nav structure. `href` = anchor on the page (starts with '#') OR route path.
-   Some links have a `dropdown` — a mega-menu grid of categories.
-   Every menu item maps 1:1 to an actual section rendered on the site. */
+/* Flat nav — each item maps 1:1 to a section on the home page. */
 const NAV = [
-  { key: "home",    href: "/#top"      },
-  {
-    key: "about",
-    href: "/#about-v2",
-    dropdown: [
-      {
-        id: "about-group",
-        titlePL: "O nas",
-        titleEN: "About",
-        Icon: Sparkles,
-        items: [
-          { pl: "Wartości", en: "Values",  href: "/#values"   },
-          { pl: "Proces",   en: "Process", href: "/#about-v2" },
-        ],
-      },
-    ],
-  },
-  {
-    key: "offer",
-    href: "/#portfolio",
-    dropdown: [
-      {
-        id: "offer-group",
-        titlePL: "Oferta IT",
-        titleEN: "IT Offer",
-        Icon: Wrench,
-        items: [
-          { pl: "Portfolio Usług",       en: "Service Portfolio", href: "/#portfolio"      },
-          { pl: "Obszary Rynkowe",       en: "Market Areas",      href: "/#markets-switch" },
-          { pl: "Optymalizacja Kosztów", en: "Cost Optimisation", href: "/#savings"        },
-        ],
-      },
-    ],
-  },
-  { key: "robocze", href: "/robocze" },
-  { key: "contact", href: "/#contact" },
+  { key: "home",     href: "/#top"        },
+  { key: "values",   href: "/#values"     },
+  { key: "clients",  href: "/#trusted"    },
+  { key: "offer",    href: "/#portfolio"  },
+  { key: "savings",  href: "/#savings"    },
+  { key: "partners", href: "/#partners"   },
+  { key: "contact",  href: "/#contact"    },
 ];
 
 const SECTION_THEMES = {
@@ -77,24 +46,6 @@ const Navbar = () => {
   const [theme, setTheme] = useState("dark");
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [openDropdown, setOpenDropdown] = useState(null);      // desktop mega
-  const [mobileGroup, setMobileGroup]   = useState(null);      // mobile accordion
-  const closeTimer = useRef(null);
-
-  // Close mega-menu when clicking outside / hitting Escape
-  useEffect(() => {
-    const onKey = (e) => { if (e.key === "Escape") setOpenDropdown(null); };
-    const onClick = (e) => {
-      if (!e.target.closest(".sc-nav-dropdown-wrap")) setOpenDropdown(null);
-    };
-    document.addEventListener("keydown", onKey);
-    document.addEventListener("click", onClick);
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      document.removeEventListener("click", onClick);
-      if (closeTimer.current) window.clearTimeout(closeTimer.current);
-    };
-  }, []);
 
   useEffect(() => {
     const onScroll = () => setScrolled((window.scrollY || 0) > 8);
@@ -163,89 +114,19 @@ const Navbar = () => {
           </a>
 
           {/* Desktop nav — lg and above */}
-          <nav
-            className="hidden lg:flex items-center gap-8"
-            onMouseLeave={() => setOpenDropdown(null)}
-          >
+          <nav className="hidden lg:flex items-center gap-8">
             {NAV.map((l) => {
               const label = t.nav[l.key];
-              if (!l.dropdown) {
-                return (
-                  <a
-                    key={l.key}
-                    href={l.href}
-                    data-testid={`nav-link-${l.key}`}
-                    className="sc-nav-link"
-                    onClick={closeMenu}
-                  >
-                    {label}
-                  </a>
-                );
-              }
-              const isOpen = openDropdown === l.key;
               return (
-                <div
+                <a
                   key={l.key}
-                  className="sc-nav-dropdown-wrap"
-                  onMouseEnter={() => setOpenDropdown(l.key)}
+                  href={l.href}
+                  data-testid={`nav-link-${l.key}`}
+                  className="sc-nav-link"
+                  onClick={closeMenu}
                 >
-                  <button
-                    type="button"
-                    data-testid={`nav-link-${l.key}`}
-                    className={`sc-nav-link sc-nav-link--has-menu ${isOpen ? "is-open" : ""}`}
-                    aria-haspopup="true"
-                    aria-expanded={isOpen}
-                    onClick={() => setOpenDropdown(isOpen ? null : l.key)}
-                  >
-                    {label}
-                    <ChevronDown size={13} strokeWidth={2.2} className="sc-nav-chev" />
-                  </button>
-
-                  <div
-                    className={`sc-mega ${isOpen ? "is-open" : ""}`}
-                    data-testid="nav-mega"
-                    aria-hidden={!isOpen}
-                    role="menu"
-                  >
-                    <div className="sc-mega__inner">
-                      {l.dropdown.map((cat) => {
-                        const title = lang === "pl" ? cat.titlePL : cat.titleEN;
-                        return (
-                          <div key={cat.id} className="sc-mega__col">
-                            <a
-                              href={cat.href || (cat.items[0] && cat.items[0].href) || "#"}
-                              className="sc-mega__head"
-                              data-testid={`mega-cat-${cat.id}`}
-                              onClick={() => setOpenDropdown(null)}
-                            >
-                              <span className="sc-mega__head-icon">
-                                <cat.Icon size={16} strokeWidth={1.9} />
-                              </span>
-                              <span className="sc-mega__head-title">{title}</span>
-                            </a>
-                            {cat.items && cat.items.length > 0 && (
-                              <ul className="sc-mega__list">
-                                {cat.items.map((it) => (
-                                  <li key={it.href + it.pl}>
-                                    <a
-                                      href={it.href}
-                                      className="sc-mega__item"
-                                      data-testid={`mega-item-${cat.id}-${(lang === "pl" ? it.pl : it.en).replace(/\s+/g, "-").toLowerCase()}`}
-                                      onClick={() => setOpenDropdown(null)}
-                                    >
-                                      <span className="sc-mega__item-dot" />
-                                      {lang === "pl" ? it.pl : it.en}
-                                    </a>
-                                  </li>
-                                ))}
-                              </ul>
-                            )}
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                </div>
+                  {label}
+                </a>
               );
             })}
           </nav>
@@ -296,67 +177,16 @@ const Navbar = () => {
         <nav className="sc-mobile-menu__nav">
           {NAV.map((l) => {
             const label = t.nav[l.key];
-            if (!l.dropdown) {
-              return (
-                <a
-                  key={l.key}
-                  href={l.href}
-                  data-testid={`mobile-nav-link-${l.key}`}
-                  className="sc-mobile-menu__link"
-                  onClick={closeMenu}
-                >
-                  {label}
-                </a>
-              );
-            }
-            const isOpen = mobileGroup === l.key;
             return (
-              <div key={l.key} className="sc-mobile-menu__group">
-                <button
-                  type="button"
-                  data-testid={`mobile-nav-toggle-${l.key}`}
-                  className={`sc-mobile-menu__link sc-mobile-menu__link--group ${isOpen ? "is-open" : ""}`}
-                  onClick={() => setMobileGroup(isOpen ? null : l.key)}
-                  aria-expanded={isOpen}
-                >
-                  {label}
-                  <ChevronDown size={16} strokeWidth={2} className="sc-mobile-menu__chev" />
-                </button>
-                {isOpen && (
-                  <div className="sc-mobile-menu__submenu">
-                    {l.dropdown.map((cat) => {
-                      const title = lang === "pl" ? cat.titlePL : cat.titleEN;
-                      return (
-                        <div key={cat.id} className="sc-mobile-menu__cat">
-                          <a
-                            href={cat.href || (cat.items[0] && cat.items[0].href) || "#"}
-                            className="sc-mobile-menu__cat-head"
-                            onClick={closeMenu}
-                          >
-                            <cat.Icon size={14} strokeWidth={1.9} />
-                            {title}
-                          </a>
-                          {cat.items && cat.items.length > 0 && (
-                            <ul className="sc-mobile-menu__cat-list">
-                              {cat.items.map((it) => (
-                                <li key={it.href + it.pl}>
-                                  <a
-                                    href={it.href}
-                                    className="sc-mobile-menu__cat-item"
-                                    onClick={closeMenu}
-                                  >
-                                    {lang === "pl" ? it.pl : it.en}
-                                  </a>
-                                </li>
-                              ))}
-                            </ul>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>
-                )}
-              </div>
+              <a
+                key={l.key}
+                href={l.href}
+                data-testid={`mobile-nav-link-${l.key}`}
+                className="sc-mobile-menu__link"
+                onClick={closeMenu}
+              >
+                {label}
+              </a>
             );
           })}
           <a

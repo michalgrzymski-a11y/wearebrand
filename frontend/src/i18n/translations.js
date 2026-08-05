@@ -2,11 +2,10 @@ export const translations = {
   pl: {
     nav: {
       home: "Strona Główna",
-      about: "O nas",
-      offer: "Oferta IT",
-      savings: "Oszczędności",
-      robocze: "Robocze",
-      services: "Usługi",
+      values: "Wartości",
+      clients: "Klienci",
+      offer: "Oferta",
+      savings: "Niższe koszty",
       partners: "Partnerzy",
       contact: "Kontakt",
       cta: "Napisz do nas",
@@ -246,11 +245,10 @@ export const translations = {
   en: {
     nav: {
       home: "Home",
-      about: "About",
-      offer: "IT Offer",
-      savings: "Savings",
-      robocze: "Drafts",
-      services: "Services",
+      values: "Values",
+      clients: "Clients",
+      offer: "Offer",
+      savings: "Lower costs",
       partners: "Partners",
       contact: "Contact",
       cta: "Get in touch",
