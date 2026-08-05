@@ -10836,6 +10836,363 @@ html { scroll-padding-top: 92px; }
 
 
 /* ==========================================================================
+   Cookie Consent — banner, modal, toggles, floating reopener
+   ========================================================================== */
+
+.sc-cc-banner {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 90;
+  padding: 12px;
+  animation: sc-cc-slide-up 0.35s ease-out both;
+}
+.sc-cc-banner__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 20px;
+  padding: 18px 22px;
+  border-radius: 14px;
+  background: linear-gradient(180deg, rgba(10, 16, 20, 0.98) 0%, rgba(4, 7, 9, 0.98) 100%);
+  border: 1px solid rgba(6, 255, 224, 0.18);
+  box-shadow:
+    0 24px 60px -20px rgba(0, 0, 0, 0.75),
+    0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+  backdrop-filter: blur(14px);
+}
+.sc-cc-banner__icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(6, 255, 224, 0.08);
+  color: #06FFE0;
+  border: 1px solid rgba(6, 255, 224, 0.22);
+  flex-shrink: 0;
+}
+.sc-cc-banner__title {
+  font-family: "Manrope", sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: #FFFFFF;
+  letter-spacing: -0.005em;
+}
+.sc-cc-banner__text {
+  margin-top: 4px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: rgba(232, 244, 245, 0.72);
+  max-width: 720px;
+}
+.sc-cc-banner__link {
+  color: #06FFE0;
+  text-decoration: underline;
+  text-decoration-color: rgba(6, 255, 224, 0.4);
+  text-underline-offset: 3px;
+  transition: color 0.2s ease, text-decoration-color 0.2s ease;
+}
+.sc-cc-banner__link:hover {
+  color: #FFFFFF;
+  text-decoration-color: #06FFE0;
+}
+.sc-cc-banner__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* Shared button styles */
+.sc-cc-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-family: "Manrope", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.005em;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: transform 0.18s ease, background 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  white-space: nowrap;
+  line-height: 1;
+}
+.sc-cc-btn:hover { transform: translateY(-1px); }
+.sc-cc-btn:active { transform: translateY(0); }
+
+.sc-cc-btn--primary {
+  background: linear-gradient(180deg, #06FFE0 0%, #00CFB8 100%);
+  color: #04141A;
+  box-shadow: 0 8px 20px -8px rgba(6, 255, 224, 0.55);
+}
+.sc-cc-btn--primary:hover {
+  box-shadow: 0 12px 24px -8px rgba(6, 255, 224, 0.7);
+}
+.sc-cc-btn--secondary {
+  background: rgba(255, 255, 255, 0.06);
+  color: #E8F4F5;
+  border-color: rgba(255, 255, 255, 0.14);
+}
+.sc-cc-btn--secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.22);
+}
+.sc-cc-btn--ghost {
+  background: transparent;
+  color: rgba(232, 244, 245, 0.85);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+.sc-cc-btn--ghost:hover {
+  color: #FFFFFF;
+  border-color: rgba(6, 255, 224, 0.35);
+  background: rgba(6, 255, 224, 0.05);
+}
+
+/* ---------- Modal ---------- */
+.sc-cc-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(4, 7, 9, 0.72);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: sc-cc-fade 0.2s ease-out both;
+}
+.sc-cc-modal {
+  width: 100%;
+  max-width: 640px;
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+  background: linear-gradient(180deg, #0B1218 0%, #050A0D 100%);
+  border: 1px solid rgba(6, 255, 224, 0.16);
+  border-radius: 16px;
+  padding: 28px;
+  color: #E8F4F5;
+  box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.7);
+  animation: sc-cc-pop 0.28s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.sc-cc-modal__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.sc-cc-modal__title {
+  font-family: "Manrope", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #FFFFFF;
+  letter-spacing: -0.01em;
+}
+.sc-cc-modal__close {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: rgba(232, 244, 245, 0.75);
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+.sc-cc-modal__close:hover {
+  color: #FFFFFF;
+  border-color: rgba(6, 255, 224, 0.35);
+  background: rgba(6, 255, 224, 0.06);
+}
+.sc-cc-modal__intro {
+  margin-top: 10px;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: rgba(232, 244, 245, 0.7);
+}
+
+.sc-cc-cats {
+  margin: 20px 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.sc-cc-cat {
+  padding: 14px 16px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+.sc-cc-cat.is-on {
+  border-color: rgba(6, 255, 224, 0.28);
+  background: rgba(6, 255, 224, 0.04);
+}
+.sc-cc-cat__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.sc-cc-cat__name {
+  font-family: "Manrope", sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: #FFFFFF;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.sc-cc-cat__badge {
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: rgba(6, 255, 224, 0.12);
+  color: #06FFE0;
+  border: 1px solid rgba(6, 255, 224, 0.28);
+}
+.sc-cc-cat__desc {
+  margin-top: 8px;
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: rgba(232, 244, 245, 0.65);
+}
+
+/* Toggle switch */
+.sc-cc-toggle {
+  position: relative;
+  width: 42px;
+  height: 24px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+  flex-shrink: 0;
+  padding: 0;
+}
+.sc-cc-toggle__knob {
+  position: absolute;
+  top: 50%;
+  left: 3px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  transform: translateY(-50%);
+  transition: left 0.22s cubic-bezier(0.4, 0, 0.2, 1), background 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.35);
+}
+.sc-cc-toggle.is-on {
+  background: #06FFE0;
+  border-color: #06FFE0;
+  box-shadow: 0 0 12px rgba(6, 255, 224, 0.45);
+}
+.sc-cc-toggle.is-on .sc-cc-toggle__knob {
+  left: calc(100% - 19px);
+  background: #04141A;
+}
+.sc-cc-toggle:disabled {
+  cursor: not-allowed;
+  opacity: 0.85;
+}
+
+.sc-cc-modal__actions {
+  margin-top: 24px;
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+/* ---------- Floating "cookie" button (reopener) ---------- */
+.sc-cc-fab {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 80;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(10, 16, 20, 0.9);
+  border: 1px solid rgba(6, 255, 224, 0.28);
+  color: #06FFE0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 24px -8px rgba(0, 0, 0, 0.6);
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
+  animation: sc-cc-fade 0.4s ease-out both;
+}
+.sc-cc-fab:hover {
+  transform: translateY(-2px);
+  border-color: #06FFE0;
+  color: #FFFFFF;
+  background: rgba(6, 255, 224, 0.14);
+  box-shadow: 0 14px 28px -8px rgba(6, 255, 224, 0.4);
+}
+
+/* Animations */
+@keyframes sc-cc-slide-up {
+  from { transform: translateY(24px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+@keyframes sc-cc-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes sc-cc-pop {
+  from { transform: translateY(12px) scale(0.98); opacity: 0; }
+  to   { transform: translateY(0)    scale(1);    opacity: 1; }
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .sc-cc-banner__inner {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    padding: 16px 18px;
+  }
+  .sc-cc-banner__actions {
+    flex-wrap: wrap;
+    width: 100%;
+  }
+  .sc-cc-banner__actions .sc-cc-btn {
+    flex: 1 1 calc(50% - 4px);
+    min-width: 120px;
+  }
+  .sc-cc-banner__actions .sc-cc-btn--primary {
+    flex-basis: 100%;
+    order: -1;
+  }
+}
+@media (max-width: 480px) {
+  .sc-cc-banner { padding: 8px; }
+  .sc-cc-banner__inner { padding: 14px; }
+  .sc-cc-modal { padding: 20px; border-radius: 12px; }
+  .sc-cc-modal__title { font-size: 17px; }
+  .sc-cc-fab { bottom: 14px; right: 14px; width: 40px; height: 40px; }
+}
+
+
+/* ==========================================================================
    SwitchSection — COMPACT overrides (scale down ~15%)
    ========================================================================== */
 @media (min-width: 769px) {

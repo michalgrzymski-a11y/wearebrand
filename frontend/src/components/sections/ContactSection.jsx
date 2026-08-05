@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 import { useLang } from "@/i18n/LanguageContext";
 import {
   MapPin, Phone, Mail, FileText, ArrowUpRight,
@@ -100,8 +101,25 @@ const ContactSection = () => {
           <div className="text-sm text-white/60">
             © {new Date().getFullYear()} IT SMARTCLOUT SP. Z O.O. — {t.footer.rights}
           </div>
-          <div className="text-[11px] uppercase tracking-[0.28em]" style={{ color: "#49ADA5" }}>
-            {t.footer.tagline}
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-[12px]">
+            <Link
+              to="/polityka-prywatnosci"
+              className="text-white/60 hover:text-white transition-colors"
+              data-testid="footer-privacy-link"
+            >
+              {t.footer.privacy_link}
+            </Link>
+            <button
+              type="button"
+              onClick={() => window.dispatchEvent(new Event("sc:open-cookie-settings"))}
+              className="text-white/60 hover:text-white transition-colors underline-offset-4 hover:underline"
+              data-testid="footer-cookie-settings"
+            >
+              {t.footer.cookie_settings}
+            </button>
+            <span className="uppercase tracking-[0.28em] text-[11px]" style={{ color: "#49ADA5" }}>
+              {t.footer.tagline}
+            </span>
           </div>
         </div>
       </footer>

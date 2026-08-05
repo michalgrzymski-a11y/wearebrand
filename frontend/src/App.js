@@ -13,6 +13,8 @@ import PartnersSection from "@/components/sections/PartnersSection";
 import ContactSection from "@/components/sections/ContactSection";
 import PartnerDetailPage from "@/pages/PartnerDetailPage";
 import RoboczePage from "@/pages/RoboczePage";
+import PrivacyPolicyPage from "@/pages/PrivacyPolicyPage";
+import CookieConsent from "@/components/CookieConsent";
 
 const Home = () => (
   <main data-testid="home-main" className="sc-app">
@@ -37,7 +39,9 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/robocze" element={<RoboczePage />} />
             <Route path="/partners/:slug" element={<PartnerDetailPage />} />
+            <Route path="/polityka-prywatnosci" element={<PrivacyPolicyPage />} />
           </Routes>
+          <CookieConsent />
         </BrowserRouter>
       </div>
     </LanguageProvider>

@@ -235,6 +235,8 @@ export const translations = {
     footer: {
       rights: "Wszelkie prawa zastrzeżone.",
       tagline: "Business continuity, projektowana ze świadomością.",
+      privacy_link: "Polityka Prywatności",
+      cookie_settings: "Ustawienia cookies",
     },
   },
   en: {
@@ -472,6 +474,8 @@ export const translations = {
     footer: {
       rights: "All rights reserved.",
       tagline: "Business continuity, designed with intent.",
+      privacy_link: "Privacy Policy",
+      cookie_settings: "Cookie settings",
     },
   },
 };
