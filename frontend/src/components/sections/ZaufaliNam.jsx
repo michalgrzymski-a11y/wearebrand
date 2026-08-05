@@ -97,7 +97,7 @@ const ZaufaliNam = () => {
       className="relative w-full"
       style={{ background: "#F8FAFA", color: "#1C2833" }}
     >
-      <div className="mx-auto max-w-7xl px-6 md:px-10 pt-8 pb-3 flex items-center justify-between gap-6">
+      <div className="mx-auto max-w-7xl px-6 md:px-10 pt-4 pb-1 flex items-center justify-between gap-6">
         <div
           className="flex items-center gap-4 text-[11px] uppercase tracking-[0.32em]"
           style={{ color: "#0C5C62" }}

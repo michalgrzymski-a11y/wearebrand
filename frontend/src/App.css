@@ -1528,14 +1528,14 @@ html { scroll-padding-top: 92px; }
   display: flex;
   align-items: center;
   gap: 0;
-  padding: 14px 0 18px;
+  padding: 6px 0 10px;
   width: max-content;
   will-change: transform;
 }
 .sc-logo-slot {
   flex: 0 0 auto;
   width: 190px;
-  height: 44px;
+  height: 34px;
   padding: 0 30px;
   display: inline-flex;
   align-items: center;
@@ -4114,7 +4114,7 @@ html { scroll-padding-top: 92px; }
 }
 .sc-vbay__label {
   font-family: "JetBrains Mono", "Manrope", monospace;
-  font-size: 9.5px;
+  font-size: 7.5px;
   font-weight: 600;
   letter-spacing: 0.2em;
   color: rgba(232, 244, 245, 0.88);
@@ -10716,7 +10716,7 @@ html { scroll-padding-top: 92px; }
   padding-bottom: 56px;
 }
 .sc-av2--light h2 { font-size: clamp(22px, 2.4vw, 30px) !important; line-height: 1.05 !important; }
-.sc-av2--light p.mt-6 { font-size: 16px !important; line-height: 1.55 !important; margin-top: 20px !important; max-width: 720px; }
+.sc-av2--light p.mt-6 { font-size: 16px !important; line-height: 1.6 !important; margin-top: 20px !important; max-width: none !important; text-align: justify; hyphens: auto; }
 
 /* Layout: 2-column, right column narrower and sticky so it doesn't stretch */
 .sc-av2--light .sc-av2__layout {

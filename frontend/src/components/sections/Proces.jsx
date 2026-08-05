@@ -247,7 +247,7 @@ const Proces = () => {
               {isPL ? "Biznes." : "Business."}
             </span>
           </h2>
-          <p className="mt-6 max-w-3xl text-lg md:text-xl leading-relaxed" style={{ color: "#3C4A55" }}>
+          <p className="mt-6 max-w-none text-lg md:text-xl leading-relaxed text-justify" style={{ color: "#3C4A55", hyphens: "auto" }}>
             {isPL
               ? "Posiadamy kompetencje do realizacji najbardziej wymagających projektów, ale naszą prawdziwą wartością dodaną jest uważność na głos klienta. Dzięki holistycznemu spojrzeniu na ekosystem IT, projektujemy infrastrukturę „szytą na miarę” – taką, która chroni dane, przyspiesza biznes i szanuje budżet. Nie szukamy najdroższych rozwiązań, szukamy tych najbardziej zoptymalizowanych."
               : "We have the competence to deliver the most demanding projects, but our real added value is listening closely to the client. With a holistic view of the IT ecosystem, we design tailor-made infrastructure — one that protects data, accelerates business and respects the budget. We don't look for the most expensive solutions, we look for the most optimised ones."}
