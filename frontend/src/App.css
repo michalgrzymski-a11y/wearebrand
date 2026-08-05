@@ -10696,3 +10696,183 @@ html { scroll-padding-top: 92px; }
   .sc-hero-mist__marquee { gap: 26px; }
   .sc-hero-mist__logo { max-height: 24px; }
 }
+
+
+/* =====================================================================
+   AboutV2 — COMPACT overrides (smaller & more responsive)
+   ===================================================================== */
+/* Reduce outer section padding on light variant */
+.sc-av2--light > div.relative.z-10 {
+  padding-top: 56px;
+  padding-bottom: 56px;
+}
+.sc-av2--light h2 { font-size: clamp(28px, 3.6vw, 44px) !important; }
+.sc-av2--light p.mt-6 { font-size: 15px !important; margin-top: 14px !important; max-width: 640px; }
+
+/* Layout: 2-column, right column narrower and sticky so it doesn't stretch */
+.sc-av2--light .sc-av2__layout {
+  margin-top: 28px;
+  grid-template-columns: 1fr 0.85fr;
+  gap: 22px;
+  align-items: start;
+}
+.sc-av2--light .sc-av2__bpwrap {
+  position: sticky;
+  top: 96px;
+  align-self: start;
+}
+
+/* Compact stage cards */
+.sc-av2--light .sc-av2__stage {
+  padding: 12px 14px 14px 44px;
+  min-height: 0;
+  gap: 6px;
+}
+.sc-av2--light .sc-av2__stage-node {
+  top: 16px; left: 14px;
+  width: 14px; height: 14px;
+  border-width: 2px;
+}
+.sc-av2--light .sc-av2__stage-node-inner { inset: 2px; }
+.sc-av2--light .sc-av2__stage-step { font-size: 9.5px; }
+.sc-av2--light .sc-av2__stage-icon {
+  width: 32px; height: 32px; border-radius: 8px;
+  margin-top: 2px;
+}
+.sc-av2--light .sc-av2__stage-title { font-size: 15px; margin-top: 2px; }
+.sc-av2--light .sc-av2__stage-desc  { font-size: 12.5px; line-height: 1.5; }
+.sc-av2--light .sc-av2__stage-badge {
+  font-size: 10px; padding: 3px 7px; gap: 4px;
+}
+.sc-av2--light .sc-av2__stage-badges { gap: 4px; margin-top: 6px; }
+
+/* Compact arrow */
+.sc-av2--light .sc-av2__arrow {
+  margin: 3px 0;
+  padding: 2px 4px;
+  transform: translateX(15px);
+}
+
+/* Compact + prettier blueprint */
+.sc-av2--light .sc-av2__blueprint {
+  padding: 16px 18px;
+  border-radius: 10px;
+}
+.sc-av2--light .sc-av2__bp-row {
+  padding-bottom: 8px;
+  margin-bottom: 10px;
+}
+.sc-av2--light .sc-av2__bp-idx { font-size: 11.5px; letter-spacing: 0.22em; }
+.sc-av2--light .sc-av2__bp-idx em { font-size: 10px; }
+.sc-av2--light .sc-av2__bp-status { font-size: 9.5px; letter-spacing: 0.28em; }
+.sc-av2--light .sc-av2__bp-title {
+  font-size: 17px;
+  margin-bottom: 10px;
+}
+.sc-av2--light .sc-av2__bp-bar {
+  grid-template-columns: repeat(20, 1fr);
+  gap: 2px;
+}
+.sc-av2--light .sc-av2__bp-bar span { height: 8px; }
+.sc-av2--light .sc-av2__bp-bar-caption {
+  font-size: 9.5px; letter-spacing: 0.18em;
+  margin-bottom: 12px;
+}
+.sc-av2--light .sc-av2__bp-bar-caption b { font-size: 11.5px; }
+.sc-av2--light .sc-av2__bp-specs {
+  grid-template-columns: 1fr;
+  gap: 0;
+  margin-bottom: 12px;
+}
+.sc-av2--light .sc-av2__bp-spec {
+  padding: 6px 0;
+  font-size: 10.5px;
+}
+.sc-av2--light .sc-av2__bp-spec-k { font-size: 10px; letter-spacing: 0.16em; }
+.sc-av2--light .sc-av2__bp-spec-v { font-size: 11.5px; }
+
+/* Chart: smaller, cleaner, teal-only */
+.sc-av2--light .sc-av2__bp-schema {
+  height: 90px;
+  margin-top: 4px;
+  filter: none;
+}
+/* Recolor SVG lines/points/gradients from cyan to teal */
+.sc-av2--light .sc-av2__bp-schema path { stroke: #0C5C62; filter: none !important; }
+.sc-av2--light .sc-av2__bp-schema circle { fill: #0C5C62; }
+.sc-av2--light .sc-av2__bp-schema linearGradient stop[stop-color="#06FFE0"] { stop-color: #0C5C62 !important; }
+/* Fallback via attribute selector to catch inline stop-color */
+.sc-av2--light .sc-av2__bp-schema stop[stop-color="#06FFE0"] { stop-color: #22B8B0 !important; }
+
+/* Corner brackets smaller */
+.sc-av2--light .sc-av2__bp-bracket { width: 8px; height: 8px; }
+.sc-av2--light .sc-av2__bp-bracket--tl,
+.sc-av2--light .sc-av2__bp-bracket--tr { top: 6px; }
+.sc-av2--light .sc-av2__bp-bracket--bl,
+.sc-av2--light .sc-av2__bp-bracket--br { bottom: 6px; }
+.sc-av2--light .sc-av2__bp-bracket--tl,
+.sc-av2--light .sc-av2__bp-bracket--bl { left: 6px; }
+.sc-av2--light .sc-av2__bp-bracket--tr,
+.sc-av2--light .sc-av2__bp-bracket--br { right: 6px; }
+
+/* Better responsive: tablet + mobile */
+@media (max-width: 1024px) {
+  .sc-av2--light .sc-av2__layout {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .sc-av2--light .sc-av2__bpwrap { position: static; }
+}
+@media (max-width: 640px) {
+  .sc-av2--light > div.relative.z-10 {
+    padding-top: 42px;
+    padding-bottom: 42px;
+  }
+  .sc-av2--light .sc-av2__stage {
+    padding: 10px 12px 12px 40px;
+  }
+  .sc-av2--light .sc-av2__stage-badges { display: none; } /* hide badges on very small */
+}
+
+
+/* ==========================================================================
+   SwitchSection — COMPACT overrides (scale down ~15%)
+   ========================================================================== */
+@media (min-width: 769px) {
+  /* Shrink chassis width and center it */
+  #markets-switch .sc-switch {
+    max-width: 860px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  /* Reduce inner spacing */
+  #markets-switch .sc-switch__ports {
+    padding: 10px 22px 16px;
+    gap: 20px;
+    min-height: 96px;
+  }
+  #markets-switch .sc-switch__head {
+    padding: 8px 16px;
+  }
+  /* Tighter ports */
+  #markets-switch .sc-port { min-width: 118px; padding: 5px 6px 8px; gap: 6px; }
+  #markets-switch .sc-port__icon { width: 34px; height: 34px; }
+  #markets-switch .sc-port__socket { width: 40px; height: 34px; }
+  #markets-switch .sc-port__num { font-size: 8.5px; }
+  /* Shorter cables */
+  #markets-switch .sc-port__cable { bottom: -96px; height: 90px; width: 36px; }
+  #markets-switch .sc-port--low .sc-port__cable { bottom: -152px; height: 148px; }
+  /* Smaller labels */
+  #markets-switch .sc-port__label {
+    padding: 9px 12px;
+    font-size: 12.5px;
+    max-width: 148px;
+    width: 148px;
+    border-radius: 6px;
+  }
+  #markets-switch .sc-port__label-clip { width: 15px; height: 12px; top: -8px; }
+  /* Reduce section bottom padding to accommodate smaller cables/labels */
+  #markets-switch > div.relative.z-10 {
+    padding-bottom: 220px;
+  }
+}
