@@ -16,6 +16,7 @@ import PartnerDetailPage from "@/pages/PartnerDetailPage";
 import RoboczePage from "@/pages/RoboczePage";
 import PrivacyPolicyPage from "@/pages/PrivacyPolicyPage";
 import CookieConsent from "@/components/CookieConsent";
+import Analytics from "@/components/Analytics";
 
 const Home = () => (
   <main data-testid="home-main" className="sc-app">
@@ -44,6 +45,7 @@ function App() {
             <Route path="/polityka-prywatnosci" element={<PrivacyPolicyPage />} />
           </Routes>
           <CookieConsent />
+          <Analytics />
         </BrowserRouter>
       </div>
     </LanguageProvider>

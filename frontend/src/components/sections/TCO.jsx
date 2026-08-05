@@ -121,10 +121,10 @@ const TCO = () => {
           <div className="lg:col-span-6">
             <Reveal>
               <div
-                className="flex items-center gap-4 text-[12px] uppercase tracking-[0.34em]"
+                className="flex items-center gap-4 text-[11px] uppercase tracking-[0.32em]"
                 style={{ color: "#0C5C62" }}
               >
-                <span className="inline-block h-px w-12" style={{ background: "#49ADA5" }} />
+                <span className="inline-block h-px w-10" style={{ background: "#49ADA5" }} />
                 {copy.section_label}
               </div>
               <h2
@@ -187,7 +187,7 @@ const TCO = () => {
               })}
             </ul>
 
-            <a href="#contact" data-testid="savings-cta" className="sc-savings-cta">
+            <a href="#contact" data-testid="savings-cta" className="sc-btn-primary mt-6">
               {copy.cta}
               <span aria-hidden="true">→</span>
             </a>

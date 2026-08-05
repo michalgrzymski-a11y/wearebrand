@@ -159,11 +159,11 @@ const Hero = () => {
             </p>
 
             <div className="mt-8 flex flex-wrap items-center gap-3">
-              <a href="#contact" data-testid="hero-cta-primary" className="sc-btn-glass sc-btn-glass--primary">
+              <a href="#contact" data-testid="hero-cta-primary" className="sc-btn-primary">
                 {t.hero.cta_primary}
                 <ArrowRight size={16} className="transition-transform duration-300" />
               </a>
-              <a href="#portfolio" data-testid="hero-cta-secondary" className="sc-btn-glass">
+              <a href="#portfolio" data-testid="hero-cta-secondary" className="sc-btn-ghost">
                 {t.hero.cta_secondary}
               </a>
             </div>

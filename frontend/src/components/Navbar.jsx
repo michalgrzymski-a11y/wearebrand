@@ -292,7 +292,7 @@ const Navbar = () => {
             <a
               href="#contact"
               data-testid="nav-cta"
-              className="sc-nav-cta sc-nav-cta--desktop"
+              className="sc-btn-primary sc-nav-cta--desktop"
             >
               {t.nav.cta}
             </a>
@@ -387,7 +387,7 @@ const Navbar = () => {
           <a
             href="#contact"
             data-testid="mobile-nav-cta"
-            className="sc-nav-cta sc-mobile-menu__cta"
+            className="sc-btn-primary sc-mobile-menu__cta"
             onClick={closeMenu}
           >
             {t.nav.cta}

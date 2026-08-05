@@ -223,10 +223,10 @@ const Proces = () => {
       <div className="relative z-10 mx-auto max-w-7xl px-6 md:px-10 py-20 md:py-24">
         <Reveal>
           <div
-            className="flex items-center gap-4 text-[12px] uppercase tracking-[0.34em]"
+            className="flex items-center gap-4 text-[11px] uppercase tracking-[0.32em]"
             style={{ color: "#0C5C62" }}
           >
-            <span className="inline-block h-px w-12" style={{ background: "#49ADA5" }} />
+            <span className="inline-block h-px w-10" style={{ background: "#49ADA5" }} />
             {isPL ? "Nasze podejście" : "Our approach"}
           </div>
           <h2

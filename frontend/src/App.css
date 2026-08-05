@@ -11354,3 +11354,72 @@ html { scroll-padding-top: 92px; }
     padding-bottom: 220px;
   }
 }
+
+/* ==========================================================================
+   Global CTA buttons — .sc-btn-primary + .sc-btn-ghost
+   Use these classes on ANY button/link across the site for consistent style.
+   ========================================================================== */
+.sc-btn-primary,
+.sc-btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 22px;
+  border-radius: 10px;
+  font-family: "Manrope", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  line-height: 1;
+  cursor: pointer;
+  border: 1px solid transparent;
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    transform 0.2s ease,
+    background 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    filter 0.25s ease;
+}
+.sc-btn-primary {
+  background: linear-gradient(135deg, #06FFE0 0%, #00B8D4 100%);
+  color: #001B20;
+  box-shadow: 0 8px 20px -8px rgba(6, 255, 224, 0.55);
+}
+.sc-btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 26px -8px rgba(6, 255, 224, 0.75);
+  filter: brightness(1.05);
+}
+.sc-btn-primary:active { transform: translateY(0); }
+
+.sc-btn-ghost {
+  background: transparent;
+  color: currentColor;
+  border-color: rgba(6, 255, 224, 0.4);
+  font-weight: 600;
+}
+.sc-btn-ghost:hover {
+  transform: translateY(-1px);
+  border-color: #06FFE0;
+  background: rgba(6, 255, 224, 0.06);
+}
+/* On light backgrounds, ghost gets a slightly darker text for contrast */
+.sc-btn-ghost--light {
+  color: #0C5C62;
+  border-color: rgba(12, 92, 98, 0.35);
+}
+.sc-btn-ghost--light:hover {
+  color: #0C5C62;
+  border-color: #00B8D4;
+  background: rgba(6, 255, 224, 0.06);
+}
+
+.sc-btn-primary svg,
+.sc-btn-ghost svg {
+  flex-shrink: 0;
+}
+
