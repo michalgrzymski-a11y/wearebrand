@@ -159,7 +159,7 @@ const ValuesSection = () => {
           </div>
           <h2
             data-testid="values-title"
-            className="mt-4 text-4xl md:text-6xl font-semibold leading-[1.02] tracking-tight text-white max-w-3xl"
+            className="mt-4 text-4xl md:text-6xl font-semibold leading-[1.02] tracking-tight text-white max-w-3xl sr-only"
           >
             {copy.title}
           </h2>
