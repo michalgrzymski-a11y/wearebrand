@@ -249,10 +249,60 @@ frontend:
           specyfikację, obciążenia i werdykt. 12 diagonalnie prążkowanych zatok
           dyskowych + NetApp brand plate + etykieta modelu. Zweryfikowane manualnie.
 
+  - task: "AboutV2Section — vertical timeline bug fix (arrows no longer overlap flow line)"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/components/sections/AboutV2Section.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: >-
+          Rebuilt AboutV2 section from HORIZONTAL to VERTICAL timeline layout with light theme.
+          Previous bug: arrows visually overlapped the horizontal flow line. New implementation:
+          3 stage cards (Listen/Analyse/Optimise) stacked vertically in LEFT column with ArrowDown
+          icons cleanly positioned BETWEEN cards. Horizontal flow line hidden (display:none) in
+          light theme variant (.sc-av2--light). Light background (#F7FAFA), teal colors, 2-column
+          grid (timeline left, blueprint right). Node dots on LEFT edge of cards. Stage interaction:
+          click highlights card, updates blueprint panel, activates connecting arrow.
+      - working: true
+        agent: "testing"
+        comment: >-
+          ✓ BUG FIX VERIFIED: AboutV2 arrows NO LONGER overlap flow line. Comprehensive testing
+          confirms: (1) Light background rgb(247,250,250) = #F7FAFA confirmed, NOT dark cyan.
+          (2) Header "NASZE PODEJŚCIE" and title "Trzy filary. Jeden proces." with gradient on
+          last two words present. (3) 2-column grid layout confirmed (525px + 642px columns).
+          (4) Timeline is VERTICAL (flex-direction: column) with 3 stage cards stacked top-to-bottom
+          at Y positions 330.4 → 591.9 → 872.8. (5) 2 ArrowDown icons present and positioned cleanly
+          BETWEEN cards at Y=557.9 and Y=838.8 with NO overlap. (6) Horizontal flow line hidden
+          (display:none). (7) Node dots on LEFT edge (19px offset). (8) Blueprint panel present with
+          chart. Stage 2 click interaction verified: card highlighted with is-active class and teal
+          border rgb(12,92,98), blueprint updated to "02/03 Holistyczne spojrzenie", arrow 1 became
+          active (is-past class). Zero console errors. Bug fix complete and working perfectly.
+
+  - task: "ValuesSection — dark theme with 12-bay disk shelf"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/components/sections/ValuesSection.jsx"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: >-
+          ✓ VERIFIED: Values section has DARK theme as expected. Background rgb(4,7,9) = #040709
+          confirmed, NOT light theme. 12-bay disk shelf present with 12 total bays (6 value drives
+          + 6 filler bays). 6 active value drives confirmed with cyan LEDs glowing. Story paragraph
+          below shelf with light text rgb(232,244,245) on dark background, 3 paragraphs present.
+          All visual elements correct. Zero console errors.
+
 metadata:
   created_by: "main_agent"
   version: "1.0"
-  test_sequence: 2
+  test_sequence: 3
   run_ui: true
 
 test_plan:
@@ -287,3 +337,18 @@ agent_communication:
       scroll with cyan glow, copy overlay fades appropriately. Zero console errors detected across
       all sections. All tasks marked as working:true. Ready for user acceptance or production
       deployment.
+  - agent: "user"
+    message: >-
+      New testing request: Test AboutV2 section (bug fix verification - arrows should no longer
+      overlap flow line, rebuilt as VERTICAL layout with light theme) and Values section (quick
+      check for DARK theme). READ-ONLY visual verification only.
+  - agent: "testing"
+    message: >-
+      ✓ ABOUTV2 & VALUES SECTIONS TESTED - ALL CHECKS PASSED. AboutV2 bug fix VERIFIED: Arrows
+      NO LONGER overlap flow line. Section rebuilt as VERTICAL timeline with light theme (#F7FAFA).
+      All 3 stage cards (Listen/Analyse/Optimise) stacked vertically with ArrowDown icons cleanly
+      positioned BETWEEN cards. Horizontal flow line hidden (display:none). Node dots on LEFT edge.
+      Stage interaction working perfectly - clicking stage 2 highlights card with teal border,
+      updates blueprint to "02/03 Holistyczne spojrzenie", and activates arrow. Values section
+      confirmed DARK theme (#040709) with 12-bay disk shelf, 6 active drives with cyan LEDs, and
+      story paragraph in light text. Zero console errors. Screenshots captured. Bug fix complete.

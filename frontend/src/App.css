@@ -10473,3 +10473,134 @@ html { scroll-padding-top: 92px; }
 @media (max-width: 640px) {
   .sc-pf__grid { grid-template-columns: 1fr; }
 }
+
+
+/* =====================================================================
+   AboutV2 — LIGHT theme + VERTICAL timeline layout
+   ===================================================================== */
+.sc-av2--light .sc-av2__layout {
+  grid-template-columns: 0.9fr 1.1fr;    /* timeline slimmer, blueprint wider */
+  gap: 32px;
+}
+
+/* Vertical timeline: stages stacked top-to-bottom, arrows between them */
+.sc-av2--light .sc-av2__timeline {
+  display: flex !important;
+  flex-direction: column;
+  gap: 0;
+  grid-template-columns: none !important;
+  position: relative;
+}
+/* Kill the horizontal flow line — we draw a vertical connector via ::before on
+   each stage-node instead, so nothing overlaps the arrows. */
+.sc-av2--light .sc-av2__flow { display: none; }
+
+.sc-av2--light .sc-av2__stage {
+  padding: 18px 20px 20px 56px;         /* room for the node column on the left */
+  border: 1px solid rgba(12, 92, 98, 0.16);
+  background: linear-gradient(180deg, #FFFFFF 0%, #F1F6F6 100%);
+  color: #1C2833;
+  border-radius: 12px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 20px 40px -30px rgba(12, 92, 98, 0.25);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+}
+.sc-av2--light .sc-av2__stage:hover { border-color: rgba(12, 92, 98, 0.35); }
+.sc-av2--light .sc-av2__stage.is-active {
+  border-color: #0C5C62;
+  background: linear-gradient(180deg, #FFFFFF 0%, #E4EEEE 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 24px 44px -20px rgba(12, 92, 98, 0.45);
+  color: #0C5C62;
+}
+
+/* Node on the left edge of each card, connected top-to-bottom by ::before */
+.sc-av2--light .sc-av2__stage-node {
+  position: absolute;
+  left: 18px;
+  top: 22px;
+  margin: 0;
+  width: 20px; height: 20px;
+  background: #FFFFFF;
+  border-color: #22B8B0;
+  z-index: 2;
+}
+.sc-av2--light .sc-av2__stage-node-inner {
+  background: rgba(34, 184, 176, 0.35);
+}
+.sc-av2--light .sc-av2__stage.is-active .sc-av2__stage-node,
+.sc-av2--light .sc-av2__stage.is-past   .sc-av2__stage-node {
+  border-color: #0C5C62;
+  box-shadow: 0 0 12px rgba(12, 92, 98, 0.4);
+}
+.sc-av2--light .sc-av2__stage.is-active .sc-av2__stage-node-inner {
+  background: #0C5C62;
+  box-shadow: 0 0 10px rgba(12, 92, 98, 0.7);
+}
+
+.sc-av2--light .sc-av2__stage-step  { color: #0C5C62; }
+.sc-av2--light .sc-av2__stage-title { color: #0C5C62; }
+.sc-av2--light .sc-av2__stage-desc  { color: #3C4A55; }
+.sc-av2--light .sc-av2__stage-icon {
+  background: rgba(34, 184, 176, 0.1);
+  border-color: rgba(12, 92, 98, 0.28);
+  color: #0C5C62;
+}
+.sc-av2--light .sc-av2__stage-badge {
+  border-color: rgba(12, 92, 98, 0.24);
+  background: rgba(255, 255, 255, 0.6);
+  color: #0C5C62;
+}
+.sc-av2--light .sc-av2__stage-badge svg { color: #22B8B0; }
+
+/* Arrow between stages — sits BETWEEN cards, not overlapping any line */
+.sc-av2--light .sc-av2__arrow {
+  margin: 8px 0;
+  padding: 4px 6px;
+  align-self: flex-start;               /* aligned to the node column */
+  transform: translateX(20px);          /* center under the node dot */
+  color: rgba(12, 92, 98, 0.35);
+}
+.sc-av2--light .sc-av2__arrow.is-past {
+  color: #0C5C62;
+  filter: drop-shadow(0 0 6px rgba(12, 92, 98, 0.35));
+}
+
+/* Blueprint panel in light mode */
+.sc-av2--light .sc-av2__blueprint {
+  border-color: rgba(12, 92, 98, 0.22);
+  background:
+    radial-gradient(120% 60% at 0% 0%, rgba(34, 184, 176, 0.06) 0%, rgba(34, 184, 176, 0) 60%),
+    linear-gradient(180deg, #FFFFFF 0%, #F1F6F6 100%);
+  color: #1C2833;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 30px 60px -30px rgba(12, 92, 98, 0.28);
+}
+.sc-av2--light .sc-av2__bp-row     { border-bottom-color: rgba(12, 92, 98, 0.15); }
+.sc-av2--light .sc-av2__bp-idx     { color: #0C5C62; }
+.sc-av2--light .sc-av2__bp-idx em  { color: #6B7A85; }
+.sc-av2--light .sc-av2__bp-status  { color: #0C5C62; }
+.sc-av2--light .sc-av2__bp-pulse   { background: #22B8B0; box-shadow: 0 0 6px rgba(34, 184, 176, 0.75); }
+.sc-av2--light .sc-av2__bp-title   { color: #0C5C62; }
+.sc-av2--light .sc-av2__bp-bar span         { background: rgba(12, 92, 98, 0.1); }
+.sc-av2--light .sc-av2__bp-bar span.on      { background: #22B8B0; box-shadow: 0 0 4px rgba(34, 184, 176, 0.55); }
+.sc-av2--light .sc-av2__bp-bar-caption      { color: #6B7A85; }
+.sc-av2--light .sc-av2__bp-bar-caption b    { color: #0C5C62; }
+.sc-av2--light .sc-av2__bp-spec             { border-bottom-color: rgba(12, 92, 98, 0.12); }
+.sc-av2--light .sc-av2__bp-spec-k           { color: #6B7A85; }
+.sc-av2--light .sc-av2__bp-spec-v           { color: #0C5C62; }
+.sc-av2--light .sc-av2__bp-spec-dots        {
+  background-image: linear-gradient(90deg, rgba(12, 92, 98, 0.3) 25%, transparent 25%);
+}
+.sc-av2--light .sc-av2__bp-bracket          { border-color: rgba(12, 92, 98, 0.35); }
+
+/* Recolor the chart from cyan to teal */
+.sc-av2--light .sc-av2__bp-schema path[stroke="#06FFE0"] { stroke: #0C5C62; }
+.sc-av2--light .sc-av2__bp-schema circle[fill="#06FFE0"] { fill: #0C5C62; }
+
+@media (max-width: 1024px) {
+  .sc-av2--light .sc-av2__layout { grid-template-columns: 1fr; }
+}

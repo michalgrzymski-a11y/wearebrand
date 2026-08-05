@@ -4,7 +4,7 @@ import {
   Ear,
   Search,
   Target,
-  ArrowRight,
+  ArrowDown,
   CheckCircle2,
 } from "lucide-react";
 import Reveal from "@/components/Reveal";
@@ -208,16 +208,16 @@ const AboutV2Section = () => {
       id="about-v2"
       data-testid="about-v2-section"
       ref={parallaxRef}
-      className="relative w-full overflow-hidden"
-      style={{ background: "#040709", color: "#E8F4F5" }}
+      className="relative w-full overflow-hidden sc-av2--light"
+      style={{ background: "#F7FAFA", color: "#1C2833" }}
     >
       <div
         aria-hidden="true"
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "radial-gradient(55% 55% at 30% 30%, rgba(6,255,224,0.06) 0%, rgba(6,255,224,0) 60%)," +
-            " radial-gradient(45% 55% at 75% 70%, rgba(0,184,212,0.06) 0%, rgba(0,184,212,0) 60%)",
+            "radial-gradient(55% 55% at 30% 30%, rgba(73,173,165,0.08) 0%, rgba(73,173,165,0) 60%)," +
+            " radial-gradient(45% 55% at 75% 70%, rgba(12,92,98,0.06) 0%, rgba(12,92,98,0) 60%)",
         }}
       />
 
@@ -225,20 +225,21 @@ const AboutV2Section = () => {
         <Reveal>
           <div
             className="flex items-center gap-4 text-[12px] uppercase tracking-[0.34em]"
-            style={{ color: "#7CC4C0" }}
+            style={{ color: "#0C5C62" }}
           >
             <span className="inline-block h-px w-12" style={{ background: "#49ADA5" }} />
             {isPL ? "Nasze podejście" : "Our approach"}
           </div>
           <h2
             data-testid="about-v2-title"
-            className="mt-5 text-4xl md:text-6xl font-semibold leading-[1.02] tracking-tight text-white max-w-4xl"
+            className="mt-5 text-4xl md:text-6xl font-semibold leading-[1.02] tracking-tight max-w-4xl"
+            style={{ color: "#0C5C62" }}
           >
             {isPL ? "Trzy filary. " : "Three pillars. "}
             <span
               className="font-semibold"
               style={{
-                background: "linear-gradient(135deg,#06FFE0 0%,#00B8D4 100%)",
+                background: "linear-gradient(135deg,#0C5C62 0%,#22B8B0 100%)",
                 WebkitBackgroundClip: "text",
                 backgroundClip: "text",
                 WebkitTextFillColor: "transparent",
@@ -247,7 +248,7 @@ const AboutV2Section = () => {
               {isPL ? "Jeden proces." : "One process."}
             </span>
           </h2>
-          <p className="mt-6 max-w-3xl text-lg md:text-xl leading-relaxed text-white/70">
+          <p className="mt-6 max-w-3xl text-lg md:text-xl leading-relaxed" style={{ color: "#3C4A55" }}>
             {isPL
               ? "Każdy projekt IT SmartClout to trzy etapy jednego, powtarzalnego procesu — słuchamy, analizujemy stan zastany na tle rynku i best practice, a na końcu optymalizujemy pod Twoje realia."
               : "Every IT SmartClout project follows three stages of the same repeatable process — we listen, we benchmark the current state against the market and best practices, and finally we optimise for your reality."}
@@ -277,7 +278,7 @@ const AboutV2Section = () => {
                       className={`sc-av2__arrow ${idx <= activeIndex ? "is-past" : ""}`}
                       aria-hidden="true"
                     >
-                      <ArrowRight size={18} strokeWidth={2.2} />
+                      <ArrowDown size={18} strokeWidth={2.2} />
                     </div>
                   )}
                   <button

@@ -71,9 +71,9 @@ const NAV = [
 
 const SECTION_THEMES = {
   top: "dark",
-  values: "light",
+  values: "dark",
   about: "light",
-  "about-v2": "dark",
+  "about-v2": "light",
   process: "dark",
   hardware: "dark",
   savings: "light",
