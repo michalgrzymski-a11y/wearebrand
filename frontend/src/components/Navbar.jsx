@@ -2,14 +2,14 @@ import React, { useEffect, useRef, useState } from "react";
 import { Menu, X, ChevronDown, Server, ShieldCheck, Wrench, Coins, Database } from "lucide-react";
 import { useLang } from "@/i18n/LanguageContext";
 
-/* Nav structure. `href` = anchor on the page.
+/* Nav structure. `href` = anchor on the page (starts with '#') OR route path.
    Some links have a `dropdown` — a mega-menu grid of categories. */
 const NAV = [
-  { key: "home",    href: "#top"      },
-  { key: "about",   href: "#about-v2" },
+  { key: "home",    href: "/#top"      },
+  { key: "about",   href: "/#about-v2" },
   {
     key: "offer",
-    href: "#portfolio",
+    href: "/robocze",
     dropdown: [
       {
         id: "hardware",
@@ -17,11 +17,11 @@ const NAV = [
         titleEN: "IT Hardware",
         Icon: Server,
         items: [
-          { pl: "Serwery & Wirtualizacja", en: "Servers & Virtualization", href: "#rack-server" },
-          { pl: "Macierze Dyskowe",        en: "Storage Arrays",           href: "#netapp-aff"  },
-          { pl: "Przełączniki Sieciowe",   en: "Network Switches",         href: "#markets-switch" },
-          { pl: "Archive",                 en: "Archive",                  href: "#tape-library" },
-          { pl: "Deduplikatory",           en: "Deduplicators",            href: "#data-reduction" },
+          { pl: "Serwery & Wirtualizacja", en: "Servers & Virtualization", href: "/robocze#hardware-gallery" },
+          { pl: "Macierze Dyskowe",        en: "Storage Arrays",           href: "/robocze#netapp-aff"  },
+          { pl: "Przełączniki Sieciowe",   en: "Network Switches",         href: "/robocze#markets-switch" },
+          { pl: "Archive",                 en: "Archive",                  href: "/#tape-library" },
+          { pl: "Deduplikatory",           en: "Deduplicators",            href: "/robocze#data-reduction" },
         ],
       },
       {
@@ -29,7 +29,7 @@ const NAV = [
         titlePL: "Backup",
         titleEN: "Backup",
         Icon: Database,
-        href: "#continuity",
+        href: "/robocze#continuity",
         items: [],
       },
       {
@@ -38,10 +38,10 @@ const NAV = [
         titleEN: "Security",
         Icon: ShieldCheck,
         items: [
-          { pl: "Firewall",  en: "Firewall",   href: "#ngfw" },
-          { pl: "IDM",       en: "IDM",        href: "#ngfw" },
-          { pl: "MDM / UEM", en: "MDM / UEM",  href: "#baramundi" },
-          { pl: "EDR / XDR", en: "EDR / XDR",  href: "#threatwise" },
+          { pl: "Firewall",  en: "Firewall",   href: "/robocze#ngfw" },
+          { pl: "IDM",       en: "IDM",        href: "/robocze#ngfw" },
+          { pl: "MDM / UEM", en: "MDM / UEM",  href: "/robocze#baramundi" },
+          { pl: "EDR / XDR", en: "EDR / XDR",  href: "/robocze#threatwise" },
         ],
       },
       {
@@ -50,8 +50,8 @@ const NAV = [
         titleEN: "IT Services",
         Icon: Wrench,
         items: [
-          { pl: "Usługi IT",           en: "IT Services",         href: "#portfolio" },
-          { pl: "Usługi DataCenter",   en: "Data Center Services", href: "#server-assembly" },
+          { pl: "Usługi IT",           en: "IT Services",         href: "/robocze#portfolio" },
+          { pl: "Usługi DataCenter",   en: "Data Center Services", href: "/robocze#server-assembly" },
         ],
       },
       {
@@ -59,13 +59,14 @@ const NAV = [
         titlePL: "Optymalizacja kosztów",
         titleEN: "Cost optimisation",
         Icon: Coins,
-        href: "#savings",
+        href: "/robocze#savings",
         items: [],
       },
     ],
   },
-  { key: "savings", href: "#savings" },
-  { key: "contact", href: "#contact" },
+  { key: "savings", href: "/robocze#savings" },
+  { key: "robocze", href: "/robocze" },
+  { key: "contact", href: "/#contact" },
 ];
 
 const SECTION_THEMES = {
