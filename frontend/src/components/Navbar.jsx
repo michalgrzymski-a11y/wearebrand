@@ -1,70 +1,45 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Menu, X, ChevronDown, Server, ShieldCheck, Wrench, Coins, Database } from "lucide-react";
+import { Menu, X, ChevronDown, Sparkles, Wrench } from "lucide-react";
 import { useLang } from "@/i18n/LanguageContext";
 
 /* Nav structure. `href` = anchor on the page (starts with '#') OR route path.
-   Some links have a `dropdown` — a mega-menu grid of categories. */
+   Some links have a `dropdown` — a mega-menu grid of categories.
+   Every menu item maps 1:1 to an actual section rendered on the site. */
 const NAV = [
   { key: "home",    href: "/#top"      },
-  { key: "about",   href: "/#about-v2" },
   {
-    key: "offer",
-    href: "/robocze",
+    key: "about",
+    href: "/#about-v2",
     dropdown: [
       {
-        id: "hardware",
-        titlePL: "Sprzęt IT",
-        titleEN: "IT Hardware",
-        Icon: Server,
+        id: "about-group",
+        titlePL: "O nas",
+        titleEN: "About",
+        Icon: Sparkles,
         items: [
-          { pl: "Serwery & Wirtualizacja", en: "Servers & Virtualization", href: "/robocze#hardware-gallery" },
-          { pl: "Macierze Dyskowe",        en: "Storage Arrays",           href: "/robocze#netapp-aff"  },
-          { pl: "Przełączniki Sieciowe",   en: "Network Switches",         href: "/robocze#markets-switch" },
-          { pl: "Archive",                 en: "Archive",                  href: "/#portfolio" },
-          { pl: "Deduplikatory",           en: "Deduplicators",            href: "/robocze#data-reduction" },
+          { pl: "Wartości", en: "Values",  href: "/#values"   },
+          { pl: "Proces",   en: "Process", href: "/#about-v2" },
         ],
-      },
-      {
-        id: "backup",
-        titlePL: "Backup",
-        titleEN: "Backup",
-        Icon: Database,
-        href: "/robocze#continuity",
-        items: [],
-      },
-      {
-        id: "security",
-        titlePL: "Security",
-        titleEN: "Security",
-        Icon: ShieldCheck,
-        items: [
-          { pl: "Firewall",  en: "Firewall",   href: "/robocze#ngfw" },
-          { pl: "IDM",       en: "IDM",        href: "/robocze#ngfw" },
-          { pl: "MDM / UEM", en: "MDM / UEM",  href: "/robocze#baramundi" },
-          { pl: "EDR / XDR", en: "EDR / XDR",  href: "/robocze#threatwise" },
-        ],
-      },
-      {
-        id: "services",
-        titlePL: "Usługi IT",
-        titleEN: "IT Services",
-        Icon: Wrench,
-        items: [
-          { pl: "Usługi IT",           en: "IT Services",         href: "/#portfolio" },
-          { pl: "Usługi DataCenter",   en: "Data Center Services", href: "/robocze#server-assembly" },
-        ],
-      },
-      {
-        id: "optim",
-        titlePL: "Optymalizacja kosztów",
-        titleEN: "Cost optimisation",
-        Icon: Coins,
-        href: "/#savings",
-        items: [],
       },
     ],
   },
-  { key: "savings", href: "/#savings" },
+  {
+    key: "offer",
+    href: "/#portfolio",
+    dropdown: [
+      {
+        id: "offer-group",
+        titlePL: "Oferta IT",
+        titleEN: "IT Offer",
+        Icon: Wrench,
+        items: [
+          { pl: "Portfolio Usług",       en: "Service Portfolio", href: "/#portfolio"      },
+          { pl: "Obszary Rynkowe",       en: "Market Areas",      href: "/#markets-switch" },
+          { pl: "Optymalizacja Kosztów", en: "Cost Optimisation", href: "/#savings"        },
+        ],
+      },
+    ],
+  },
   { key: "robocze", href: "/robocze" },
   { key: "contact", href: "/#contact" },
 ];
