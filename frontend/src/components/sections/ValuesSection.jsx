@@ -20,11 +20,11 @@ const VALUES_LAYOUT = [
   { type: "filler", i: 3 },
   { type: "value",  id: "projects"       },
   { type: "filler", i: 5 },
-  { type: "value",  id: "partnership"    },
-  { type: "filler", i: 7 },
-  { type: "value",  id: "service"        },
-  { type: "filler", i: 9 },
   { type: "value",  id: "certifications" },
+  { type: "filler", i: 7 },
+  { type: "value",  id: "partnership"    },
+  { type: "filler", i: 9 },
+  { type: "value",  id: "service"        },
   { type: "filler", i: 11 },
 ];
 
@@ -40,12 +40,12 @@ const VALUE_ICONS = {
 const COPY = {
   pl: {
     section_label: "Nasze wartości",
-    title:         "Sześć dysków. Jedna filozofia.",
+    title_pre:     "Doświadczenie. Kompetencje.",
+    title_accent:  "I rzetelność.",
     chassis_code:  "SC · 12-BAY · VALUES ARRAY",
     story: [
-      "Doświadczenie nauczyło nas jednego: najlepsze rozwiązania rodzą się z wyciągania wniosków. Jako integrator IT, wykraczamy poza standardowe wdrożenia.",
-      "Posiadamy kompetencje do realizacji najbardziej wymagających projektów, ale naszą prawdziwą wartością dodaną jest uważność na głos klienta.",
-      "Dzięki holistycznemu spojrzeniu na ekosystem IT, projektujemy infrastrukturę „szytą na miarę” – taką, która chroni dane, przyspiesza biznes i szanuje budżet. Nie szukamy najdroższych rozwiązań, szukamy tych najbardziej zoptymalizowanych.",
+      "Doświadczenie nauczyło nas jednego — najlepsze rozwiązania rodzą się z wyciągania wniosków.",
+      "Projektujemy infrastrukturę „szytą na miarę” — chroni dane, przyspiesza biznes i szanuje budżet. Nie szukamy najdroższych rozwiązań, tylko tych najbardziej zoptymalizowanych.",
     ],
     values: {
       experience: {
@@ -82,12 +82,12 @@ const COPY = {
   },
   en: {
     section_label: "Our values",
-    title:         "Six drives. One philosophy.",
+    title_pre:     "Experience. Competence.",
+    title_accent:  "And integrity.",
     chassis_code:  "SC · 12-BAY · VALUES ARRAY",
     story: [
-      "Experience has taught us one thing: the best solutions are born from lessons learned. As an IT integrator, we go beyond standard deployments.",
-      "We have the competence to deliver the most demanding projects, but our real added value is listening closely to the client.",
-      "With a holistic view of the IT ecosystem, we design “tailor-made” infrastructure — one that protects data, accelerates business and respects the budget. We don't look for the most expensive solutions, we look for the most optimised ones.",
+      "Experience has taught us one thing — the best solutions are born from lessons learned.",
+      "We design tailor-made infrastructure — one that protects data, accelerates business and respects the budget. We don't look for the most expensive solutions, only the most optimised ones.",
     ],
     values: {
       experience: {
@@ -159,9 +159,19 @@ const ValuesSection = () => {
           </div>
           <h2
             data-testid="values-title"
-            className="mt-4 text-4xl md:text-6xl font-semibold leading-[1.02] tracking-tight text-white max-w-3xl sr-only"
+            className="mt-4 text-4xl md:text-6xl font-semibold leading-[1.02] tracking-tight text-white max-w-4xl"
           >
-            {copy.title}
+            {copy.title_pre}{" "}
+            <span
+              style={{
+                background: "linear-gradient(135deg,#06FFE0 0%,#22B8B0 100%)",
+                WebkitBackgroundClip: "text",
+                backgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+              }}
+            >
+              {copy.title_accent}
+            </span>
           </h2>
         </Reveal>
 

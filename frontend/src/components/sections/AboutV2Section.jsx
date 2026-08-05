@@ -104,7 +104,6 @@ const STAGES = [
 const BlueprintPanel = ({ stage, index, total, lang }) => {
   const isPL = lang === "pl";
   const metrics = isPL ? stage.metrics_pl : stage.metrics_en;
-  const bars = 24;
 
   // Build the SVG polyline from the chart array (0..100 → viewBox 240×90)
   const xs = [0, 40, 80, 120, 160, 200, 240];
@@ -131,9 +130,10 @@ const BlueprintPanel = ({ stage, index, total, lang }) => {
       </div>
 
       <div className="sc-av2__bp-bar">
-        {Array.from({ length: bars }).map((_, i) => (
-          <span key={i} className={(i / bars) * 100 < stage.load ? "on" : ""} />
-        ))}
+        <span
+          className="sc-av2__bp-bar-fill"
+          style={{ width: `${stage.load}%` }}
+        />
       </div>
       <div className="sc-av2__bp-bar-caption">
         <span>{isPL ? "Zaawansowanie procesu" : "Process coverage"}</span>
@@ -180,7 +180,6 @@ const BlueprintPanel = ({ stage, index, total, lang }) => {
           strokeWidth="1.5"
           strokeLinecap="round"
           strokeLinejoin="round"
-          style={{ filter: "drop-shadow(0 0 4px rgba(6,255,224,0.7))" }}
         />
         {xs.map((x, i) => (
           <circle key={i} cx={x} cy={ys[i]} r="1.8" fill="#06FFE0" />
