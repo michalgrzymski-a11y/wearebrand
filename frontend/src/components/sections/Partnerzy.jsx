@@ -3,38 +3,43 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useLang } from "@/i18n/LanguageContext";
 
 /**
- * TrustedBySection — infinite looping logo carousel.
- *  - Auto-advances at a steady speed (RAF-driven translateX).
- *  - Track is duplicated; when offset passes half the track it wraps
- *    back seamlessly (visually endless loop).
- *  - Prev / Next arrow buttons jump by one slot at a time.
- *  - Auto-play pauses on hover / when tab is not visible.
- *  - All logos share a uniform 140x40 slot so scale reads consistent.
+ * Partnerzy — vendor-logo carousel using the SAME visual pattern as
+ * TrustedBySection. Placed on the home page right above ContactSection.
+ * Data (vendor logos) is imported inline from the "heroPartners" list.
  */
-const CLIENTS = [
-  { name: "Grupa Azoty", file: "azoty.webp" },
-  { name: "Kanał Zero",  file: "zero.webp" },
-  { name: "Oponeo",      file: "oponeo.webp" },
-  { name: "Sescom",      file: "sescom.webp" },
-  { name: "Kaufland",    file: "kaufland.webp" },
-  { name: "Cedrob",      file: "cedrob.webp" },
-  { name: "DOZ.pl",      file: "doz.webp" },
-  { name: "IT CARD SA",  file: "itcard.webp", invert: true },
+const VENDORS = [
+  { name: "NetApp",           file: "vendors/netapp.webp" },
+  { name: "Dell",             file: "vendors/dell.webp" },
+  { name: "Arista",           file: "vendors/arista.webp" },
+  { name: "Baramundi",        file: "vendors/baramundi.webp" },
+  { name: "Lenovo",           file: "vendors/lenovo.webp" },
+  { name: "HPE",              file: "vendors/hpe.webp" },
+  { name: "Cisco",            file: "vendors/cisco.webp" },
+  { name: "VMware",           file: "vendors/vmware.webp" },
+  { name: "Google",           file: "vendors/google.webp" },
+  { name: "Microsoft",        file: "vendors/microsoft.webp" },
+  { name: "Nutanix",          file: "vendors/nutanix.webp" },
+  { name: "Commvault",        file: "vendors/commvault.webp" },
+  { name: "Veeam",            file: "vendors/veeam.webp" },
+  { name: "ASUS",             file: "vendors/asus.webp" },
+  { name: "Extreme Networks", file: "vendors/extreme-networks.webp" },
+  { name: "Brocade",          file: "vendors/brocade.webp" },
+  { name: "AWS",              file: "vendors/aws.webp" },
+  { name: "SailPoint",        file: "vendors/sailpoint.webp" },
 ];
 
-const SLOT_WIDTH = 190;   // px per logo slot (image slot + horizontal gap padding)
-const SPEED = 40;         // px/second for auto-play
+const SLOT_WIDTH = 190;
+const SPEED = 40;
 
-const TrustedBySection = () => {
+const Partnerzy = () => {
   const { t } = useLang();
   const trackRef = useRef(null);
-  const offsetRef = useRef(0);         // current translateX offset (positive number)
+  const offsetRef = useRef(0);
   const [singleWidth, setSingleWidth] = useState(0);
   const hoverRef = useRef(false);
   const rafRef = useRef(0);
   const lastTsRef = useRef(0);
 
-  // Measure the width of one copy of the list.
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
@@ -45,16 +50,13 @@ const TrustedBySection = () => {
     return () => ro.disconnect();
   }, []);
 
-  // RAF auto-play with hover/visibility pause.
   useEffect(() => {
     const track = trackRef.current;
     if (!track || !singleWidth) return;
-
     const step = (ts) => {
       if (!lastTsRef.current) lastTsRef.current = ts;
       const dt = (ts - lastTsRef.current) / 1000;
       lastTsRef.current = ts;
-
       if (!hoverRef.current && !document.hidden) {
         offsetRef.current += SPEED * dt;
         if (offsetRef.current >= singleWidth) {
@@ -75,11 +77,8 @@ const TrustedBySection = () => {
     const track = trackRef.current;
     if (!track || !singleWidth) return;
     let next = offsetRef.current + dir * SLOT_WIDTH;
-    // Wrap smoothly across the seam
     if (next < 0) next += singleWidth;
     if (next >= singleWidth) next -= singleWidth;
-
-    // Animate transition for the jump
     track.style.transition = "transform 0.55s cubic-bezier(0.22, 0.61, 0.36, 1)";
     offsetRef.current = next;
     track.style.transform = `translate3d(${-next}px, 0, 0)`;
@@ -88,12 +87,13 @@ const TrustedBySection = () => {
     }, 600);
   };
 
-  const doubled = [...CLIENTS, ...CLIENTS];
+  const doubled = [...VENDORS, ...VENDORS];
+  const label = t.partners?.section_label || "Partnerzy strategiczni";
 
   return (
     <section
-      id="trusted"
-      data-testid="trusted-section"
+      id="partners"
+      data-testid="partners-section"
       className="relative w-full"
       style={{ background: "#F8FAFA", color: "#1C2833" }}
     >
@@ -103,14 +103,13 @@ const TrustedBySection = () => {
           style={{ color: "#0C5C62" }}
         >
           <span className="inline-block h-px w-10" style={{ background: "#49ADA5" }} />
-          {t.trusted.title}
+          {label}
         </div>
-
         <div className="flex items-center gap-2">
           <button
             type="button"
             onClick={() => shift(-1)}
-            data-testid="trusted-prev"
+            data-testid="partners-prev"
             className="sc-carousel-btn"
             aria-label="Poprzednie logo"
           >
@@ -119,7 +118,7 @@ const TrustedBySection = () => {
           <button
             type="button"
             onClick={() => shift(1)}
-            data-testid="trusted-next"
+            data-testid="partners-next"
             className="sc-carousel-btn"
             aria-label="Następne logo"
           >
@@ -142,13 +141,13 @@ const TrustedBySection = () => {
         <div
           ref={trackRef}
           className="sc-carousel__track"
-          data-testid="trusted-marquee"
+          data-testid="partners-marquee"
         >
           {doubled.map((c, i) => (
             <span
               key={`${c.name}-${i}`}
               className={`sc-logo-slot ${c.invert ? "sc-logo-slot--invert" : ""}`}
-              data-testid={`client-logo-${i}`}
+              data-testid={`partner-logo-${i}`}
               title={c.name}
             >
               <img
@@ -165,4 +164,4 @@ const TrustedBySection = () => {
   );
 };
 
-export default TrustedBySection;
+export default Partnerzy;

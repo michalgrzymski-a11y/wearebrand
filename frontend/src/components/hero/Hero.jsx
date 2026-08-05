@@ -13,7 +13,7 @@ import NeuralNodeNetwork from "@/components/fx/NeuralNodeNetwork";
  *    - L4 corner brackets (scroll -0.10x — anti-parallax, fixed feel)
  *    - L5 copy (scroll -0.20x — floats up slightly on scroll)
  */
-const HeroSection = () => {
+const Hero = () => {
   const { t } = useLang();
   const heroRef = useRef(null);
   const imgRef = useRef(null);
@@ -174,4 +174,4 @@ const HeroSection = () => {
   );
 };
 
-export default HeroSection;
+export default Hero;

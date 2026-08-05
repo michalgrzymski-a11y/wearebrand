@@ -6,7 +6,7 @@ import useSectionParallax from "@/hooks/useSectionParallax";
 
 const ICONS = [Server, ShieldCheck, Code2, Building2];
 
-const PortfolioSection = () => {
+const Portfolio = () => {
   const { t } = useLang();
   const parallaxRef = useSectionParallax();
 
@@ -94,4 +94,4 @@ const PortfolioSection = () => {
   );
 };
 
-export default PortfolioSection;
+export default Portfolio;

@@ -15,7 +15,7 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 // Steps of the AI assistant conversation.
 const STEPS = ["greet", "name", "email", "phone", "message", "refine", "review", "done"];
 
-const ContactSection = () => {
+const Kontakt = () => {
   const { t, lang } = useLang();
   const [mode, setMode] = useState("ai"); // "ai" | "form"
   const parallaxRef = useSectionParallax();
@@ -624,4 +624,4 @@ const AiAssistant = ({ t, lang }) => {
   );
 };
 
-export default ContactSection;
+export default Kontakt;

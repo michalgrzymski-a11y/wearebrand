@@ -11,7 +11,7 @@ import NetAppAFFSection from "@/components/sections/NetAppAFFSection";
 import ServerAssemblySection from "@/components/sections/ServerAssemblySection";
 import DataReductionSection from "@/components/sections/DataReductionSection";
 import BaramundiSection from "@/components/sections/BaramundiSection";
-import ContactSection from "@/components/sections/ContactSection";
+import Kontakt from "@/components/sections/Kontakt";
 
 /**
  * RoboczePage — dedicated "work-in-progress" page collecting the sections we
@@ -32,7 +32,7 @@ const RoboczePage = () => (
     <ServerAssemblySection />
     <DataReductionSection />
     <BaramundiSection />
-    <ContactSection />
+    <Kontakt />
   </main>
 );
 

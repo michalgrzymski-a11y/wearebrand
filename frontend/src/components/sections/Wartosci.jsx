@@ -5,7 +5,7 @@ import Reveal from "@/components/Reveal";
 import useSectionParallax from "@/hooks/useSectionParallax";
 
 /**
- * ValuesSection — horizontal 12-bay disk shelf (FAS A30 inspired).
+ * Wartosci — horizontal 12-bay disk shelf (FAS A30 inspired).
  * Six value "drives" are visible in the chassis; hover expands one drive in
  * place while the rest collapse to slim strips. Below the array a longer
  * descriptive paragraph explains the SmartClout approach.
@@ -124,7 +124,7 @@ const COPY = {
   },
 };
 
-const ValuesSection = () => {
+const Wartosci = () => {
   const { lang } = useLang();
   const copy = COPY[lang] || COPY.pl;
   const [hovered, setHovered] = useState(null);
@@ -279,4 +279,4 @@ const ValuesSection = () => {
   );
 };
 
-export default ValuesSection;
+export default Wartosci;

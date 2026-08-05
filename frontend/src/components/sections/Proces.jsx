@@ -11,7 +11,7 @@ import Reveal from "@/components/Reveal";
 import useSectionParallax from "@/hooks/useSectionParallax";
 
 /**
- * AboutV2Section — "Three pillars, one approach" reimagined as a horizontal
+ * Proces — "Three pillars, one approach" reimagined as a horizontal
  * PROCESS TIMELINE. Three stages (Listen → Analyse → Optimise) sit on a
  * single flowing baseline; the currently active stage displays a blueprint
  * chart on the right. Dark cyan aesthetic to match the rest of the site.
@@ -194,7 +194,7 @@ const BlueprintPanel = ({ stage, index, total, lang }) => {
   );
 };
 
-const AboutV2Section = () => {
+const Proces = () => {
   const { lang } = useLang();
   const parallaxRef = useSectionParallax();
   const [active, setActive] = useState(STAGES[0].id);
@@ -329,4 +329,4 @@ const AboutV2Section = () => {
   );
 };
 
-export default AboutV2Section;
+export default Proces;

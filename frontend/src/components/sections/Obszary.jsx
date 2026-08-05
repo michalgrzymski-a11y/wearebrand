@@ -12,7 +12,7 @@ import Reveal from "@/components/Reveal";
 import useSectionParallax from "@/hooks/useSectionParallax";
 
 /**
- * SwitchSection — 6-port network switch visualization.
+ * Obszary — 6-port network switch visualization.
  * Each RJ45 port represents one industry area we serve.
  * Hover a port → link LED lights green, port glows, info panel below
  * updates with the sector name + short copy.
@@ -64,7 +64,7 @@ const COPY = {
   },
 };
 
-const SwitchSection = () => {
+const Obszary = () => {
   const { lang } = useLang();
   const copy = COPY[lang] || COPY.pl;
   const [hovered, setHovered] = useState(null);
@@ -242,4 +242,4 @@ const SwitchSection = () => {
   );
 };
 
-export default SwitchSection;
+export default Obszary;

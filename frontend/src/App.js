@@ -3,15 +3,15 @@ import "@/App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LanguageProvider } from "@/i18n/LanguageContext";
 import Navbar from "@/components/Navbar";
-import HeroSection from "@/components/hero/HeroSection";
-import ValuesSection from "@/components/sections/ValuesSection";
-import TrustedBySection from "@/components/sections/TrustedBySection";
-import AboutV2Section from "@/components/sections/AboutV2Section";
-import PortfolioSection from "@/components/sections/PortfolioSection";
-import SwitchSection from "@/components/sections/SwitchSection";
-import SavingsSection from "@/components/sections/SavingsSection";
-import PartnersSection from "@/components/sections/PartnersSection";
-import ContactSection from "@/components/sections/ContactSection";
+import Hero from "@/components/hero/Hero";
+import Wartosci from "@/components/sections/Wartosci";
+import ZaufaliNam from "@/components/sections/ZaufaliNam";
+import Proces from "@/components/sections/Proces";
+import Portfolio from "@/components/sections/Portfolio";
+import Obszary from "@/components/sections/Obszary";
+import TCO from "@/components/sections/TCO";
+import Partnerzy from "@/components/sections/Partnerzy";
+import Kontakt from "@/components/sections/Kontakt";
 import PartnerDetailPage from "@/pages/PartnerDetailPage";
 import RoboczePage from "@/pages/RoboczePage";
 import PrivacyPolicyPage from "@/pages/PrivacyPolicyPage";
@@ -20,15 +20,15 @@ import CookieConsent from "@/components/CookieConsent";
 const Home = () => (
   <main data-testid="home-main" className="sc-app">
     <Navbar />
-    <HeroSection />
-    <ValuesSection />
-    <TrustedBySection />
-    <AboutV2Section />
-    <PortfolioSection />
-    <SwitchSection />
-    <SavingsSection />
-    <PartnersSection />
-    <ContactSection />
+    <Hero />
+    <Wartosci />
+    <ZaufaliNam />
+    <Proces />
+    <Portfolio />
+    <Obszary />
+    <TCO />
+    <Partnerzy />
+    <Kontakt />
   </main>
 );
 

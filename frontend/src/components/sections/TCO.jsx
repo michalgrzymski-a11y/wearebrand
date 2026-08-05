@@ -5,7 +5,7 @@ import Reveal from "@/components/Reveal";
 import useSectionParallax from "@/hooks/useSectionParallax";
 
 /**
- * SavingsSection — light-background section positioned right after the
+ * TCO — light-background section positioned right after the
  * refab hardware section. Communicates that despite rising component
  * prices, SMARTCLOUT actively helps clients cut TCO through refab
  * hardware, license optimization, hardware lifecycle management and
@@ -93,7 +93,7 @@ const COPY = {
   },
 };
 
-const SavingsSection = () => {
+const TCO = () => {
   const { lang } = useLang();
   const copy = COPY[lang] || COPY.pl;
   const parallaxRef = useSectionParallax();
@@ -198,4 +198,4 @@ const SavingsSection = () => {
   );
 };
 
-export default SavingsSection;
+export default TCO;
