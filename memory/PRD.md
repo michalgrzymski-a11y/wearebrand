@@ -75,8 +75,17 @@ Deep Teal `#0C5C62`, Accent Mint `#49ADA5`, White, Light gray `#F8FAFA`, Charcoa
 - `/app/frontend/src/components/sections/{AboutSection, TrustedBySection, PortfolioSection, SectorsSection, PartnersV2Section, PartnersSection, ContactSection}.jsx`
 
 ## Recent updates (Feb 2026)
-- **AboutV2Section** compact 2-col layout — CSS overrides at App.css line ~10702 (compact stage cards + info panel, responsive stacking on mobile). Verified via testing agent (iteration_20.json).
-- **SwitchSection** scaled down ~15% — CSS overrides at App.css line ~10837 (max-width 860px, smaller ports, shorter cables/labels, reduced bottom padding). Verified via testing agent (iteration_20.json).
+- **GDPR/EU Cookie Consent (5 Feb 2026)** — Full compliance:
+  - Bottom banner with 3 equally-weighted actions (Accept all / Reject all / Settings) — EU DSA compliant
+  - Preferences modal with 4 categories: Necessary (always on) + Functional + Analytics + Marketing
+  - Floating FAB (bottom-right) to reopen preferences at any time
+  - Footer link + button in Contact section
+  - localStorage key `smartclout_consent_v1` (versioned), fires `sc:consent-change` CustomEvent
+  - `sc:open-cookie-settings` CustomEvent to reopen from anywhere
+  - Bilingual PL/EN. Files: `/app/frontend/src/components/CookieConsent.jsx`, CSS `.sc-cc-*` in App.css line ~10837
+- **Privacy Policy page** at `/polityka-prywatnosci` — Full GDPR/RODO PL policy, 9 sections, PL/EN bilingual. File: `/app/frontend/src/pages/PrivacyPolicyPage.jsx`
+- **AboutV2Section** compact 2-col layout — CSS overrides in App.css.
+- **SwitchSection** scaled down ~15% — CSS overrides in App.css. Verified via iteration_21.json (100%).
 
 ## Backlog / next actions
 - **P1** — Real brand SVG logos for Trusted-By and Partners (once assets provided)
