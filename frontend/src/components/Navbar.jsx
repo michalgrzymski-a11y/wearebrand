@@ -3,16 +3,18 @@ import { Menu, X } from "lucide-react";
 import { useLang } from "@/i18n/LanguageContext";
 
 const NAV_LINKS = [
-  { id: "about", key: "about" },
-  { id: "portfolio", key: "services" },
-  { id: "partners", key: "partners" },
-  { id: "contact", key: "contact" },
+  { id: "top",       key: "home"    },
+  { id: "about-v2",  key: "about"   },
+  { id: "portfolio", key: "offer"   },
+  { id: "savings",   key: "savings" },
+  { id: "contact",   key: "contact" },
 ];
 
 const SECTION_THEMES = {
   top: "dark",
   values: "dark",
   about: "light",
+  "about-v2": "dark",
   process: "dark",
   hardware: "dark",
   savings: "light",

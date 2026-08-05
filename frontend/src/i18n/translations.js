@@ -1,7 +1,10 @@
 export const translations = {
   pl: {
     nav: {
+      home: "Strona Główna",
       about: "O nas",
+      offer: "Oferta IT",
+      savings: "Oszczędności",
       services: "Usługi",
       partners: "Partnerzy",
       contact: "Kontakt",
@@ -234,7 +237,10 @@ export const translations = {
   },
   en: {
     nav: {
+      home: "Home",
       about: "About",
+      offer: "IT Offer",
+      savings: "Savings",
       services: "Services",
       partners: "Partners",
       contact: "Contact",
