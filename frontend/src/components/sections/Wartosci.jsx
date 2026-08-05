@@ -263,17 +263,6 @@ const Wartosci = () => {
             <span className="sc-varray__mount" />
           </div>
         </div>
-
-        {/* Story paragraph — the SmartClout approach in prose */}
-        <Reveal>
-          <div className="sc-values__story" data-testid="values-story">
-            {copy.story.map((para, i) => (
-              <p key={i} className="sc-values__story-p" data-testid={`values-story-p-${i}`}>
-                {para}
-              </p>
-            ))}
-          </div>
-        </Reveal>
       </div>
     </section>
   );

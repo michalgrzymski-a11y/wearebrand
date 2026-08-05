@@ -275,16 +275,11 @@ const Proces = () => {
               {isPL ? "Biznes." : "Business."}
             </span>
           </h2>
-          <div className="mt-6 max-w-none space-y-4 text-base md:text-lg leading-relaxed" style={{ color: "#3C4A55", hyphens: "auto" }}>
+          <div className="mt-6 max-w-none text-base md:text-lg leading-relaxed" style={{ color: "#3C4A55", hyphens: "auto" }}>
             <p className="text-justify">
               {isPL
-                ? "Posiadamy kompetencje do realizacji najbardziej wymagających projektów, ale naszą prawdziwą wartością dodaną jest uważność na głos klienta."
-                : "We have the competence to deliver the most demanding projects, but our real added value is listening closely to the client."}
-            </p>
-            <p className="text-justify">
-              {isPL
-                ? "Dzięki holistycznemu spojrzeniu na ekosystem IT, projektujemy infrastrukturę „szytą na miarę” – taką, która chroni dane, przyspiesza biznes i szanuje budżet. Nie szukamy najdroższych rozwiązań, szukamy tych najbardziej zoptymalizowanych."
-                : "With a holistic view of the IT ecosystem, we design tailor-made infrastructure — one that protects data, accelerates business and respects the budget. We don't look for the most expensive solutions, we look for the most optimised ones."}
+                ? "Posiadamy kompetencje do realizacji najbardziej wymagających projektów, ale naszą prawdziwą wartością dodaną jest uważność na głos klienta. Doświadczenie nauczyło nas jednego — najlepsze rozwiązania rodzą się z wyciągania wniosków."
+                : "We have the competence to deliver the most demanding projects, but our real added value is listening closely to the client. Experience has taught us one thing — the best solutions are born from lessons learned."}
             </p>
           </div>
         </Reveal>

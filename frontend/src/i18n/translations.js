@@ -89,9 +89,9 @@ export const translations = {
     },
     portfolio: {
       section_label: "Portfolio Usług",
-      title_pre:     "Kompleksowe portfolio",
-      title_accent:  "dla wymagających infrastruktur.",
-      title: "Kompleksowe portfolio dla wymagających infrastruktur",
+      title_pre:     "W odpowiedzi na",
+      title_accent:  "Twoje potrzeby.",
+      title: "W odpowiedzi na Twoje potrzeby.",
       card_cta: "Zapytaj o szczegóły",
       tiles: [
         {
@@ -333,9 +333,9 @@ export const translations = {
     },
     portfolio: {
       section_label: "Service portfolio",
-      title_pre:     "A complete portfolio",
-      title_accent:  "for demanding infrastructures.",
-      title: "A complete portfolio for demanding infrastructures",
+      title_pre:     "In response to",
+      title_accent:  "your needs.",
+      title: "In response to your needs.",
       card_cta: "Ask for details",
       tiles: [
         {
