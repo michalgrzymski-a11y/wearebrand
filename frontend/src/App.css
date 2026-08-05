@@ -11317,11 +11317,12 @@ html { scroll-padding-top: 92px; }
    SwitchSection — COMPACT overrides (scale down ~15%)
    ========================================================================== */
 @media (min-width: 769px) {
-  /* Shrink chassis width and align to left with title (no dead-space centering) */
+  /* Match Values array width (full container width, flush-left) */
   #markets-switch .sc-switch {
-    max-width: 900px;
+    max-width: none;
+    width: 100%;
     margin-left: 0;
-    margin-right: auto;
+    margin-right: 0;
   }
   /* Reduce inner spacing */
   #markets-switch .sc-switch__ports {
