@@ -26,7 +26,6 @@ import BaramundiSection from "@/components/sections/BaramundiSection";
 import SectorsSection from "@/components/sections/SectorsSection";
 import SwitchSection from "@/components/sections/SwitchSection";
 import PartnersV2Section from "@/components/sections/PartnersV2Section";
-import PartnersSection from "@/components/sections/PartnersSection";
 import ContactSection from "@/components/sections/ContactSection";
 import PartnerDetailPage from "@/pages/PartnerDetailPage";
 
@@ -46,7 +45,6 @@ const Home = () => (
     <SectorsSection />
     <SwitchSection />
     <PartnersV2Section />
-    <PartnersSection />
     <ContactSection />
     <Matrix3DSection />
     <SwitchComplianceSection />

@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { useLang } from "@/i18n/LanguageContext";
 import { ArrowRight } from "lucide-react";
 import NeuralNodeNetwork from "@/components/fx/NeuralNodeNetwork";
+import HERO_PARTNERS from "@/data/heroPartners";
 
 /**
  * Hero — cinematic datacenter photograph as full-bleed background.
@@ -167,6 +168,41 @@ const HeroSection = () => {
                 {t.hero.cta_secondary}
               </a>
             </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Trust strip — partner logos at the very bottom of the hero */}
+      <div className="sc-hero-trust" data-testid="hero-trust-strip" aria-label={t.partners.section_label}>
+        <div className="mx-auto w-full max-w-7xl px-6 md:px-10">
+          <div className="sc-hero-trust__label">
+            <span className="sc-hero-trust__label-line" />
+            {t.partners.section_label}
+          </div>
+        </div>
+        <div
+          className="sc-hero-trust__marquee-wrap"
+          style={{
+            maskImage: "linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent)",
+            WebkitMaskImage: "linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent)",
+          }}
+        >
+          <div className="sc-marquee sc-marquee--rtl sc-marquee--slow sc-hero-trust__marquee" data-testid="hero-trust-marquee">
+            {[...HERO_PARTNERS, ...HERO_PARTNERS].map((p, i) => (
+              <div
+                key={`${p.name}-${i}`}
+                className={`sc-hero-trust__item ${p.highlight ? "is-highlight" : ""}`}
+                data-testid={`hero-trust-logo-${i}`}
+              >
+                <img
+                  src={p.logo}
+                  alt={p.name}
+                  className="sc-hero-trust__logo"
+                  loading="lazy"
+                  draggable="false"
+                />
+              </div>
+            ))}
           </div>
         </div>
       </div>

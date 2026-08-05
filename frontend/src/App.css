@@ -10143,3 +10143,93 @@ html { scroll-padding-top: 92px; }
 @media (max-width: 900px) {
   .sc-mega { display: none; }
 }
+
+
+/* =====================================================================
+   Hero — "Zaufali nam" partner strip embedded at the bottom of the hero
+   ===================================================================== */
+.sc-hero-trust {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  z-index: 8;
+  padding-top: 14px;
+  padding-bottom: 18px;
+  background:
+    linear-gradient(180deg,
+      rgba(3, 7, 10, 0) 0%,
+      rgba(3, 7, 10, 0.55) 40%,
+      rgba(3, 7, 10, 0.78) 100%);
+  backdrop-filter: blur(6px) saturate(120%);
+  -webkit-backdrop-filter: blur(6px) saturate(120%);
+  border-top: 1px solid rgba(6, 255, 224, 0.14);
+  pointer-events: none;             /* let hero copy stay clickable */
+}
+.sc-hero-trust__label {
+  display: inline-flex; align-items: center; gap: 12px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10.5px; letter-spacing: 0.34em; text-transform: uppercase;
+  color: rgba(6, 255, 224, 0.85);
+  text-shadow: 0 0 6px rgba(6, 255, 224, 0.35);
+  margin-bottom: 6px;
+}
+.sc-hero-trust__label-line {
+  display: inline-block; width: 40px; height: 1px;
+  background: linear-gradient(90deg, transparent, #49ADA5 100%);
+}
+.sc-hero-trust__marquee-wrap {
+  position: relative;
+  overflow: hidden;
+}
+.sc-hero-trust__marquee {
+  gap: 32px;
+  padding: 6px 0;
+}
+.sc-hero-trust__item {
+  flex-shrink: 0;
+  display: inline-flex; align-items: center; justify-content: center;
+  height: 46px;
+  padding: 0 14px;
+  border-radius: 8px;
+  position: relative;
+  transition: transform 0.25s ease, filter 0.25s ease;
+}
+.sc-hero-trust__item.is-highlight::after {
+  /* subtle glow ring around NetApp — the main partner */
+  content: "";
+  position: absolute; inset: -4px;
+  border-radius: 10px;
+  border: 1px solid rgba(6, 255, 224, 0.4);
+  box-shadow: 0 0 18px rgba(6, 255, 224, 0.25);
+  pointer-events: none;
+}
+.sc-hero-trust__logo {
+  max-height: 32px;
+  width: auto;
+  filter:
+    grayscale(1)
+    brightness(1.8)
+    contrast(0.9)
+    drop-shadow(0 0 4px rgba(6, 255, 224, 0.15));
+  opacity: 0.72;
+  transition: filter 0.25s ease, opacity 0.25s ease, transform 0.25s ease;
+}
+.sc-hero-trust__item:hover .sc-hero-trust__logo,
+.sc-hero-trust__item.is-highlight .sc-hero-trust__logo {
+  filter:
+    grayscale(0)
+    brightness(1.15)
+    contrast(1.05)
+    drop-shadow(0 0 6px rgba(6, 255, 224, 0.55));
+  opacity: 1;
+}
+
+/* Give the hero copy a bit of breathing room above the strip on shorter viewports */
+@media (max-height: 800px) {
+  .sc-hero-trust { padding-top: 10px; padding-bottom: 14px; }
+  .sc-hero-trust__logo { max-height: 26px; }
+  .sc-hero-trust__item { height: 40px; }
+}
+@media (max-width: 900px) {
+  .sc-hero-trust__marquee { gap: 24px; }
+  .sc-hero-trust__logo { max-height: 24px; }
+}
