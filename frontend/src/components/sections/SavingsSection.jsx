@@ -129,7 +129,8 @@ const SavingsSection = () => {
               </div>
               <h2
                 data-testid="savings-title"
-                className="mt-5 text-4xl md:text-6xl font-semibold leading-[1.02] tracking-tight max-w-3xl"
+                className="mt-4 text-2xl md:text-3xl font-semibold leading-[1.05] tracking-tight max-w-3xl"
+                style={{ color: "#0C5C62" }}
               >
                 {copy.title}{" "}
                 <span

@@ -16,7 +16,7 @@ const PortfolioSection = () => {
       data-testid="portfolio-section"
       ref={parallaxRef}
       className="relative w-full overflow-hidden"
-      style={{ background: "#FFFFFF", color: "#1C2833" }}
+      style={{ background: "#F8FAFA", color: "#1C2833" }}
     >
       <div className="relative z-10 mx-auto max-w-7xl px-6 md:px-10 py-14 md:py-20">
         <div className="mb-14 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
@@ -30,10 +30,21 @@ const PortfolioSection = () => {
             </div>
             <h2
               data-testid="portfolio-title"
-              className="mt-5 max-w-2xl text-4xl md:text-6xl font-semibold leading-[1.02] tracking-tight"
+              className="mt-4 max-w-3xl text-2xl md:text-3xl font-semibold leading-[1.05] tracking-tight"
               style={{ color: "#0C5C62" }}
             >
-              {t.portfolio.title}
+              {t.portfolio.title_pre}{" "}
+              <span
+                className="font-semibold"
+                style={{
+                  background: "linear-gradient(135deg,#06FFE0 0%,#00B8D4 100%)",
+                  WebkitBackgroundClip: "text",
+                  backgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                }}
+              >
+                {t.portfolio.title_accent}
+              </span>
             </h2>
           </div>
         </div>

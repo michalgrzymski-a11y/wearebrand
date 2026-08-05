@@ -89,6 +89,8 @@ export const translations = {
     },
     portfolio: {
       section_label: "Portfolio Usług",
+      title_pre:     "Kompleksowe portfolio",
+      title_accent:  "dla wymagających infrastruktur.",
       title: "Kompleksowe portfolio dla wymagających infrastruktur",
       card_cta: "Zapytaj o szczegóły",
       tiles: [
@@ -170,6 +172,8 @@ export const translations = {
     },
     contact: {
       section_label: "Kontakt",
+      title_pre:     "Porozmawiajmy o Twojej",
+      title_accent:  "infrastrukturze.",
       title: "Porozmawiajmy o Twojej infrastrukturze",
       subtitle:
         "Odpowiadamy na wiadomości w ciągu 24 godzin roboczych.",
@@ -329,6 +333,8 @@ export const translations = {
     },
     portfolio: {
       section_label: "Service portfolio",
+      title_pre:     "A complete portfolio",
+      title_accent:  "for demanding infrastructures.",
       title: "A complete portfolio for demanding infrastructures",
       card_cta: "Ask for details",
       tiles: [
@@ -410,7 +416,9 @@ export const translations = {
     },
     contact: {
       section_label: "Contact",
-      title: "Let’s talk about your infrastructure",
+      title_pre:     "Let's talk about your",
+      title_accent:  "infrastructure.",
+      title: "Let's talk about your infrastructure",
       subtitle: "We reply to all messages within 24 business hours.",
       mode: {
         ai: "AI Assistant",

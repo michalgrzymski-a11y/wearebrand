@@ -40,8 +40,8 @@ const VALUE_ICONS = {
 const COPY = {
   pl: {
     section_label: "Nasze wartości",
-    title_pre:     "Doświadczenie. Kompetencje.",
-    title_accent:  "I rzetelność.",
+    title_pre:     "Kompetencje",
+    title_accent:  "i Rzetelność.",
     chassis_code:  "SC · 12-BAY · VALUES ARRAY",
     story: [
       "Doświadczenie nauczyło nas jednego — najlepsze rozwiązania rodzą się z wyciągania wniosków.",
@@ -82,8 +82,8 @@ const COPY = {
   },
   en: {
     section_label: "Our values",
-    title_pre:     "Experience. Competence.",
-    title_accent:  "And integrity.",
+    title_pre:     "Competence",
+    title_accent:  "and Integrity.",
     chassis_code:  "SC · 12-BAY · VALUES ARRAY",
     story: [
       "Experience has taught us one thing — the best solutions are born from lessons learned.",
@@ -159,12 +159,12 @@ const ValuesSection = () => {
           </div>
           <h2
             data-testid="values-title"
-            className="mt-4 text-4xl md:text-6xl font-semibold leading-[1.02] tracking-tight text-white max-w-4xl"
+            className="mt-4 text-2xl md:text-3xl font-semibold leading-[1.05] tracking-tight text-white max-w-4xl"
           >
             {copy.title_pre}{" "}
             <span
               style={{
-                background: "linear-gradient(135deg,#06FFE0 0%,#22B8B0 100%)",
+                background: "linear-gradient(135deg,#06FFE0 0%,#00B8D4 100%)",
                 WebkitBackgroundClip: "text",
                 backgroundClip: "text",
                 WebkitTextFillColor: "transparent",

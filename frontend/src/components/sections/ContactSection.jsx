@@ -42,9 +42,22 @@ const ContactSection = () => {
         </div>
         <h2
           data-testid="contact-title"
-          className="mt-4 text-4xl md:text-6xl font-semibold leading-[1.02] tracking-tight text-white max-w-3xl"
+          className="mt-4 text-2xl md:text-3xl font-semibold leading-[1.05] tracking-tight text-white max-w-3xl"
         >
-          {t.contact.title}
+          {t.contact.title_pre || t.contact.title}{" "}
+          {t.contact.title_accent && (
+            <span
+              className="font-semibold"
+              style={{
+                background: "linear-gradient(135deg,#06FFE0 0%,#00B8D4 100%)",
+                WebkitBackgroundClip: "text",
+                backgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+              }}
+            >
+              {t.contact.title_accent}
+            </span>
+          )}
         </h2>
 
         {/* Two-column "table" layout — left: registry info, right: mode toggle + panel */}

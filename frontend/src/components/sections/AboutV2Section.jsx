@@ -231,26 +231,26 @@ const AboutV2Section = () => {
           </div>
           <h2
             data-testid="about-v2-title"
-            className="mt-5 text-4xl md:text-6xl font-semibold leading-[1.02] tracking-tight max-w-4xl"
+            className="mt-4 text-2xl md:text-3xl font-semibold leading-[1.05] tracking-tight max-w-4xl"
             style={{ color: "#0C5C62" }}
           >
-            {isPL ? "Trzy filary. " : "Three pillars. "}
+            {isPL ? "Szanujemy Twój " : "We respect your "}
             <span
               className="font-semibold"
               style={{
-                background: "linear-gradient(135deg,#0C5C62 0%,#22B8B0 100%)",
+                background: "linear-gradient(135deg,#06FFE0 0%,#00B8D4 100%)",
                 WebkitBackgroundClip: "text",
                 backgroundClip: "text",
                 WebkitTextFillColor: "transparent",
               }}
             >
-              {isPL ? "Jeden proces." : "One process."}
+              {isPL ? "Biznes." : "Business."}
             </span>
           </h2>
           <p className="mt-6 max-w-3xl text-lg md:text-xl leading-relaxed" style={{ color: "#3C4A55" }}>
             {isPL
-              ? "Każdy projekt IT SmartClout to trzy etapy jednego, powtarzalnego procesu — słuchamy, analizujemy stan zastany na tle rynku i best practice, a na końcu optymalizujemy pod Twoje realia."
-              : "Every IT SmartClout project follows three stages of the same repeatable process — we listen, we benchmark the current state against the market and best practices, and finally we optimise for your reality."}
+              ? "Posiadamy kompetencje do realizacji najbardziej wymagających projektów, ale naszą prawdziwą wartością dodaną jest uważność na głos klienta. Dzięki holistycznemu spojrzeniu na ekosystem IT, projektujemy infrastrukturę „szytą na miarę” – taką, która chroni dane, przyspiesza biznes i szanuje budżet. Nie szukamy najdroższych rozwiązań, szukamy tych najbardziej zoptymalizowanych."
+              : "We have the competence to deliver the most demanding projects, but our real added value is listening closely to the client. With a holistic view of the IT ecosystem, we design tailor-made infrastructure — one that protects data, accelerates business and respects the budget. We don't look for the most expensive solutions, we look for the most optimised ones."}
           </p>
         </Reveal>
 

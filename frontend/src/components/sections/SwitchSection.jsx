@@ -30,6 +30,8 @@ const PORTS = [
 const COPY = {
   pl: {
     section_label: "Obszary rynkowe",
+    title_pre:     "Sześć portów.",
+    title_accent:  "Sześć rynków, które łączymy.",
     title:         "Sześć portów. Sześć rynków, które łączymy.",
     subtitle:      "Najedź na port switcha, aby zobaczyć jak wspieramy dany sektor.",
     idle_hint:     "Wybierz port, aby zobaczyć obszar rynkowy",
@@ -45,6 +47,8 @@ const COPY = {
   },
   en: {
     section_label: "Market areas",
+    title_pre:     "Six ports.",
+    title_accent:  "Six markets we connect.",
     title:         "Six ports. Six markets we connect.",
     subtitle:      "Hover a switch port to see how we support each sector.",
     idle_hint:     "Pick a port to reveal a market area",
@@ -101,9 +105,20 @@ const SwitchSection = () => {
           </div>
           <h2
             data-testid="switch-title"
-            className="mt-4 text-4xl md:text-6xl font-semibold leading-[1.02] tracking-tight text-white max-w-3xl"
+            className="mt-4 text-2xl md:text-3xl font-semibold leading-[1.05] tracking-tight text-white max-w-3xl"
           >
-            {copy.title}
+            {copy.title_pre}{" "}
+            <span
+              className="font-semibold"
+              style={{
+                background: "linear-gradient(135deg,#06FFE0 0%,#00B8D4 100%)",
+                WebkitBackgroundClip: "text",
+                backgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+              }}
+            >
+              {copy.title_accent}
+            </span>
           </h2>
           <p
             data-testid="switch-subtitle"
