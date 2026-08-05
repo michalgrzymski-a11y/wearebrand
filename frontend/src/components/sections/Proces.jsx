@@ -182,9 +182,6 @@ const BlueprintPanel = ({ stage, index, total, lang }) => {
           );
         })}
 
-        {/* Baseline */}
-        <line x1="0" y1="85" x2="240" y2="85" stroke="#0C5C62" strokeWidth="0.5" opacity="0.4" />
-
         {/* Area fill */}
         <path d={`${path} L 240 85 L 0 85 Z`} fill="url(#av2-area)" />
 
