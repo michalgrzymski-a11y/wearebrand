@@ -1,13 +1,71 @@
-import React, { useEffect, useState } from "react";
-import { Menu, X } from "lucide-react";
+import React, { useEffect, useRef, useState } from "react";
+import { Menu, X, ChevronDown, Server, ShieldCheck, Wrench, Coins, Database } from "lucide-react";
 import { useLang } from "@/i18n/LanguageContext";
 
-const NAV_LINKS = [
-  { id: "top",       key: "home"    },
-  { id: "about-v2",  key: "about"   },
-  { id: "portfolio", key: "offer"   },
-  { id: "savings",   key: "savings" },
-  { id: "contact",   key: "contact" },
+/* Nav structure. `href` = anchor on the page.
+   Some links have a `dropdown` — a mega-menu grid of categories. */
+const NAV = [
+  { key: "home",    href: "#top"      },
+  { key: "about",   href: "#about-v2" },
+  {
+    key: "offer",
+    href: "#portfolio",
+    dropdown: [
+      {
+        id: "hardware",
+        titlePL: "Sprzęt IT",
+        titleEN: "IT Hardware",
+        Icon: Server,
+        items: [
+          { pl: "Serwery & Wirtualizacja", en: "Servers & Virtualization", href: "#rack-server" },
+          { pl: "Macierze Dyskowe",        en: "Storage Arrays",           href: "#netapp-aff"  },
+          { pl: "Przełączniki Sieciowe",   en: "Network Switches",         href: "#markets-switch" },
+          { pl: "Archive",                 en: "Archive",                  href: "#tape-library" },
+          { pl: "Deduplikatory",           en: "Deduplicators",            href: "#data-reduction" },
+        ],
+      },
+      {
+        id: "backup",
+        titlePL: "Backup",
+        titleEN: "Backup",
+        Icon: Database,
+        href: "#continuity",
+        items: [],
+      },
+      {
+        id: "security",
+        titlePL: "Security",
+        titleEN: "Security",
+        Icon: ShieldCheck,
+        items: [
+          { pl: "Firewall",  en: "Firewall",   href: "#ngfw" },
+          { pl: "IDM",       en: "IDM",        href: "#ngfw" },
+          { pl: "MDM / UEM", en: "MDM / UEM",  href: "#baramundi" },
+          { pl: "EDR / XDR", en: "EDR / XDR",  href: "#threatwise" },
+        ],
+      },
+      {
+        id: "services",
+        titlePL: "Usługi IT",
+        titleEN: "IT Services",
+        Icon: Wrench,
+        items: [
+          { pl: "Usługi IT",           en: "IT Services",         href: "#portfolio" },
+          { pl: "Usługi DataCenter",   en: "Data Center Services", href: "#server-assembly" },
+        ],
+      },
+      {
+        id: "optim",
+        titlePL: "Optymalizacja kosztów",
+        titleEN: "Cost optimisation",
+        Icon: Coins,
+        href: "#savings",
+        items: [],
+      },
+    ],
+  },
+  { key: "savings", href: "#savings" },
+  { key: "contact", href: "#contact" },
 ];
 
 const SECTION_THEMES = {
@@ -43,6 +101,24 @@ const Navbar = () => {
   const [theme, setTheme] = useState("dark");
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState(null);      // desktop mega
+  const [mobileGroup, setMobileGroup]   = useState(null);      // mobile accordion
+  const closeTimer = useRef(null);
+
+  // Close mega-menu when clicking outside / hitting Escape
+  useEffect(() => {
+    const onKey = (e) => { if (e.key === "Escape") setOpenDropdown(null); };
+    const onClick = (e) => {
+      if (!e.target.closest(".sc-nav-dropdown-wrap")) setOpenDropdown(null);
+    };
+    document.addEventListener("keydown", onKey);
+    document.addEventListener("click", onClick);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.removeEventListener("click", onClick);
+      if (closeTimer.current) window.clearTimeout(closeTimer.current);
+    };
+  }, []);
 
   useEffect(() => {
     const onScroll = () => setScrolled((window.scrollY || 0) > 8);
@@ -111,17 +187,91 @@ const Navbar = () => {
           </a>
 
           {/* Desktop nav — lg and above */}
-          <nav className="hidden lg:flex items-center gap-8">
-            {NAV_LINKS.map((l) => (
-              <a
-                key={l.id}
-                href={`#${l.id}`}
-                data-testid={`nav-link-${l.key}`}
-                className="sc-nav-link"
-              >
-                {t.nav[l.key]}
-              </a>
-            ))}
+          <nav
+            className="hidden lg:flex items-center gap-8"
+            onMouseLeave={() => setOpenDropdown(null)}
+          >
+            {NAV.map((l) => {
+              const label = t.nav[l.key];
+              if (!l.dropdown) {
+                return (
+                  <a
+                    key={l.key}
+                    href={l.href}
+                    data-testid={`nav-link-${l.key}`}
+                    className="sc-nav-link"
+                    onClick={closeMenu}
+                  >
+                    {label}
+                  </a>
+                );
+              }
+              const isOpen = openDropdown === l.key;
+              return (
+                <div
+                  key={l.key}
+                  className="sc-nav-dropdown-wrap"
+                  onMouseEnter={() => setOpenDropdown(l.key)}
+                >
+                  <button
+                    type="button"
+                    data-testid={`nav-link-${l.key}`}
+                    className={`sc-nav-link sc-nav-link--has-menu ${isOpen ? "is-open" : ""}`}
+                    aria-haspopup="true"
+                    aria-expanded={isOpen}
+                    onClick={() => setOpenDropdown(isOpen ? null : l.key)}
+                  >
+                    {label}
+                    <ChevronDown size={13} strokeWidth={2.2} className="sc-nav-chev" />
+                  </button>
+
+                  <div
+                    className={`sc-mega ${isOpen ? "is-open" : ""}`}
+                    data-testid="nav-mega"
+                    aria-hidden={!isOpen}
+                    role="menu"
+                  >
+                    <div className="sc-mega__inner">
+                      {l.dropdown.map((cat) => {
+                        const title = lang === "pl" ? cat.titlePL : cat.titleEN;
+                        return (
+                          <div key={cat.id} className="sc-mega__col">
+                            <a
+                              href={cat.href || (cat.items[0] && cat.items[0].href) || "#"}
+                              className="sc-mega__head"
+                              data-testid={`mega-cat-${cat.id}`}
+                              onClick={() => setOpenDropdown(null)}
+                            >
+                              <span className="sc-mega__head-icon">
+                                <cat.Icon size={16} strokeWidth={1.9} />
+                              </span>
+                              <span className="sc-mega__head-title">{title}</span>
+                            </a>
+                            {cat.items && cat.items.length > 0 && (
+                              <ul className="sc-mega__list">
+                                {cat.items.map((it) => (
+                                  <li key={it.href + it.pl}>
+                                    <a
+                                      href={it.href}
+                                      className="sc-mega__item"
+                                      data-testid={`mega-item-${cat.id}-${(lang === "pl" ? it.pl : it.en).replace(/\s+/g, "-").toLowerCase()}`}
+                                      onClick={() => setOpenDropdown(null)}
+                                    >
+                                      <span className="sc-mega__item-dot" />
+                                      {lang === "pl" ? it.pl : it.en}
+                                    </a>
+                                  </li>
+                                ))}
+                              </ul>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </nav>
 
           <div className="flex items-center gap-2 md:gap-3">
@@ -168,17 +318,71 @@ const Navbar = () => {
         aria-hidden={!mobileOpen}
       >
         <nav className="sc-mobile-menu__nav">
-          {NAV_LINKS.map((l) => (
-            <a
-              key={l.id}
-              href={`#${l.id}`}
-              data-testid={`mobile-nav-link-${l.key}`}
-              className="sc-mobile-menu__link"
-              onClick={closeMenu}
-            >
-              {t.nav[l.key]}
-            </a>
-          ))}
+          {NAV.map((l) => {
+            const label = t.nav[l.key];
+            if (!l.dropdown) {
+              return (
+                <a
+                  key={l.key}
+                  href={l.href}
+                  data-testid={`mobile-nav-link-${l.key}`}
+                  className="sc-mobile-menu__link"
+                  onClick={closeMenu}
+                >
+                  {label}
+                </a>
+              );
+            }
+            const isOpen = mobileGroup === l.key;
+            return (
+              <div key={l.key} className="sc-mobile-menu__group">
+                <button
+                  type="button"
+                  data-testid={`mobile-nav-toggle-${l.key}`}
+                  className={`sc-mobile-menu__link sc-mobile-menu__link--group ${isOpen ? "is-open" : ""}`}
+                  onClick={() => setMobileGroup(isOpen ? null : l.key)}
+                  aria-expanded={isOpen}
+                >
+                  {label}
+                  <ChevronDown size={16} strokeWidth={2} className="sc-mobile-menu__chev" />
+                </button>
+                {isOpen && (
+                  <div className="sc-mobile-menu__submenu">
+                    {l.dropdown.map((cat) => {
+                      const title = lang === "pl" ? cat.titlePL : cat.titleEN;
+                      return (
+                        <div key={cat.id} className="sc-mobile-menu__cat">
+                          <a
+                            href={cat.href || (cat.items[0] && cat.items[0].href) || "#"}
+                            className="sc-mobile-menu__cat-head"
+                            onClick={closeMenu}
+                          >
+                            <cat.Icon size={14} strokeWidth={1.9} />
+                            {title}
+                          </a>
+                          {cat.items && cat.items.length > 0 && (
+                            <ul className="sc-mobile-menu__cat-list">
+                              {cat.items.map((it) => (
+                                <li key={it.href + it.pl}>
+                                  <a
+                                    href={it.href}
+                                    className="sc-mobile-menu__cat-item"
+                                    onClick={closeMenu}
+                                  >
+                                    {lang === "pl" ? it.pl : it.en}
+                                  </a>
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            );
+          })}
           <a
             href="#contact"
             data-testid="mobile-nav-cta"
