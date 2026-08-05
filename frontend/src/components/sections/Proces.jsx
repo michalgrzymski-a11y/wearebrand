@@ -152,19 +152,13 @@ const BlueprintPanel = ({ stage, index, total, lang }) => {
 
       <svg
         className="sc-av2__bp-schema"
-        viewBox="0 0 240 90"
+        viewBox="0 0 240 100"
         preserveAspectRatio="none"
         aria-hidden="true"
       >
         <defs>
-          <linearGradient id="av2-line" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor="#0C5C62" stopOpacity="0" />
-            <stop offset="20%" stopColor="#0C5C62" stopOpacity="0.6" />
-            <stop offset="80%" stopColor="#0C5C62" stopOpacity="0.6" />
-            <stop offset="100%" stopColor="#0C5C62" stopOpacity="0" />
-          </linearGradient>
           <linearGradient id="av2-area" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#00B8D4" stopOpacity="0.22" />
+            <stop offset="0%" stopColor="#00B8D4" stopOpacity="0.28" />
             <stop offset="100%" stopColor="#00B8D4" stopOpacity="0" />
           </linearGradient>
           <linearGradient id="av2-stroke" x1="0" y1="0" x2="1" y2="0">
@@ -172,22 +166,55 @@ const BlueprintPanel = ({ stage, index, total, lang }) => {
             <stop offset="100%" stopColor="#00B8D4" />
           </linearGradient>
         </defs>
-        <line
-          x1="0" y1="85" x2="240" y2="85"
-          stroke="url(#av2-line)" strokeWidth="0.6" strokeDasharray="1 3"
-        />
-        <path d={`${path} L 240 90 L 0 90 Z`} fill="url(#av2-area)" />
+
+        {/* Horizontal grid lines at 25%, 50%, 75% */}
+        {[25, 50, 75].map((v) => {
+          const y = 85 - (v / 100) * 75;
+          return (
+            <line
+              key={v}
+              x1="0" y1={y} x2="240" y2={y}
+              stroke="#0C5C62"
+              strokeWidth="0.3"
+              strokeDasharray="2 3"
+              opacity="0.25"
+            />
+          );
+        })}
+
+        {/* Baseline */}
+        <line x1="0" y1="85" x2="240" y2="85" stroke="#0C5C62" strokeWidth="0.5" opacity="0.4" />
+
+        {/* Area fill */}
+        <path d={`${path} L 240 85 L 0 85 Z`} fill="url(#av2-area)" />
+
+        {/* Main line */}
         <path
           d={path}
           fill="none"
           stroke="url(#av2-stroke)"
-          strokeWidth="1.5"
+          strokeWidth="1.8"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
-        {xs.map((x, i) => (
-          <circle key={i} cx={x} cy={ys[i]} r="1.8" fill="#00B8D4" />
-        ))}
+
+        {/* Data points — smaller intermediate, larger + glow at end */}
+        {xs.map((x, i) => {
+          const isLast = i === xs.length - 1;
+          return isLast ? (
+            <g key={i}>
+              <circle cx={x} cy={ys[i]} r="4" fill="#00B8D4" opacity="0.15" />
+              <circle cx={x} cy={ys[i]} r="2.4" fill="#00B8D4" />
+              <circle cx={x} cy={ys[i]} r="1" fill="#FFFFFF" />
+            </g>
+          ) : (
+            <circle key={i} cx={x} cy={ys[i]} r="1.4" fill="#00B8D4" opacity="0.7" />
+          );
+        })}
+
+        {/* Y-axis anchors */}
+        <text x="2" y="12" fontSize="4.5" fontFamily="JetBrains Mono, monospace" fill="#0C5C62" opacity="0.55" letterSpacing="0.5">100%</text>
+        <text x="2" y="86" fontSize="4.5" fontFamily="JetBrains Mono, monospace" fill="#0C5C62" opacity="0.55" letterSpacing="0.5">0%</text>
       </svg>
 
       <span className="sc-av2__bp-bracket sc-av2__bp-bracket--tl" />
@@ -251,11 +278,18 @@ const Proces = () => {
               {isPL ? "Biznes." : "Business."}
             </span>
           </h2>
-          <p className="mt-6 max-w-none text-lg md:text-xl leading-relaxed text-justify" style={{ color: "#3C4A55", hyphens: "auto" }}>
-            {isPL
-              ? "Posiadamy kompetencje do realizacji najbardziej wymagających projektów, ale naszą prawdziwą wartością dodaną jest uważność na głos klienta. Dzięki holistycznemu spojrzeniu na ekosystem IT, projektujemy infrastrukturę „szytą na miarę” – taką, która chroni dane, przyspiesza biznes i szanuje budżet. Nie szukamy najdroższych rozwiązań, szukamy tych najbardziej zoptymalizowanych."
-              : "We have the competence to deliver the most demanding projects, but our real added value is listening closely to the client. With a holistic view of the IT ecosystem, we design tailor-made infrastructure — one that protects data, accelerates business and respects the budget. We don't look for the most expensive solutions, we look for the most optimised ones."}
-          </p>
+          <div className="mt-6 max-w-none space-y-4 text-base md:text-lg leading-relaxed" style={{ color: "#3C4A55", hyphens: "auto" }}>
+            <p className="text-justify">
+              {isPL
+                ? "Posiadamy kompetencje do realizacji najbardziej wymagających projektów, ale naszą prawdziwą wartością dodaną jest uważność na głos klienta."
+                : "We have the competence to deliver the most demanding projects, but our real added value is listening closely to the client."}
+            </p>
+            <p className="text-justify">
+              {isPL
+                ? "Dzięki holistycznemu spojrzeniu na ekosystem IT, projektujemy infrastrukturę „szytą na miarę” – taką, która chroni dane, przyspiesza biznes i szanuje budżet. Nie szukamy najdroższych rozwiązań, szukamy tych najbardziej zoptymalizowanych."
+                : "With a holistic view of the IT ecosystem, we design tailor-made infrastructure — one that protects data, accelerates business and respects the budget. We don't look for the most expensive solutions, we look for the most optimised ones."}
+            </p>
+          </div>
         </Reveal>
 
         {/* 2-column layout: horizontal timeline on left, blueprint chart on right */}
