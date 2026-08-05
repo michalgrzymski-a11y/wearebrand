@@ -74,6 +74,10 @@ Deep Teal `#0C5C62`, Accent Mint `#49ADA5`, White, Light gray `#F8FAFA`, Charcoa
 - `/app/frontend/src/components/SectionDivider.jsx`
 - `/app/frontend/src/components/sections/{AboutSection, TrustedBySection, PortfolioSection, SectorsSection, PartnersV2Section, PartnersSection, ContactSection}.jsx`
 
+## Recent updates (Feb 2026)
+- **AboutV2Section** compact 2-col layout — CSS overrides at App.css line ~10702 (compact stage cards + info panel, responsive stacking on mobile). Verified via testing agent (iteration_20.json).
+- **SwitchSection** scaled down ~15% — CSS overrides at App.css line ~10837 (max-width 860px, smaller ports, shorter cables/labels, reduced bottom padding). Verified via testing agent (iteration_20.json).
+
 ## Backlog / next actions
 - **P1** — Real brand SVG logos for Trusted-By and Partners (once assets provided)
 - **P1** — Enable outgoing email on `/api/contact` (SendGrid or Resend) when user provides API key
