@@ -1528,14 +1528,14 @@ html { scroll-padding-top: 92px; }
   display: flex;
   align-items: center;
   gap: 0;
-  padding: 6px 0 10px;
+  padding: 3px 0 5px;
   width: max-content;
   will-change: transform;
 }
 .sc-logo-slot {
   flex: 0 0 auto;
   width: 190px;
-  height: 34px;
+  height: 26px;
   padding: 0 30px;
   display: inline-flex;
   align-items: center;
@@ -11398,15 +11398,16 @@ html { scroll-padding-top: 92px; }
 .sc-btn-primary:active { transform: translateY(0); }
 
 .sc-btn-ghost {
-  background: transparent;
-  color: currentColor;
-  border-color: rgba(6, 255, 224, 0.4);
+  background: rgba(6, 255, 224, 0.04);
+  color: #E8F4F5;
+  border-color: rgba(6, 255, 224, 0.55);
   font-weight: 600;
 }
 .sc-btn-ghost:hover {
   transform: translateY(-1px);
   border-color: #06FFE0;
-  background: rgba(6, 255, 224, 0.06);
+  background: rgba(6, 255, 224, 0.12);
+  color: #FFFFFF;
 }
 /* On light backgrounds, ghost gets a slightly darker text for contrast */
 .sc-btn-ghost--light {

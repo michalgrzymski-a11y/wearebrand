@@ -158,14 +158,18 @@ const BlueprintPanel = ({ stage, index, total, lang }) => {
       >
         <defs>
           <linearGradient id="av2-line" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor="#06FFE0" stopOpacity="0" />
-            <stop offset="20%" stopColor="#06FFE0" stopOpacity="1" />
-            <stop offset="80%" stopColor="#06FFE0" stopOpacity="1" />
-            <stop offset="100%" stopColor="#06FFE0" stopOpacity="0" />
+            <stop offset="0%" stopColor="#0C5C62" stopOpacity="0" />
+            <stop offset="20%" stopColor="#0C5C62" stopOpacity="0.6" />
+            <stop offset="80%" stopColor="#0C5C62" stopOpacity="0.6" />
+            <stop offset="100%" stopColor="#0C5C62" stopOpacity="0" />
           </linearGradient>
           <linearGradient id="av2-area" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#06FFE0" stopOpacity="0.35" />
-            <stop offset="100%" stopColor="#06FFE0" stopOpacity="0" />
+            <stop offset="0%" stopColor="#00B8D4" stopOpacity="0.22" />
+            <stop offset="100%" stopColor="#00B8D4" stopOpacity="0" />
+          </linearGradient>
+          <linearGradient id="av2-stroke" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stopColor="#06FFE0" />
+            <stop offset="100%" stopColor="#00B8D4" />
           </linearGradient>
         </defs>
         <line
@@ -176,13 +180,13 @@ const BlueprintPanel = ({ stage, index, total, lang }) => {
         <path
           d={path}
           fill="none"
-          stroke="#06FFE0"
+          stroke="url(#av2-stroke)"
           strokeWidth="1.5"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
         {xs.map((x, i) => (
-          <circle key={i} cx={x} cy={ys[i]} r="1.8" fill="#06FFE0" />
+          <circle key={i} cx={x} cy={ys[i]} r="1.8" fill="#00B8D4" />
         ))}
       </svg>
 
