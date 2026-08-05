@@ -294,9 +294,6 @@ const AboutV2Section = () => {
                     <span className="sc-av2__stage-step">
                       {String(idx + 1).padStart(2, "0")} · {isPL ? s.stepPL : s.stepEN}
                     </span>
-                    <span className="sc-av2__stage-icon">
-                      <s.Icon size={22} strokeWidth={1.8} />
-                    </span>
                     <span className="sc-av2__stage-title">
                       {isPL ? s.label_pl : s.label_en}
                     </span>

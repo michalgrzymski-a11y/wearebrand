@@ -7,8 +7,9 @@ import HeroSection from "@/components/hero/HeroSection";
 import ValuesSection from "@/components/sections/ValuesSection";
 import TrustedBySection from "@/components/sections/TrustedBySection";
 import AboutV2Section from "@/components/sections/AboutV2Section";
-import TapeLibrarySection from "@/components/sections/TapeLibrarySection";
+import PortfolioSection from "@/components/sections/PortfolioSection";
 import SwitchSection from "@/components/sections/SwitchSection";
+import SavingsSection from "@/components/sections/SavingsSection";
 import PartnersSection from "@/components/sections/PartnersSection";
 import ContactSection from "@/components/sections/ContactSection";
 import PartnerDetailPage from "@/pages/PartnerDetailPage";
@@ -23,8 +24,9 @@ const Home = () => (
     <ValuesSection />
     <TrustedBySection />
     <AboutV2Section />
-    <TapeLibrarySection />
+    <PortfolioSection />
     <SwitchSection />
+    <SavingsSection />
     <PartnersSection />
     <ContactSection />
   </main>
