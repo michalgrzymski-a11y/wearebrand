@@ -4,12 +4,12 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LanguageProvider } from "@/i18n/LanguageContext";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/hero/HeroSection";
+import TrustedBySection from "@/components/sections/TrustedBySection";
 import ValuesSection from "@/components/sections/ValuesSection";
 import AboutV2Section from "@/components/sections/AboutV2Section";
-import ProcessRackSection from "@/components/sections/ProcessRackSection";
-import TrustedBySection from "@/components/sections/TrustedBySection";
 import TapeLibrarySection from "@/components/sections/TapeLibrarySection";
 import SwitchSection from "@/components/sections/SwitchSection";
+import PartnersSection from "@/components/sections/PartnersSection";
 import ContactSection from "@/components/sections/ContactSection";
 import PartnerDetailPage from "@/pages/PartnerDetailPage";
 import RoboczePage from "@/pages/RoboczePage";
@@ -18,12 +18,12 @@ const Home = () => (
   <main data-testid="home-main" className="sc-app">
     <Navbar />
     <HeroSection />
+    <TrustedBySection />
     <ValuesSection />
     <AboutV2Section />
-    <ProcessRackSection />
-    <TrustedBySection />
     <TapeLibrarySection />
     <SwitchSection />
+    <PartnersSection />
     <ContactSection />
   </main>
 );

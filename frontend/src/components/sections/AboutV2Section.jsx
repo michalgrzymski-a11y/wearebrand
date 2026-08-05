@@ -254,75 +254,78 @@ const AboutV2Section = () => {
           </p>
         </Reveal>
 
-        {/* Process timeline */}
-        <div className="sc-av2__timeline" data-testid="about-v2-timeline">
-          {/* Connecting flow line behind the nodes */}
-          <div
-            className="sc-av2__flow"
-            aria-hidden="true"
-            style={{
-              "--flow-progress": `${((activeIndex + 1) / STAGES.length) * 100}%`,
-            }}
-          />
+        {/* 2-column layout: horizontal timeline on left, blueprint chart on right */}
+        <div className="sc-av2__layout" data-testid="about-v2-layout">
+          {/* LEFT column: horizontal process timeline */}
+          <div className="sc-av2__timeline" data-testid="about-v2-timeline">
+            {/* Connecting flow line behind the nodes */}
+            <div
+              className="sc-av2__flow"
+              aria-hidden="true"
+              style={{
+                "--flow-progress": `${((activeIndex + 1) / STAGES.length) * 100}%`,
+              }}
+            />
 
-          {STAGES.map((s, idx) => {
-            const isActive = s.id === active;
-            const isPast   = idx <  activeIndex;
-            return (
-              <React.Fragment key={s.id}>
-                {idx > 0 && (
-                  <div
-                    className={`sc-av2__arrow ${idx <= activeIndex ? "is-past" : ""}`}
-                    aria-hidden="true"
+            {STAGES.map((s, idx) => {
+              const isActive = s.id === active;
+              const isPast   = idx <  activeIndex;
+              return (
+                <React.Fragment key={s.id}>
+                  {idx > 0 && (
+                    <div
+                      className={`sc-av2__arrow ${idx <= activeIndex ? "is-past" : ""}`}
+                      aria-hidden="true"
+                    >
+                      <ArrowRight size={18} strokeWidth={2.2} />
+                    </div>
+                  )}
+                  <button
+                    type="button"
+                    onMouseEnter={() => setActive(s.id)}
+                    onFocus={() => setActive(s.id)}
+                    onClick={() => setActive(s.id)}
+                    className={`sc-av2__stage ${isActive ? "is-active" : ""} ${isPast ? "is-past" : ""}`}
+                    data-testid={`about-v2-stage-${s.id}`}
                   >
-                    <ArrowRight size={18} strokeWidth={2.2} />
-                  </div>
-                )}
-                <button
-                  type="button"
-                  onMouseEnter={() => setActive(s.id)}
-                  onFocus={() => setActive(s.id)}
-                  onClick={() => setActive(s.id)}
-                  className={`sc-av2__stage ${isActive ? "is-active" : ""} ${isPast ? "is-past" : ""}`}
-                  data-testid={`about-v2-stage-${s.id}`}
-                >
-                  <span className="sc-av2__stage-node" aria-hidden="true">
-                    <span className="sc-av2__stage-node-inner" />
-                  </span>
-                  <span className="sc-av2__stage-step">
-                    {String(idx + 1).padStart(2, "0")} · {isPL ? s.stepPL : s.stepEN}
-                  </span>
-                  <span className="sc-av2__stage-icon">
-                    <s.Icon size={22} strokeWidth={1.8} />
-                  </span>
-                  <span className="sc-av2__stage-title">
-                    {isPL ? s.label_pl : s.label_en}
-                  </span>
-                  <span className="sc-av2__stage-desc">
-                    {isPL ? s.desc_pl : s.desc_en}
-                  </span>
-                  <span className="sc-av2__stage-badges">
-                    {(isPL ? s.badges_pl : s.badges_en).map((b) => (
-                      <span key={b} className="sc-av2__stage-badge">
-                        <CheckCircle2 size={11} strokeWidth={2.4} />
-                        {b}
-                      </span>
-                    ))}
-                  </span>
-                </button>
-              </React.Fragment>
-            );
-          })}
-        </div>
+                    <span className="sc-av2__stage-node" aria-hidden="true">
+                      <span className="sc-av2__stage-node-inner" />
+                    </span>
+                    <span className="sc-av2__stage-step">
+                      {String(idx + 1).padStart(2, "0")} · {isPL ? s.stepPL : s.stepEN}
+                    </span>
+                    <span className="sc-av2__stage-icon">
+                      <s.Icon size={22} strokeWidth={1.8} />
+                    </span>
+                    <span className="sc-av2__stage-title">
+                      {isPL ? s.label_pl : s.label_en}
+                    </span>
+                    <span className="sc-av2__stage-desc">
+                      {isPL ? s.desc_pl : s.desc_en}
+                    </span>
+                    <span className="sc-av2__stage-badges">
+                      {(isPL ? s.badges_pl : s.badges_en).map((b) => (
+                        <span key={b} className="sc-av2__stage-badge">
+                          <CheckCircle2 size={11} strokeWidth={2.4} />
+                          {b}
+                        </span>
+                      ))}
+                    </span>
+                  </button>
+                </React.Fragment>
+              );
+            })}
+          </div>
 
-        {/* Blueprint panel for the active stage */}
-        <div className="sc-av2__bpwrap" data-testid="about-v2-blueprint-wrap">
-          <BlueprintPanel
-            stage={activeStage}
-            index={activeIndex}
-            total={STAGES.length}
-            lang={lang}
-          />
+          {/* RIGHT column: blueprint panel for the active stage */}
+          <div className="sc-av2__bpwrap" data-testid="about-v2-blueprint-wrap">
+            <BlueprintPanel
+              stage={activeStage}
+              index={activeIndex}
+              total={STAGES.length}
+              lang={lang}
+            />
+          </div>
         </div>
       </div>
     </section>

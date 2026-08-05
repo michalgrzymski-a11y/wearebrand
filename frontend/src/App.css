@@ -10233,3 +10233,243 @@ html { scroll-padding-top: 92px; }
   .sc-hero-trust__marquee { gap: 24px; }
   .sc-hero-trust__logo { max-height: 24px; }
 }
+
+
+/* =====================================================================
+   Values — LIGHT theme overrides
+   ===================================================================== */
+.sc-values--light .sc-varray {
+  background: linear-gradient(180deg, #FFFFFF 0%, #EAF1F1 100%);
+  border-color: rgba(12, 92, 98, 0.18);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 40px 80px -30px rgba(12, 92, 98, 0.28);
+}
+.sc-values--light .sc-varray__topbar {
+  background: linear-gradient(180deg, #FFFFFF 0%, #DDE8E8 100%);
+  border-bottom-color: rgba(12, 92, 98, 0.14);
+  color: #0C5C62;
+}
+.sc-values--light .sc-varray__code {
+  color: #0C5C62;
+}
+.sc-values--light .sc-varray__ear {
+  background: linear-gradient(180deg, #EEF3F3 0%, #B7C4C4 100%);
+  border-color: rgba(0,0,0,0.15);
+}
+.sc-values--light .sc-varray__disk {
+  background: linear-gradient(180deg, #FDFEFE 0%, #D8E0E0 100%);
+  border-color: rgba(12, 92, 98, 0.2);
+  color: #1C2833;
+}
+.sc-values--light .sc-varray__disk-name {
+  color: #0C5C62;
+}
+.sc-values--light .sc-varray__disk-short {
+  color: #3C4A55;
+}
+.sc-values--light .sc-varray__disk-desc {
+  color: #3C4A55;
+}
+.sc-values--light .sc-varray__disk--filler {
+  background: linear-gradient(180deg, #E5EBEB 0%, #C7D1D1 100%);
+  border-color: rgba(0, 0, 0, 0.06);
+}
+.sc-values--light .sc-varray__disk-led {
+  background: #22B8B0;
+  box-shadow: 0 0 6px rgba(34, 184, 176, 0.7);
+}
+.sc-values--light .sc-varray__bottom {
+  background: linear-gradient(180deg, #E4ECEC 0%, #C8D3D3 100%);
+  color: rgba(12, 92, 98, 0.75);
+  border-top-color: rgba(12, 92, 98, 0.14);
+}
+
+/* Story paragraph in light theme */
+.sc-values--light .sc-values__story-p {
+  color: #3C4A55;
+}
+.sc-values--light .sc-values__story-p:first-child {
+  color: #1C2833;
+  font-weight: 500;
+}
+
+
+/* =====================================================================
+   AboutV2 — 2-column layout override (timeline left, blueprint right)
+   ===================================================================== */
+.sc-av2__layout {
+  margin-top: 44px;
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 28px;
+  align-items: stretch;
+}
+
+/* Timeline compressed into left column, still horizontal (3 stages) */
+.sc-av2__layout .sc-av2__timeline {
+  margin-top: 0;
+  grid-template-columns: 1fr auto 1fr auto 1fr;
+  gap: 8px;
+  align-content: start;
+}
+.sc-av2__layout .sc-av2__flow {
+  top: 40px;
+  left: 6%;
+  right: 6%;
+}
+.sc-av2__layout .sc-av2__stage {
+  padding: 14px 14px 18px;
+}
+.sc-av2__layout .sc-av2__stage-icon {
+  width: 38px; height: 38px; border-radius: 9px;
+}
+.sc-av2__layout .sc-av2__stage-title { font-size: 15.5px; }
+.sc-av2__layout .sc-av2__stage-desc  { font-size: 12.5px; }
+.sc-av2__layout .sc-av2__stage-badge { font-size: 10.5px; padding: 3px 7px; }
+.sc-av2__layout .sc-av2__arrow { margin-top: 30px; }
+.sc-av2__layout .sc-av2__stage-node { width: 16px; height: 16px; margin: 32px 0 6px 0; }
+.sc-av2__layout .sc-av2__stage-node-inner { inset: 3px; }
+
+/* Blueprint takes full right column height */
+.sc-av2__layout .sc-av2__bpwrap { margin-top: 0; }
+.sc-av2__layout .sc-av2__blueprint {
+  height: 100%;
+  display: flex; flex-direction: column;
+}
+.sc-av2__layout .sc-av2__bp-schema { flex: 1 1 auto; min-height: 130px; }
+
+@media (max-width: 1180px) {
+  .sc-av2__layout { grid-template-columns: 1fr; }
+}
+
+
+/* =====================================================================
+   Portfolio (formerly Tape Library) — LIGHT card grid
+   ===================================================================== */
+.sc-pf__grid {
+  margin-top: 44px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  align-items: stretch;
+}
+.sc-pf__card {
+  position: relative;
+  padding: 26px 24px 20px;
+  border-radius: 14px;
+  background:
+    radial-gradient(120% 60% at 100% 0%, rgba(73, 173, 165, 0.07) 0%, rgba(73, 173, 165, 0) 60%),
+    linear-gradient(180deg, #FDFEFE 0%, #F3F7F7 100%);
+  border: 1px solid rgba(12, 92, 98, 0.14);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 20px 40px -30px rgba(12, 92, 98, 0.35);
+  transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+  display: flex; flex-direction: column;
+  overflow: hidden;
+}
+.sc-pf__card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(12, 92, 98, 0.32);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 30px 60px -30px rgba(12, 92, 98, 0.5);
+}
+.sc-pf__card::before {
+  /* accent left border */
+  content: "";
+  position: absolute; left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: linear-gradient(180deg, #22B8B0, #0C5C62);
+  opacity: 0.85;
+}
+
+.sc-pf__card-head {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 16px;
+}
+.sc-pf__card-idx {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px; letter-spacing: 0.28em;
+  color: #0C5C62;
+  padding: 4px 8px;
+  border: 1px solid rgba(12, 92, 98, 0.2);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.6);
+}
+.sc-pf__card-icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 42px; height: 42px; border-radius: 10px;
+  color: #FFFFFF;
+  background: linear-gradient(135deg, #0C5C62 0%, #22B8B0 100%);
+  box-shadow: 0 10px 20px -8px rgba(12, 92, 98, 0.5);
+}
+.sc-pf__card-title {
+  margin: 0 0 4px 0;
+  font-family: "Manrope", sans-serif;
+  font-size: 20px; font-weight: 700; letter-spacing: -0.005em;
+  color: #0C5C62;
+}
+.sc-pf__card-sub {
+  margin: 0 0 14px 0;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10.5px; letter-spacing: 0.24em; text-transform: uppercase;
+  color: #6B7A85;
+}
+.sc-pf__card-items {
+  list-style: none;
+  margin: 0 0 20px 0;
+  padding: 0;
+  display: flex; flex-direction: column; gap: 6px;
+  flex: 1 1 auto;
+}
+.sc-pf__card-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 6px 0;
+  border-bottom: 1px dashed rgba(12, 92, 98, 0.1);
+  font-family: "Manrope", sans-serif;
+  font-size: 14px;
+  color: #3C4A55;
+}
+.sc-pf__card-item:last-child { border-bottom: none; }
+.sc-pf__card-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: #22B8B0;
+  box-shadow: 0 0 6px rgba(34, 184, 176, 0.5);
+  flex-shrink: 0;
+}
+.sc-pf__card-cta {
+  display: inline-flex; align-items: center; gap: 6px;
+  align-self: flex-start;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(12, 92, 98, 0.2);
+  background: rgba(255, 255, 255, 0.55);
+  color: #0C5C62;
+  font-family: "Manrope", sans-serif;
+  font-size: 12.5px; font-weight: 700;
+  text-decoration: none;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+}
+.sc-pf__card-cta:hover {
+  background: #0C5C62;
+  color: #FFFFFF;
+  border-color: #0C5C62;
+  transform: translateX(2px);
+}
+.sc-pf__bracket {
+  position: absolute;
+  width: 10px; height: 10px;
+  border: 1.5px solid rgba(12, 92, 98, 0.28);
+  pointer-events: none;
+}
+.sc-pf__bracket--tl { top: 8px;    left: 8px;    border-right: none; border-bottom: none; }
+.sc-pf__bracket--br { bottom: 8px; right: 8px;   border-left: none;  border-top: none; }
+
+@media (max-width: 1024px) {
+  .sc-pf__grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 640px) {
+  .sc-pf__grid { grid-template-columns: 1fr; }
+}

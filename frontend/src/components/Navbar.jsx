@@ -71,7 +71,7 @@ const NAV = [
 
 const SECTION_THEMES = {
   top: "dark",
-  values: "dark",
+  values: "light",
   about: "light",
   "about-v2": "dark",
   process: "dark",
@@ -79,7 +79,7 @@ const SECTION_THEMES = {
   savings: "light",
   trusted: "light",
   portfolio: "light",
-  "tape-library": "dark",
+  "tape-library": "light",
   continuity: "light",
   sectors: "light",
   "markets-switch": "dark",

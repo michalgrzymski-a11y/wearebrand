@@ -135,16 +135,16 @@ const ValuesSection = () => {
       id="values"
       data-testid="values-section"
       ref={parallaxRef}
-      className="relative w-full overflow-hidden"
-      style={{ background: "#040709", color: "#E8F4F5" }}
+      className="relative w-full overflow-hidden sc-values--light"
+      style={{ background: "#F7FAFA", color: "#1C2833" }}
     >
       <div
         aria-hidden="true"
         className="absolute inset-0 opacity-70 pointer-events-none"
         style={{
           background:
-            "radial-gradient(70% 55% at 20% 30%, rgba(6, 255, 224, 0.06) 0%, rgba(6, 255, 224, 0) 60%)," +
-            " radial-gradient(50% 60% at 80% 70%, rgba(6, 184, 212, 0.05) 0%, rgba(6, 184, 212, 0) 60%)",
+            "radial-gradient(70% 55% at 20% 30%, rgba(73, 173, 165, 0.08) 0%, rgba(73, 173, 165, 0) 60%)," +
+            " radial-gradient(50% 60% at 80% 70%, rgba(12, 92, 98, 0.05) 0%, rgba(12, 92, 98, 0) 60%)",
         }}
       />
 
@@ -152,14 +152,15 @@ const ValuesSection = () => {
         <Reveal>
           <div
             className="flex items-center gap-4 text-[11px] uppercase tracking-[0.32em]"
-            style={{ color: "#7CC4C0" }}
+            style={{ color: "#0C5C62" }}
           >
             <span className="inline-block h-px w-10" style={{ background: "#49ADA5" }} />
             {copy.section_label}
           </div>
           <h2
             data-testid="values-title"
-            className="mt-4 text-4xl md:text-6xl font-semibold leading-[1.02] tracking-tight text-white max-w-3xl sr-only"
+            className="mt-4 text-4xl md:text-6xl font-semibold leading-[1.02] tracking-tight max-w-3xl sr-only"
+            style={{ color: "#0C5C62" }}
           >
             {copy.title}
           </h2>

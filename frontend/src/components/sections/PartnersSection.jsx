@@ -1,92 +1,96 @@
 import React from "react";
 import { useLang } from "@/i18n/LanguageContext";
+import Reveal from "@/components/Reveal";
+import HERO_PARTNERS from "@/data/heroPartners";
 
-const PARTNERS = [
-  { name: "NetApp",           logo: "/logos/vendors/netapp.webp",           highlight: true },
-  { name: "Dell",             logo: "/logos/vendors/dell.webp" },
-  { name: "Arista",           logo: "/logos/vendors/arista.webp" },
-  { name: "Baramundi",        logo: "/logos/vendors/baramundi.webp" },
-  { name: "Lenovo",           logo: "/logos/vendors/lenovo.webp" },
-  { name: "HPE",              logo: "/logos/vendors/hpe.webp" },
-  { name: "Cisco",            logo: "/logos/vendors/cisco.webp" },
-  { name: "VMware",           logo: "/logos/vendors/vmware.webp" },
-  { name: "Google",           logo: "/logos/vendors/google.webp" },
-  { name: "Microsoft",        logo: "/logos/vendors/microsoft.webp" },
-  { name: "Nutanix",          logo: "/logos/vendors/nutanix.webp" },
-  { name: "Commvault",        logo: "/logos/vendors/commvault.webp" },
-  { name: "Veeam",            logo: "/logos/vendors/veeam.webp" },
-  { name: "ASUS",             logo: "/logos/vendors/asus.webp" },
-  { name: "Extreme Networks", logo: "/logos/vendors/extreme-networks.webp" },
-  { name: "Brocade",          logo: "/logos/vendors/brocade.webp" },
-  { name: "AWS",              logo: "/logos/vendors/aws.webp" },
-  { name: "SailPoint",        logo: "/logos/vendors/sailpoint.webp" },
-];
-
+/**
+ * PartnersSection — dedicated "strategic partners" section with a two-row
+ * marquee of vendor logos. Placed on the home page right above ContactSection.
+ * Dark aesthetic matching the rest of the site (cyan accents).
+ */
 const PartnersSection = () => {
   const { t } = useLang();
-  const doubled = [...PARTNERS, ...PARTNERS];
+  const half = Math.ceil(HERO_PARTNERS.length / 2);
+  const row1 = HERO_PARTNERS.slice(0, half);
+  const row2 = HERO_PARTNERS.slice(half);
 
   return (
     <section
       id="partners"
       data-testid="partners-section"
-      className="relative w-full"
-      style={{ background: "#F8FAFA", color: "#1C2833" }}
+      className="relative w-full overflow-hidden"
+      style={{ background: "#040709", color: "#E8F4F5" }}
     >
-      <div className="mx-auto max-w-7xl px-6 md:px-10 pt-14">
-        <div
-          className="flex items-center gap-4 text-[11px] uppercase tracking-[0.32em]"
-          style={{ color: "#0C5C62" }}
-        >
-          <span className="inline-block h-px w-10" style={{ background: "#49ADA5" }} />
-          {t.partners.section_label}
-        </div>
-        <h2
-          data-testid="partners-title"
-          className="mt-4 max-w-3xl text-2xl md:text-3xl font-semibold leading-[1.1] tracking-tight"
-          style={{ color: "#0C5C62" }}
-        >
-          {t.partners.title}
-        </h2>
-      </div>
-
       <div
-        className="sc-marquee-wrap mt-8 pb-14"
+        aria-hidden="true"
+        className="absolute inset-0 pointer-events-none"
         style={{
-          maskImage:
-            "linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent)",
-          WebkitMaskImage:
-            "linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent)",
+          background:
+            "radial-gradient(55% 55% at 30% 40%, rgba(6,255,224,0.06) 0%, rgba(6,255,224,0) 60%)," +
+            " radial-gradient(45% 55% at 70% 60%, rgba(0,184,212,0.06) 0%, rgba(0,184,212,0) 60%)",
         }}
-      >
-        <div
-          className="sc-marquee sc-marquee--rtl sc-marquee--slow sc-marquee--muted"
-          data-testid="partners-marquee"
-        >
-          {doubled.map((p, i) => (
-            <div
-              key={`${p.name}-${i}`}
-              data-testid={`partner-logo-${i}`}
-              className={
-                p.highlight
-                  ? "sc-partner-card sc-partner-card--highlight"
-                  : "sc-partner-card"
-              }
-            >
-              {p.highlight && (
-                <span className="sc-partner-badge">
-                  {t.partners.netapp_badge}
-                </span>
-              )}
-              <img
-                src={p.logo}
-                alt={p.name}
-                className="sc-partner-logo-img"
-                loading="lazy"
-                draggable="false"
-              />
+      />
+
+      <div className="relative z-10 mx-auto max-w-7xl px-6 md:px-10 py-16 md:py-24">
+        <Reveal>
+          <div
+            className="flex items-center gap-4 text-[12px] uppercase tracking-[0.34em]"
+            style={{ color: "#7CC4C0" }}
+          >
+            <span className="inline-block h-px w-12" style={{ background: "#49ADA5" }} />
+            {t.partners.section_label}
+          </div>
+          <h2
+            data-testid="partners-title"
+            className="mt-5 text-4xl md:text-6xl font-semibold leading-[1.02] tracking-tight text-white max-w-4xl"
+          >
+            {t.partners.title}
+          </h2>
+          <p className="mt-6 max-w-3xl text-lg md:text-xl leading-relaxed text-white/70">
+            {t.partners.subtitle}
+          </p>
+        </Reveal>
+
+        <div className="sc-partners__wrap">
+          <div
+            className="sc-partners__row-mask"
+            style={{
+              maskImage: "linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent)",
+              WebkitMaskImage: "linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent)",
+            }}
+          >
+            <div className="sc-marquee sc-marquee--rtl sc-marquee--slow sc-partners__row">
+              {[...row1, ...row1].map((p, i) => (
+                <div
+                  key={`r1-${p.name}-${i}`}
+                  className={`sc-partners__item ${p.highlight ? "is-highlight" : ""}`}
+                  data-testid={`partners-logo-r1-${i}`}
+                >
+                  <img src={p.logo} alt={p.name} className="sc-partners__logo" loading="lazy" draggable="false" />
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
+
+          <div
+            className="sc-partners__row-mask"
+            style={{
+              maskImage: "linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent)",
+              WebkitMaskImage: "linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent)",
+            }}
+          >
+            <div className="sc-marquee sc-marquee--slow sc-partners__row">
+              {[...row2, ...row2].map((p, i) => (
+                <div
+                  key={`r2-${p.name}-${i}`}
+                  className="sc-partners__item"
+                  data-testid={`partners-logo-r2-${i}`}
+                >
+                  <img src={p.logo} alt={p.name} className="sc-partners__logo" loading="lazy" draggable="false" />
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>

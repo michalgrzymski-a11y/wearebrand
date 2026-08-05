@@ -90,6 +90,7 @@ export const translations = {
     portfolio: {
       section_label: "Portfolio Usług",
       title: "Kompleksowe portfolio dla wymagających infrastruktur",
+      card_cta: "Zapytaj o szczegóły",
       tiles: [
         {
           tag: "01",
@@ -327,6 +328,7 @@ export const translations = {
     portfolio: {
       section_label: "Service portfolio",
       title: "A complete portfolio for demanding infrastructures",
+      card_cta: "Ask for details",
       tiles: [
         {
           tag: "01",
