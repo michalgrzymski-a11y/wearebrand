@@ -18,7 +18,7 @@ const COPY = {
     title: "Ceny rosną.",
     title_accent: "Twój rachunek nie musi.",
     subtitle:
-      "Od 2023 roku ceny serwerów, macierzy i pamięci enterprise wzrosły dwucyfrowo. Naszą rolą jest wchodzić w rozmowę o budżecie IT znacznie głębiej niż tylko oferta — projektujemy tak, żeby każda złotówka pracowała mocniej.",
+      "W dobie dwu/trzycyfrowych wzrostów cen sprzętu enterprise, tradycyjne podejście do zakupów IT przestaje się opłacać. Patrzymy na budżet IT szerzej niż przez pryzmat samej wyceny. Projektujemy rozwiązania tak, aby realnie chronić Twój kapitał i maksymalizować zwrot z inwestycji w technologię.",
     metric_value: "TCO",
     metric_unit: "-30% ↓",
     metric_label: "typowa oszczędność po audycie SMARTCLOUT",
@@ -57,7 +57,7 @@ const COPY = {
     title: "Prices are rising.",
     title_accent: "Your bill doesn't have to.",
     subtitle:
-      "Since 2023 enterprise server, storage and memory prices have grown double-digit year over year. Our job is to enter the IT budget conversation far deeper than just a quote — we design so every dollar works harder.",
+      "In an era of double- and triple-digit enterprise hardware price hikes, the traditional IT purchasing approach no longer pays off. We look at the IT budget more broadly than through the prism of a mere quote. We design solutions to genuinely protect your capital and maximise the return on your technology investment.",
     metric_value: "TCO",
     metric_unit: "-30% ↓",
     metric_label: "typical savings after a SMARTCLOUT audit",

@@ -30,9 +30,9 @@ const PORTS = [
 const COPY = {
   pl: {
     section_label: "Obszary rynkowe",
-    title_pre:     "Sześć portów.",
-    title_accent:  "Sześć rynków, które łączymy.",
-    title:         "Sześć portów. Sześć rynków, które łączymy.",
+    title_pre:     "Łączymy doświadczenia",
+    title_accent:  "z różnych sektorów.",
+    title:         "Łączymy doświadczenia z różnych sektorów.",
     subtitle:      "Najedź na port switcha, aby zobaczyć jak wspieramy dany sektor.",
     idle_hint:     "Wybierz port, aby zobaczyć obszar rynkowy",
     chassis_code:  "SC · 6-PORT · UP-LINK 10G",
@@ -47,9 +47,9 @@ const COPY = {
   },
   en: {
     section_label: "Market areas",
-    title_pre:     "Six ports.",
-    title_accent:  "Six markets we connect.",
-    title:         "Six ports. Six markets we connect.",
+    title_pre:     "Bridging experience",
+    title_accent:  "across sectors.",
+    title:         "Bridging experience across sectors.",
     subtitle:      "Hover a switch port to see how we support each sector.",
     idle_hint:     "Pick a port to reveal a market area",
     chassis_code:  "SC · 6-PORT · UP-LINK 10G",
@@ -120,12 +120,6 @@ const Obszary = () => {
               {copy.title_accent}
             </span>
           </h2>
-          <p
-            data-testid="switch-subtitle"
-            className="mt-4 max-w-2xl text-base md:text-lg text-white/70"
-          >
-            {copy.subtitle}
-          </p>
         </Reveal>
 
         {/* Switch chassis */}

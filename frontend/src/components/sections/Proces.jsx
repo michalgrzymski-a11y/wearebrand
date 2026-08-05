@@ -272,7 +272,7 @@ const Proces = () => {
                 WebkitTextFillColor: "transparent",
               }}
             >
-              {isPL ? "Biznes." : "Business."}
+              {isPL ? "biznes." : "business."}
             </span>
           </h2>
           <div className="mt-6 max-w-none text-base md:text-lg leading-relaxed" style={{ color: "#3C4A55", hyphens: "auto" }}>

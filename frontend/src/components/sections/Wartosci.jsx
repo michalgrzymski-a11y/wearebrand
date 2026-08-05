@@ -40,8 +40,8 @@ const VALUE_ICONS = {
 const COPY = {
   pl: {
     section_label: "Nasze wartości",
-    title_pre:     "Kompetencje",
-    title_accent:  "i Rzetelność.",
+    title_pre:     "Wyróżniają nas",
+    title_accent:  "kompetencje i rzetelność.",
     chassis_code:  "SC · 12-BAY · VALUES ARRAY",
     story: [
       "Doświadczenie nauczyło nas jednego — najlepsze rozwiązania rodzą się z wyciągania wniosków.",
@@ -82,8 +82,8 @@ const COPY = {
   },
   en: {
     section_label: "Our values",
-    title_pre:     "Competence",
-    title_accent:  "and Integrity.",
+    title_pre:     "What sets us apart:",
+    title_accent:  "competence and integrity.",
     chassis_code:  "SC · 12-BAY · VALUES ARRAY",
     story: [
       "Experience has taught us one thing — the best solutions are born from lessons learned.",
