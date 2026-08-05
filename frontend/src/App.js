@@ -4,7 +4,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LanguageProvider } from "@/i18n/LanguageContext";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/hero/HeroSection";
-import TrustedBySection from "@/components/sections/TrustedBySection";
 import ValuesSection from "@/components/sections/ValuesSection";
 import AboutV2Section from "@/components/sections/AboutV2Section";
 import TapeLibrarySection from "@/components/sections/TapeLibrarySection";
@@ -18,7 +17,6 @@ const Home = () => (
   <main data-testid="home-main" className="sc-app">
     <Navbar />
     <HeroSection />
-    <TrustedBySection />
     <ValuesSection />
     <AboutV2Section />
     <TapeLibrarySection />
