@@ -6273,17 +6273,18 @@ html { scroll-padding-top: 92px; }
 .sc-savings-pillar {
   display: flex;
   gap: 14px;
-  padding: 18px 20px;
-  border-radius: 10px;
+  padding: 22px 24px;
+  border-radius: 14px;
   background: #ffffff;
   border: 1px solid rgba(12, 92, 98, 0.14);
   box-shadow: 0 12px 30px -22px rgba(12, 92, 98, 0.3);
-  transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  transition: border-color 0.4s ease, transform 0.4s ease, box-shadow 0.4s ease;
 }
 .sc-savings-pillar:hover {
   border-color: rgba(6, 255, 224, 0.55);
-  transform: translateY(-2px);
-  box-shadow: 0 20px 40px -22px rgba(12, 92, 98, 0.4);
+  transform: translateY(-4px);
+  box-shadow: 0 24px 50px -22px rgba(12, 92, 98, 0.4),
+              0 0 0 1px rgba(6, 255, 224, 0.18);
 }
 .sc-savings-pillar__icon {
   display: inline-flex;
@@ -10732,25 +10733,99 @@ html { scroll-padding-top: 92px; }
 
 /* Compact stage cards */
 .sc-av2--light .sc-av2__stage {
-  padding: 12px 14px 14px 44px;
+  padding: 16px 18px 16px 44px;
   min-height: 0;
-  gap: 6px;
+  gap: 8px;
+  /* Match Portfolio's sc-bento card language: white bg, teal border, cyan hover */
+  background: #ffffff !important;
+  border: 1px solid rgba(12, 92, 98, 0.14) !important;
+  color: rgba(28, 40, 51, 0.85) !important;
+  box-shadow: 0 12px 30px -22px rgba(12, 92, 98, 0.3);
+  transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
 }
+.sc-av2--light .sc-av2__stage:hover {
+  border-color: rgba(6, 255, 224, 0.55) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 20px 40px -22px rgba(12, 92, 98, 0.4),
+              0 0 0 1px rgba(6, 255, 224, 0.18);
+  color: rgba(28, 40, 51, 0.95) !important;
+}
+.sc-av2--light .sc-av2__stage.is-active {
+  background: #ffffff !important;
+  border-color: rgba(6, 255, 224, 0.65) !important;
+  box-shadow: 0 20px 40px -22px rgba(6, 255, 224, 0.35),
+              0 0 0 1px rgba(6, 255, 224, 0.28);
+}
+.sc-av2--light .sc-av2__stage.is-past {
+  border-color: rgba(6, 255, 224, 0.35) !important;
+}
+
+/* Stage node dot — teal ring, cyan when active */
 .sc-av2--light .sc-av2__stage-node {
-  top: 16px; left: 14px;
+  top: 20px; left: 14px;
   width: 14px; height: 14px;
   border-width: 2px;
+  background: #ffffff;
+  border-color: rgba(12, 92, 98, 0.4);
 }
-.sc-av2--light .sc-av2__stage-node-inner { inset: 2px; }
-.sc-av2--light .sc-av2__stage-step { font-size: 9.5px; }
+.sc-av2--light .sc-av2__stage-node-inner {
+  inset: 2px;
+  background: rgba(12, 92, 98, 0.18);
+}
+.sc-av2--light .sc-av2__stage.is-active .sc-av2__stage-node,
+.sc-av2--light .sc-av2__stage.is-past   .sc-av2__stage-node {
+  border-color: #00B8D4;
+  box-shadow: 0 0 12px rgba(6, 255, 224, 0.55);
+}
+.sc-av2--light .sc-av2__stage.is-active .sc-av2__stage-node-inner {
+  background: linear-gradient(135deg, #06FFE0 0%, #00B8D4 100%);
+  box-shadow: 0 0 8px rgba(6, 255, 224, 0.85);
+}
+
+/* Step kicker — dark teal instead of neon cyan */
+.sc-av2--light .sc-av2__stage-step {
+  font-size: 9.5px;
+  color: #0C5C62;
+  letter-spacing: 0.28em;
+}
+
+/* Icon variant kept small but on light section */
 .sc-av2--light .sc-av2__stage-icon {
   width: 32px; height: 32px; border-radius: 8px;
   margin-top: 2px;
+  background: linear-gradient(135deg, rgba(6,255,224,0.15), rgba(0,184,212,0.15));
+  color: #0C5C62;
+  border: 1px solid rgba(6, 255, 224, 0.4);
 }
-.sc-av2--light .sc-av2__stage-title { font-size: 15px; margin-top: 2px; }
-.sc-av2--light .sc-av2__stage-desc  { font-size: 12.5px; line-height: 1.5; }
+
+/* Title in dark teal */
+.sc-av2--light .sc-av2__stage-title {
+  font-size: 15px;
+  margin-top: 2px;
+  color: #0C5C62;
+  font-weight: 700;
+}
+.sc-av2--light .sc-av2__stage-desc  {
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: rgba(28, 40, 51, 0.72);
+}
+
+/* Badges → chip style matching sc-chip */
 .sc-av2--light .sc-av2__stage-badge {
-  font-size: 10px; padding: 3px 7px; gap: 4px;
+  font-size: 10.5px;
+  padding: 4px 10px;
+  gap: 5px;
+  background: #f8fafa !important;
+  border: 1px solid rgba(12, 92, 98, 0.14) !important;
+  color: var(--sc-charcoal) !important;
+  border-radius: 999px;
+}
+.sc-av2--light .sc-av2__stage-badge svg { color: #0C5C62; }
+.sc-av2--light .sc-av2__stage.is-active .sc-av2__stage-badge,
+.sc-av2--light .sc-av2__stage:hover .sc-av2__stage-badge {
+  background: rgba(6, 255, 224, 0.08) !important;
+  border-color: rgba(6, 255, 224, 0.4) !important;
 }
 .sc-av2--light .sc-av2__stage-badges { gap: 4px; margin-top: 6px; }
 
@@ -10759,12 +10834,52 @@ html { scroll-padding-top: 92px; }
   margin: 3px 0;
   padding: 2px 4px;
   transform: translateX(15px);
+  color: rgba(12, 92, 98, 0.4);
 }
+.sc-av2--light .sc-av2__arrow.is-past { color: #00B8D4; }
 
-/* Compact + prettier blueprint */
+/* Compact + prettier blueprint — white card matching Portfolio bento */
 .sc-av2--light .sc-av2__blueprint {
-  padding: 16px 18px;
-  border-radius: 10px;
+  padding: 20px 22px;
+  border-radius: 14px;
+  background: #ffffff !important;
+  border: 1px solid rgba(12, 92, 98, 0.14) !important;
+  box-shadow: 0 12px 30px -22px rgba(12, 92, 98, 0.3);
+}
+/* Blueprint text colors flipped for light card */
+.sc-av2--light .sc-av2__bp-row {
+  border-bottom-color: rgba(12, 92, 98, 0.15) !important;
+}
+.sc-av2--light .sc-av2__bp-idx { color: #0C5C62 !important; }
+.sc-av2--light .sc-av2__bp-idx em { color: rgba(28, 40, 51, 0.5) !important; }
+.sc-av2--light .sc-av2__bp-status { color: #00B8D4 !important; }
+.sc-av2--light .sc-av2__bp-title { color: #0C5C62 !important; }
+.sc-av2--light .sc-av2__bp-bar {
+  background: rgba(12, 92, 98, 0.1) !important;
+}
+.sc-av2--light .sc-av2__bp-bar-fill {
+  background: linear-gradient(90deg, #06FFE0 0%, #00B8D4 100%) !important;
+}
+.sc-av2--light .sc-av2__bp-bar-caption {
+  color: rgba(28, 40, 51, 0.55) !important;
+}
+.sc-av2--light .sc-av2__bp-bar-caption b {
+  color: #0C5C62 !important;
+}
+.sc-av2--light .sc-av2__bp-spec {
+  border-bottom-color: rgba(12, 92, 98, 0.14) !important;
+}
+.sc-av2--light .sc-av2__bp-spec-k {
+  color: rgba(28, 40, 51, 0.55) !important;
+}
+.sc-av2--light .sc-av2__bp-spec-dots {
+  background-image: linear-gradient(90deg, rgba(12, 92, 98, 0.25) 25%, transparent 25%);
+}
+.sc-av2--light .sc-av2__bp-spec-v {
+  color: #0C5C62 !important;
+}
+.sc-av2--light .sc-av2__bp-bracket {
+  border-color: rgba(12, 92, 98, 0.35) !important;
 }
 .sc-av2--light .sc-av2__bp-row {
   padding-bottom: 8px;
