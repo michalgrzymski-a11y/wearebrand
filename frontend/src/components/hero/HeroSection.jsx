@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from "react";
 import { useLang } from "@/i18n/LanguageContext";
 import { ArrowRight } from "lucide-react";
 import NeuralNodeNetwork from "@/components/fx/NeuralNodeNetwork";
-import HERO_CLIENTS from "@/data/heroClients";
 
 /**
  * Hero — cinematic datacenter photograph as full-bleed background.
@@ -168,43 +167,6 @@ const HeroSection = () => {
                 {t.hero.cta_secondary}
               </a>
             </div>
-          </div>
-        </div>
-      </div>
-
-      {/* "Zaufali nam" mist strip — client logos floating on the fog at the bottom of the hero */}
-      <div className="sc-hero-mist" data-testid="hero-mist-strip" aria-label={t.trusted?.section_label || "Zaufali nam"}>
-        <div className="sc-hero-mist__fog" aria-hidden="true" />
-        <div className="mx-auto w-full max-w-7xl px-6 md:px-10 relative">
-          <div className="sc-hero-mist__label">
-            <span className="sc-hero-mist__label-line" />
-            {t.trusted?.section_label || "Zaufali nam"}
-          </div>
-        </div>
-        <div
-          className="sc-hero-mist__marquee-wrap"
-          style={{
-            maskImage: "linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent)",
-            WebkitMaskImage: "linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent)",
-          }}
-        >
-          <div className="sc-marquee sc-marquee--rtl sc-marquee--slow sc-hero-mist__marquee" data-testid="hero-mist-marquee">
-            {[...HERO_CLIENTS, ...HERO_CLIENTS].map((c, i) => (
-              <div
-                key={`${c.name}-${i}`}
-                className={`sc-hero-mist__item ${c.invert ? "is-invert" : ""}`}
-                data-testid={`hero-mist-logo-${i}`}
-                title={c.name}
-              >
-                <img
-                  src={`${process.env.PUBLIC_URL || ""}/logos/${c.file}`}
-                  alt={c.name}
-                  className="sc-hero-mist__logo"
-                  loading="lazy"
-                  draggable="false"
-                />
-              </div>
-            ))}
           </div>
         </div>
       </div>

@@ -5,6 +5,7 @@ import { LanguageProvider } from "@/i18n/LanguageContext";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/hero/HeroSection";
 import ValuesSection from "@/components/sections/ValuesSection";
+import TrustedBySection from "@/components/sections/TrustedBySection";
 import AboutV2Section from "@/components/sections/AboutV2Section";
 import TapeLibrarySection from "@/components/sections/TapeLibrarySection";
 import SwitchSection from "@/components/sections/SwitchSection";
@@ -18,6 +19,7 @@ const Home = () => (
     <Navbar />
     <HeroSection />
     <ValuesSection />
+    <TrustedBySection />
     <AboutV2Section />
     <TapeLibrarySection />
     <SwitchSection />
