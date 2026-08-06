@@ -4,13 +4,13 @@ import { useLang } from "@/i18n/LanguageContext";
 
 /* Flat nav — each item maps 1:1 to a section on the home page. */
 const NAV = [
-  { key: "home",     href: "/#top"        },
-  { key: "values",   href: "/#values"     },
-  { key: "clients",  href: "/#trusted"    },
-  { key: "offer",    href: "/#portfolio"  },
-  { key: "savings",  href: "/#savings"    },
-  { key: "partners", href: "/#partners"   },
-  { key: "contact",  href: "/#contact"    },
+  { key: "home",     href: "/#top",       sectionId: "top"       },
+  { key: "values",   href: "/#values",    sectionId: "values"    },
+  { key: "clients",  href: "/#trusted",   sectionId: "trusted"   },
+  { key: "offer",    href: "/#portfolio", sectionId: "portfolio" },
+  { key: "savings",  href: "/#savings",   sectionId: "savings"   },
+  { key: "partners", href: "/#partners",  sectionId: "partners"  },
+  { key: "contact",  href: "/#contact",   sectionId: "contact"   },
 ];
 
 const SECTION_THEMES = {
@@ -46,6 +46,7 @@ const Navbar = () => {
   const [theme, setTheme] = useState("dark");
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("top");
 
   useEffect(() => {
     const onScroll = () => setScrolled((window.scrollY || 0) > 8);
@@ -73,6 +74,7 @@ const Navbar = () => {
           }
         });
         setTheme(SECTION_THEMES[bestId] || "dark");
+        setActiveSection(bestId);
       },
       { rootMargin: "-90px 0px -55% 0px", threshold: [0, 0.15, 0.35, 0.6, 1] }
     );
@@ -117,12 +119,14 @@ const Navbar = () => {
           <nav className="hidden lg:flex items-center gap-8">
             {NAV.map((l) => {
               const label = t.nav[l.key];
+              const isActive = activeSection === l.sectionId;
               return (
                 <a
                   key={l.key}
                   href={l.href}
                   data-testid={`nav-link-${l.key}`}
-                  className="sc-nav-link"
+                  data-active={isActive ? "true" : "false"}
+                  className={`sc-nav-link ${isActive ? "is-active" : ""}`}
                   onClick={closeMenu}
                 >
                   {label}
