@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import {
-  ArrowLeft, Zap, Database, Layers, ShieldCheck, Cloud, Cpu, Gauge, Sparkles,
+  ArrowLeft, Zap, Database, Layers, ShieldCheck, Cloud, Sparkles,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Reveal from "@/components/Reveal";
+import NetAppAFFSection from "@/components/sections/NetAppAFFSection";
+import DataReductionSection from "@/components/sections/DataReductionSection";
 import {
   AFF_A, AFF_C, FAS,
   ONTAP_FEATURES, ONTAP_SECURITY,
@@ -101,6 +103,90 @@ const SeriesPicker = ({ items, testId, showEffective = true }) => {
 /* ------------------------------------------------------------------ */
 /* Sections                                                            */
 /* ------------------------------------------------------------------ */
+
+/* Consolidated Portfolio Browser — 3 series in one section, tab-switch */
+const PortfolioBrowser = () => {
+  const TABS = [
+    { id: "performance", label: "AFF A · Performance", subtitle: "All-flash NVMe TLC", items: AFF_A,  effective: true  },
+    { id: "capacity",    label: "AFF C · Capacity",    subtitle: "All-flash QLC 60TB",  items: AFF_C,  effective: true  },
+    { id: "hybrid",      label: "FAS · Hybrid",        subtitle: "SSD + HDD",           items: FAS,    effective: false },
+  ];
+  const [active, setActive] = useState(TABS[0].id);
+  const tab = TABS.find((t) => t.id === active) || TABS[0];
+
+  return (
+    <section id="netapp-portfolio-browser" className="relative w-full overflow-hidden" style={{ background: "#F7FAFA" }}>
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(55% 55% at 30% 30%, rgba(73,173,165,0.08) 0%, rgba(73,173,165,0) 60%)," +
+            " radial-gradient(45% 55% at 75% 70%, rgba(12,92,98,0.06) 0%, rgba(12,92,98,0) 60%)",
+        }}
+      />
+      <div className="relative z-10 mx-auto max-w-7xl px-6 md:px-10 py-20 md:py-24">
+        <Reveal>
+          <Eyebrow>Pełne portfolio modeli</Eyebrow>
+          <Heading pre="Wybierz klasę,"  accent="a my pokażemy modele." />
+          <p className="mt-5 max-w-3xl text-base md:text-lg leading-relaxed" style={{ color: "#3C4A55" }}>
+            Trzy klasy macierzy pod jednym ONTAP. Przełącz między Performance / Capacity / Hybrid żeby zobaczyć modele i ich parametry.
+          </p>
+        </Reveal>
+
+        {/* Tab bar */}
+        <div className="sc-proc__tabs mt-10" role="tablist">
+          {TABS.map((tt, idx) => (
+            <button
+              key={tt.id}
+              type="button"
+              role="tab"
+              aria-selected={active === tt.id}
+              onClick={() => setActive(tt.id)}
+              className={`sc-proc__tab ${active === tt.id ? "is-active" : ""}`}
+              data-testid={`portfolio-tab-${tt.id}`}
+            >
+              <span className="sc-proc__tab-num">{String(idx + 1).padStart(2, "0")}</span>
+              <span className="sc-proc__tab-step">{tt.label}</span>
+            </button>
+          ))}
+        </div>
+
+        {/* Compact grid of model cards */}
+        <div className="sc-netapp-grid" key={tab.id}>
+          {tab.items.map((m, i) => (
+            <div key={m.model} className="sc-netapp-card" data-testid={`portfolio-card-${tab.id}-${i}`}>
+              <div className="sc-netapp-card__head">
+                <span className="sc-netapp-card__tag">{m.tag}</span>
+                <h3 className="sc-netapp-card__title">{m.model}</h3>
+              </div>
+              <div className="sc-netapp-card__specs">
+                <div className="sc-netapp-card__spec">
+                  <span className="sc-netapp-card__spec-k">Raw HA</span>
+                  <span className="sc-netapp-card__spec-v">{m.raw}</span>
+                </div>
+                {tab.effective && m.effective && (
+                  <div className="sc-netapp-card__spec">
+                    <span className="sc-netapp-card__spec-k">Effective</span>
+                    <span className="sc-netapp-card__spec-v">{m.effective}</span>
+                  </div>
+                )}
+                <div className="sc-netapp-card__spec">
+                  <span className="sc-netapp-card__spec-k">Cluster</span>
+                  <span className="sc-netapp-card__spec-v">{m.cluster}</span>
+                </div>
+                <div className="sc-netapp-card__spec">
+                  <span className="sc-netapp-card__spec-k">Form Factor</span>
+                  <span className="sc-netapp-card__spec-v">{m.form}</span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
 
 const NetAppHero = () => (
   <section id="netapp-hero" className="relative w-full overflow-hidden" style={{ background: "#040709", color: "#E8F4F5" }}>
@@ -368,38 +454,11 @@ const NetappPage = () => {
       <NetAppHero />
       <PortfolioOverview />
 
-      <LightSectionWrap
-        id="aff-a"
-        eyebrow="AFF A-Series · Performance"
-        pre="All-flash NVMe"
-        accent="dla krytycznych workload'ów."
-        subtitle="Sześć modeli od A20 po A1K — wybór najbardziej wymagających środowisk bazodanowych, VDI, HPC i analityki."
-      >
-        <SeriesPicker items={AFF_A} testId="aff-a-picker" />
-      </LightSectionWrap>
-
-      <LightSectionWrap
-        id="aff-c"
-        eyebrow="AFF C-Series · Capacity Flash"
-        pre="Capacity Flash na"
-        accent="dyskach QLC do 60 TB."
-        subtitle="Trzy modele (C30, C60, C80) — flash performance w cenie kapacytatywnego HDD, z gwarancją Storage Efficiency 5:1."
-      >
-        <SeriesPicker items={AFF_C} testId="aff-c-picker" />
-      </LightSectionWrap>
-
-      <LightSectionWrap
-        id="fas"
-        eyebrow="FAS · Hybrid"
-        pre="Hybrid SSD + HDD"
-        accent="dla różnorodnych obciążeń."
-        subtitle="Pięć modeli FAS — od SMB (FAS2750) po enterprise (FAS90). Optymalny stosunek kosztu do pojemności dla mieszanych workloadów."
-      >
-        <SeriesPicker items={FAS} testId="fas-picker" showEffective={false} />
-      </LightSectionWrap>
-
+      <NetAppAFFSection />
+      <PortfolioBrowser />
       <ONTAPCore />
       <ONTAPSecurity />
+      <DataReductionSection />
       <StorageEfficiency />
       <BlueXPCloud />
       <CTAContact />
