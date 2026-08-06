@@ -11609,3 +11609,177 @@ html { scroll-padding-top: 92px; }
   .sc-proc__card-title { font-size: 20px; }
 }
 
+
+/* ==========================================================================
+   NetApp subpage — dark tiles + storage efficiency + cloud grid
+   ========================================================================== */
+.sc-netapp-tile {
+  padding: 22px 20px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(6, 255, 224, 0.16);
+  border-radius: 12px;
+  transition: border-color 0.35s ease, transform 0.35s ease, background 0.35s ease;
+  min-height: 170px;
+}
+.sc-netapp-tile:hover {
+  border-color: rgba(6, 255, 224, 0.55);
+  transform: translateY(-3px);
+  background: rgba(6, 255, 224, 0.05);
+}
+.sc-netapp-tile__icon {
+  width: 34px; height: 34px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(6,255,224,0.15), rgba(0,184,212,0.15));
+  color: #06FFE0;
+  border: 1px solid rgba(6, 255, 224, 0.4);
+}
+.sc-netapp-tile__title {
+  margin-top: 14px;
+  font-family: "Manrope", sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.005em;
+}
+.sc-netapp-tile__desc {
+  margin-top: 8px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: rgba(232, 244, 245, 0.65);
+}
+
+.sc-netapp-metric {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(6, 255, 224, 0.08);
+  border: 1px solid rgba(6, 255, 224, 0.3);
+  color: #0C5C62;
+  text-transform: uppercase;
+}
+
+/* Storage efficiency ratio card */
+.sc-netapp-ratio {
+  padding: 32px 34px;
+  border-radius: 16px;
+  background: rgba(6, 255, 224, 0.04);
+  border: 1px solid rgba(6, 255, 224, 0.3);
+  box-shadow: inset 0 0 0 1px rgba(6, 255, 224, 0.06);
+}
+.sc-netapp-ratio__label {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: #7CC4C0;
+}
+.sc-netapp-ratio__value {
+  margin-top: 12px;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-family: "Manrope", sans-serif;
+  font-weight: 700;
+  line-height: 1;
+}
+.sc-netapp-ratio__value > span:not(.sc-netapp-ratio__colon) {
+  font-size: 96px;
+  background: linear-gradient(135deg, #06FFE0 0%, #00B8D4 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.sc-netapp-ratio__colon { font-size: 60px; color: rgba(6, 255, 224, 0.5); }
+.sc-netapp-ratio__caption {
+  margin-top: 12px;
+  font-size: 13px;
+  color: rgba(232, 244, 245, 0.65);
+}
+.sc-netapp-ratio__bars {
+  margin-top: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.sc-netapp-ratio__bar {
+  position: relative;
+  height: 30px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  font-size: 12px;
+  font-family: "JetBrains Mono", monospace;
+  color: rgba(232, 244, 245, 0.75);
+  overflow: hidden;
+}
+.sc-netapp-ratio__bar--eff {
+  background: linear-gradient(90deg, rgba(6,255,224,0.4) 0%, rgba(0,184,212,0.35) 100%);
+  border-color: rgba(6, 255, 224, 0.5);
+  color: #04141A;
+  font-weight: 700;
+}
+
+/* BlueXP clouds grid */
+.sc-netapp-clouds {
+  padding: 26px 28px;
+  border-radius: 14px;
+  background: #ffffff;
+  border: 1px solid rgba(12, 92, 98, 0.14);
+  box-shadow: 0 12px 30px -22px rgba(12, 92, 98, 0.3);
+}
+.sc-netapp-clouds__head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #0C5C62;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+.sc-netapp-clouds__grid {
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.sc-netapp-clouds__cell {
+  padding: 16px 14px;
+  border-radius: 10px;
+  background: #F8FAFA;
+  border: 1px solid rgba(12, 92, 98, 0.1);
+  font-family: "Manrope", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #0C5C62;
+  text-align: center;
+  transition: border-color 0.3s ease, background 0.3s ease;
+}
+.sc-netapp-clouds__cell:hover {
+  border-color: rgba(6, 255, 224, 0.5);
+  background: rgba(6, 255, 224, 0.05);
+}
+.sc-netapp-clouds__note {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px dashed rgba(12, 92, 98, 0.18);
+  font-size: 12px;
+  color: rgba(28, 40, 51, 0.6);
+  line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+  .sc-netapp-ratio__value > span:not(.sc-netapp-ratio__colon) { font-size: 72px; }
+  .sc-netapp-ratio { padding: 24px; }
+  .sc-netapp-clouds__grid { grid-template-columns: 1fr; }
+}
+
