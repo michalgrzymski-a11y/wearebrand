@@ -1,12 +1,6 @@
 import React, { useState } from "react";
 import { useLang } from "@/i18n/LanguageContext";
-import {
-  Ear,
-  Search,
-  Target,
-  ArrowDown,
-  CheckCircle2,
-} from "lucide-react";
+import { ArrowDown } from "lucide-react";
 import Reveal from "@/components/Reveal";
 import useSectionParallax from "@/hooks/useSectionParallax";
 
@@ -20,7 +14,6 @@ import useSectionParallax from "@/hooks/useSectionParallax";
 const STAGES = [
   {
     id: "listen",
-    Icon: Ear,
     stepPL: "Słuchamy",
     stepEN: "Listen",
     label_pl: "Uważność",
@@ -48,7 +41,6 @@ const STAGES = [
   },
   {
     id: "analyse",
-    Icon: Search,
     stepPL: "Analizujemy",
     stepEN: "Analyse",
     label_pl: "Holistyczne spojrzenie",
@@ -74,7 +66,6 @@ const STAGES = [
   },
   {
     id: "optimise",
-    Icon: Target,
     stepPL: "Optymalizujemy",
     stepEN: "Optimise",
     label_pl: "Optymalizacja",
@@ -333,7 +324,6 @@ const Proces = () => {
                     <span className="sc-av2__stage-badges">
                       {(isPL ? s.badges_pl : s.badges_en).map((b) => (
                         <span key={b} className="sc-av2__stage-badge">
-                          <CheckCircle2 size={11} strokeWidth={2.4} />
                           {b}
                         </span>
                       ))}
