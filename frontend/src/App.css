@@ -12133,3 +12133,84 @@ html { scroll-padding-top: 92px; }
   filter: drop-shadow(0 0 4px rgba(6, 255, 224, 0.6));
   pointer-events: none;
 }
+
+/* ============================================================
+   MOBILE + RESPONSIVE FIXES (2026-02-12)
+   Batch A + B + C: mobile hero canvas explicit sizing,
+   vertical stacked layouts for Wartości + Obszary chassis,
+   and unified partner/client logo sizes.
+   ============================================================ */
+
+/* — C. Unify Klienci (ZaufaliNam) + Partnerzy logo sizes at 30px — */
+.sc-partner-logo-img { height: 30px !important; }
+.sc-partners2__logo-img,
+.sc-partners2__float .sc-partners2__logo-img { height: 30px !important; max-width: 140px !important; }
+
+/* — A. Mobile Hero canvas forced explicit size so mobile 30-frame set draws. */
+@media (max-width: 767px) {
+  .sc-hero-video,
+  .sc-hero-poster {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    display: block !important;
+  }
+  /* Ensure the sticky wrapper has explicit height on mobile so absolute children
+     (canvas + poster + photo) get real dimensions. */
+  .sc-hero-sticky { height: 100vh !important; min-height: 100vh; }
+}
+
+/* — B. Wartości chassis becomes a VERTICAL stack on mobile.
+      Instead of the horizontal server rack (which needs 800px+ to read), we
+      collapse each bay into a full-width card stacked top→bottom. */
+@media (max-width: 767px) {
+  .sc-varray {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    border-radius: 10px;
+  }
+  .sc-varray__ear { display: none; }
+  .sc-varray__bays {
+    flex-direction: column !important;
+    height: auto !important;
+    gap: 8px;
+    padding: 10px;
+  }
+  .sc-varray__bays .sc-vbay,
+  .sc-varray .sc-vbay {
+    width: 100% !important;
+    flex: 0 0 auto !important;
+    min-height: 88px;
+    border-radius: 8px;
+    padding: 12px 14px;
+  }
+  /* Kill the horizontal hover-expand animation on touch. Every bay always
+     shows its full content. */
+  .sc-varray.is-hovered .sc-vbay,
+  .sc-varray .sc-vbay { flex-grow: 1 !important; }
+  .sc-varray .sc-vbay__compact { display: none !important; }
+  .sc-varray .sc-vbay__ridges { display: none !important; }
+}
+
+/* — B. Obszary rynkowe (sc-switch) — same vertical stack treatment. */
+@media (max-width: 767px) {
+  .sc-switch {
+    grid-template-columns: 1fr;
+  }
+  .sc-switch__ear { display: none; }
+  .sc-switch__bays,
+  .sc-switch .sc-switch__row,
+  .sc-switch .sc-switch__ports {
+    flex-direction: column !important;
+    gap: 8px;
+    height: auto !important;
+  }
+  .sc-switch .sc-sport,
+  .sc-switch .sc-switch__port,
+  .sc-switch .sc-switch__bay {
+    width: 100% !important;
+    min-height: 76px;
+    flex: 0 0 auto !important;
+  }
+}
