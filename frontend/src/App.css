@@ -264,46 +264,29 @@ html { scroll-padding-top: 92px; }
 .sc-hero-copy--final .sc-hero-copy__initial-only { display: none; }
 .sc-hero-copy--final .sc-hero-copy__final-only { display: block; }
 
-/* Emphasis style: HIGHLIGHTER MARKER. No panel, no border — just a strong
-   drop shadow on the title (so white type stays legible on the moving
-   datacenter) and a chunky cyan "highlighter" swipe on the accent words
-   (ciągłości / chronią dane / biznes / budżet), like a printed marker. */
+/* Emphasis style: LEFT CYAN BAR. A thin vertical accent bar hugs the left edge
+   of the copy column while a strong text-shadow keeps the type legible on top
+   of the animated datacenter. No panel background — the animation stays fully
+   visible behind the words. */
 .sc-hero-copy__col {
   position: relative;
-  padding: 0;
-  border: none;
-  background: transparent;
-  box-shadow: none;
+  padding: 6px 0 6px 26px;
+  border-left: 3px solid #06FFE0;
+  box-shadow: -6px 0 24px rgba(6, 255, 224, 0.28);
 }
 .sc-hero-title {
-  color: #ffffff !important;
   text-shadow:
-    0 3px 24px rgba(0, 0, 0, 0.95),
-    0 0 6px rgba(0, 0, 0, 0.9),
-    0 0 40px rgba(0, 0, 0, 0.55);
+    0 2px 20px rgba(0, 0, 0, 0.85),
+    0 0 40px rgba(0, 0, 0, 0.55),
+    0 0 4px rgba(0, 0, 0, 0.9);
 }
-.sc-hero-accent {
-  /* Chunky cyan highlighter marker behind the letters, letters stay white so
-     they read on both the marker and the animated bg. */
-  background: linear-gradient(
-    180deg,
-    transparent 0%,
-    transparent 22%,
-    rgba(6, 255, 224, 0.85) 22%,
-    rgba(0, 184, 212, 0.85) 96%,
-    transparent 96%,
-    transparent 100%
-  );
-  -webkit-background-clip: initial;
-  background-clip: initial;
-  -webkit-text-fill-color: #ffffff;
-  color: #ffffff;
-  padding: 0 8px;
-  box-decoration-break: clone;
-  -webkit-box-decoration-break: clone;
-  text-shadow:
-    0 1px 3px rgba(0, 0, 0, 0.75),
-    0 0 12px rgba(0, 32, 42, 0.8);
+/* When in FINAL state (copy pinned to the left), swap the bar to the RIGHT
+   edge so it stays visually anchored to the viewport side the copy lives on. */
+.sc-hero-copy--final .sc-hero-copy__col {
+  padding: 6px 26px 6px 0;
+  border-left: none;
+  border-right: 3px solid #06FFE0;
+  box-shadow: 6px 0 24px rgba(6, 255, 224, 0.28);
 }
 @media (min-width: 768px) {
   .sc-hero-copy { padding: 0 40px; }
