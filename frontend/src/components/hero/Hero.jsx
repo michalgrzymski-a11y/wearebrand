@@ -33,8 +33,10 @@ const Hero = () => {
     let scrollY = 0;
 
     /* --- Scroll-linked WebP frame sequence (Apple-style scrub) ---
-       193 pre-rendered 4K WebP frames in /public/video/frames/f_001.webp …
-       f_193.webp are preloaded on mount, then drawn to a <canvas> at the
+       DESKTOP: 193 pre-rendered 4K WebP frames in /public/video/frames/
+       MOBILE : 30 pre-rendered 1080p frames in /public/video/frames-m/
+       Both are hue-shifted to match the site cyan palette (#06FFE0).
+       Frames are preloaded on mount, then drawn to a <canvas> at the
        current scrub progress. This eliminates codec seek jitter completely —
        every "seek" is just an Image → canvas drawImage() call. */
     const canvas = canvasRef.current;
@@ -42,9 +44,15 @@ const Hero = () => {
       typeof window !== "undefined" &&
       window.matchMedia &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const isMobile =
+      typeof window !== "undefined" &&
+      window.matchMedia &&
+      window.matchMedia("(max-width: 767px)").matches;
 
-    const TOTAL_FRAMES = 193;
-    const FRAMES_BASE = `${process.env.PUBLIC_URL}/video/frames`;
+    const TOTAL_FRAMES = isMobile ? 30 : 193;
+    const FRAMES_BASE = `${process.env.PUBLIC_URL}/video/${
+      isMobile ? "frames-m" : "frames"
+    }`;
     const images = new Array(TOTAL_FRAMES);
     let ctx = null;
     let currentIdx = -1;
@@ -69,9 +77,11 @@ const Hero = () => {
       frameRaf = requestAnimationFrame(() => {
         frameRaf = 0;
         if (!hero) return;
+        // Simple pin & scrub — outer scroller (300vh) has 200vh of scroll room
+        // for the sticky (100vh) to pin. Video scrubs across the full pin range,
+        // then the Hero un-pins and scrolls up normally, revealing Wartości.
         const rect = hero.getBoundingClientRect();
-        const revealPx = window.innerHeight;
-        const scrubLen = hero.offsetHeight - window.innerHeight - revealPx;
+        const scrubLen = hero.offsetHeight - window.innerHeight;
         if (scrubLen <= 0) return;
         const currentScroll = Math.min(scrubLen, Math.max(0, -rect.top));
         const progress = currentScroll / scrubLen;
@@ -88,18 +98,16 @@ const Hero = () => {
       });
     };
 
-    if (canvas && !prefersReducedMotion) {
+    if (canvas && !prefersReducedMotion && !isMobile) {
+      /* DESKTOP: scroll-linked scrub over the full 4K sequence. */
       ctx = canvas.getContext("2d", { alpha: true });
       // Preload every frame in parallel — HTTP/2 multiplexing handles the fan-out.
       for (let i = 0; i < TOTAL_FRAMES; i++) {
         const img = new Image();
         img.decoding = "async";
-        // Kick off native decode as soon as the network body arrives.
         img.onload = () => {
           framesLoaded += 1;
-          // Re-draw once the currently-visible-progress frame arrives.
-          if (framesLoaded === 1) scheduleDraw();
-          else scheduleDraw();
+          scheduleDraw();
         };
         img.onerror = () => { framesLoaded += 1; };
         img.src = `${FRAMES_BASE}/f_${String(i + 1).padStart(3, "0")}.webp`;
@@ -108,8 +116,41 @@ const Hero = () => {
       window.addEventListener("scroll", scheduleDraw, { passive: true });
       window.addEventListener("resize", scheduleDraw);
       scheduleDraw();
+    } else if (canvas && !prefersReducedMotion && isMobile) {
+      /* MOBILE: no pin-scrub (Hero collapses to 100vh below md). Instead we
+         auto-play the 30-frame 1080p lite sequence once at ~250ms per frame
+         (≈7.5 s total), then hold on the last frame as a still hero backdrop. */
+      ctx = canvas.getContext("2d", { alpha: true });
+      let mobileIdx = 0;
+      let mobileTimer = 0;
+      const advance = () => {
+        if (mobileIdx >= TOTAL_FRAMES) return;
+        drawFrameAt(mobileIdx);
+        mobileIdx += 1;
+        mobileTimer = window.setTimeout(advance, 250);
+      };
+      // Kick off after first frame has downloaded so we never draw blank.
+      let started = false;
+      const tryStart = () => {
+        if (started || !images[0] || !images[0].complete) return;
+        started = true;
+        advance();
+      };
+      for (let i = 0; i < TOTAL_FRAMES; i++) {
+        const img = new Image();
+        img.decoding = "async";
+        img.onload = () => {
+          framesLoaded += 1;
+          tryStart();
+        };
+        img.onerror = () => { framesLoaded += 1; };
+        img.src = `${FRAMES_BASE}/f_${String(i + 1).padStart(3, "0")}.webp`;
+        images[i] = img;
+      }
+      // Save timer id on the canvas so cleanup can clear it.
+      canvas.__mobileTimer = () => window.clearTimeout(mobileTimer);
     } else if (canvas && prefersReducedMotion) {
-      // Reduced motion — draw the last frame as a static hero backdrop and stop.
+      // Reduced motion — draw the last frame as a static hero backdrop.
       ctx = canvas.getContext("2d", { alpha: true });
       const img = new Image();
       img.onload = () => drawFrameAt(0);
@@ -125,12 +166,10 @@ const Hero = () => {
     };
     const onLeave = () => { tx = 0; ty = 0; };
     const onScroll = () => {
-      // Parallax bound to SCRUB progress (0..1) × 80px — matches the video's
-      // scrub range so hero layers stay in view while scrubbing, and freeze
-      // once the reveal phase starts (video done, next section covers hero).
+      // Parallax bound to scrub progress (0..1) × 80px — layers stay in view
+      // through the whole pin range and freeze once Hero un-pins.
       const rect = hero.getBoundingClientRect();
-      const revealPx = window.innerHeight;
-      const scrubLen = hero.offsetHeight - window.innerHeight - revealPx;
+      const scrubLen = hero.offsetHeight - window.innerHeight;
       const currentScroll = Math.min(scrubLen, Math.max(0, -rect.top));
       const progress = scrubLen > 0 ? currentScroll / scrubLen : 0;
       scrollY = progress * 80;
@@ -165,6 +204,7 @@ const Hero = () => {
     return () => {
       cancelAnimationFrame(raf);
       cancelAnimationFrame(frameRaf);
+      if (canvas && canvas.__mobileTimer) canvas.__mobileTimer();
       hero.removeEventListener("mousemove", onMove);
       hero.removeEventListener("mouseleave", onLeave);
       window.removeEventListener("scroll", onScroll);

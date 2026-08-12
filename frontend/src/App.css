@@ -270,19 +270,14 @@ html { scroll-padding-top: 92px; }
 /* ------------------------------------------------------------
    Photo Hero — cinematic datacenter with animated overlays
    ------------------------------------------------------------ */
-/* Pin & scrub, TWO-PHASE:
-   Outer scroller = 400vh (SCRUB 300vh + REVEAL 100vh + sticky 100vh - overlap).
-   Actual outer = SCRUB 300vh + sticky 100vh = 400vh. During scrollY 0 → 300vh
-   the video scrubs 0 → duration while sticky is pinned. During scrollY 300vh →
-   400vh (the last 100vh), the video is frozen on the last frame and the next
-   section (#values) slides UP over the pinned Hero because it has a higher
-   z-index and `margin-top: -100vh` — so it enters from the viewport bottom and
-   covers the Hero as the user keeps scrolling. Once user scrolls past 400vh
-   the sticky releases naturally. */
+/* Hero — Pin & Scrub (no Cover). Outer scroller is 300vh so we get 200vh of
+   scroll for the video scrub while the inner sticky is pinned at 100vh. Once
+   the pin range ends, the Hero scrolls up naturally and the next section
+   (Wartości) slides in from below — the classic scroll transition. */
 .sc-hero-scroller {
   position: relative;
   width: 100%;
-  height: 400vh;
+  height: 300vh;
   z-index: 0;
 }
 .sc-hero-sticky {
@@ -293,24 +288,16 @@ html { scroll-padding-top: 92px; }
   overflow: hidden;
   z-index: 1;
 }
-/* Next section slides UP OVER the pinned Hero.
-   #values (Wartości) is the first section after Hero — pull it up 100vh so
-   it overlaps the last 100vh of the outer scroller (the "reveal phase"),
-   and give it a higher z-index so it visually covers the pinned Hero. */
-#values {
-  position: relative;
-  z-index: 2;
-  margin-top: -100vh;
-}
 @media (max-width: 768px) {
   .sc-hero-scroller { height: auto; min-height: 100vh; }
   .sc-hero-sticky   { position: relative; height: auto; min-height: 100vh; }
-  #values           { margin-top: 0; }
 }
 .sc-hero-photo-wrap {
   overflow: hidden;
 }
-/* Scroll-linked intro video — sits above fallback photo, full-bleed cover */
+/* Scroll-linked intro video — sits ABOVE the fallback photo but UNDER all the
+   decorative layers (neon lines, sweep, particles, brackets, copy) so the
+   parallax feel is preserved. */
 .sc-hero-video {
   position: absolute;
   inset: 0;
@@ -318,7 +305,7 @@ html { scroll-padding-top: 92px; }
   height: 100%;
   object-fit: cover;
   object-position: center center;
-  z-index: 2;
+  z-index: 1;
   pointer-events: none;
   /* subtle scale so scroll parallax on other layers doesn't reveal edges */
   transform: scale(1.02);
@@ -332,10 +319,18 @@ html { scroll-padding-top: 92px; }
   height: 100%;
   object-fit: cover;
   object-position: center center;
-  z-index: 1;
+  z-index: 0;
   pointer-events: none;
   transform: scale(1.02);
 }
+/* Bump decorative layers above the video so parallax reads clearly. */
+.sc-hero-neon        { z-index: 2; }
+.sc-hero-sweep       { z-index: 2; }
+.sc-hero-particles   { z-index: 3; }
+.sc-hero-photo-readable { z-index: 4; }
+.sc-hero-bracket     { z-index: 5; }
+.sc-hero-scan        { z-index: 5; }
+.sc-hero-copy        { z-index: 10; }
 .sc-hero-photo {
   position: absolute;
   inset: -6% -4%;
@@ -346,7 +341,7 @@ html { scroll-padding-top: 92px; }
   animation: sc-hero-photo-kenburns 26s ease-in-out infinite alternate;
 }
 /* Fallback variant — behind the video (z-index 1). If video fails to load, photo shows through. */
-.sc-hero-photo--fallback { z-index: 1; }
+.sc-hero-photo--fallback { z-index: 0; }
 
 @media (max-width: 768px) {
   /* Mobile: hide video (battery / bandwidth) — fallback photo takes over */
