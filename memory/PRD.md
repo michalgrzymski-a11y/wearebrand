@@ -94,12 +94,11 @@ Deep Teal `#0C5C62`, Accent Mint `#49ADA5`, White, Light gray `#F8FAFA`, Charcoa
   - **Smooth scrubbing fix**: intro video re-encoded with `keyint=1:min-keyint=1:no-scenecut=1` so every frame is a keyframe → browser can seek to any `currentTime` without decoding from a distant I-frame. Lerp seek loop lowered damping factor from 0.15 → 0.22 and skip-threshold from 0.02 → 0.008 for tighter response.
   - Files: `/app/frontend/src/components/hero/Hero.jsx`, `/app/frontend/src/App.css` lines 37-42 (.sc-app) and 270-305 (.sc-hero-scroller + .sc-hero-sticky + #values). Verified 100% by testing_agent iteration_22 (fix) and iteration_23 (three-phase).
 
-- **Hero — Copy state machine v2 (2026-02-12)** — Copy 3-state animation, refined:
-  - **Copy 3-state machine** driven from `onScroll` in `Hero.jsx`:
-    1. `currentScroll < 40` → `.sc-hero-copy--initial` — copy shifts to the FAR RIGHT of the viewport. On initial state the `.max-w-7xl` centering wrapper is overridden to `max-width: none; padding-right: 3vw`, letting `.sc-hero-copy__col { margin-left: auto }` push the column to the actual viewport right edge (measured 60-95% of viewport width on a 1440 layout).
-    2. `40 ≤ currentScroll < scrubLen` → `.sc-hero-copy--hidden` — fades to `opacity: 0; pointer-events: none`. Threshold is `scrubLen` exactly (not `progress >= 0.94`) so the copy stays hidden through the ENTIRE scrub with zero mid-scroll flashes.
-    3. `currentScroll ≥ scrubLen` → default state — copy reappears in its normal left-aligned position with buttons.
-    CSS transitions: `opacity 350ms ease`, `transform 550ms cubic-bezier(.22, 1, .36, 1)`.
+- **Hero — Copy state machine v3 (2026-02-12, no-flicker fix)** — Three-state layout for the Hero copy, no CSS transitions (all state changes snap instantly so nothing appears mid-scroll):
+  1. `currentScroll < 40` → `--initial` — copy at FAR RIGHT (via `margin-left: auto` on `.sc-hero-copy__col` + `max-width: none; padding-right: 3vw` on the wrapper).
+  2. `40 ≤ currentScroll < scrubLen` → `--hidden` — `visibility: hidden` + `opacity: 0` instant, `pointer-events: none`. Any CSS transitions were removed so the copy can't be caught mid-fade.
+  3. `currentScroll ≥ scrubLen` → `--final` — copy at FAR LEFT (mirrored trick: `margin-right: auto` on `.sc-hero-copy__col` + `max-width: none; padding-left: 3vw` on the wrapper).
+  Verified at 1440 × 900: initial col at leftPx ~1150 (right side), final col at leftPx ~97 (left side), hidden fully invisible throughout the 40 → scrubLen scrub range.
 
 - **UtilityBar (2026-02-12)** — right-side quiet section navigator at `/src/components/UtilityBar.jsx`:
   - Ultra-quiet 6px cyan dots for 7 sections (top, values, trusted, portfolio, savings, partners, contact).

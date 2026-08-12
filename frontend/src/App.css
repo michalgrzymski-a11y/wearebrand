@@ -222,13 +222,15 @@ html { scroll-padding-top: 92px; }
   transform: translateY(-50%);
   z-index: 20;
   padding: 0 24px;
-  will-change: transform, opacity;
-  transition: opacity 350ms ease, transform 550ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+  /* No transitions — the copy MUST snap between states so it never appears
+     mid-scroll (fading + sliding across the viewport was creating visible
+     ghosts during the scrub). */
 }
-/* Initial state (top of page, before user scrolls) — copy shifts to the RIGHT
-   edge of the viewport so the video's left-side lightbars are the star. We
-   break out of the max-w-7xl centering wrapper on initial state to let the
-   inner column reach the actual viewport right edge (minus padding). */
+/* Initial state (top of page, before user scrolls) — copy shifts to the FAR
+   RIGHT of the viewport. We break out of the max-w-7xl centering wrapper on
+   initial state to let the inner column reach the actual viewport right edge
+   (minus a small breathing padding). */
 .sc-hero-copy--initial > .max-w-7xl {
   max-width: none;
   padding-right: 3vw;
@@ -237,10 +239,26 @@ html { scroll-padding-top: 92px; }
   margin-left: auto;
   margin-right: 0;
 }
-/* Hidden state — during the scrub the copy fades out, letting the animation
-   read cleanly. It reappears at its final (left-aligned) position once the
-   video has finished scrubbing. */
-.sc-hero-copy--hidden { opacity: 0; pointer-events: none; }
+/* Hidden state — during the entire scrub the copy is completely hidden with
+   `visibility: hidden` (instant, non-animatable) plus opacity 0 so it can't
+   flash while the class transitions. */
+.sc-hero-copy--hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+/* Final state (after the scrub, when the sticky has released) — copy shifts
+   to the FAR LEFT of the viewport. Same trick as --initial but mirrored:
+   break out of the max-w-7xl centering wrapper so the inner column reaches
+   the actual viewport left edge (minus a small breathing padding). */
+.sc-hero-copy--final > .max-w-7xl {
+  max-width: none;
+  padding-left: 3vw;
+}
+.sc-hero-copy--final .sc-hero-copy__col {
+  margin-left: 0;
+  margin-right: auto;
+}
 @media (min-width: 768px) {
   .sc-hero-copy { padding: 0 40px; }
 }
