@@ -267,29 +267,19 @@ html { scroll-padding-top: 92px; }
 /* ------------------------------------------------------------
    Photo Hero — cinematic datacenter with animated overlays
    ------------------------------------------------------------ */
-/* Pin & scrub — outer scroller is tall (~350vh), inner is sticky at 100vh.
-   User scrolls through the scroller; the inner viewport stays pinned while
-   the intro video scrubs from 0 → duration. */
-.sc-hero-scroller {
-  position: relative;
-  width: 100%;
-  height: 350vh; /* ~2.5 viewports of scrub distance = comfortable playback */
-}
-.sc-hero-sticky {
-  position: sticky;
-  top: 0;
-  width: 100%;
-  height: 100vh;
-  overflow: hidden;
-}
-/* On mobile: no pin & no video — hero behaves as a normal 100vh section */
-@media (max-width: 768px) {
-  .sc-hero-scroller { height: auto; min-height: 100vh; }
-  .sc-hero-sticky   { position: relative; height: auto; min-height: 100vh; }
-}
-
+/* Video/photo wrapper — fixed so it "stays" behind the hero while content scrolls over it.
+   Next sections have solid backgrounds and z-index ≥ 1, so they naturally cover the video
+   once the user scrolls past the hero. */
 .sc-hero-photo-wrap {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
   overflow: hidden;
+  pointer-events: none;
 }
 /* Scroll-linked intro video — sits above fallback photo, full-bleed cover */
 .sc-hero-video {
