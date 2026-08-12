@@ -98,10 +98,10 @@ const Hero = () => {
       });
     };
 
-    if (canvas && !prefersReducedMotion && !isMobile) {
-      /* DESKTOP: scroll-linked scrub over the full 4K sequence. */
+    if (canvas && !prefersReducedMotion) {
+      /* Both desktop and mobile use scroll-linked scrub — mobile just loads
+         the lighter 30-frame 1080p set from /frames-m/. */
       ctx = canvas.getContext("2d", { alpha: true });
-      // Preload every frame in parallel — HTTP/2 multiplexing handles the fan-out.
       for (let i = 0; i < TOTAL_FRAMES; i++) {
         const img = new Image();
         img.decoding = "async";
@@ -116,41 +116,7 @@ const Hero = () => {
       window.addEventListener("scroll", scheduleDraw, { passive: true });
       window.addEventListener("resize", scheduleDraw);
       scheduleDraw();
-    } else if (canvas && !prefersReducedMotion && isMobile) {
-      /* MOBILE: no pin-scrub (Hero collapses to 100vh below md). Instead we
-         auto-play the 30-frame 1080p lite sequence once at ~250ms per frame
-         (≈7.5 s total), then hold on the last frame as a still hero backdrop. */
-      ctx = canvas.getContext("2d", { alpha: true });
-      let mobileIdx = 0;
-      let mobileTimer = 0;
-      const advance = () => {
-        if (mobileIdx >= TOTAL_FRAMES) return;
-        drawFrameAt(mobileIdx);
-        mobileIdx += 1;
-        mobileTimer = window.setTimeout(advance, 250);
-      };
-      // Kick off after first frame has downloaded so we never draw blank.
-      let started = false;
-      const tryStart = () => {
-        if (started || !images[0] || !images[0].complete) return;
-        started = true;
-        advance();
-      };
-      for (let i = 0; i < TOTAL_FRAMES; i++) {
-        const img = new Image();
-        img.decoding = "async";
-        img.onload = () => {
-          framesLoaded += 1;
-          tryStart();
-        };
-        img.onerror = () => { framesLoaded += 1; };
-        img.src = `${FRAMES_BASE}/f_${String(i + 1).padStart(3, "0")}.webp`;
-        images[i] = img;
-      }
-      // Save timer id on the canvas so cleanup can clear it.
-      canvas.__mobileTimer = () => window.clearTimeout(mobileTimer);
     } else if (canvas && prefersReducedMotion) {
-      // Reduced motion — draw the last frame as a static hero backdrop.
       ctx = canvas.getContext("2d", { alpha: true });
       const img = new Image();
       img.onload = () => drawFrameAt(0);

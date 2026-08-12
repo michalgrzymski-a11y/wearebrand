@@ -12193,25 +12193,35 @@ html { scroll-padding-top: 92px; }
   .sc-varray .sc-vbay__ridges { display: none !important; }
 }
 
-/* — B. Obszary rynkowe (sc-switch) — same vertical stack treatment. */
+/* — B. Obszary rynkowe (sc-switch) — mobile: pokaż karty portów pionowo, 
+   ukryj tylko dekoracje chassis (nie content). */
 @media (max-width: 767px) {
+  .sc-switch__head, .sc-switch__ear, .sc-switch__foot { display: none !important; }
   .sc-switch {
-    grid-template-columns: 1fr;
+    display: block !important;
+    padding: 12px !important;
+    background: linear-gradient(180deg, rgba(4,7,9,0.4), rgba(4,7,9,0.7)) !important;
+    border: 1px solid rgba(6,255,224,0.15);
+    border-radius: 10px !important;
+    grid-template-columns: 1fr !important;
   }
-  .sc-switch__ear { display: none; }
-  .sc-switch__bays,
-  .sc-switch .sc-switch__row,
-  .sc-switch .sc-switch__ports {
+  .sc-switch__ports,
+  .sc-switch__row,
+  .sc-switch__bays {
+    display: flex !important;
     flex-direction: column !important;
-    gap: 8px;
+    gap: 10px !important;
     height: auto !important;
+    padding: 0 !important;
+    width: 100% !important;
   }
   .sc-switch .sc-sport,
-  .sc-switch .sc-switch__port,
-  .sc-switch .sc-switch__bay {
+  .sc-switch__port,
+  .sc-switch__bay {
     width: 100% !important;
-    min-height: 76px;
+    min-height: 68px !important;
     flex: 0 0 auto !important;
+    padding: 14px !important;
   }
 }
 
@@ -12221,19 +12231,33 @@ html { scroll-padding-top: 92px; }
    the Hero (canvas animation is a desktop-only luxury).
    ============================================================ */
 
-/* Hero on mobile — canvas doesn't paint reliably (JS scroll listener
-   is inactive because we've relaxed the sticky). Hide the canvas +
-   fallback and let the CYAN-graded poster be the hero backdrop. */
+/* Hero on mobile — KEEP the pin & scrub so the page locks while the animation
+   plays through. Show the canvas + drive it via the mobile 30-frame lite set. */
 @media (max-width: 767px) {
-  canvas.sc-hero-video { display: none !important; }
+  .sc-hero-scroller {
+    height: 300vh !important;
+    min-height: 300vh !important;
+  }
+  .sc-hero-sticky {
+    position: sticky !important;
+    top: 0 !important;
+    height: 100vh !important;
+    min-height: 100vh !important;
+    overflow: hidden !important;
+  }
+  canvas.sc-hero-video {
+    display: block !important;
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+  }
   .sc-hero-poster {
     display: block !important;
-    z-index: 1 !important;
+    z-index: 0 !important;
     transform: none !important;
   }
   .sc-hero-photo--fallback { display: none !important; }
-  /* Copy on mobile — stack it near the top so it doesn't collide with the
-     cookie banner + shift to the LEFT so buttons stay readable. */
   .sc-hero-copy,
   .sc-hero-copy--initial,
   .sc-hero-copy--final {
