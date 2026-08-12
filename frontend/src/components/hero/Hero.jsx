@@ -176,18 +176,17 @@ const Hero = () => {
 
       // Hero copy state machine:
       //   currentScroll < 40           → INITIAL (right-aligned, visible)
-      //   40 ≤ currentScroll < scrubLen → HIDDEN (fade out during scrub)
-      //   currentScroll ≥ scrubLen     → FINAL  (far LEFT, visible)
-      // Threshold is scrubLen exactly (no early trigger) so the copy stays
-      // hidden through the ENTIRE scrub and only reappears once the video
-      // has finished playing / the sticky un-pins.
+      //   40 ≤ progress < 0.80         → HIDDEN (fade out during scrub)
+      //   progress ≥ 0.80              → FINAL  (far LEFT, visible — appears
+      //                                   a bit before the video's very last
+      //                                   frame so it settles smoothly).
       const copy = copyRef.current;
       if (copy) {
         if (currentScroll < 40) {
           copy.classList.add("sc-hero-copy--initial");
           copy.classList.remove("sc-hero-copy--hidden");
           copy.classList.remove("sc-hero-copy--final");
-        } else if (currentScroll >= scrubLen) {
+        } else if (progress >= 0.80) {
           copy.classList.add("sc-hero-copy--final");
           copy.classList.remove("sc-hero-copy--initial");
           copy.classList.remove("sc-hero-copy--hidden");
