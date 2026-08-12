@@ -309,6 +309,13 @@ html { scroll-padding-top: 92px; }
   -webkit-text-fill-color: transparent;
   color: transparent;
   letter-spacing: -0.03em;
+  /* Kill the parent h1 drop-shadow bleeding through the transparent fill
+     (would otherwise print a dark ghost behind the accent letters). Add a
+     bright cyan neon glow via drop-shadow filter which respects the gradient. */
+  text-shadow: none;
+  filter:
+    drop-shadow(0 0 8px rgba(6, 255, 224, 0.55))
+    drop-shadow(0 0 24px rgba(0, 184, 212, 0.35));
 }
 
 .sc-hero-vignette {
