@@ -94,6 +94,10 @@ Deep Teal `#0C5C62`, Accent Mint `#49ADA5`, White, Light gray `#F8FAFA`, Charcoa
   - **Smooth scrubbing fix**: intro video re-encoded with `keyint=1:min-keyint=1:no-scenecut=1` so every frame is a keyframe → browser can seek to any `currentTime` without decoding from a distant I-frame. Lerp seek loop lowered damping factor from 0.15 → 0.22 and skip-threshold from 0.02 → 0.008 for tighter response.
   - Files: `/app/frontend/src/components/hero/Hero.jsx`, `/app/frontend/src/App.css` lines 37-42 (.sc-app) and 270-305 (.sc-hero-scroller + .sc-hero-sticky + #values). Verified 100% by testing_agent iteration_22 (fix) and iteration_23 (three-phase).
 
+- **Hero WebP Frame Sequence (2026-02-12, Apple-style scroll scrub)** — Replaced MP4 video with 193 individual WebP frames at native 4K (4096×2304), extracted from the 4K source with cyan hue rotation (`-20°`) to match site palette (#06FFE0). Total ~25 MB across the sequence (avg 130 KB / frame). Rationale: MP4 seek-scrub had inevitable codec decode jitter even with all-keyframe encoding. Individual images side-step this entirely — every "seek" is an `Image → ctx.drawImage()` call so the scrub is buttery at any scroll speed.
+  - Files: `/app/frontend/public/video/frames/f_001.webp` … `f_193.webp` + poster `intro-poster.webp`
+  - `Hero.jsx` preloads all 193 frames in parallel on mount (HTTP/2 multiplexing) and draws to a `<canvas data-testid="hero-canvas">` using the same two-phase pin math as before (`progress = clampedScroll / (heroH − innerH − revealPx)` → `idx = round(progress × 192)`). Falls back to nearest loaded frame if a target frame is still in flight, so the scrub never blocks. `prefers-reduced-motion` skips the animation entirely and paints the last frame as a still hero.
+
 - **UtilityBar (2026-02-12)** — right-side quiet section navigator at `/src/components/UtilityBar.jsx`:
   - Ultra-quiet 6px cyan dots for 7 sections (top, values, trusted, portfolio, savings, partners, contact).
   - Vertical page-progress rail (cyan gradient fill from top based on `window.scrollY / (docH - winH)`).

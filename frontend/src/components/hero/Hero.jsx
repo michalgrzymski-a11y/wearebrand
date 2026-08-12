@@ -17,7 +17,7 @@ const Hero = () => {
   const { t } = useLang();
   const heroRef = useRef(null);
   const imgRef = useRef(null);
-  const videoRef = useRef(null);
+  const canvasRef = useRef(null);
   const neonRef = useRef(null);
   const partRef = useRef(null);
   const bracketsRef = useRef(null);
@@ -32,64 +32,91 @@ const Hero = () => {
     let tx = 0, ty = 0, cx = 0, cy = 0;
     let scrollY = 0;
 
-    /* --- Scroll-linked video intro playback --- */
-    const video = videoRef.current;
+    /* --- Scroll-linked WebP frame sequence (Apple-style scrub) ---
+       193 pre-rendered 4K WebP frames in /public/video/frames/f_001.webp …
+       f_193.webp are preloaded on mount, then drawn to a <canvas> at the
+       current scrub progress. This eliminates codec seek jitter completely —
+       every "seek" is just an Image → canvas drawImage() call. */
+    const canvas = canvasRef.current;
     const prefersReducedMotion =
       typeof window !== "undefined" &&
       window.matchMedia &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    let videoRaf = 0;
-    let targetTime = 0;
-    let currentTime = 0;
+    const TOTAL_FRAMES = 193;
+    const FRAMES_BASE = `${process.env.PUBLIC_URL}/video/frames`;
+    const images = new Array(TOTAL_FRAMES);
+    let ctx = null;
+    let currentIdx = -1;
+    let framesLoaded = 0;
+    let frameRaf = 0;
 
-    const updateVideoTime = () => {
-      if (!video || !video.duration || isNaN(video.duration)) return;
-      // Two-phase pin: outer scroller = SCRUB (200vh) + REVEAL (100vh) + sticky (100vh).
-      // The scrub phase spans the FIRST (hero.offsetHeight - innerHeight - revealPx)
-      // pixels of scroll through the pinned range. After that, the video sits at
-      // its last frame while the next section (#values) slides up over it.
-      const rect = hero.getBoundingClientRect();
-      const revealPx = window.innerHeight; // 100vh reveal cover phase
-      const scrubLen = hero.offsetHeight - window.innerHeight - revealPx;
-      if (scrubLen <= 0) { targetTime = 0; return; }
-      const currentScroll = Math.min(scrubLen, Math.max(0, -rect.top));
-      const progress = currentScroll / scrubLen;
-      targetTime = progress * video.duration;
-    };
-
-    const seekLoop = () => {
-      if (!video || !video.duration) {
-        videoRaf = requestAnimationFrame(seekLoop);
-        return;
+    const drawFrameAt = (idx) => {
+      const img = images[idx];
+      if (!ctx || !img || !img.complete || !img.naturalWidth) return false;
+      // Set canvas backing store on first successful paint so DPR matches.
+      if (canvas.width !== img.naturalWidth) {
+        canvas.width = img.naturalWidth;
+        canvas.height = img.naturalHeight;
       }
-      // Critically-damped ease toward target — faster catch-up than plain lerp,
-      // smoother than instant seek. 0.22 gives ~5-frame time-to-target at 60fps.
-      const diff = targetTime - currentTime;
-      currentTime += diff * 0.22;
-      if (Math.abs(diff) < 0.004) currentTime = targetTime;
-      // With all-keyframe MP4 the browser can seek to ANY currentTime cheaply.
-      try {
-        if (Math.abs(video.currentTime - currentTime) > 0.008) {
-          video.currentTime = currentTime;
-        }
-      } catch (_) { /* seeking races — ignore */ }
-      videoRaf = requestAnimationFrame(seekLoop);
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      currentIdx = idx;
+      return true;
     };
 
-    if (video && !prefersReducedMotion) {
-      const startLoop = () => {
-        updateVideoTime();
-        currentTime = targetTime;
-        try { video.pause(); } catch (_) {}
-        cancelAnimationFrame(videoRaf);
-        videoRaf = requestAnimationFrame(seekLoop);
-      };
-      if (video.readyState >= 1) startLoop();
-      else video.addEventListener("loadedmetadata", startLoop, { once: true });
-      window.addEventListener("scroll", updateVideoTime, { passive: true });
+    const scheduleDraw = () => {
+      if (frameRaf) return;
+      frameRaf = requestAnimationFrame(() => {
+        frameRaf = 0;
+        if (!hero) return;
+        const rect = hero.getBoundingClientRect();
+        const revealPx = window.innerHeight;
+        const scrubLen = hero.offsetHeight - window.innerHeight - revealPx;
+        if (scrubLen <= 0) return;
+        const currentScroll = Math.min(scrubLen, Math.max(0, -rect.top));
+        const progress = currentScroll / scrubLen;
+        let idx = Math.round(progress * (TOTAL_FRAMES - 1));
+        if (idx === currentIdx) return;
+        // Try target frame; if not yet loaded, fall back to nearest loaded frame.
+        if (!drawFrameAt(idx)) {
+          // Look outward for the nearest loaded frame.
+          for (let d = 1; d < TOTAL_FRAMES; d++) {
+            if (idx - d >= 0 && drawFrameAt(idx - d)) break;
+            if (idx + d < TOTAL_FRAMES && drawFrameAt(idx + d)) break;
+          }
+        }
+      });
+    };
+
+    if (canvas && !prefersReducedMotion) {
+      ctx = canvas.getContext("2d", { alpha: true });
+      // Preload every frame in parallel — HTTP/2 multiplexing handles the fan-out.
+      for (let i = 0; i < TOTAL_FRAMES; i++) {
+        const img = new Image();
+        img.decoding = "async";
+        // Kick off native decode as soon as the network body arrives.
+        img.onload = () => {
+          framesLoaded += 1;
+          // Re-draw once the currently-visible-progress frame arrives.
+          if (framesLoaded === 1) scheduleDraw();
+          else scheduleDraw();
+        };
+        img.onerror = () => { framesLoaded += 1; };
+        img.src = `${FRAMES_BASE}/f_${String(i + 1).padStart(3, "0")}.webp`;
+        images[i] = img;
+      }
+      window.addEventListener("scroll", scheduleDraw, { passive: true });
+      window.addEventListener("resize", scheduleDraw);
+      scheduleDraw();
+    } else if (canvas && prefersReducedMotion) {
+      // Reduced motion — draw the last frame as a static hero backdrop and stop.
+      ctx = canvas.getContext("2d", { alpha: true });
+      const img = new Image();
+      img.onload = () => drawFrameAt(0);
+      img.src = `${FRAMES_BASE}/f_${String(TOTAL_FRAMES).padStart(3, "0")}.webp`;
+      images[TOTAL_FRAMES - 1] = img;
     }
-    /* --- End scroll-linked video --- */
+    /* --- End frame sequence --- */
 
     const onMove = (e) => {
       const r = hero.getBoundingClientRect();
@@ -137,11 +164,12 @@ const Hero = () => {
 
     return () => {
       cancelAnimationFrame(raf);
-      cancelAnimationFrame(videoRaf);
+      cancelAnimationFrame(frameRaf);
       hero.removeEventListener("mousemove", onMove);
       hero.removeEventListener("mouseleave", onLeave);
       window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("scroll", updateVideoTime);
+      window.removeEventListener("scroll", scheduleDraw);
+      window.removeEventListener("resize", scheduleDraw);
     };
   }, []);
 
@@ -156,19 +184,19 @@ const Hero = () => {
       <div className="sc-hero-sticky sc-hero">
       {/* L0 — scroll-linked video intro (fallback: background photo) */}
       <div className="absolute inset-0 sc-hero-photo-wrap" data-testid="hero-photo">
-        <video
-          ref={videoRef}
+        <canvas
+          ref={canvasRef}
           className="sc-hero-video"
-          muted
-          playsInline
-          preload="auto"
-          disablePictureInPicture
-          poster={`${process.env.PUBLIC_URL}/video/intro-poster.jpg`}
-          data-testid="hero-video"
+          data-testid="hero-canvas"
           aria-hidden="true"
-        >
-          <source src={`${process.env.PUBLIC_URL}/video/intro.mp4`} type="video/mp4" />
-        </video>
+        />
+        {/* Poster fallback shown until frames start arriving. */}
+        <img
+          src={`${process.env.PUBLIC_URL}/video/intro-poster.webp`}
+          alt=""
+          className="sc-hero-poster"
+          aria-hidden="true"
+        />
         {/* Photo remains as ultimate fallback (behind video, visible only if video fails) */}
         <div
           ref={imgRef}
