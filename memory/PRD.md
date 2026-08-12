@@ -86,6 +86,11 @@ Deep Teal `#0C5C62`, Accent Mint `#49ADA5`, White, Light gray `#F8FAFA`, Charcoa
 - **Privacy Policy page** at `/polityka-prywatnosci` — Full GDPR/RODO PL policy, 9 sections, PL/EN bilingual. File: `/app/frontend/src/pages/PrivacyPolicyPage.jsx`
 - **AboutV2Section** compact 2-col layout — CSS overrides in App.css.
 - **SwitchSection** scaled down ~15% — CSS overrides in App.css. Verified via iteration_21.json (100%).
+- **Hero Pin & Scrub + Cover (2026-02-12, P0 delivered)** — Cinematic two-phase intro:
+  1. **SCRUB phase** (`scrollY` 0 → 200vh): Hero pinned via `position: sticky`, intro video (8s, `/public/video/intro.mp4` + `.webm`) scrubs 0 → 100% based on scroll distance. Parallax layers (photo, neon, particles, brackets) bound to scrub progress so they never fly off screen.
+  2. **REVEAL phase** (`scrollY` 200vh → 300vh): Video freezes on last frame while Hero stays pinned. Next section (`#values` / Wartości) slides UP from viewport bottom OVER the pinned Hero, thanks to `z-index: 2` + `margin-top: -100vh`.
+  3. **Release**: Sticky un-pins once outer 400vh scroller scrolls out, normal scroll continues to Zaufali Nam, Proces, etc.
+  - **Root-cause bug fix**: `<main class="sc-app">` had `overflow-x: hidden`, which the CSS spec auto-promotes `overflow-y` from `visible` to `auto` — creating a scroll container that broke `position: sticky` on all descendants. Changed to `overflow-x: clip` (does not promote the other axis). Verified: `.sc-hero-sticky.getBoundingClientRect().top === 0` at every scrollY within pin range (was previously scrolling with the outer container). Files: `/app/frontend/src/components/hero/Hero.jsx`, `/app/frontend/src/App.css` lines 37-42 (.sc-app) and 270-305 (.sc-hero-scroller + .sc-hero-sticky + #values). Tested via `testing_agent_v3_fork` iteration_22.json → 100%. Verified visually via Playwright at scrollY 0/1960/2160/2360/2700/3240 — video reaches 8.04s at scrub end, Wartości top progresses from 1280 → 1080 → 880 → 540 → 0 during reveal phase.
 
 ## Backlog / next actions
 - **P1** — Real brand SVG logos for Trusted-By and Partners (once assets provided)

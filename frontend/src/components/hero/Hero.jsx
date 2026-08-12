@@ -45,9 +45,16 @@ const Hero = () => {
 
     const updateVideoTime = () => {
       if (!video || !video.duration || isNaN(video.duration)) return;
-      // Simple scroll-linked scrub: scrollY 0 → viewport-height maps to video 0 → duration.
-      const scrollLen = window.innerHeight || 1;
-      const progress = Math.min(1, Math.max(0, (window.scrollY || 0) / scrollLen));
+      // Two-phase pin: outer scroller = SCRUB (100vh × 3) + REVEAL (100vh) + sticky.
+      // The scrub phase spans the FIRST (hero.offsetHeight - innerHeight - revealPx)
+      // pixels of scroll through the pinned range. After that, the video sits at
+      // its last frame while the next section (#values) slides up over it.
+      const rect = hero.getBoundingClientRect();
+      const revealPx = window.innerHeight; // 100vh reveal cover phase
+      const scrubLen = hero.offsetHeight - window.innerHeight - revealPx;
+      if (scrubLen <= 0) { targetTime = 0; return; }
+      const currentScroll = Math.min(scrubLen, Math.max(0, -rect.top));
+      const progress = currentScroll / scrubLen;
       targetTime = progress * video.duration;
     };
 
@@ -87,7 +94,17 @@ const Hero = () => {
       ty = ((e.clientY - r.top) / r.height - 0.5) * 2;
     };
     const onLeave = () => { tx = 0; ty = 0; };
-    const onScroll = () => { scrollY = window.scrollY || 0; };
+    const onScroll = () => {
+      // Parallax bound to SCRUB progress (0..1) × 80px — matches the video's
+      // scrub range so hero layers stay in view while scrubbing, and freeze
+      // once the reveal phase starts (video done, next section covers hero).
+      const rect = hero.getBoundingClientRect();
+      const revealPx = window.innerHeight;
+      const scrubLen = hero.offsetHeight - window.innerHeight - revealPx;
+      const currentScroll = Math.min(scrubLen, Math.max(0, -rect.top));
+      const progress = scrubLen > 0 ? currentScroll / scrubLen : 0;
+      scrollY = progress * 80;
+    };
 
     hero.addEventListener("mousemove", onMove);
     hero.addEventListener("mouseleave", onLeave);
@@ -130,9 +147,10 @@ const Hero = () => {
       id="top"
       ref={heroRef}
       data-testid="hero-section"
-      className="relative w-full overflow-hidden sc-hero"
+      className="sc-hero-scroller"
       style={{ background: "#040709" }}
     >
+      <div className="sc-hero-sticky sc-hero">
       {/* L0 — scroll-linked video intro (fallback: background photo) */}
       <div className="absolute inset-0 sc-hero-photo-wrap" data-testid="hero-photo">
         <video
@@ -235,6 +253,7 @@ const Hero = () => {
             </div>
           </div>
         </div>
+      </div>
       </div>
     </section>
   );

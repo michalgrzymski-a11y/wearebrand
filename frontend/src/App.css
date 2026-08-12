@@ -35,7 +35,10 @@ body {
 }
 
 .sc-app {
-  overflow-x: hidden;
+  /* IMPORTANT: use `clip` (not `hidden`) — `overflow-x: hidden` auto-promotes
+     overflow-y to `auto`, which creates a scroll container and BREAKS
+     `position: sticky` on descendants (e.g. Hero pin & scrub). */
+  overflow-x: clip;
 }
 
 /* ============================================================
@@ -267,19 +270,45 @@ html { scroll-padding-top: 92px; }
 /* ------------------------------------------------------------
    Photo Hero — cinematic datacenter with animated overlays
    ------------------------------------------------------------ */
-/* Video/photo wrapper — fixed so it "stays" behind the hero while content scrolls over it.
-   Next sections have solid backgrounds and z-index ≥ 1, so they naturally cover the video
-   once the user scrolls past the hero. */
-.sc-hero-photo-wrap {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  width: 100vw;
-  height: 100vh;
+/* Pin & scrub, TWO-PHASE:
+   Outer scroller = 400vh (SCRUB 300vh + REVEAL 100vh + sticky 100vh - overlap).
+   Actual outer = SCRUB 300vh + sticky 100vh = 400vh. During scrollY 0 → 300vh
+   the video scrubs 0 → duration while sticky is pinned. During scrollY 300vh →
+   400vh (the last 100vh), the video is frozen on the last frame and the next
+   section (#values) slides UP over the pinned Hero because it has a higher
+   z-index and `margin-top: -100vh` — so it enters from the viewport bottom and
+   covers the Hero as the user keeps scrolling. Once user scrolls past 400vh
+   the sticky releases naturally. */
+.sc-hero-scroller {
+  position: relative;
+  width: 100%;
+  height: 400vh;
   z-index: 0;
+}
+.sc-hero-sticky {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
   overflow: hidden;
-  pointer-events: none;
+  z-index: 1;
+}
+/* Next section slides UP OVER the pinned Hero.
+   #values (Wartości) is the first section after Hero — pull it up 100vh so
+   it overlaps the last 100vh of the outer scroller (the "reveal phase"),
+   and give it a higher z-index so it visually covers the pinned Hero. */
+#values {
+  position: relative;
+  z-index: 2;
+  margin-top: -100vh;
+}
+@media (max-width: 768px) {
+  .sc-hero-scroller { height: auto; min-height: 100vh; }
+  .sc-hero-sticky   { position: relative; height: auto; min-height: 100vh; }
+  #values           { margin-top: 0; }
+}
+.sc-hero-photo-wrap {
+  overflow: hidden;
 }
 /* Scroll-linked intro video — sits above fallback photo, full-bleed cover */
 .sc-hero-video {
