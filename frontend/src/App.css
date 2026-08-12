@@ -12214,3 +12214,86 @@ html { scroll-padding-top: 92px; }
     flex: 0 0 auto !important;
   }
 }
+
+/* ============================================================
+   MOBILE POLISH v2 (2026-02-12) — replace complex chassis
+   visualisation with clean stacked cards; use static poster for
+   the Hero (canvas animation is a desktop-only luxury).
+   ============================================================ */
+
+/* Hero on mobile — canvas doesn't paint reliably (JS scroll listener
+   is inactive because we've relaxed the sticky). Hide the canvas +
+   fallback and let the CYAN-graded poster be the hero backdrop. */
+@media (max-width: 767px) {
+  canvas.sc-hero-video { display: none !important; }
+  .sc-hero-poster {
+    display: block !important;
+    z-index: 1 !important;
+    transform: none !important;
+  }
+  .sc-hero-photo--fallback { display: none !important; }
+  /* Copy on mobile — stack it near the top so it doesn't collide with the
+     cookie banner + shift to the LEFT so buttons stay readable. */
+  .sc-hero-copy,
+  .sc-hero-copy--initial,
+  .sc-hero-copy--final {
+    top: 55% !important;
+    padding: 0 20px !important;
+  }
+  .sc-hero-copy--initial > .max-w-7xl,
+  .sc-hero-copy--final > .max-w-7xl {
+    max-width: 100% !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+  .sc-hero-copy--initial .sc-hero-copy__col,
+  .sc-hero-copy--final .sc-hero-copy__col {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+  .sc-hero-title { font-size: 1.65rem !important; line-height: 1.15 !important; }
+}
+
+/* Wartości bays — always render the FULL body (title, description, tags)
+   on mobile since there's no hover interaction. */
+@media (max-width: 767px) {
+  /* SHOW the compact preview which always has icon + short label. Force it
+     out of the "hover to reveal" state used on desktop. */
+  .sc-varray .sc-vbay__compact {
+    display: flex !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 12px !important;
+    padding: 4px !important;
+  }
+  .sc-varray .sc-vbay__icon { display: flex !important; width: 32px !important; height: 32px !important; }
+  .sc-varray .sc-vbay__label { display: inline !important; opacity: 1 !important; color: #E8F4F5 !important; font-size: 15px !important; }
+  /* Hide the desktop-only expanded (full description) block on mobile — icon+label reads clearly. */
+  .sc-varray .sc-vbay__expanded { display: none !important; }
+  .sc-varray .sc-vbay { flex: 0 0 auto !important; min-height: auto !important; padding: 16px !important; }
+  /* Show ALL bays as their expanded value form, hide the empty spacer bays. */
+  .sc-varray .sc-vbay--filler { display: none !important; }
+  .sc-varray__head, .sc-varray__ear { display: none !important; }
+  .sc-varray {
+    padding: 8px !important;
+    background: linear-gradient(180deg, rgba(4,7,9,0.6), rgba(4,7,9,0.85)) !important;
+    border: 1px solid rgba(6,255,224,0.18);
+  }
+}
+
+/* Obszary switch — same treatment: show all port cards, no chassis frame. */
+@media (max-width: 767px) {
+  .sc-switch__head, .sc-switch__ear, .sc-switch__foot { display: none !important; }
+  .sc-switch {
+    padding: 8px !important;
+    background: linear-gradient(180deg, rgba(4,7,9,0.6), rgba(4,7,9,0.85)) !important;
+    border: 1px solid rgba(6,255,224,0.18);
+    border-radius: 10px !important;
+  }
+  .sc-switch .sc-sport,
+  .sc-switch .sc-switch__port,
+  .sc-switch .sc-switch__bay { padding: 14px !important; }
+}
