@@ -325,18 +325,32 @@ const Hero = () => {
       >
         <div className="mx-auto w-full max-w-7xl">
           <div className="flex max-w-2xl flex-col sc-hero-copy__col">
-            <h1 data-testid="hero-title" className="sc-hero-title text-white">
+            {/* Title on INITIAL — the standard "Infrastruktura IT ..." heading */}
+            <h1
+              data-testid="hero-title"
+              className="sc-hero-title sc-hero-copy__initial-only text-white"
+            >
               {t.hero.title_pre}{" "}
               <span className="sc-hero-accent">{t.hero.title_accent}</span>{" "}
               {t.hero.title_post}
             </h1>
 
-            <p
-              data-testid="hero-subtitle"
-              className="mt-6 max-w-xl text-base md:text-lg text-white/85"
+            {/* Title on FINAL — replaces the h1 with the value proposition text
+                once the scrub has finished. Key words are highlighted with the
+                same cyan gradient accent used on "ciągłości" in the initial. */}
+            <h1
+              data-testid="hero-title-final"
+              className="sc-hero-title sc-hero-copy__final-only text-white"
             >
-              {t.hero.subtitle}
-            </p>
+              {(t.hero.subtitle_parts || [{ text: t.hero.subtitle }]).map(
+                (part, i) =>
+                  part.accent ? (
+                    <span key={i} className="sc-hero-accent">{part.text}</span>
+                  ) : (
+                    <React.Fragment key={i}>{part.text}</React.Fragment>
+                  )
+              )}
+            </h1>
 
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <a href="#contact" data-testid="hero-cta-primary" className="sc-btn-primary">

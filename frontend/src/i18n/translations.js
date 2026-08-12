@@ -18,6 +18,15 @@ export const translations = {
       title_post: "Twojego biznesu",
       subtitle:
         "Projektujemy rozwiązania szyte na miarę, które chronią dane, przyspieszają biznes i szanują budżet.",
+      subtitle_parts: [
+        { text: "Projektujemy rozwiązania szyte na miarę, które " },
+        { text: "chronią dane", accent: true },
+        { text: ", przyspieszają " },
+        { text: "biznes", accent: true },
+        { text: " i szanują " },
+        { text: "budżet", accent: true },
+        { text: "." },
+      ],
       cta_primary: "Zaplanuj konsultację",
       cta_secondary: "Poznaj usługi",
       nodes_hint: "Klikaj węzły, aby poznać obszary",
@@ -262,6 +271,15 @@ export const translations = {
       title_post: "of your business",
       subtitle:
         "Tailor-made solutions that protect data, accelerate business and respect the budget.",
+      subtitle_parts: [
+        { text: "Tailor-made solutions that " },
+        { text: "protect data", accent: true },
+        { text: ", accelerate " },
+        { text: "business", accent: true },
+        { text: " and respect the " },
+        { text: "budget", accent: true },
+        { text: "." },
+      ],
       cta_primary: "Book a consultation",
       cta_secondary: "Explore services",
       nodes_hint: "Click a node to explore",

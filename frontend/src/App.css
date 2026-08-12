@@ -259,6 +259,10 @@ html { scroll-padding-top: 92px; }
   margin-left: 0;
   margin-right: auto;
 }
+/* Two heading variants — show one based on the copy's state class. */
+.sc-hero-copy__final-only { display: none; }
+.sc-hero-copy--final .sc-hero-copy__initial-only { display: none; }
+.sc-hero-copy--final .sc-hero-copy__final-only { display: block; }
 @media (min-width: 768px) {
   .sc-hero-copy { padding: 0 40px; }
 }
