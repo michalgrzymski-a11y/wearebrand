@@ -45,7 +45,7 @@ const Hero = () => {
 
     const updateVideoTime = () => {
       if (!video || !video.duration || isNaN(video.duration)) return;
-      // Two-phase pin: outer scroller = SCRUB (100vh × 3) + REVEAL (100vh) + sticky.
+      // Two-phase pin: outer scroller = SCRUB (200vh) + REVEAL (100vh) + sticky (100vh).
       // The scrub phase spans the FIRST (hero.offsetHeight - innerHeight - revealPx)
       // pixels of scroll through the pinned range. After that, the video sits at
       // its last frame while the next section (#values) slides up over it.
@@ -63,11 +63,14 @@ const Hero = () => {
         videoRaf = requestAnimationFrame(seekLoop);
         return;
       }
-      // Smooth ease-in-out toward target for buttery playback
-      currentTime += (targetTime - currentTime) * 0.15;
-      if (Math.abs(targetTime - currentTime) < 0.005) currentTime = targetTime;
+      // Critically-damped ease toward target — faster catch-up than plain lerp,
+      // smoother than instant seek. 0.22 gives ~5-frame time-to-target at 60fps.
+      const diff = targetTime - currentTime;
+      currentTime += diff * 0.22;
+      if (Math.abs(diff) < 0.004) currentTime = targetTime;
+      // With all-keyframe MP4 the browser can seek to ANY currentTime cheaply.
       try {
-        if (Math.abs(video.currentTime - currentTime) > 0.02) {
+        if (Math.abs(video.currentTime - currentTime) > 0.008) {
           video.currentTime = currentTime;
         }
       } catch (_) { /* seeking races — ignore */ }
@@ -159,11 +162,11 @@ const Hero = () => {
           muted
           playsInline
           preload="auto"
+          disablePictureInPicture
           poster={`${process.env.PUBLIC_URL}/video/intro-poster.jpg`}
           data-testid="hero-video"
           aria-hidden="true"
         >
-          <source src={`${process.env.PUBLIC_URL}/video/intro.webm`} type="video/webm" />
           <source src={`${process.env.PUBLIC_URL}/video/intro.mp4`} type="video/mp4" />
         </video>
         {/* Photo remains as ultimate fallback (behind video, visible only if video fails) */}

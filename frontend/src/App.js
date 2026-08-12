@@ -17,11 +17,13 @@ import RoboczePage from "@/pages/RoboczePage";
 import PrivacyPolicyPage from "@/pages/PrivacyPolicyPage";
 import NetappPage from "@/pages/NetappPage";
 import CookieConsent from "@/components/CookieConsent";
+import UtilityBar from "@/components/UtilityBar";
 import Analytics from "@/components/Analytics";
 
 const Home = () => (
   <main data-testid="home-main" className="sc-app">
     <Navbar />
+    <UtilityBar />
     <Hero />
     <Wartosci />
     <ZaufaliNam />
