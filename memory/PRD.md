@@ -94,10 +94,13 @@ Deep Teal `#0C5C62`, Accent Mint `#49ADA5`, White, Light gray `#F8FAFA`, Charcoa
   - **Smooth scrubbing fix**: intro video re-encoded with `keyint=1:min-keyint=1:no-scenecut=1` so every frame is a keyframe → browser can seek to any `currentTime` without decoding from a distant I-frame. Lerp seek loop lowered damping factor from 0.15 → 0.22 and skip-threshold from 0.02 → 0.008 for tighter response.
   - Files: `/app/frontend/src/components/hero/Hero.jsx`, `/app/frontend/src/App.css` lines 37-42 (.sc-app) and 270-305 (.sc-hero-scroller + .sc-hero-sticky + #values). Verified 100% by testing_agent iteration_22 (fix) and iteration_23 (three-phase).
 
-- **Hero — Pin & Scrub + Parallax restored (2026-02-12)** — Reverted the Wartości "cover slide-up" so the transition matches the classic scroll flow: Hero pins for a 200vh scrub range while the 4K WebP frame sequence plays, then un-pins and scrolls up naturally as Wartości comes in from below (no overlap, no z-index tricks). `.sc-hero-scroller` height dropped from 400vh → 300vh, `#values` margin/z-index rules removed.
-  - Fixed decorative layer stacking: canvas moved to `z-index: 1` (with poster at 0, fallback photo at 0). Neon lines / sweep at 2, particles at 3, readability gradient at 4, brackets + scanlines at 5, copy at 10 — so the parallax neon horizons, floating particles, corner brackets, scanlines and `NeuralNodeNetwork` cursor-reactive web all read clearly ABOVE the video, restoring the original hero mood on top of the new cyan animation.
-  - Cyan grading refined to `hue -10°` (was `-20°`) to match site palette `#06FFE0` more precisely (previously read as green).
-  - Mobile lite: on `(max-width: 767px)` Hero collapses to natural 100vh; a 30-frame 1080p WebP sequence (`/video/frames-m/`) autoplays at ~250ms per frame (~7.5 s total) via `setTimeout` chain, holding on the last frame. Desktop uses the 193-frame 4K set for scroll-linked scrub. Total mobile payload ~1.7 MB (vs 25 MB desktop).
+- **Hero — Zoom-out + Copy state machine (2026-02-12)** — Two tweaks:
+  - **Zoom out 20%**: `.sc-hero-video` and `.sc-hero-poster` `transform: scale(1.02)` → `scale(0.8)` — the video content now floats at 80% of the viewport with the Hero's dark bg (`#040709`) framing it, giving a more cinematic "camera pulled back" feel while keeping the parallax decorative layers full-bleed on top.
+  - **Copy 3-state machine** driven from `onScroll` in `Hero.jsx`:
+    1. `scrollY < 40`  → `.sc-hero-copy--initial` — copy translates to the RIGHT half of the viewport via `.sc-hero-copy__col { margin-left: auto }`.
+    2. `progress ∈ (0, 0.94)` → `.sc-hero-copy--hidden` — fades to `opacity: 0; pointer-events: none` so only the video reads during the scrub.
+    3. `progress ≥ 0.94` → default state — copy reappears in its normal left-aligned position with buttons.
+    CSS transitions: `opacity 350ms ease`, `transform 550ms cubic-bezier(.22, 1, .36, 1)` for the state changes.
 
 - **UtilityBar (2026-02-12)** — right-side quiet section navigator at `/src/components/UtilityBar.jsx`:
   - Ultra-quiet 6px cyan dots for 7 sections (top, values, trusted, portfolio, savings, partners, contact).

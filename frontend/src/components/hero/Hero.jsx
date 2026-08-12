@@ -173,6 +173,24 @@ const Hero = () => {
       const currentScroll = Math.min(scrubLen, Math.max(0, -rect.top));
       const progress = scrubLen > 0 ? currentScroll / scrubLen : 0;
       scrollY = progress * 80;
+
+      // Hero copy state machine:
+      //   scrollY ≈ 0          → INITIAL (right-aligned, visible)
+      //   0 < progress < ~0.95 → HIDDEN (fade out during scrub)
+      //   progress ≥ ~0.95     → FINAL  (left-aligned = default, visible)
+      const copy = copyRef.current;
+      if (copy) {
+        if (currentScroll < 40) {
+          copy.classList.add("sc-hero-copy--initial");
+          copy.classList.remove("sc-hero-copy--hidden");
+        } else if (progress >= 0.94) {
+          copy.classList.remove("sc-hero-copy--initial");
+          copy.classList.remove("sc-hero-copy--hidden");
+        } else {
+          copy.classList.add("sc-hero-copy--hidden");
+          copy.classList.remove("sc-hero-copy--initial");
+        }
+      }
     };
 
     hero.addEventListener("mousemove", onMove);
@@ -296,10 +314,11 @@ const Hero = () => {
       {/* L5 — copy (absolute-centered, floats up slightly on scroll) */}
       <div
         ref={copyRef}
-        className="sc-hero-copy"
+        className="sc-hero-copy sc-hero-copy--initial"
+        data-testid="hero-copy"
       >
         <div className="mx-auto w-full max-w-7xl">
-          <div className="flex max-w-2xl flex-col">
+          <div className="flex max-w-2xl flex-col sc-hero-copy__col">
             <h1 data-testid="hero-title" className="sc-hero-title text-white">
               {t.hero.title_pre}{" "}
               <span className="sc-hero-accent">{t.hero.title_accent}</span>{" "}
