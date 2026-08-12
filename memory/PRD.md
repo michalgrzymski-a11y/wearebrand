@@ -94,13 +94,12 @@ Deep Teal `#0C5C62`, Accent Mint `#49ADA5`, White, Light gray `#F8FAFA`, Charcoa
   - **Smooth scrubbing fix**: intro video re-encoded with `keyint=1:min-keyint=1:no-scenecut=1` so every frame is a keyframe → browser can seek to any `currentTime` without decoding from a distant I-frame. Lerp seek loop lowered damping factor from 0.15 → 0.22 and skip-threshold from 0.02 → 0.008 for tighter response.
   - Files: `/app/frontend/src/components/hero/Hero.jsx`, `/app/frontend/src/App.css` lines 37-42 (.sc-app) and 270-305 (.sc-hero-scroller + .sc-hero-sticky + #values). Verified 100% by testing_agent iteration_22 (fix) and iteration_23 (three-phase).
 
-- **Hero — Copy state machine (2026-02-12)** — Copy 3-state animation:
+- **Hero — Copy state machine v2 (2026-02-12)** — Copy 3-state animation, refined:
   - **Copy 3-state machine** driven from `onScroll` in `Hero.jsx`:
-    1. `scrollY < 40`  → `.sc-hero-copy--initial` — copy translates to the RIGHT half of the viewport via `.sc-hero-copy__col { margin-left: auto }`.
-    2. `progress ∈ (0, 0.94)` → `.sc-hero-copy--hidden` — fades to `opacity: 0; pointer-events: none` so only the video reads during the scrub.
-    3. `progress ≥ 0.94` → default state — copy reappears in its normal left-aligned position with buttons.
+    1. `currentScroll < 40` → `.sc-hero-copy--initial` — copy shifts to the FAR RIGHT of the viewport. On initial state the `.max-w-7xl` centering wrapper is overridden to `max-width: none; padding-right: 3vw`, letting `.sc-hero-copy__col { margin-left: auto }` push the column to the actual viewport right edge (measured 60-95% of viewport width on a 1440 layout).
+    2. `40 ≤ currentScroll < scrubLen` → `.sc-hero-copy--hidden` — fades to `opacity: 0; pointer-events: none`. Threshold is `scrubLen` exactly (not `progress >= 0.94`) so the copy stays hidden through the ENTIRE scrub with zero mid-scroll flashes.
+    3. `currentScroll ≥ scrubLen` → default state — copy reappears in its normal left-aligned position with buttons.
     CSS transitions: `opacity 350ms ease`, `transform 550ms cubic-bezier(.22, 1, .36, 1)`.
-  - Note: Zoom-out (scale 0.8) experiment was reverted per user preference — video stays full-bleed at `scale(1.02)`.
 
 - **UtilityBar (2026-02-12)** — right-side quiet section navigator at `/src/components/UtilityBar.jsx`:
   - Ultra-quiet 6px cyan dots for 7 sections (top, values, trusted, portfolio, savings, partners, contact).
