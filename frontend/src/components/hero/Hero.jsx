@@ -17,6 +17,7 @@ const Hero = () => {
   const { t } = useLang();
   const heroRef = useRef(null);
   const imgRef = useRef(null);
+  const videoRef = useRef(null);
   const neonRef = useRef(null);
   const partRef = useRef(null);
   const bracketsRef = useRef(null);
@@ -30,6 +31,55 @@ const Hero = () => {
     let raf = 0;
     let tx = 0, ty = 0, cx = 0, cy = 0;
     let scrollY = 0;
+
+    /* --- Scroll-linked video intro playback --- */
+    const video = videoRef.current;
+    const prefersReducedMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    let videoRaf = 0;
+    let targetTime = 0;
+    let currentTime = 0;
+
+    const updateVideoTime = () => {
+      if (!video || !video.duration || isNaN(video.duration)) return;
+      // Map scrollY (0 → hero-height) to video time (0 → duration)
+      const heroHeight = hero.offsetHeight || 1;
+      const progress = Math.min(1, Math.max(0, (window.scrollY || 0) / heroHeight));
+      targetTime = progress * video.duration;
+    };
+
+    const seekLoop = () => {
+      if (!video || !video.duration) {
+        videoRaf = requestAnimationFrame(seekLoop);
+        return;
+      }
+      // Smooth ease-in-out toward target for buttery playback
+      currentTime += (targetTime - currentTime) * 0.15;
+      if (Math.abs(targetTime - currentTime) < 0.005) currentTime = targetTime;
+      try {
+        if (Math.abs(video.currentTime - currentTime) > 0.02) {
+          video.currentTime = currentTime;
+        }
+      } catch (_) { /* seeking races — ignore */ }
+      videoRaf = requestAnimationFrame(seekLoop);
+    };
+
+    if (video && !prefersReducedMotion) {
+      const startLoop = () => {
+        updateVideoTime();
+        currentTime = targetTime;
+        try { video.pause(); } catch (_) {}
+        cancelAnimationFrame(videoRaf);
+        videoRaf = requestAnimationFrame(seekLoop);
+      };
+      if (video.readyState >= 1) startLoop();
+      else video.addEventListener("loadedmetadata", startLoop, { once: true });
+      window.addEventListener("scroll", updateVideoTime, { passive: true });
+    }
+    /* --- End scroll-linked video --- */
 
     const onMove = (e) => {
       const r = hero.getBoundingClientRect();
@@ -67,9 +117,11 @@ const Hero = () => {
 
     return () => {
       cancelAnimationFrame(raf);
+      cancelAnimationFrame(videoRaf);
       hero.removeEventListener("mousemove", onMove);
       hero.removeEventListener("mouseleave", onLeave);
       window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("scroll", updateVideoTime);
     };
   }, []);
 
@@ -81,11 +133,25 @@ const Hero = () => {
       className="relative w-full overflow-hidden sc-hero"
       style={{ background: "#040709" }}
     >
-      {/* L0 — background photo with Ken Burns + mouse + scroll parallax */}
+      {/* L0 — scroll-linked video intro (fallback: background photo) */}
       <div className="absolute inset-0 sc-hero-photo-wrap" data-testid="hero-photo">
+        <video
+          ref={videoRef}
+          className="sc-hero-video"
+          muted
+          playsInline
+          preload="auto"
+          poster={`${process.env.PUBLIC_URL}/video/intro-poster.jpg`}
+          data-testid="hero-video"
+          aria-hidden="true"
+        >
+          <source src={`${process.env.PUBLIC_URL}/video/intro.webm`} type="video/webm" />
+          <source src={`${process.env.PUBLIC_URL}/video/intro.mp4`} type="video/mp4" />
+        </video>
+        {/* Photo remains as ultimate fallback (behind video, visible only if video fails) */}
         <div
           ref={imgRef}
-          className="sc-hero-photo"
+          className="sc-hero-photo sc-hero-photo--fallback"
           style={{ backgroundImage: `url("${process.env.PUBLIC_URL}/hero-datacenter.jpg")` }}
         />
       </div>

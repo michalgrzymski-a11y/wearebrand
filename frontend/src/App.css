@@ -270,6 +270,19 @@ html { scroll-padding-top: 92px; }
 .sc-hero-photo-wrap {
   overflow: hidden;
 }
+/* Scroll-linked intro video — sits above fallback photo, full-bleed cover */
+.sc-hero-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  z-index: 2;
+  pointer-events: none;
+  /* subtle scale so scroll parallax on other layers doesn't reveal edges */
+  transform: scale(1.02);
+}
 .sc-hero-photo {
   position: absolute;
   inset: -6% -4%;
@@ -278,6 +291,16 @@ html { scroll-padding-top: 92px; }
   transform: translate3d(var(--sc-px, 0px), calc(var(--sc-py, 0px) + var(--sc-scroll, 0px)), 0) scale(1.08);
   will-change: transform, background-position;
   animation: sc-hero-photo-kenburns 26s ease-in-out infinite alternate;
+}
+/* Fallback variant — behind the video (z-index 1). If video fails to load, photo shows through. */
+.sc-hero-photo--fallback { z-index: 1; }
+
+@media (max-width: 768px) {
+  /* Mobile: hide video (battery / bandwidth) — fallback photo takes over */
+  .sc-hero-video { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sc-hero-video { display: none; }
 }
 @keyframes sc-hero-photo-kenburns {
   0%   { background-position: 48% 52%; background-size: 105% 105%; }
