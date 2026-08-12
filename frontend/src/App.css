@@ -305,8 +305,7 @@ html { scroll-padding-top: 92px; }
 }
 /* Scroll-linked intro video — sits ABOVE the fallback photo but UNDER all the
    decorative layers (neon lines, sweep, particles, brackets, copy) so the
-   parallax feel is preserved. Scaled to 0.8 to give a "zoomed-out" cinematic
-   feeling — the video floats in the middle with dark bg around. */
+   parallax feel is preserved. */
 .sc-hero-video {
   position: absolute;
   inset: 0;
@@ -316,7 +315,8 @@ html { scroll-padding-top: 92px; }
   object-position: center center;
   z-index: 1;
   pointer-events: none;
-  transform: scale(0.8);
+  /* subtle scale so scroll parallax on other layers doesn't reveal edges */
+  transform: scale(1.02);
 }
 .sc-hero-poster {
   position: absolute;
@@ -327,7 +327,7 @@ html { scroll-padding-top: 92px; }
   object-position: center center;
   z-index: 0;
   pointer-events: none;
-  transform: scale(0.8);
+  transform: scale(1.02);
 }
 /* Bump decorative layers above the video so parallax reads clearly. */
 .sc-hero-neon        { z-index: 2; }
