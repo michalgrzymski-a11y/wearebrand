@@ -45,9 +45,14 @@ const Hero = () => {
 
     const updateVideoTime = () => {
       if (!video || !video.duration || isNaN(video.duration)) return;
-      // Map scrollY (0 → hero-height) to video time (0 → duration)
-      const heroHeight = hero.offsetHeight || 1;
-      const progress = Math.min(1, Math.max(0, (window.scrollY || 0) / heroHeight));
+      // Map scroll progress THROUGH the tall scroller (300vh) to video time.
+      // scrollLen = full scrub distance (scroller-height − viewport-height).
+      // currentScroll = how far scrolled INTO the scroller.
+      const rect = hero.getBoundingClientRect();
+      const scrollLen = hero.offsetHeight - window.innerHeight;
+      if (scrollLen <= 0) { targetTime = 0; return; }
+      const currentScroll = Math.min(scrollLen, Math.max(0, -rect.top));
+      const progress = currentScroll / scrollLen;
       targetTime = progress * video.duration;
     };
 
@@ -87,7 +92,16 @@ const Hero = () => {
       ty = ((e.clientY - r.top) / r.height - 0.5) * 2;
     };
     const onLeave = () => { tx = 0; ty = 0; };
-    const onScroll = () => { scrollY = window.scrollY || 0; };
+    const onScroll = () => {
+      // Parallax should be based on scroll progress THROUGH the hero scroller
+      // (0 → 1), not raw window.scrollY. This keeps content pinned in view.
+      const rect = hero.getBoundingClientRect();
+      const scrollLen = hero.offsetHeight - window.innerHeight;
+      const currentScroll = Math.min(scrollLen, Math.max(0, -rect.top));
+      const progress = scrollLen > 0 ? currentScroll / scrollLen : 0;
+      // Multiply by a small factor so layers move ~80px total during full scrub
+      scrollY = progress * 80;
+    };
 
     hero.addEventListener("mousemove", onMove);
     hero.addEventListener("mouseleave", onLeave);
@@ -130,9 +144,10 @@ const Hero = () => {
       id="top"
       ref={heroRef}
       data-testid="hero-section"
-      className="relative w-full overflow-hidden sc-hero"
+      className="sc-hero-scroller"
       style={{ background: "#040709" }}
     >
+      <div className="sc-hero-sticky sc-hero">
       {/* L0 — scroll-linked video intro (fallback: background photo) */}
       <div className="absolute inset-0 sc-hero-photo-wrap" data-testid="hero-photo">
         <video
@@ -235,6 +250,7 @@ const Hero = () => {
             </div>
           </div>
         </div>
+      </div>
       </div>
     </section>
   );
