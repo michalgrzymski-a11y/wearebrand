@@ -264,13 +264,12 @@ html { scroll-padding-top: 92px; }
 .sc-hero-copy--final .sc-hero-copy__initial-only { display: none; }
 .sc-hero-copy--final .sc-hero-copy__final-only { display: block; }
 
-/* Emphasis style: HUD CORNER BRACKETS. Four L-shaped cyan brackets frame the
-   copy at each corner, no panel background — the animation stays fully visible
-   behind the words. Strong text-shadow keeps the title legible on top of the
-   moving datacenter. */
+/* Emphasis style: NO FRAME — just a strong drop shadow on the title keeps
+   the type legible on top of the animated datacenter. Accents (see below)
+   glow bright neon cyan on their own via drop-shadow filter. */
 .sc-hero-copy__col {
   position: relative;
-  padding: 26px 32px;
+  padding: 6px 0;
   border: none;
   background: transparent;
   box-shadow: none;
@@ -280,50 +279,6 @@ html { scroll-padding-top: 92px; }
     0 2px 24px rgba(0, 0, 0, 0.9),
     0 0 40px rgba(0, 0, 0, 0.6),
     0 0 4px rgba(0, 0, 0, 0.9);
-}
-/* Two pseudo-elements draw the four L brackets by covering an outer rect and
-   letting the inner "hole" show through — cheap and clean, no extra DOM. */
-.sc-hero-copy__col::before,
-.sc-hero-copy__col::after {
-  content: "";
-  position: absolute;
-  width: 28px;
-  height: 28px;
-  border: 2px solid #06FFE0;
-  filter: drop-shadow(0 0 6px rgba(6, 255, 224, 0.55));
-  pointer-events: none;
-}
-/* Top-left L: keep top + left borders, remove right + bottom. */
-.sc-hero-copy__col::before {
-  top: 0;
-  left: 0;
-  border-right: none;
-  border-bottom: none;
-}
-/* Bottom-right L: keep bottom + right borders, remove top + left. */
-.sc-hero-copy__col::after {
-  bottom: 0;
-  right: 0;
-  border-left: none;
-  border-top: none;
-}
-/* Second bracket layer for the OTHER two corners (top-right + bottom-left)
-   via a background-image trick on the column itself. */
-.sc-hero-copy__col {
-  background-image:
-    /* top-right corner */
-    linear-gradient(to left, #06FFE0 0 28px, transparent 28px 30px, transparent),
-    linear-gradient(to bottom, #06FFE0 0 28px, transparent 28px 30px, transparent),
-    /* bottom-left corner */
-    linear-gradient(to right, #06FFE0 0 28px, transparent 28px 30px, transparent),
-    linear-gradient(to top, #06FFE0 0 28px, transparent 28px 30px, transparent);
-  background-repeat: no-repeat;
-  background-position:
-    top right, top right,
-    bottom left, bottom left;
-  background-size:
-    28px 2px, 2px 28px,   /* top-right: horizontal + vertical strip */
-    28px 2px, 2px 28px;   /* bottom-left: horizontal + vertical strip */
 }
 @media (min-width: 768px) {
   .sc-hero-copy { padding: 0 40px; }

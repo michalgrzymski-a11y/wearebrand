@@ -19,13 +19,9 @@ export const translations = {
       subtitle:
         "Projektujemy rozwiązania szyte na miarę, które chronią dane, przyspieszają biznes i szanują budżet.",
       subtitle_parts: [
-        { text: "Projektujemy rozwiązania szyte na miarę, które " },
-        { text: "chronią dane", accent: true },
-        { text: ", przyspieszają " },
-        { text: "biznes", accent: true },
-        { text: " i szanują " },
-        { text: "budżet", accent: true },
-        { text: "." },
+        { text: "Projektujemy rozwiązania " },
+        { text: "szyte na miarę", accent: true },
+        { text: ", które chronią dane, przyspieszają biznes i szanują budżet." },
       ],
       cta_primary: "Zaplanuj konsultację",
       cta_secondary: "Poznaj usługi",
@@ -272,13 +268,9 @@ export const translations = {
       subtitle:
         "Tailor-made solutions that protect data, accelerate business and respect the budget.",
       subtitle_parts: [
-        { text: "Tailor-made solutions that " },
-        { text: "protect data", accent: true },
-        { text: ", accelerate " },
-        { text: "business", accent: true },
-        { text: " and respect the " },
-        { text: "budget", accent: true },
-        { text: "." },
+        { text: "" },
+        { text: "Tailor-made", accent: true },
+        { text: " solutions that protect data, accelerate business and respect the budget." },
       ],
       cta_primary: "Book a consultation",
       cta_secondary: "Explore services",
