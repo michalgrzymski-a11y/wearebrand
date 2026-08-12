@@ -10,6 +10,7 @@ const NAV = [
   { key: "offer",    href: "/#portfolio", sectionId: "portfolio" },
   { key: "savings",  href: "/#savings",   sectionId: "savings"   },
   { key: "partners", href: "/#partners",  sectionId: "partners"  },
+  { key: "robocze",  href: "/robocze",    sectionId: "__robocze__" },
   { key: "contact",  href: "/#contact",   sectionId: "contact"   },
 ];
 
