@@ -100,6 +100,11 @@ Deep Teal `#0C5C62`, Accent Mint `#49ADA5`, White, Light gray `#F8FAFA`, Charcoa
   3. `currentScroll ≥ scrubLen` → `--final` — copy at FAR LEFT (mirrored trick: `margin-right: auto` on `.sc-hero-copy__col` + `max-width: none; padding-left: 3vw` on the wrapper).
   Verified at 1440 × 900: initial col at leftPx ~1150 (right side), final col at leftPx ~97 (left side), hidden fully invisible throughout the 40 → scrubLen scrub range.
 
+- **Hero — AVIF fallback (2026-02-12, F delivered)** — 193 desktop 4K + 30 mobile 1080p klatek re-encoded to AVIF via `libsvtav1 -crf 36/34 -preset 6-8`:
+  - Desktop AVIF: 11 MB (vs 25 MB WebP = **56% redukcja**)
+  - Mobile AVIF: 912 KB (vs 1.7 MB WebP = **46% redukcja**)
+  - `Hero.jsx` runs `detectAvif()` on mount (1×1 data-URI probe with `Image().onload/onerror`). If browser supports AVIF, preloads from `/video/frames-avif/` (desktop) or `/video/frames-m-avif/` (mobile). Per-frame `onerror` handler falls back to the same-indexed WebP if a specific AVIF isn't deployed yet.
+
 - **UtilityBar (2026-02-12)** — right-side quiet section navigator at `/src/components/UtilityBar.jsx`:
   - Ultra-quiet 6px cyan dots for 7 sections (top, values, trusted, portfolio, savings, partners, contact).
   - Vertical page-progress rail (cyan gradient fill from top based on `window.scrollY / (docH - winH)`).

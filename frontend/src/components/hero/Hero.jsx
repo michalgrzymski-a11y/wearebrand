@@ -32,13 +32,12 @@ const Hero = () => {
     let tx = 0, ty = 0, cx = 0, cy = 0;
     let scrollY = 0;
 
-    /* --- Scroll-linked WebP frame sequence (Apple-style scrub) ---
-       DESKTOP: 193 pre-rendered 4K WebP frames in /public/video/frames/
-       MOBILE : 30 pre-rendered 1080p frames in /public/video/frames-m/
-       Both are hue-shifted to match the site cyan palette (#06FFE0).
+    /* --- Scroll-linked WebP / AVIF frame sequence (Apple-style scrub) ---
+       DESKTOP: 193 pre-rendered 4K frames — AVIF (~15 MB) if supported,
+                otherwise WebP (~25 MB) fallback.
+       MOBILE : 30 pre-rendered 1080p frames — same AVIF/WebP fallback.
        Frames are preloaded on mount, then drawn to a <canvas> at the
-       current scrub progress. This eliminates codec seek jitter completely —
-       every "seek" is just an Image → canvas drawImage() call. */
+       current scrub progress. */
     const canvas = canvasRef.current;
     const prefersReducedMotion =
       typeof window !== "undefined" &&
@@ -50,9 +49,18 @@ const Hero = () => {
       window.matchMedia("(max-width: 767px)").matches;
 
     const TOTAL_FRAMES = isMobile ? 30 : 193;
-    const FRAMES_BASE = `${process.env.PUBLIC_URL}/video/${
-      isMobile ? "frames-m" : "frames"
-    }`;
+
+    // AVIF feature detection — decode a tiny 1x1 AVIF via Image().decode().
+    // Resolves quickly (< 50 ms). Falls back to WebP if decode fails.
+    const detectAvif = () =>
+      new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => resolve(img.width > 0 && img.height > 0);
+        img.onerror = () => resolve(false);
+        img.src =
+          "data:image/avif;base64,AAAAIGZ0eXBhdmlmAAAAAGF2aWZtaWYxbWlhZk1BMUIAAADybWV0YQAAAAAAAAAoaGRscgAAAAAAAAAAcGljdAAAAAAAAAAAAAAAAGxpYmF2aWYAAAAADnBpdG0AAAAAAAEAAAAeaWxvYwAAAABEAAABAAEAAAABAAABGgAAAB0AAAAoaWluZgAAAAAAAQAAABppbmZlAgAAAAABAABhdjAxQ29sb3IAAAAAamlwcnAAAABLaXBjbwAAABRpc3BlAAAAAAAAAAIAAAACAAAAEHBpeGkAAAAAAwgICAAAAAxhdjFDgQ0MAAAAABNjb2xybmNseAACAAIAAYAAAAAXaXBtYQAAAAAAAAABAAEEAQKDBAAAACVtZGF0EgAKCBgANogQEAwgMg8f8D///8WfhwB8+ErK42A=";
+      });
+
     const images = new Array(TOTAL_FRAMES);
     let ctx = null;
     let currentIdx = -1;
@@ -62,7 +70,6 @@ const Hero = () => {
     const drawFrameAt = (idx) => {
       const img = images[idx];
       if (!ctx || !img || !img.complete || !img.naturalWidth) return false;
-      // Set canvas backing store on first successful paint so DPR matches.
       if (canvas.width !== img.naturalWidth) {
         canvas.width = img.naturalWidth;
         canvas.height = img.naturalHeight;
@@ -77,9 +84,6 @@ const Hero = () => {
       frameRaf = requestAnimationFrame(() => {
         frameRaf = 0;
         if (!hero) return;
-        // Simple pin & scrub — outer scroller (300vh) has 200vh of scroll room
-        // for the sticky (100vh) to pin. Video scrubs across the full pin range,
-        // then the Hero un-pins and scrolls up normally, revealing Wartości.
         const rect = hero.getBoundingClientRect();
         const scrubLen = hero.offsetHeight - window.innerHeight;
         if (scrubLen <= 0) return;
@@ -87,9 +91,7 @@ const Hero = () => {
         const progress = currentScroll / scrubLen;
         let idx = Math.round(progress * (TOTAL_FRAMES - 1));
         if (idx === currentIdx) return;
-        // Try target frame; if not yet loaded, fall back to nearest loaded frame.
         if (!drawFrameAt(idx)) {
-          // Look outward for the nearest loaded frame.
           for (let d = 1; d < TOTAL_FRAMES; d++) {
             if (idx - d >= 0 && drawFrameAt(idx - d)) break;
             if (idx + d < TOTAL_FRAMES && drawFrameAt(idx + d)) break;
@@ -99,20 +101,35 @@ const Hero = () => {
     };
 
     if (canvas && !prefersReducedMotion) {
-      /* Both desktop and mobile use scroll-linked scrub — mobile just loads
-         the lighter 30-frame 1080p set from /frames-m/. */
       ctx = canvas.getContext("2d", { alpha: true });
-      for (let i = 0; i < TOTAL_FRAMES; i++) {
-        const img = new Image();
-        img.decoding = "async";
-        img.onload = () => {
-          framesLoaded += 1;
-          scheduleDraw();
-        };
-        img.onerror = () => { framesLoaded += 1; };
-        img.src = `${FRAMES_BASE}/f_${String(i + 1).padStart(3, "0")}.webp`;
-        images[i] = img;
-      }
+      // Async feature-detect then kick off the parallel preload.
+      detectAvif().then((avif) => {
+        // If AVIF frames haven't finished encoding yet, the .avif requests will
+        // 404 and the image will fire onerror — we fall back to WebP per-image.
+        const ext = avif ? "avif" : "webp";
+        const dir = avif
+          ? isMobile ? "frames-m-avif" : "frames-avif"
+          : isMobile ? "frames-m" : "frames";
+        for (let i = 0; i < TOTAL_FRAMES; i++) {
+          const img = new Image();
+          img.decoding = "async";
+          img.onload = () => {
+            framesLoaded += 1;
+            scheduleDraw();
+          };
+          img.onerror = () => {
+            // Per-frame WebP fallback if a specific AVIF is missing (mid-deploy).
+            if (avif) {
+              img.onerror = () => { framesLoaded += 1; };
+              img.src = `${process.env.PUBLIC_URL}/video/${isMobile ? "frames-m" : "frames"}/f_${String(i + 1).padStart(3, "0")}.webp`;
+            } else {
+              framesLoaded += 1;
+            }
+          };
+          img.src = `${process.env.PUBLIC_URL}/video/${dir}/f_${String(i + 1).padStart(3, "0")}.${ext}`;
+          images[i] = img;
+        }
+      });
       window.addEventListener("scroll", scheduleDraw, { passive: true });
       window.addEventListener("resize", scheduleDraw);
       scheduleDraw();
@@ -120,7 +137,7 @@ const Hero = () => {
       ctx = canvas.getContext("2d", { alpha: true });
       const img = new Image();
       img.onload = () => drawFrameAt(0);
-      img.src = `${FRAMES_BASE}/f_${String(TOTAL_FRAMES).padStart(3, "0")}.webp`;
+      img.src = `${process.env.PUBLIC_URL}/video/${isMobile ? "frames-m" : "frames"}/f_${String(TOTAL_FRAMES).padStart(3, "0")}.webp`;
       images[TOTAL_FRAMES - 1] = img;
     }
     /* --- End frame sequence --- */
