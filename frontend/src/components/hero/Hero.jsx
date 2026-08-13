@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { useLang } from "@/i18n/LanguageContext";
 import { ArrowRight } from "lucide-react";
 import NeuralNodeNetwork from "@/components/fx/NeuralNodeNetwork";
+import CursorSwarm from "@/components/hero/CursorSwarm";
 
 /**
  * Hero — cinematic datacenter photograph as full-bleed background.
@@ -287,6 +288,7 @@ const Hero = () => {
 
       {/* Neural Node Network — cursor-reactive particle web on top of the photo */}
       <NeuralNodeNetwork color="#49ADA5" density={90} interactive opacity={0.6} />
+      <CursorSwarm />
 
       {/* L4 — corner tech brackets */}
       <div ref={bracketsRef} className="pointer-events-none absolute inset-0" aria-hidden="true">
