@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from "react";
 import { useLang } from "@/i18n/LanguageContext";
 import { ArrowRight } from "lucide-react";
 import NeuralNodeNetwork from "@/components/fx/NeuralNodeNetwork";
-import CursorSwarm from "@/components/hero/CursorSwarm";
 
 /**
  * Hero — cinematic datacenter photograph as full-bleed background.
@@ -23,6 +22,7 @@ const Hero = () => {
   const partRef = useRef(null);
   const bracketsRef = useRef(null);
   const copyRef = useRef(null);
+  const glowRef = useRef(null);
 
   useEffect(() => {
     const hero = heroRef.current;
@@ -147,8 +147,18 @@ const Hero = () => {
       const r = hero.getBoundingClientRect();
       tx = ((e.clientX - r.left) / r.width - 0.5) * 2;
       ty = ((e.clientY - r.top) / r.height - 0.5) * 2;
+      // Cursor-following soft cyan glow (subtle, no dots)
+      const glow = glowRef.current;
+      if (glow) {
+        glow.style.setProperty("--sc-gx", `${e.clientX - r.left}px`);
+        glow.style.setProperty("--sc-gy", `${e.clientY - r.top}px`);
+        glow.style.opacity = "1";
+      }
     };
-    const onLeave = () => { tx = 0; ty = 0; };
+    const onLeave = () => {
+      tx = 0; ty = 0;
+      if (glowRef.current) glowRef.current.style.opacity = "0";
+    };
     const onScroll = () => {
       // Parallax bound to scrub progress (0..1) × 80px — layers stay in view
       // through the whole pin range and freeze once Hero un-pins.
@@ -288,7 +298,14 @@ const Hero = () => {
 
       {/* Neural Node Network — cursor-reactive particle web on top of the photo */}
       <NeuralNodeNetwork color="#49ADA5" density={90} interactive opacity={0.6} />
-      <CursorSwarm />
+
+      {/* Subtle cyan cursor-following glow (no dots) */}
+      <div
+        ref={glowRef}
+        className="pointer-events-none absolute inset-0 sc-hero-cursor-glow"
+        aria-hidden="true"
+        data-testid="hero-cursor-glow"
+      />
 
       {/* L4 — corner tech brackets */}
       <div ref={bracketsRef} className="pointer-events-none absolute inset-0" aria-hidden="true">
