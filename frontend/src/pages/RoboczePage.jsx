@@ -1,5 +1,6 @@
 import React from "react";
 import Navbar from "@/components/Navbar";
+import ButtonPlaygroundSection from "@/components/sections/ButtonPlaygroundSection";
 import PartnersV2Section from "@/components/sections/PartnersV2Section";
 import BusinessContinuitySection from "@/components/sections/BusinessContinuitySection";
 import SectorsSection from "@/components/sections/SectorsSection";
@@ -21,6 +22,7 @@ import Kontakt from "@/components/sections/Kontakt";
 const RoboczePage = () => (
   <main data-testid="robocze-main" className="sc-app">
     <Navbar />
+    <ButtonPlaygroundSection />
     <PartnersV2Section />
     <BusinessContinuitySection />
     <SectorsSection />
