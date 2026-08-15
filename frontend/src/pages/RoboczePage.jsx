@@ -1,6 +1,7 @@
 import React from "react";
 import Navbar from "@/components/Navbar";
 import ButtonPlaygroundSection from "@/components/sections/ButtonPlaygroundSection";
+import TextPlaygroundSection from "@/components/sections/TextPlaygroundSection";
 import PartnersV2Section from "@/components/sections/PartnersV2Section";
 import BusinessContinuitySection from "@/components/sections/BusinessContinuitySection";
 import SectorsSection from "@/components/sections/SectorsSection";
@@ -23,6 +24,7 @@ const RoboczePage = () => (
   <main data-testid="robocze-main" className="sc-app">
     <Navbar />
     <ButtonPlaygroundSection />
+    <TextPlaygroundSection />
     <PartnersV2Section />
     <BusinessContinuitySection />
     <SectorsSection />

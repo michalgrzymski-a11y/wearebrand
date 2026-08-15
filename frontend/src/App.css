@@ -12697,3 +12697,368 @@ html { scroll-padding-top: 92px; }
   .bp-btn--14 { animation: none; }
 }
 
+
+/* ==========================================================================
+   Text Playground (/robocze) — 30 propozycji stylów tekstowych
+   ========================================================================== */
+.tp-section { width: 100%; }
+.tp-panel { width: 100%; padding: 96px 24px; }
+.tp-panel--light {
+  background:
+    radial-gradient(circle at 20% 0%, rgba(6,255,224,0.08) 0%, rgba(6,255,224,0) 55%),
+    linear-gradient(180deg, #F6F9FA 0%, #ECF2F3 100%);
+  color: #0C5C62;
+}
+.tp-panel--dark {
+  background:
+    radial-gradient(circle at 80% 0%, rgba(6,255,224,0.10) 0%, rgba(6,255,224,0) 55%),
+    linear-gradient(180deg, #040709 0%, #0A1418 100%);
+  color: #E8F4F5;
+}
+.tp-panel__inner { max-width: 1280px; margin: 0 auto; }
+.tp-panel__head { margin-bottom: 48px; max-width: 720px; }
+.tp-panel__tag {
+  display: inline-block;
+  font-family: "Manrope", sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  padding: 6px 12px;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  opacity: 0.55;
+  margin-bottom: 20px;
+}
+.tp-panel__title {
+  font-family: "Manrope", sans-serif;
+  font-weight: 800;
+  font-size: 40px;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin: 0 0 12px 0;
+}
+.tp-panel--dark .tp-panel__title { color: #FFFFFF; }
+.tp-panel__sub {
+  font-family: "Manrope", sans-serif;
+  font-size: 15px;
+  opacity: 0.72;
+  margin: 0;
+}
+.tp-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+@media (max-width: 1024px) { .tp-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px)  { .tp-grid { grid-template-columns: 1fr; } }
+
+.tp-cell {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 24px;
+  border-radius: 14px;
+  min-height: 160px;
+  border: 1px dashed transparent;
+  background: transparent;
+  transition: border-color 0.25s ease, background 0.25s ease;
+}
+.tp-panel--light .tp-cell { border-color: rgba(12, 92, 98, 0.12); background: rgba(255,255,255,0.4); }
+.tp-panel--dark  .tp-cell { border-color: rgba(255, 255, 255, 0.08); background: rgba(255,255,255,0.02); }
+.tp-panel--light .tp-cell:hover { background: rgba(255,255,255,0.7); border-color: rgba(6, 255, 224, 0.3); }
+.tp-panel--dark  .tp-cell:hover { background: rgba(6, 255, 224, 0.03); border-color: rgba(6, 255, 224, 0.25); }
+
+.tp-cell__render { flex: 1; display: flex; align-items: center; }
+.tp-cell__label {
+  display: flex; align-items: baseline; gap: 8px;
+  font-family: "Manrope", sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.55;
+  border-top: 1px solid rgba(127,127,127,0.15);
+  padding-top: 10px;
+}
+.tp-cell__num  { font-weight: 700; opacity: 0.9; }
+.tp-cell__name { font-weight: 500; }
+
+/* Base text styling shared */
+.tp-txt {
+  font-family: "Manrope", sans-serif;
+  margin: 0;
+  color: inherit;
+}
+
+/* 1) Hero H1 Display */
+.tp-txt--1 {
+  font-size: 30px; font-weight: 800; line-height: 1.08; letter-spacing: -0.02em;
+}
+.tp-panel--dark .tp-txt--1 { color: #FFFFFF; }
+.tp-accent {
+  background: linear-gradient(135deg, #06FFE0 0%, #00B8D4 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+
+/* 2) Section H2 */
+.tp-txt--2 { font-size: 28px; font-weight: 800; line-height: 1.15; letter-spacing: -0.015em; }
+.tp-panel--dark .tp-txt--2 { color: #FFF; }
+
+/* 3) H3 */
+.tp-txt--3 { font-size: 22px; font-weight: 700; line-height: 1.25; letter-spacing: -0.01em; }
+
+/* 4) Subtitle */
+.tp-txt--4 { font-size: 15px; font-weight: 400; line-height: 1.55; opacity: 0.75; max-width: 32ch; }
+
+/* 5) Body */
+.tp-txt--5 { font-size: 15px; font-weight: 400; line-height: 1.65; opacity: 0.9; }
+
+/* 6) Cyan Gradient Accent */
+.tp-txt--6 { font-size: 18px; font-weight: 700; }
+
+/* 7) Underlined key phrase */
+.tp-txt--7 { font-size: 16px; font-weight: 500; }
+.tp-under {
+  background-image: linear-gradient(90deg, #06FFE0 0%, #00B8D4 100%);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 100% 3px;
+  padding-bottom: 2px;
+  font-weight: 700;
+}
+
+/* 8) Highlight mark */
+.tp-txt--8 { font-size: 16px; }
+.tp-mark {
+  background: linear-gradient(180deg, transparent 55%, rgba(6,255,224,0.35) 55%);
+  color: inherit;
+  padding: 0 2px;
+  font-weight: 600;
+}
+
+/* 9) Cyan Solid word */
+.tp-txt--9 { font-size: 18px; font-weight: 500; }
+.tp-cyan { color: #06FFE0; font-weight: 800; }
+.tp-panel--light .tp-cyan { color: #00B8D4; }
+
+/* 10) Eyebrow */
+.tp-txt--10 {
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 0.28em; text-transform: uppercase;
+  opacity: 0.6;
+}
+
+/* 11) Tag label */
+.tp-txt--11 {
+  display: inline-block;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 0.24em; text-transform: uppercase;
+  padding: 6px 12px;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  opacity: 0.7;
+}
+
+/* 12) Chip badge */
+.tp-txt--12 {
+  display: inline-block;
+  font-size: 12px; font-weight: 700;
+  padding: 6px 12px; border-radius: 999px;
+  background: linear-gradient(135deg, #06FFE0 0%, #00B8D4 100%);
+  color: #001B20;
+}
+
+/* 13) Big numeral display */
+.tp-txt--13 {
+  font-size: 72px; font-weight: 900; line-height: 1;
+  letter-spacing: -0.04em;
+  background: linear-gradient(135deg, #06FFE0 0%, #00B8D4 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+
+/* 14) KPI Stat */
+.tp-txt--14 { display: flex; flex-direction: column; gap: 2px; }
+.tp-txt--14 strong { font-size: 38px; font-weight: 800; letter-spacing: -0.02em; color: #06FFE0; }
+.tp-panel--light .tp-txt--14 strong { color: #00B8D4; }
+.tp-txt--14 em {
+  font-style: normal; font-size: 11px;
+  letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.65;
+  font-weight: 600;
+}
+
+/* 15) Small caps */
+.tp-txt--15 {
+  font-size: 12px; font-weight: 700;
+  letter-spacing: 0.32em; text-transform: uppercase;
+}
+
+/* 16) Terminal mono */
+.tp-txt--16 {
+  font-family: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
+  font-size: 13px; font-weight: 500;
+  color: #06FFE0;
+  background: rgba(6,255,224,0.06);
+  padding: 8px 12px;
+  border-radius: 6px;
+  border-left: 2px solid #06FFE0;
+}
+.tp-txt--16 span { opacity: 0.7; margin-right: 6px; }
+.tp-panel--light .tp-txt--16 { color: #0C5C62; background: rgba(6,255,224,0.12); }
+
+/* 17) Pull quote */
+.tp-txt--17 {
+  font-size: 18px; font-weight: 500; line-height: 1.4;
+  font-style: italic;
+  quotes: none;
+}
+
+/* 18) Cyan border quote */
+.tp-txt--18 {
+  font-size: 15px; font-weight: 500; line-height: 1.55;
+  padding-left: 16px;
+  border-left: 3px solid #06FFE0;
+  quotes: none;
+}
+.tp-panel--light .tp-txt--18 { border-left-color: #00B8D4; }
+
+/* 19) Bracketed HUD */
+.tp-txt--19 { font-size: 15px; font-weight: 600; letter-spacing: 0.06em; }
+.tp-br { color: #06FFE0; font-weight: 800; margin: 0 6px; }
+.tp-panel--light .tp-br { color: #00B8D4; }
+
+/* 20) Gradient hero title */
+.tp-txt--20 {
+  font-size: 36px; font-weight: 900; line-height: 1.05; letter-spacing: -0.03em;
+  overflow-wrap: anywhere;
+  background: linear-gradient(135deg, #06FFE0 0%, #00B8D4 60%, #0C5C62 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+
+/* 21) Glow cyan */
+.tp-txt--21 {
+  font-size: 20px; font-weight: 800;
+  color: #06FFE0;
+  text-shadow: 0 0 12px rgba(6,255,224,0.45), 0 0 24px rgba(6,255,224,0.25);
+  letter-spacing: 0.04em;
+}
+.tp-panel--light .tp-txt--21 {
+  color: #00B8D4;
+  text-shadow: 0 0 12px rgba(0,184,212,0.35);
+}
+
+/* 22) Outline stroked */
+.tp-txt--22 {
+  font-size: 42px; font-weight: 900; letter-spacing: -0.02em;
+  -webkit-text-stroke: 1px currentColor;
+  color: transparent;
+  position: relative;
+}
+.tp-panel--dark .tp-txt--22 { -webkit-text-stroke: 1px #06FFE0; }
+.tp-panel--light .tp-txt--22 { -webkit-text-stroke: 1px #0C5C62; }
+
+/* 23) Duotone word split */
+.tp-txt--23 {
+  font-size: 30px; font-weight: 900; letter-spacing: -0.02em;
+  display: inline-flex;
+}
+.tp-txt--23 span:first-child { color: inherit; }
+.tp-txt--23 span:last-child { color: #06FFE0; }
+.tp-panel--light .tp-txt--23 span:last-child { color: #00B8D4; }
+
+/* 24) Metric with label — same base as 14 but bigger + horizontal */
+.tp-txt--24 { display: flex; align-items: baseline; gap: 12px; }
+.tp-txt--24 strong { font-size: 44px; font-weight: 900; letter-spacing: -0.03em; color: inherit; }
+.tp-txt--24 em {
+  font-style: normal; font-size: 12px; font-weight: 600;
+  opacity: 0.7; letter-spacing: 0.1em; text-transform: uppercase;
+}
+
+/* 25) Testimonial signature */
+.tp-txt--25 { font-size: 14px; font-weight: 700; opacity: 0.85; }
+.tp-txt--25 em { font-style: normal; opacity: 0.6; font-weight: 400; }
+
+/* 26) Animated underline link */
+.tp-txt--26 {
+  font-size: 15px; font-weight: 700;
+  color: inherit; text-decoration: none;
+  position: relative;
+  display: inline-block;
+  padding-bottom: 4px;
+}
+.tp-txt--26::after {
+  content: "";
+  position: absolute; left: 0; bottom: 0;
+  width: 100%; height: 2px;
+  background: linear-gradient(90deg, #06FFE0, #00B8D4);
+  transform: scaleX(0); transform-origin: right;
+  transition: transform 0.35s ease;
+}
+.tp-txt--26:hover::after { transform: scaleX(1); transform-origin: left; }
+
+/* 27) Inline code */
+.tp-txt--27 { font-size: 15px; line-height: 1.55; }
+.tp-txt--27 code {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: rgba(6,255,224,0.12);
+  color: #06FFE0;
+  border: 1px solid rgba(6,255,224,0.25);
+}
+.tp-panel--light .tp-txt--27 code { color: #0C5C62; background: rgba(6,255,224,0.18); }
+
+/* 28) Numbered step */
+.tp-txt--28 { font-size: 16px; font-weight: 600; display: flex; align-items: center; gap: 14px; }
+.tp-step {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px; border-radius: 999px;
+  border: 1px solid #06FFE0;
+  font-size: 12px; font-weight: 800; letter-spacing: 0.05em;
+  color: #06FFE0;
+}
+.tp-panel--light .tp-step { border-color: #00B8D4; color: #00B8D4; }
+
+/* 29) Cyan ticker row */
+.tp-txt--29 { font-size: 13px; font-weight: 600; letter-spacing: 0.02em; display: flex; align-items: center; gap: 10px; opacity: 0.85; }
+.tp-tick {
+  display: inline-block; width: 8px; height: 8px; border-radius: 999px;
+  background: #06FFE0;
+  box-shadow: 0 0 0 4px rgba(6,255,224,0.18), 0 0 12px rgba(6,255,224,0.55);
+  animation: tp-tick-pulse 2s ease-in-out infinite;
+}
+@keyframes tp-tick-pulse {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.25); }
+}
+
+/* 30) Blockquote wide */
+.tp-txt--30 {
+  font-size: 20px; font-weight: 500; line-height: 1.45;
+  position: relative; padding-left: 34px;
+  quotes: none;
+}
+.tp-txt--30 .tp-quote {
+  position: absolute; left: 0; top: -8px;
+  font-family: "Georgia", serif;
+  font-size: 56px; line-height: 1;
+  color: #06FFE0;
+  opacity: 0.7;
+}
+.tp-panel--light .tp-txt--30 .tp-quote { color: #00B8D4; }
+
+/* Mobile */
+@media (max-width: 768px) {
+  .tp-panel { padding: 64px 20px; }
+  .tp-panel__title { font-size: 30px; }
+  .tp-txt--1 { font-size: 24px; }
+  .tp-txt--13 { font-size: 56px; }
+  .tp-txt--20 { font-size: 32px; }
+  .tp-txt--22 { font-size: 32px; }
+  .tp-txt--24 strong { font-size: 34px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tp-tick { animation: none; }
+}
+
