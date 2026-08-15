@@ -14712,3 +14712,262 @@ html { scroll-padding-top: 92px; }
   .sv2__bar { transition: none; }
 }
 
+
+/* ==========================================================================
+   Savings V4 — Accordion
+   ========================================================================== */
+.sv4 { padding: 96px 24px; background:
+  radial-gradient(circle at 15% 20%, rgba(6,255,224,0.08), transparent 55%),
+  linear-gradient(180deg, #040709 0%, #0A1418 100%);
+  color: #E8F4F5;
+}
+.sv4__grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 360px 1fr; gap: 48px; align-items: start; }
+@media (max-width: 900px) { .sv4__grid { grid-template-columns: 1fr; gap: 32px; } }
+.sv4__eyebrow { display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: 0.28em; text-transform: uppercase; color: #06FFE0; opacity: 0.8; }
+.sv4__aside h2 { font-size: 32px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.15; margin: 12px 0 24px; color: #FFF; }
+.sv4__accent {
+  background: linear-gradient(135deg, #06FFE0 0%, #00B8D4 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.sv4__metric {
+  padding: 24px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(6,255,224,0.10), rgba(0,184,212,0.03));
+  border: 1px solid rgba(6,255,224,0.2);
+  margin-bottom: 20px;
+}
+.sv4__metric-kicker { font-size: 10px; font-weight: 800; letter-spacing: 0.28em; text-transform: uppercase; opacity: 0.65; }
+.sv4__metric-val {
+  display: block; font-size: 80px; font-weight: 900; letter-spacing: -0.05em; line-height: 1;
+  background: linear-gradient(135deg, #06FFE0 0%, #00B8D4 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  margin: 6px 0 4px;
+}
+.sv4__metric-lbl { font-size: 12px; opacity: 0.7; line-height: 1.5; }
+.sv4__cta {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 22px; border-radius: 10px;
+  background: linear-gradient(135deg, #06FFE0 0%, #00B8D4 100%);
+  color: #001B20; font-weight: 800; text-decoration: none;
+}
+.sv4__lead { font-size: 15px; line-height: 1.65; opacity: 0.78; margin: 0 0 24px; max-width: 62ch; }
+.sv4__row { border-bottom: 1px solid rgba(255,255,255,0.08); }
+.sv4__row:first-child { border-top: 1px solid rgba(255,255,255,0.08); }
+.sv4__row-head {
+  width: 100%; display: flex; align-items: center; gap: 16px;
+  padding: 20px 4px; background: transparent; border: none; cursor: pointer;
+  color: inherit; font: inherit; text-align: left;
+  transition: color 0.2s ease;
+}
+.sv4__row-head:hover { color: #06FFE0; }
+.sv4__row-icon {
+  width: 40px; height: 40px; border-radius: 10px;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: rgba(6,255,224,0.10); color: #06FFE0;
+  flex-shrink: 0;
+}
+.sv4__row-title { flex: 1; font-size: 16px; font-weight: 700; }
+.sv4__row-toggle {
+  width: 32px; height: 32px; border-radius: 999px;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: rgba(6,255,224,0.06); color: #06FFE0;
+  transition: background 0.2s ease, transform 0.3s ease;
+}
+.sv4__row.is-open .sv4__row-toggle { background: #06FFE0; color: #001B20; transform: rotate(90deg); }
+.sv4__row-body {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 0.4s ease, opacity 0.3s ease;
+}
+.sv4__row.is-open .sv4__row-body { max-height: 200px; opacity: 1; }
+.sv4__row-body p { margin: 0 0 20px 56px; font-size: 14px; line-height: 1.65; opacity: 0.82; }
+
+/* ==========================================================================
+   Savings V5 — Tabs Switcher
+   ========================================================================== */
+.sv5 { padding: 96px 24px; background: linear-gradient(180deg, #F6F9FA 0%, #ECF2F3 100%); color: #0C5C62; }
+.sv5__head { max-width: 1200px; margin: 0 auto 40px; text-align: center; }
+.sv5__eyebrow { display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: 0.28em; text-transform: uppercase; color: #00B8D4; }
+.sv5__head h2 { font-size: 36px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.15; margin: 12px 0 16px; }
+.sv5__accent {
+  background: linear-gradient(135deg, #06FFE0 0%, #00B8D4 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.sv5__lead { font-size: 15px; line-height: 1.65; opacity: 0.75; max-width: 720px; margin: 0 auto; }
+
+.sv5__grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 380px 1fr; gap: 32px; align-items: stretch; }
+@media (max-width: 900px) { .sv5__grid { grid-template-columns: 1fr; } }
+
+.sv5__metric-col { display: flex; flex-direction: column; gap: 16px; }
+.sv5__metric {
+  padding: 24px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(6,255,224,0.15), rgba(0,184,212,0.05));
+  border: 1px solid rgba(0,184,212,0.25);
+}
+.sv5__metric-kicker { font-size: 10px; font-weight: 800; letter-spacing: 0.28em; text-transform: uppercase; opacity: 0.65; }
+.sv5__metric-val {
+  display: block; font-size: 68px; font-weight: 900; letter-spacing: -0.05em; line-height: 1;
+  background: linear-gradient(135deg, #06FFE0 0%, #00B8D4 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  margin: 4px 0 4px;
+}
+.sv5__metric-lbl { font-size: 12px; opacity: 0.7; }
+.sv5__tabs { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
+.sv5__tab {
+  width: 100%; display: grid;
+  grid-template-columns: auto auto 1fr auto;
+  gap: 12px; align-items: center;
+  padding: 14px 16px; border-radius: 10px;
+  background: #FFF; border: 1px solid rgba(12,92,98,0.10);
+  cursor: pointer; text-align: left;
+  font: inherit; color: #0C5C62;
+  transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+}
+.sv5__tab:hover { transform: translateX(2px); border-color: #00B8D4; }
+.sv5__tab.is-active {
+  background: linear-gradient(135deg, #06FFE0 0%, #00B8D4 100%);
+  color: #001B20; border-color: transparent;
+  box-shadow: 0 10px 24px -10px rgba(6,255,224,0.5);
+}
+.sv5__tab-num { font-size: 10px; font-weight: 800; letter-spacing: 0.16em; opacity: 0.7; }
+.sv5__tab.is-active .sv5__tab-num { opacity: 0.9; }
+.sv5__tab svg { color: currentColor; }
+.sv5__tab-title { font-size: 13px; font-weight: 700; }
+.sv5__tab-arrow { opacity: 0; transition: opacity 0.2s ease, transform 0.2s ease; }
+.sv5__tab.is-active .sv5__tab-arrow { opacity: 1; transform: translateX(2px); }
+.sv5__cta {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 22px; border-radius: 10px;
+  background: #0C5C62; color: #FFF; font-weight: 800; text-decoration: none;
+  align-self: flex-start;
+}
+
+.sv5__panel {
+  padding: 40px;
+  border-radius: 20px;
+  background: #FFF;
+  border: 1px solid rgba(12,92,98,0.08);
+  box-shadow: 0 20px 40px -20px rgba(0,27,32,0.12);
+  display: flex; flex-direction: column; gap: 12px;
+  animation: sv5-fade 300ms ease-out;
+  position: relative;
+  overflow: hidden;
+}
+@keyframes sv5-fade {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.sv5__panel-visual {
+  position: absolute; right: -20px; bottom: -20px;
+  color: rgba(6,255,224,0.12);
+  pointer-events: none;
+}
+.sv5__panel-tag { font-size: 11px; font-weight: 800; letter-spacing: 0.28em; text-transform: uppercase; color: #00B8D4; }
+.sv5__panel-title { font-size: 26px; font-weight: 800; letter-spacing: -0.01em; margin: 0; color: #0C5C62; line-height: 1.2; }
+.sv5__panel-desc { font-size: 15px; line-height: 1.65; opacity: 0.78; margin: 0; max-width: 55ch; }
+
+/* ==========================================================================
+   Savings V6 — Bento asymmetric
+   ========================================================================== */
+.sv6 { padding: 96px 24px; background:
+  radial-gradient(circle at 80% 10%, rgba(6,255,224,0.08), transparent 55%),
+  linear-gradient(180deg, #040709 0%, #0A1418 100%);
+  color: #E8F4F5;
+}
+.sv6__inner { max-width: 1200px; margin: 0 auto; }
+.sv6__intro { max-width: 720px; margin-bottom: 32px; }
+.sv6__eyebrow { display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: 0.28em; text-transform: uppercase; color: #06FFE0; opacity: 0.8; margin-bottom: 12px; }
+.sv6__intro h2 { font-size: 36px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.15; margin: 0 0 16px; color: #FFF; }
+.sv6__accent {
+  background: linear-gradient(135deg, #06FFE0 0%, #00B8D4 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.sv6__lead { font-size: 15px; line-height: 1.65; opacity: 0.75; margin: 0; }
+
+.sv6__grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  grid-auto-rows: minmax(160px, auto);
+  gap: 16px;
+}
+@media (max-width: 900px) { .sv6__grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 560px) { .sv6__grid { grid-template-columns: 1fr; } }
+
+.sv6__tile {
+  padding: 24px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.25s ease, transform 0.25s ease;
+}
+.sv6__tile--pillar:hover { transform: translateY(-3px); border-color: rgba(6,255,224,0.35); }
+
+/* Big metric tile occupies span 1x2 */
+.sv6__tile--metric {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  background:
+    radial-gradient(circle at 80% 30%, rgba(6,255,224,0.15), transparent 60%),
+    linear-gradient(135deg, rgba(6,255,224,0.10), rgba(0,184,212,0.02));
+  border-color: rgba(6,255,224,0.3);
+  display: flex; flex-direction: column; gap: 4px; justify-content: center;
+}
+.sv6__t-kicker { font-size: 11px; font-weight: 800; letter-spacing: 0.28em; text-transform: uppercase; opacity: 0.7; }
+.sv6__t-val {
+  font-size: 110px; font-weight: 900; letter-spacing: -0.05em; line-height: 1;
+  background: linear-gradient(135deg, #06FFE0 0%, #00B8D4 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.sv6__t-arrow { color: #06FFE0; margin: -6px 0 6px; animation: sv6-bounce 1.8s ease-in-out infinite; }
+@keyframes sv6-bounce {
+  0%, 100% { transform: translateY(0); opacity: 0.9; }
+  50%      { transform: translateY(6px); opacity: 1; }
+}
+.sv6__t-lbl { font-size: 13px; opacity: 0.75; max-width: 22ch; }
+
+.sv6__tile--pillar { display: flex; flex-direction: column; gap: 10px; }
+.sv6__t-num { position: absolute; top: 14px; right: 16px; font-size: 12px; font-weight: 800; letter-spacing: 0.16em; color: #06FFE0; opacity: 0.7; }
+.sv6__t-icon {
+  width: 40px; height: 40px; border-radius: 10px;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: rgba(6,255,224,0.10); color: #06FFE0;
+}
+.sv6__t-title { font-size: 15px; font-weight: 800; margin: 4px 0 0; color: #FFF; letter-spacing: -0.005em; line-height: 1.3; }
+.sv6__t-desc { font-size: 13px; line-height: 1.55; opacity: 0.75; margin: 0; }
+
+/* Uneven bento sizing — position pillars asymmetrically */
+.sv6__tile--0 { grid-column: 2; grid-row: 1; }
+.sv6__tile--1 { grid-column: 3; grid-row: 1; }
+.sv6__tile--2 { grid-column: 2 / span 2; grid-row: 2; }
+.sv6__tile--3 { grid-column: 1; grid-row: 3; }
+.sv6__tile--cta {
+  grid-column: 2 / span 2; grid-row: 3;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 24px;
+  background: linear-gradient(135deg, #06FFE0 0%, #00B8D4 100%);
+  color: #001B20;
+  font-weight: 800; font-size: 16px;
+  border-color: transparent;
+  text-decoration: none;
+  cursor: pointer;
+}
+.sv6__tile--cta:hover { transform: translateY(-2px); border-color: transparent; }
+
+@media (max-width: 900px) {
+  .sv6__tile--metric { grid-column: 1 / span 2; grid-row: auto; }
+  .sv6__tile--0, .sv6__tile--1, .sv6__tile--2, .sv6__tile--3 { grid-column: auto; grid-row: auto; }
+  .sv6__tile--cta { grid-column: 1 / span 2; grid-row: auto; }
+}
+@media (max-width: 560px) {
+  .sv6__tile--metric, .sv6__tile--cta { grid-column: auto; }
+  .sv6__t-val { font-size: 70px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sv6__t-arrow, .sv5__panel { animation: none; }
+}
+

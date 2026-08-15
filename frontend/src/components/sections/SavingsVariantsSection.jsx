@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { ArrowDown, ArrowUp, TrendingDown, TrendingUp, Recycle, KeySquare, GaugeCircle, LineChart, Sparkles, ArrowRight } from "lucide-react";
+import { ArrowDown, ArrowUp, TrendingDown, TrendingUp, Recycle, KeySquare, GaugeCircle, LineChart, Sparkles, ArrowRight, Plus, Minus } from "lucide-react";
 
 /**
  * Trzy alternatywne wersje sekcji „Optymalizacja kosztów" — do wyboru.
@@ -236,17 +236,151 @@ export const SavingsV3 = () => {
   );
 };
 
+/* Wspólne dane treściowe dla V4-V6 (zachowujemy pełny content) */
+const PILLARS_FULL = [
+  { id: "refab",     Icon: Recycle,     title: "Refabrykowany hardware enterprise",
+    desc: "Certyfikowane serwery, macierze i przełączniki z pełną gwarancją, w cenie ułamka listy producenta. Ta sama wydajność, dostępność od ręki." },
+  { id: "license",   Icon: KeySquare,   title: "Konsolidacja i optymalizacja licencji",
+    desc: "Audyt subskrypcji, downgrade nadmiarowych edycji, migracja do właściwych metryk. W wielu przypadkach redukcja OPEX o kilkadziesiąt procent." },
+  { id: "lifecycle", Icon: GaugeCircle, title: "Zarządzanie cyklem życia sprzętu",
+    desc: "Kupujemy, odsprzedajemy i redystrybuujemy sprzęt tak, by amortyzacja i moment wymiany były pod kontrolą, a nie narzucone przez producenta." },
+  { id: "rightsize", Icon: LineChart,   title: "Monitoring i rightsizing",
+    desc: "Realne metryki obciążenia zamiast przewymiarowanych projektów. Skalujemy zasoby dokładnie do potrzeb — bez przepłacania na zapas." },
+];
+
+const SUBTITLE_FULL = "W dobie dwu/trzycyfrowych wzrostów cen sprzętu enterprise, tradycyjne podejście do zakupów IT przestaje się opłacać. Patrzymy na budżet IT szerzej niż przez pryzmat samej wyceny — projektujemy rozwiązania tak, aby realnie chronić Twój kapitał.";
+
+/* Wersja 4 — Accordion progressive disclosure */
+export const SavingsV4 = () => {
+  const [open, setOpen] = useState("refab");
+  return (
+    <section className="sv4" data-testid="savings-v4">
+      <div className="sv4__grid">
+        <aside className="sv4__aside">
+          <span className="sv4__eyebrow">Optymalizacja kosztów</span>
+          <h2>Ceny rosną. <span className="sv4__accent">Twój rachunek nie musi.</span></h2>
+          <div className="sv4__metric">
+            <span className="sv4__metric-kicker">TCO</span>
+            <strong className="sv4__metric-val">−30%</strong>
+            <span className="sv4__metric-lbl">typowa oszczędność po audycie SMARTCLOUT</span>
+          </div>
+          <a href="#contact" className="sv4__cta">Umów audyt <ArrowRight size={14}/></a>
+        </aside>
+        <div className="sv4__accordion">
+          <p className="sv4__lead">{SUBTITLE_FULL}</p>
+          {PILLARS_FULL.map((p) => {
+            const isOpen = open === p.id;
+            return (
+              <div key={p.id} className={`sv4__row ${isOpen ? "is-open" : ""}`} data-testid={`sv4-row-${p.id}`}>
+                <button type="button" className="sv4__row-head"
+                  onClick={() => setOpen(isOpen ? null : p.id)} aria-expanded={isOpen}>
+                  <span className="sv4__row-icon"><p.Icon size={20}/></span>
+                  <span className="sv4__row-title">{p.title}</span>
+                  <span className="sv4__row-toggle">{isOpen ? <Minus size={18}/> : <Plus size={18}/>}</span>
+                </button>
+                <div className="sv4__row-body"><p>{p.desc}</p></div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+/* Wersja 5 — Tabs Switcher (widoczny 1 filar naraz) */
+export const SavingsV5 = () => {
+  const [active, setActive] = useState(0);
+  const p = PILLARS_FULL[active];
+  return (
+    <section className="sv5" data-testid="savings-v5">
+      <div className="sv5__head">
+        <span className="sv5__eyebrow">Optymalizacja kosztów</span>
+        <h2>Ceny rosną. <span className="sv5__accent">Twój rachunek nie musi.</span></h2>
+        <p className="sv5__lead">{SUBTITLE_FULL}</p>
+      </div>
+      <div className="sv5__grid">
+        <div className="sv5__metric-col">
+          <div className="sv5__metric">
+            <span className="sv5__metric-kicker">TCO</span>
+            <strong className="sv5__metric-val">−30%</strong>
+            <span className="sv5__metric-lbl">po audycie SMARTCLOUT</span>
+          </div>
+          <ul className="sv5__tabs">
+            {PILLARS_FULL.map((it, i) => (
+              <li key={it.id}>
+                <button type="button" className={`sv5__tab ${i === active ? "is-active" : ""}`}
+                  onClick={() => setActive(i)} data-testid={`sv5-tab-${it.id}`}>
+                  <span className="sv5__tab-num">0{i+1}</span>
+                  <it.Icon size={18}/>
+                  <span className="sv5__tab-title">{it.title}</span>
+                  <ArrowRight size={14} className="sv5__tab-arrow"/>
+                </button>
+              </li>
+            ))}
+          </ul>
+          <a href="#contact" className="sv5__cta">Umów audyt kosztów IT <ArrowRight size={14}/></a>
+        </div>
+        <div className="sv5__panel" key={p.id} data-testid={`sv5-panel-${p.id}`}>
+          <div className="sv5__panel-visual" aria-hidden="true"><p.Icon size={96} strokeWidth={1.2}/></div>
+          <span className="sv5__panel-tag">{`Filar 0${active+1} / 04`}</span>
+          <h3 className="sv5__panel-title">{p.title}</h3>
+          <p className="sv5__panel-desc">{p.desc}</p>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+/* Wersja 6 — Bento asymmetric layout */
+export const SavingsV6 = () => (
+  <section className="sv6" data-testid="savings-v6">
+    <div className="sv6__inner">
+      <div className="sv6__intro">
+        <span className="sv6__eyebrow">Optymalizacja kosztów</span>
+        <h2>Ceny rosną. <span className="sv6__accent">Twój rachunek nie musi.</span></h2>
+        <p className="sv6__lead">{SUBTITLE_FULL}</p>
+      </div>
+      <div className="sv6__grid">
+        <div className="sv6__tile sv6__tile--metric" data-testid="sv6-metric">
+          <span className="sv6__t-kicker">TCO</span>
+          <strong className="sv6__t-val">−30%</strong>
+          <ArrowDown size={26} className="sv6__t-arrow"/>
+          <span className="sv6__t-lbl">typowa oszczędność po audycie</span>
+        </div>
+        {PILLARS_FULL.map((p, i) => (
+          <article key={p.id} className={`sv6__tile sv6__tile--pillar sv6__tile--${i}`} data-testid={`sv6-pillar-${p.id}`}>
+            <span className="sv6__t-num">0{i+1}</span>
+            <div className="sv6__t-icon"><p.Icon size={22}/></div>
+            <h3 className="sv6__t-title">{p.title}</h3>
+            <p className="sv6__t-desc">{p.desc}</p>
+          </article>
+        ))}
+        <a href="#contact" className="sv6__tile sv6__tile--cta" data-testid="sv6-cta">
+          <span>Umów audyt kosztów IT</span>
+          <ArrowRight size={20}/>
+        </a>
+      </div>
+    </div>
+  </section>
+);
+
+
+
 const SavingsVariantsSection = () => (
   <section className="sv-variants" data-testid="savings-variants">
     <div className="sv-variants__intro">
-      <span className="sv-variants__tag">Sekcja „Optymalizacja kosztów" · 3 propozycje</span>
+      <span className="sv-variants__tag">Sekcja „Optymalizacja kosztów" · 6 propozycji</span>
       <h2>Wybierz wersję która najlepiej sprzedaje wartość</h2>
-      <p>Każda mniej tekstu, więcej wizualizacji. Interakcje przy najechaniu / scrollu.</p>
+      <p>V1-V3: minimum tekstu, wizualny impakt. V4-V6: pełna treść ale wizualnie odciążona.</p>
     </div>
     <div className="sv-variants__list">
       <div className="sv-variants__item"><span className="sv-variants__num">01 · Big Bang -30%</span><SavingsV1/></div>
       <div className="sv-variants__item"><span className="sv-variants__num">02 · Przed / Po</span><SavingsV2/></div>
       <div className="sv-variants__item"><span className="sv-variants__num">03 · Gauge + Ticker</span><SavingsV3/></div>
+      <div className="sv-variants__item"><span className="sv-variants__num">04 · Accordion</span><SavingsV4/></div>
+      <div className="sv-variants__item"><span className="sv-variants__num">05 · Tabs Switcher</span><SavingsV5/></div>
+      <div className="sv-variants__item"><span className="sv-variants__num">06 · Bento Layout</span><SavingsV6/></div>
     </div>
   </section>
 );
