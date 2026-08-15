@@ -2,6 +2,7 @@ import React, { useMemo, useState } from "react";
 import Navbar from "@/components/Navbar";
 import Kontakt from "@/components/sections/Kontakt";
 import { DollarSign, HardDrive, TrendingUp, AlertTriangle, Clock, Zap } from "lucide-react";
+import { NETAPP_MODELS, NETAPP_SELECT_OPTIONS } from "@/data/netappModels";
 
 /* ==========================================================================
    /kalkulatory — 6 interaktywnych kalkulatorów
@@ -110,6 +111,19 @@ const RaidCalc = () => {
   const [disks, setDisks] = useState(8);
   const [size, setSize] = useState(4);       // TB / dysk
   const [level, setLevel] = useState("6");
+  const [preset, setPreset] = useState("");
+
+  const onPreset = (id) => {
+    setPreset(id);
+    if (!id) return;
+    const m = NETAPP_MODELS.find((x) => x.id === id);
+    if (!m) return;
+    setDisks(m.presetDisks);
+    setSize(m.presetSize);
+    // domyślnie RAID-DP dla AFF/FAS ONTAP; DDP dla C-Series (E-Series jest inne,
+    // ale w praktyce dla AFF C też ONTAP — zostawiamy DP)
+    setLevel("dp");
+  };
 
   const r = useMemo(() => {
     const total = disks * size;
@@ -162,8 +176,26 @@ const RaidCalc = () => {
       }
       note="RAID-DP (ONTAP) = podwójna parzystość na WAFL, min. 3 dyski. DDP (E-Series) = rozproszone strefy 8+2 z ~10% rezerwacją na odbudowę, min. 11 dysków. Realna pojemność po formatowaniu jest zwykle o 5-10% mniejsza."
     >
-      <Field  label="Liczba dysków"        value={disks} onChange={setDisks} min={2} max={64} />
-      <Field  label="Pojemność / dysk"     unit="TB" value={size} onChange={setSize} min={0.5} step={0.5} max={30} />
+      <label className="calc-field calc-field--full">
+        <span className="calc-field__label">Preset NetApp <em>(auto-uzupełnia pola)</em></span>
+        <select
+          className="calc-field__input"
+          value={preset}
+          onChange={(e) => onPreset(e.target.value)}
+          data-testid="raid-preset-netapp"
+        >
+          <option value="">— wybierz model —</option>
+          {NETAPP_SELECT_OPTIONS.map((g) => (
+            <optgroup key={g.group} label={g.group}>
+              {g.models.map((m) => (
+                <option key={m.id} value={m.id}>{m.name} · {m.tier} · {m.presetDisks}× {m.presetSize}TB</option>
+              ))}
+            </optgroup>
+          ))}
+        </select>
+      </label>
+      <Field  label="Liczba dysków"        value={disks} onChange={setDisks} min={2} max={720} />
+      <Field  label="Pojemność / dysk"     unit="TB" value={size} onChange={setSize} min={0.5} step={0.5} max={64} />
       <Select label="Poziom RAID"          value={level} onChange={setLevel} options={[
         { value: "0",   label: "RAID 0 (striping)" },
         { value: "1",   label: "RAID 1 (mirror)" },

@@ -17,6 +17,7 @@ import RoboczePage from "@/pages/RoboczePage";
 import KalkulatoryPage from "@/pages/KalkulatoryPage";
 import PrivacyPolicyPage from "@/pages/PrivacyPolicyPage";
 import NetappPage from "@/pages/NetappPage";
+import NetAppPortfolioPage from "@/pages/NetAppPortfolioPage";
 import CookieConsent from "@/components/CookieConsent";
 import UtilityBar from "@/components/UtilityBar";
 import Analytics from "@/components/Analytics";
@@ -49,6 +50,7 @@ function App() {
             <Route path="/partners/:slug" element={<PartnerDetailPage />} />
             <Route path="/polityka-prywatnosci" element={<PrivacyPolicyPage />} />
             <Route path="/netapp" element={<NetappPage />} />
+            <Route path="/netapp-portfolio" element={<NetAppPortfolioPage />} />
           </Routes>
           <CookieConsent />
           <Analytics />
