@@ -11,6 +11,7 @@ const NAV = [
   { key: "savings",  href: "/#savings",   sectionId: "savings"   },
   { key: "partners", href: "/#partners",  sectionId: "partners"  },
   { key: "robocze",  href: "/robocze",    sectionId: "__robocze__" },
+  { key: "calculators", href: "/kalkulatory", sectionId: "__calculators__" },
   { key: "contact",  href: "/#contact",   sectionId: "contact"   },
 ];
 
