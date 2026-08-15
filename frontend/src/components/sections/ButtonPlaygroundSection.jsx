@@ -122,7 +122,65 @@ const ButtonPlaygroundSection = () => (
       title="Warianty na ciemnym tle"
       subtitle="Ten sam zestaw na tle Hero/serwerowni — spójny z aktualnym layoutem."
     />
+    <GradientPrimaryPanel />
   </section>
+);
+
+/* ==========================================================================
+   40 propozycji „Gradient Primary" — wariantów efektów podświetlenia
+   ========================================================================== */
+const GP_LABEL = "Sprawdź ofertę";
+const GP_ICON  = <ArrowRight size={14} />;
+
+const GP_VARIANTS = Array.from({ length: 40 }, (_, i) => ({
+  n: i + 1,
+  name: [
+    "Base Solid",           "Shine Sweep",         "Glow Pulse",           "Border Reveal",
+    "Icon Slide In",        "Text Shift Right",    "Gradient Rotate",      "Gradient Flip",
+    "Split Layer",          "Neon Flicker",        "Iridescent Shift",     "Depth Press 3D",
+    "Elastic Scale",        "Bounce Squish",       "Wobble Hover",         "Halo Expand",
+    "Halo Ping",            "Sparkle Dots",        "Border Chase",         "Inner Glow Press",
+    "Dual Shadow",          "Outline Glow",        "Underline Reveal",     "Icon Spin",
+    "Icon Bounce",          "Text Scramble",       "Char Cascade",         "Sliding Bar BG",
+    "Ripple Click",         "Ink Bleed",           "Ghost Duplicate",      "Stripe Overlay",
+    "Diagonal Shine",       "Vertical Shine",      "Skew Tilt",            "Lift + Shadow",
+    "3D Perspective",       "Rainbow Border",      "Fill Sweep L→R",       "Radial Explosion",
+  ][i],
+}));
+
+const GradientPrimaryPanel = () => (
+  <div className="bp-panel bp-panel--dark bp-panel--gp" data-testid="bp-panel-gp">
+    <div className="bp-panel__inner">
+      <div className="bp-panel__head">
+        <span className="bp-panel__tag">Gradient Primary · 40 wariantów efektów</span>
+        <h2 className="bp-panel__title">40 sposobów na ten sam CTA</h2>
+        <p className="bp-panel__sub">
+          Wszystkie wychodzą z tej samej bazy (cyan gradient + ciemny tekst).
+          Różnią się tylko efektami podświetlenia, animacji i hover. Najedź kursorem — zobaczysz różnicę.
+        </p>
+      </div>
+      <div className="bp-gp-grid">
+        {GP_VARIANTS.map((v) => (
+          <div key={v.n} className="bp-gp-cell" data-testid={`bp-gp-cell-${v.n}`}>
+            <div className="bp-gp-cell__btn">
+              <button
+                type="button"
+                className={`bp-gp bp-gp--${v.n}`}
+                data-testid={`bp-gp-btn-${v.n}`}
+              >
+                <span className="bp-gp__label">{GP_LABEL}</span>
+                {GP_ICON}
+              </button>
+            </div>
+            <div className="bp-cell__label">
+              <span className="bp-cell__num">{String(v.n).padStart(2, "0")}</span>
+              <span className="bp-cell__name">{v.name}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
 );
 
 export default ButtonPlaygroundSection;

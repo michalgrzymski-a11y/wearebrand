@@ -14971,3 +14971,354 @@ html { scroll-padding-top: 92px; }
   .sv6__t-arrow, .sv5__panel { animation: none; }
 }
 
+
+/* ==========================================================================
+   Gradient Primary — 40 wariantów (bp-gp-*)
+   Wszystkie mają wspólną bazę: cyan gradient + dark text. Różnią się efektem.
+   ========================================================================== */
+.bp-panel--gp .bp-panel__inner { max-width: 1280px; }
+.bp-gp-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+@media (max-width: 1200px) { .bp-gp-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 768px)  { .bp-gp-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 480px)  { .bp-gp-grid { grid-template-columns: 1fr; } }
+
+.bp-gp-cell {
+  display: flex; flex-direction: column; gap: 12px;
+  padding: 24px 20px 16px;
+  border-radius: 12px;
+  border: 1px dashed rgba(255,255,255,0.08);
+  min-height: 120px;
+  transition: border-color 0.25s ease, background 0.25s ease;
+  background: rgba(255,255,255,0.02);
+}
+.bp-gp-cell:hover { border-color: rgba(6,255,224,0.35); background: rgba(6,255,224,0.03); }
+.bp-gp-cell__btn { display: flex; align-items: center; min-height: 48px; }
+
+/* Base gradient primary — dziedziczą wszystkie warianty */
+.bp-gp {
+  --bp-gp-c1: #06FFE0;
+  --bp-gp-c2: #00B8D4;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 22px;
+  font-family: "Manrope", sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  line-height: 1;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  white-space: nowrap;
+  background: linear-gradient(135deg, var(--bp-gp-c1) 0%, var(--bp-gp-c2) 100%);
+  color: #001B20;
+  overflow: hidden;
+  isolation: isolate;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease, background 0.25s ease;
+  box-shadow: 0 8px 20px -8px rgba(6,255,224,0.55);
+}
+.bp-gp:hover { transform: translateY(-1px); box-shadow: 0 12px 26px -8px rgba(6,255,224,0.75); }
+.bp-gp svg { flex-shrink: 0; transition: transform 0.25s ease; }
+.bp-gp__label { position: relative; z-index: 2; }
+
+/* 01 Base Solid — bez dodatku, tylko baza */
+.bp-gp--1 { /* base only */ }
+
+/* 02 Shine Sweep — pas światła przelatuje w prawo */
+.bp-gp--2::before {
+  content: ""; position: absolute; top: 0; bottom: 0; left: -60%; width: 60%;
+  background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.55) 50%, transparent 100%);
+  transform: skewX(-20deg);
+  transition: left 0.6s ease;
+  z-index: 1;
+}
+.bp-gp--2:hover::before { left: 110%; }
+
+/* 03 Glow Pulse — otoczka pulsuje */
+.bp-gp--3 { animation: bp-gp-glow 2.4s ease-in-out infinite; }
+@keyframes bp-gp-glow {
+  0%, 100% { box-shadow: 0 8px 20px -8px rgba(6,255,224,0.55); }
+  50%      { box-shadow: 0 8px 40px -4px rgba(6,255,224,0.9); }
+}
+
+/* 04 Border Reveal — cyan outline pojawia się */
+.bp-gp--4 { outline: 0 solid rgba(6,255,224,0); transition: outline-width 0.25s ease, outline-offset 0.25s ease, transform 0.25s ease; }
+.bp-gp--4:hover { outline: 2px solid rgba(6,255,224,0.7); outline-offset: 3px; }
+
+/* 05 Icon Slide In — ikona wjeżdża od lewej */
+.bp-gp--5 svg { margin-left: -18px; opacity: 0; transform: translateX(-6px); }
+.bp-gp--5:hover svg { margin-left: 0; opacity: 1; transform: translateX(0); }
+
+/* 06 Text Shift Right — tekst przesuwa się o kilka px */
+.bp-gp--6:hover .bp-gp__label { transform: translateX(-3px); }
+.bp-gp--6:hover svg { transform: translateX(4px); }
+
+/* 07 Gradient Rotate — kąt gradientu 135 → 45 na hover */
+.bp-gp--7 { transition: background 0.4s ease, transform 0.25s ease, box-shadow 0.25s ease; }
+.bp-gp--7:hover { background: linear-gradient(45deg, var(--bp-gp-c1), var(--bp-gp-c2)); }
+
+/* 08 Gradient Flip — zamienia miejscami c1 ↔ c2 */
+.bp-gp--8 { transition: background 0.5s ease, transform 0.25s ease, box-shadow 0.25s ease; }
+.bp-gp--8:hover { background: linear-gradient(135deg, var(--bp-gp-c2), var(--bp-gp-c1)); }
+
+/* 09 Split Layer — druga warstwa gradientu przesuwa się na hover */
+.bp-gp--9::before {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(135deg, var(--bp-gp-c2), var(--bp-gp-c1));
+  transform: translateX(-100%);
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: 1;
+}
+.bp-gp--9:hover::before { transform: translateX(0); }
+.bp-gp--9 .bp-gp__label, .bp-gp--9 svg { position: relative; z-index: 2; }
+
+/* 10 Neon Flicker — sub­telne migotanie */
+.bp-gp--10 { animation: bp-gp-flicker 4s ease-in-out infinite; }
+@keyframes bp-gp-flicker {
+  0%, 100%    { filter: brightness(1); }
+  40%         { filter: brightness(1); }
+  42%         { filter: brightness(0.8); }
+  44%         { filter: brightness(1.1); }
+  46%         { filter: brightness(1); }
+}
+
+/* 11 Iridescent Shift — pełzający multicolor akcent */
+.bp-gp--11 {
+  background:
+    linear-gradient(90deg,
+      var(--bp-gp-c1) 0%, var(--bp-gp-c2) 25%, #A855F7 50%, var(--bp-gp-c2) 75%, var(--bp-gp-c1) 100%);
+  background-size: 300% 100%;
+  animation: bp-gp-iri 6s linear infinite;
+}
+@keyframes bp-gp-iri {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 300% 50%; }
+}
+
+/* 12 Depth Press 3D — inset shadow gdy klikane */
+.bp-gp--12 { box-shadow: 0 8px 20px -8px rgba(6,255,224,0.55), inset 0 -2px 0 rgba(0,0,0,0.2); }
+.bp-gp--12:active { transform: translateY(2px); box-shadow: 0 3px 8px -4px rgba(6,255,224,0.5), inset 0 2px 0 rgba(0,0,0,0.15); }
+
+/* 13 Elastic Scale — spring bounce */
+.bp-gp--13 { transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.bp-gp--13:hover { transform: scale(1.06); }
+
+/* 14 Bounce Squish — kompresja na kliknięcie */
+.bp-gp--14 { transition: transform 0.15s ease; }
+.bp-gp--14:active { transform: scaleY(0.85) scaleX(0.98); }
+
+/* 15 Wobble Hover — lekko wibruje */
+.bp-gp--15:hover { animation: bp-gp-wobble 0.6s ease-in-out; }
+@keyframes bp-gp-wobble {
+  0%, 100% { transform: translateX(0); }
+  25%      { transform: translateX(-3px) rotate(-1deg); }
+  75%      { transform: translateX(3px)  rotate(1deg); }
+}
+
+/* 16 Halo Expand — ekspansja pierścienia na hover */
+.bp-gp--16::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit;
+  box-shadow: 0 0 0 0 rgba(6,255,224,0.5);
+  transition: box-shadow 0.5s ease;
+  pointer-events: none;
+}
+.bp-gp--16:hover::after { box-shadow: 0 0 0 12px rgba(6,255,224,0); }
+
+/* 17 Halo Ping — pulsujący ring (ambient) */
+.bp-gp--17::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit;
+  animation: bp-gp-ping 2.4s ease-out infinite;
+  pointer-events: none;
+}
+@keyframes bp-gp-ping {
+  0%   { box-shadow: 0 0 0 0 rgba(6,255,224,0.55); }
+  100% { box-shadow: 0 0 0 16px rgba(6,255,224,0); }
+}
+
+/* 18 Sparkle Dots — 3 iskry migają */
+.bp-gp--18::before {
+  content: "✦"; position: absolute; top: 4px; right: 6px; font-size: 10px; color: rgba(0,27,32,0.4);
+  animation: bp-gp-sparkle 1.8s ease-in-out infinite;
+}
+.bp-gp--18::after {
+  content: "✦"; position: absolute; bottom: 6px; left: 8px; font-size: 8px; color: rgba(0,27,32,0.35);
+  animation: bp-gp-sparkle 1.8s ease-in-out 0.6s infinite;
+}
+@keyframes bp-gp-sparkle {
+  0%, 100% { opacity: 0.15; transform: scale(0.8); }
+  50%      { opacity: 1;    transform: scale(1.2); }
+}
+
+/* 19 Border Chase — biegnąca kropka wokół brzegu */
+.bp-gp--19 { background: linear-gradient(135deg, var(--bp-gp-c1), var(--bp-gp-c2)); position: relative; }
+.bp-gp--19::before {
+  content: ""; position: absolute; inset: -2px; border-radius: 12px;
+  background: conic-gradient(from 0deg, transparent 70%, #FFFFFF 85%, transparent 100%);
+  animation: bp-gp-chase 3s linear infinite;
+  z-index: -1;
+}
+@keyframes bp-gp-chase { to { transform: rotate(360deg); } }
+
+/* 20 Inner Glow Press — press wykonuje inner glow */
+.bp-gp--20 { transition: box-shadow 0.2s ease, transform 0.2s ease; }
+.bp-gp--20:active { box-shadow: inset 0 0 20px rgba(6,255,224,0.6), 0 4px 12px -6px rgba(6,255,224,0.4); transform: translateY(1px); }
+
+/* 21 Dual Shadow — 2 warstwy cienia w dwóch kolorach */
+.bp-gp--21 { box-shadow: 4px 8px 20px -6px rgba(6,255,224,0.55), -4px 8px 20px -6px rgba(0,184,212,0.5); }
+.bp-gp--21:hover { box-shadow: 6px 12px 28px -6px rgba(6,255,224,0.75), -6px 12px 28px -6px rgba(0,184,212,0.7); transform: translateY(-2px); }
+
+/* 22 Outline Glow — cień na obrysie */
+.bp-gp--22:hover { filter: drop-shadow(0 0 10px rgba(6,255,224,0.7)); }
+
+/* 23 Underline Reveal — animowany podkreśl (jako pseudo bar pod tekstem) */
+.bp-gp--23 .bp-gp__label { position: relative; padding-bottom: 2px; }
+.bp-gp--23 .bp-gp__label::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1.5px;
+  background: rgba(0,27,32,0.4);
+  transform: scaleX(0); transform-origin: right;
+  transition: transform 0.35s ease;
+}
+.bp-gp--23:hover .bp-gp__label::after { transform: scaleX(1); transform-origin: left; }
+
+/* 24 Icon Spin — ikona kręci się na hover */
+.bp-gp--24:hover svg { transform: rotate(360deg); transition: transform 0.6s ease; }
+
+/* 25 Icon Bounce — ikona podskakuje */
+.bp-gp--25:hover svg { animation: bp-gp-icon-bounce 0.6s ease infinite; }
+@keyframes bp-gp-icon-bounce {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-4px); }
+}
+
+/* 26 Text Scramble — subtelne przesunięcie liter jak glitch */
+.bp-gp--26:hover .bp-gp__label { text-shadow: 1px 0 0 rgba(255,0,0,0.35), -1px 0 0 rgba(0,255,255,0.35); animation: bp-gp-scramble 0.3s ease; }
+@keyframes bp-gp-scramble {
+  0%, 100% { transform: translateX(0); }
+  25%      { transform: translateX(-1px); }
+  75%      { transform: translateX(1px); }
+}
+
+/* 27 Char Cascade — używa pseudo, ale ograniczone, zrobimy transform + delay */
+.bp-gp--27:hover .bp-gp__label { animation: bp-gp-fade-in 0.5s ease; }
+@keyframes bp-gp-fade-in {
+  from { opacity: 0.4; letter-spacing: -0.05em; }
+  to   { opacity: 1;   letter-spacing: 0.01em; }
+}
+
+/* 28 Sliding Bar BG — kolorowy pasek przechodzi jako podkład */
+.bp-gp--28::before {
+  content: ""; position: absolute; top: 50%; left: -10%; right: -10%; height: 200%;
+  background: linear-gradient(135deg, rgba(255,255,255,0.15) 50%, transparent 50%);
+  transform: translate(-100%, -50%);
+  transition: transform 0.55s ease;
+  z-index: 1;
+}
+.bp-gp--28:hover::before { transform: translate(0, -50%); }
+
+/* 29 Ripple Click (CSS-only pseudo) */
+.bp-gp--29 { position: relative; }
+.bp-gp--29:active::before {
+  content: ""; position: absolute; top: 50%; left: 50%; width: 4px; height: 4px; border-radius: 999px;
+  background: rgba(0,27,32,0.3); transform: translate(-50%, -50%);
+  animation: bp-gp-ripple 500ms ease-out;
+}
+@keyframes bp-gp-ripple {
+  from { width: 4px; height: 4px; opacity: 0.6; }
+  to   { width: 220px; height: 220px; opacity: 0; }
+}
+
+/* 30 Ink Bleed — plamka koloru rozlewa się z lewej */
+.bp-gp--30::before {
+  content: ""; position: absolute; top: 0; left: 0; width: 30%; height: 100%;
+  background: radial-gradient(circle at 0% 50%, rgba(0,27,32,0.3), transparent 70%);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.5s ease;
+}
+.bp-gp--30:hover::before { transform: scaleX(1); }
+
+/* 31 Ghost Duplicate — kopia offset za przyciskiem */
+.bp-gp--31 { box-shadow: 4px 4px 0 0 rgba(6,255,224,0.35), 8px 8px 0 0 rgba(0,184,212,0.2); }
+.bp-gp--31:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 0 rgba(6,255,224,0.55), 12px 12px 0 0 rgba(0,184,212,0.35); }
+
+/* 32 Stripe Overlay — diagonal stripes as detail */
+.bp-gp--32 {
+  background:
+    repeating-linear-gradient(45deg, transparent 0 8px, rgba(0,27,32,0.06) 8px 10px),
+    linear-gradient(135deg, var(--bp-gp-c1), var(--bp-gp-c2));
+}
+
+/* 33 Diagonal Shine — statyczny shine z animacją hover */
+.bp-gp--33::before {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(45deg, rgba(255,255,255,0) 30%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 70%);
+  transform: translateX(-100%);
+  transition: transform 0.7s ease;
+}
+.bp-gp--33:hover::before { transform: translateX(100%); }
+
+/* 34 Vertical Shine — góra-dół */
+.bp-gp--34::before {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(255,255,255,0) 30%, rgba(255,255,255,0.35) 50%, rgba(255,255,255,0) 70%);
+  transform: translateY(-100%);
+  transition: transform 0.7s ease;
+}
+.bp-gp--34:hover::before { transform: translateY(100%); }
+
+/* 35 Skew Tilt — pochylenie na hover */
+.bp-gp--35:hover { transform: skew(-4deg, 0) translateY(-1px); }
+
+/* 36 Lift + Shadow — mocny lift z powiększonym cieniem */
+.bp-gp--36:hover { transform: translateY(-4px); box-shadow: 0 20px 40px -10px rgba(6,255,224,0.7); }
+
+/* 37 3D Perspective (mouse-follow) — czysto CSS: rotate na hover */
+.bp-gp--37 { transform-style: preserve-3d; }
+.bp-gp--37:hover { transform: perspective(400px) rotateX(-8deg) rotateY(4deg); }
+
+/* 38 Rainbow Border — obracająca się conic ramka */
+.bp-gp--38 { padding: 3px; background: conic-gradient(from 0deg, #06FFE0, #00B8D4, #A855F7, #06FFE0); animation: bp-gp-chase 4s linear infinite; }
+.bp-gp--38 .bp-gp__label, .bp-gp--38 svg { position: relative; z-index: 2; }
+.bp-gp--38::after {
+  content: ""; position: absolute; inset: 3px; border-radius: 8px;
+  background: linear-gradient(135deg, var(--bp-gp-c1), var(--bp-gp-c2));
+  z-index: 1;
+}
+
+/* 39 Fill Sweep L→R — cyanowe wypełnienie wlewa się */
+.bp-gp--39 { background: linear-gradient(135deg, var(--bp-gp-c1), var(--bp-gp-c2)); }
+.bp-gp--39::before {
+  content: ""; position: absolute; top: 0; bottom: 0; left: 0; width: 100%;
+  background: linear-gradient(90deg, rgba(255,255,255,0.35), rgba(255,255,255,0.15));
+  transform: translateX(-100%);
+  transition: transform 0.5s ease;
+}
+.bp-gp--39:hover::before { transform: translateX(0); }
+
+/* 40 Radial Explosion — na kliknięcie rozchodzi się światło */
+.bp-gp--40 { position: relative; }
+.bp-gp--40::before {
+  content: ""; position: absolute; top: 50%; left: 50%; width: 4px; height: 4px; border-radius: 999px;
+  background: rgba(255,255,255,0.55); transform: translate(-50%, -50%) scale(0);
+  transition: transform 0.6s ease, opacity 0.6s ease;
+  opacity: 1;
+}
+.bp-gp--40:active::before { transform: translate(-50%, -50%) scale(60); opacity: 0; }
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .bp-gp,
+  .bp-gp::before,
+  .bp-gp::after,
+  .bp-gp .bp-gp__label,
+  .bp-gp svg {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
