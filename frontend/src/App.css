@@ -445,9 +445,7 @@ html { scroll-padding-top: 92px; }
     rgba(6, 255, 224, 0) 85%,
     transparent 100%);
   box-shadow: 0 0 12px rgba(6, 255, 224, 0.6);
-  animation:
-    sc-hero-neon-shift 12s ease-in-out infinite alternate,
-    sc-hero-neon-breath 18s ease-in-out 2s infinite;
+  animation: sc-hero-neon-shift 12s ease-in-out infinite alternate;
 }
 .sc-hero-neon__line--b {
   top: 66%;
@@ -458,9 +456,7 @@ html { scroll-padding-top: 92px; }
     rgba(0, 184, 212, 0) 80%,
     transparent 100%);
   box-shadow: 0 0 10px rgba(0, 184, 212, 0.5);
-  animation:
-    sc-hero-neon-shift 15s ease-in-out infinite alternate-reverse,
-    sc-hero-neon-breath 22s ease-in-out 9s infinite;
+  animation: sc-hero-neon-shift 15s ease-in-out infinite alternate-reverse;
 }
 .sc-hero-neon__line--c {
   top: 82%;
@@ -471,26 +467,12 @@ html { scroll-padding-top: 92px; }
     rgba(73, 173, 165, 0.45) 50%,
     rgba(73, 173, 165, 0) 70%,
     transparent 100%);
-  animation:
-    sc-hero-neon-shift 18s ease-in-out infinite alternate,
-    sc-hero-neon-breath 26s ease-in-out 15s infinite;
+  animation: sc-hero-neon-shift 18s ease-in-out infinite alternate;
 }
 @keyframes sc-hero-neon-shift {
   0%   { transform: translate3d(-4%, 0, 0) scaleX(0.95); opacity: 0.6; }
   50%  { opacity: 1; }
   100% { transform: translate3d(4%, 0, 0)  scaleX(1.05); opacity: 0.7; }
-}
-/* Subtle ambient pulse — brief brightness bloom then long rest so the scene
-   feels alive without becoming distracting. */
-@keyframes sc-hero-neon-breath {
-  0%,   88%, 100% { filter: brightness(1)   drop-shadow(0 0 0    rgba(6,255,224,0)); }
-  92%             { filter: brightness(1.6) drop-shadow(0 0 14px rgba(6,255,224,0.55)); }
-  96%             { filter: brightness(1.2) drop-shadow(0 0 6px  rgba(6,255,224,0.25)); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .sc-hero-neon__line--a,
-  .sc-hero-neon__line--b,
-  .sc-hero-neon__line--c { animation: none !important; }
 }
 
 .sc-hero-particles {
