@@ -113,17 +113,34 @@ const RaidCalc = () => {
 
   const r = useMemo(() => {
     const total = disks * size;
-    let usable = 0, fault = 0, iops = "-";
+    let usable = 0, fault = 0, iops = "-", minDisks = 2, warn = "";
     switch (level) {
-      case "0":  usable = total; fault = 0; iops = "100%"; break;
-      case "1":  usable = total / 2; fault = 1; iops = "50%"; break;
-      case "5":  usable = disks >= 3 ? total - size : 0; fault = 1; iops = "70%"; break;
-      case "6":  usable = disks >= 4 ? total - 2 * size : 0; fault = 2; iops = "60%"; break;
-      case "10": usable = total / 2; fault = Math.floor(disks / 2); iops = "80%"; break;
+      case "0":  usable = total; fault = 0; iops = "100%"; minDisks = 2; break;
+      case "1":  usable = total / 2; fault = 1; iops = "50%"; minDisks = 2; break;
+      case "5":  usable = disks >= 3 ? total - size : 0; fault = 1; iops = "70%"; minDisks = 3; break;
+      case "6":  usable = disks >= 4 ? total - 2 * size : 0; fault = 2; iops = "60%"; minDisks = 4; break;
+      case "10": usable = total / 2; fault = Math.floor(disks / 2); iops = "80%"; minDisks = 4; break;
+      // NetApp RAID-DP (ONTAP): podwójna parzystość na WAFL — analogia do RAID 6
+      // ale zoptymalizowana pod losowy zapis; typowo 3-28 dysków w RAID-grupie.
+      case "dp": usable = disks >= 3 ? total - 2 * size : 0; fault = 2; iops = "75%"; minDisks = 3; break;
+      // NetApp DDP (E-Series Dynamic Disk Pools): rozproszone strefy 8+2,
+      // ~2 dyski poświęcone na parzystość + ok. 10% pojemności rezerwowanej
+      // na odbudowę (preservation capacity). Min. 11 dysków.
+      case "ddp": {
+        if (disks >= 11) {
+          const parityOverhead = 2 * size;                    // 2 dyski na parzystość
+          const preservation = (total - parityOverhead) * 0.10; // ~10% rezerwacji
+          usable = total - parityOverhead - preservation;
+        } else {
+          usable = 0;
+        }
+        fault = 2; iops = "80%"; minDisks = 11; break;
+      }
       default: break;
     }
+    if (disks < minDisks) warn = `Wybrany poziom wymaga min. ${minDisks} dysków`;
     const eff = total > 0 ? (usable / total) * 100 : 0;
-    return { total, usable, fault, iops, eff };
+    return { total, usable, fault, iops, eff, minDisks, warn };
   }, [disks, size, level]);
 
   return (
@@ -140,18 +157,21 @@ const RaidCalc = () => {
           <div className="calc-out__row"><span>Wydajność (efektywność)</span><em>{fmtNum(r.eff, 0)}%</em></div>
           <div className="calc-out__row"><span>Tolerancja awarii</span><em>{r.fault} dysk{r.fault === 1 ? "" : "ów"}</em></div>
           <div className="calc-out__row"><span>Wydajność IOPS (rel.)</span><em>{r.iops}</em></div>
+          {r.warn && <div className="calc-out__warn" data-testid="raid-warn">⚠ {r.warn}</div>}
         </>
       }
-      note="Realna pojemność użytkowa po formatowaniu jest zwykle o 5-10% mniejsza (metadane systemu plików)."
+      note="RAID-DP (ONTAP) = podwójna parzystość na WAFL, min. 3 dyski. DDP (E-Series) = rozproszone strefy 8+2 z ~10% rezerwacją na odbudowę, min. 11 dysków. Realna pojemność po formatowaniu jest zwykle o 5-10% mniejsza."
     >
       <Field  label="Liczba dysków"        value={disks} onChange={setDisks} min={2} max={64} />
       <Field  label="Pojemność / dysk"     unit="TB" value={size} onChange={setSize} min={0.5} step={0.5} max={30} />
       <Select label="Poziom RAID"          value={level} onChange={setLevel} options={[
-        { value: "0",  label: "RAID 0 (striping)" },
-        { value: "1",  label: "RAID 1 (mirror)" },
-        { value: "5",  label: "RAID 5 (single parity)" },
-        { value: "6",  label: "RAID 6 (double parity)" },
-        { value: "10", label: "RAID 10 (mirror + stripe)" },
+        { value: "0",   label: "RAID 0 (striping)" },
+        { value: "1",   label: "RAID 1 (mirror)" },
+        { value: "5",   label: "RAID 5 (single parity)" },
+        { value: "6",   label: "RAID 6 (double parity)" },
+        { value: "10",  label: "RAID 10 (mirror + stripe)" },
+        { value: "dp",  label: "RAID-DP · NetApp ONTAP" },
+        { value: "ddp", label: "RAID DDP · NetApp E-Series (min. 11)" },
       ]} />
     </Card>
   );
