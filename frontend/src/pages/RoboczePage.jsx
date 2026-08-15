@@ -5,6 +5,7 @@ import TextPlaygroundSection from "@/components/sections/TextPlaygroundSection";
 import CardIconPlaygroundSection from "@/components/sections/CardIconPlaygroundSection";
 import FullSectionsPlaygroundSection from "@/components/sections/FullSectionsPlaygroundSection";
 import ParallaxPlaygroundSection from "@/components/sections/ParallaxPlaygroundSection";
+import ColorPlaygroundSection from "@/components/sections/ColorPlaygroundSection";
 import PartnersV2Section from "@/components/sections/PartnersV2Section";
 import BusinessContinuitySection from "@/components/sections/BusinessContinuitySection";
 import SectorsSection from "@/components/sections/SectorsSection";
@@ -31,6 +32,7 @@ const RoboczePage = () => (
     <CardIconPlaygroundSection />
     <FullSectionsPlaygroundSection />
     <ParallaxPlaygroundSection />
+    <ColorPlaygroundSection />
     <PartnersV2Section />
     <BusinessContinuitySection />
     <SectorsSection />

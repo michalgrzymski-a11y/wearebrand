@@ -13902,3 +13902,143 @@ html { scroll-padding-top: 92px; }
   .pf-fx, .pf-marquee__track, .pf-fx--pulse svg, .pf-skel { animation: none !important; transition: none !important; }
 }
 
+
+/* ==========================================================================
+   Color Playground (/robocze) — 12 propozycji palet i gradientów
+   ========================================================================== */
+.col-section {
+  width: 100%;
+  font-family: "Manrope", sans-serif;
+  padding: 96px 24px;
+  background: linear-gradient(180deg, #ECF2F3 0%, #F6F9FA 100%);
+  color: #0C5C62;
+}
+.col-intro { max-width: 1280px; margin: 0 auto 48px; }
+.col-intro__tag {
+  display: inline-block; font-size: 11px; font-weight: 700;
+  letter-spacing: 0.24em; text-transform: uppercase;
+  padding: 6px 12px; border: 1px solid currentColor;
+  border-radius: 999px; opacity: 0.55; margin-bottom: 20px;
+}
+.col-intro__title { font-size: 40px; font-weight: 800; letter-spacing: -0.02em; margin: 0 0 12px; }
+.col-intro__sub { font-size: 15px; opacity: 0.72; margin: 0; max-width: 620px; line-height: 1.55; }
+
+.col-grid {
+  max-width: 1280px; margin: 0 auto;
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+@media (max-width: 900px) { .col-grid { grid-template-columns: 1fr; } }
+
+.col-card {
+  background: #FFFFFF;
+  border: 1px solid rgba(12,92,98,0.08);
+  border-radius: 20px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.col-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 40px -20px rgba(0,27,32,0.15);
+  border-color: var(--acc);
+}
+.col-card__head { display: flex; gap: 14px; align-items: flex-start; }
+.col-card__num {
+  font-size: 12px; font-weight: 800; letter-spacing: 0.14em;
+  color: var(--acc); opacity: 0.85;
+  padding: 6px 10px; border: 1px solid var(--acc); border-radius: 6px;
+  flex-shrink: 0;
+}
+.col-card__name { font-size: 22px; font-weight: 800; letter-spacing: -0.01em; margin: 0 0 4px; color: #0C5C62; }
+.col-card__desc { font-size: 13px; line-height: 1.45; opacity: 0.7; margin: 0; }
+
+/* Swatches row */
+.col-swatches {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+.col-swatch {
+  position: relative;
+  aspect-ratio: 1/1;
+  border-radius: 10px;
+  border: 1px solid rgba(0,0,0,0.08);
+  cursor: pointer;
+  overflow: hidden;
+  padding: 0;
+  transition: transform 0.2s ease;
+}
+.col-swatch:hover { transform: translateY(-2px); }
+.col-swatch__code {
+  position: absolute; left: 6px; bottom: 6px;
+  font-size: 9px; font-weight: 700;
+  padding: 2px 5px; border-radius: 4px;
+  background: rgba(255,255,255,0.85);
+  color: #0C5C62;
+  letter-spacing: 0.02em;
+  opacity: 0; transition: opacity 0.2s ease;
+}
+.col-swatch:hover .col-swatch__code { opacity: 1; }
+
+/* Gradient bar */
+.col-gradient {
+  height: 60px;
+  border-radius: 12px;
+  position: relative;
+  display: flex; align-items: flex-end;
+  padding: 8px 12px;
+  border: 1px solid rgba(0,0,0,0.05);
+}
+.col-gradient__code {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  color: rgba(255,255,255,0.92);
+  background: rgba(0,0,0,0.35);
+  padding: 3px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.01em;
+}
+
+/* Preview panes */
+.col-preview {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.col-preview__pane {
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-height: 160px;
+}
+.col-preview__tag {
+  font-size: 10px; font-weight: 800;
+  letter-spacing: 0.24em; text-transform: uppercase;
+}
+.col-preview__pane h4 { font-size: 15px; font-weight: 800; margin: 0; }
+.col-preview__pane p  { font-size: 12px; line-height: 1.5; margin: 0 0 8px; }
+.col-preview__btn {
+  align-self: flex-start;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 12px; font-weight: 700;
+  cursor: pointer;
+  margin-top: auto;
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+.col-preview__btn:hover { transform: translateY(-1px); filter: brightness(1.05); }
+
+@media (max-width: 500px) {
+  .col-preview { grid-template-columns: 1fr; }
+  .col-swatches { grid-template-columns: repeat(5, 1fr); }
+  .col-intro__title { font-size: 30px; }
+}
+
