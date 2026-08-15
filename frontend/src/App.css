@@ -39,7 +39,6 @@ body {
      overflow-y to `auto`, which creates a scroll container and BREAKS
      `position: sticky` on descendants (e.g. Hero pin & scrub). */
   overflow-x: clip;
-  position: relative;
 }
 
 /* ============================================================
@@ -14044,44 +14043,4 @@ html { scroll-padding-top: 92px; }
 }
 
 
-/* ==========================================================================
-   ScrollLineDraw — meandryczna linia SVG rysująca się scrollem (Home page)
-   ========================================================================== */
-.sc-scroll-line {
-  position: absolute;
-  /* zaczynamy tuż po Hero (300vh) — meandry biegną przez kolejne sekcje */
-  top: 300vh;
-  left: 0;
-  width: 100%;
-  height: calc(100% - 300vh);
-  pointer-events: none;
-  z-index: 1;
-  overflow: visible;
-}
-.sc-scroll-line__svg {
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-  opacity: 0.55;
-  mix-blend-mode: screen;
-}
-.sc-scroll-line__dot {
-  filter: drop-shadow(0 0 8px rgba(6, 255, 224, 0.9));
-  transition: opacity 300ms ease;
-}
-/* Delikatny puls kropki */
-.sc-scroll-line__dot {
-  animation: sc-scroll-line-dot 1.8s ease-in-out infinite;
-}
-@keyframes sc-scroll-line-dot {
-  0%, 100% { r: 6; }
-  50%      { r: 8; }
-}
-/* Na mobile mniej agresywna, cieńsza */
-@media (max-width: 768px) {
-  .sc-scroll-line__svg { opacity: 0.35; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .sc-scroll-line__dot { animation: none; }
-}
 
