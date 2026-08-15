@@ -351,29 +351,6 @@ html { scroll-padding-top: 92px; }
   overflow: hidden;
   z-index: 1;
 }
-/* Soft cyan glow along the bottom edge of Hero — smooths the transition into
-   the section below. Sits above all layers but below the copy. */
-.sc-hero-sticky::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 180px;
-  pointer-events: none;
-  z-index: 8;
-  background: linear-gradient(
-    to top,
-    rgba(6, 255, 224, 0.18) 0%,
-    rgba(6, 255, 224, 0.08) 35%,
-    rgba(6, 255, 224, 0.02) 70%,
-    rgba(6, 255, 224, 0) 100%
-  );
-  mix-blend-mode: screen;
-}
-@media (max-width: 768px) {
-  .sc-hero-sticky::after { height: 120px; }
-}
 @media (max-width: 768px) {
   .sc-hero-scroller { height: auto; min-height: 100vh; }
   .sc-hero-sticky   { position: relative; height: auto; min-height: 100vh; }
