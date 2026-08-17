@@ -15982,3 +15982,216 @@ html { scroll-padding-top: 92px; }
   .lp-card__preview { padding: 16px; }
 }
 
+
+/* ==========================================================================
+   Glass Morphism panel — 12 przycisków szklanych już w spoczynku
+   ========================================================================== */
+.bp-panel--gm {
+  background:
+    radial-gradient(circle at 12% 22%, rgba(6,255,224,0.35), transparent 42%),
+    radial-gradient(circle at 88% 78%, rgba(0,184,212,0.30), transparent 42%),
+    radial-gradient(circle at 50% 12%, rgba(168,85,247,0.22), transparent 42%),
+    radial-gradient(circle at 25% 88%, rgba(236,72,153,0.18), transparent 42%),
+    radial-gradient(circle at 78% 30%, rgba(245,158,11,0.14), transparent 42%),
+    linear-gradient(180deg, #040709 0%, #0A1418 100%);
+}
+.bp-panel--gm .bp-panel__inner { max-width: 1280px; }
+.bp-gm-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+}
+@media (max-width: 1100px) { .bp-gm-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 780px)  { .bp-gm-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 480px)  { .bp-gm-grid { grid-template-columns: 1fr; } }
+
+.bp-gm-cell {
+  display: flex; flex-direction: column; gap: 12px;
+  padding: 24px 20px 16px;
+  border-radius: 14px;
+  min-height: 140px;
+  border: 1px dashed rgba(255,255,255,0.08);
+  transition: border-color 0.25s ease;
+}
+.bp-gm-cell:hover { border-color: rgba(6,255,224,0.35); }
+.bp-gm-cell__stage {
+  display: flex; align-items: center; justify-content: center;
+  min-height: 76px;
+  padding: 14px;
+  border-radius: 12px;
+  /* mocno wysycone blob'y w tle — szkło ma czym się karmić */
+  background:
+    radial-gradient(circle at 15% 15%, rgba(6,255,224,0.32), transparent 55%),
+    radial-gradient(circle at 85% 85%, rgba(168,85,247,0.28), transparent 55%),
+    radial-gradient(circle at 60% 50%, rgba(0,184,212,0.22), transparent 60%),
+    rgba(255,255,255,0.02);
+}
+
+/* Baza — glass button */
+.bp-gm {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 22px;
+  font-family: "Manrope", sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  border-radius: 12px;
+  cursor: pointer;
+  white-space: nowrap;
+  color: #FFFFFF;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.10);
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
+  backdrop-filter: blur(18px) saturate(180%);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.35),
+    inset 0 -1px 0 rgba(255,255,255,0.10),
+    0 8px 24px -10px rgba(0,0,0,0.4);
+  transition: transform 0.3s ease, border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+}
+.bp-gm:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255,255,255,0.5);
+  background: rgba(255,255,255,0.18);
+  box-shadow:
+    inset 0 1.5px 0 rgba(255,255,255,0.7),
+    inset 0 -1px 0 rgba(255,255,255,0.2),
+    0 14px 30px -10px rgba(0,0,0,0.5);
+}
+.bp-gm .bp-gm__label, .bp-gm svg { position: relative; z-index: 2; }
+
+/* Wariacje — każda z innym tintem/kolorystyką i mocą szkła */
+
+/* 01 Frost Clear — czyste matowe szkło */
+.bp-gm--1 { /* base */ }
+
+/* 02 Cyan Tint */
+.bp-gm--2 {
+  background: rgba(6,255,224,0.14);
+  border-color: rgba(6,255,224,0.45);
+  color: #E0FFF9;
+}
+.bp-gm--2:hover { background: rgba(6,255,224,0.22); border-color: rgba(6,255,224,0.75); }
+
+/* 03 Aqua Tint */
+.bp-gm--3 {
+  background: rgba(0,184,212,0.16);
+  border-color: rgba(0,184,212,0.45);
+  color: #D6F4FA;
+}
+.bp-gm--3:hover { background: rgba(0,184,212,0.26); border-color: rgba(0,184,212,0.75); }
+
+/* 04 Dark Glass — smoky glass, mocny blur */
+.bp-gm--4 {
+  background: rgba(4,7,9,0.35);
+  border-color: rgba(255,255,255,0.18);
+  -webkit-backdrop-filter: blur(24px) saturate(200%);
+  backdrop-filter: blur(24px) saturate(200%);
+  color: #E8F4F5;
+}
+.bp-gm--4:hover { background: rgba(4,7,9,0.45); border-color: rgba(255,255,255,0.35); }
+
+/* 05 White Frost — bardzo jasne matowe szkło */
+.bp-gm--5 {
+  background: rgba(255,255,255,0.55);
+  border-color: rgba(255,255,255,0.85);
+  color: #001B20;
+  -webkit-backdrop-filter: blur(22px) saturate(180%);
+  backdrop-filter: blur(22px) saturate(180%);
+}
+.bp-gm--5:hover { background: rgba(255,255,255,0.7); }
+
+/* 06 Purple Prism */
+.bp-gm--6 {
+  background: rgba(168,85,247,0.18);
+  border-color: rgba(168,85,247,0.45);
+  color: #F1E5FF;
+}
+.bp-gm--6:hover { background: rgba(168,85,247,0.28); border-color: rgba(168,85,247,0.75); }
+
+/* 07 Ice Blue — chłodne szkło */
+.bp-gm--7 {
+  background: rgba(214,242,255,0.20);
+  border-color: rgba(214,242,255,0.60);
+  color: #EAF7FF;
+  -webkit-backdrop-filter: blur(24px) saturate(180%) brightness(1.08);
+  backdrop-filter: blur(24px) saturate(180%) brightness(1.08);
+}
+.bp-gm--7:hover { background: rgba(214,242,255,0.30); }
+
+/* 08 Neon Rim — cienkie szkło z jaskrawą krawędzią */
+.bp-gm--8 {
+  background: rgba(255,255,255,0.06);
+  border-color: #06FFE0;
+  color: #FFFFFF;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.35),
+    0 0 0 1px rgba(6,255,224,0.5),
+    0 0 20px -4px rgba(6,255,224,0.55);
+}
+.bp-gm--8:hover {
+  background: rgba(6,255,224,0.10);
+  box-shadow:
+    inset 0 1.5px 0 rgba(255,255,255,0.5),
+    0 0 0 1px rgba(6,255,224,0.85),
+    0 0 30px -2px rgba(6,255,224,0.85);
+}
+
+/* 09 Bubble Glass — okrągłe, mocny gloss z bąblem */
+.bp-gm--9 {
+  border-radius: 999px;
+  padding: 12px 26px;
+  background:
+    radial-gradient(circle at 22% 22%, rgba(255,255,255,0.55), transparent 45%),
+    rgba(255,255,255,0.14);
+  border-color: rgba(255,255,255,0.35);
+}
+.bp-gm--9:hover {
+  background:
+    radial-gradient(circle at 22% 22%, rgba(255,255,255,0.75), transparent 45%),
+    rgba(255,255,255,0.22);
+}
+
+/* 10 Chrome Reflect — metaliczny gradient */
+.bp-gm--10 {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.15) 45%, rgba(6,255,224,0.15) 100%);
+  border-color: rgba(255,255,255,0.5);
+  color: #001B20;
+}
+.bp-gm--10:hover {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.75) 0%, rgba(255,255,255,0.25) 45%, rgba(6,255,224,0.25) 100%);
+}
+
+/* 11 Vision Bright — visionOS ultra clean */
+.bp-gm--11 {
+  border-radius: 14px;
+  background: rgba(255,255,255,0.14);
+  border-color: rgba(255,255,255,0.30);
+  -webkit-backdrop-filter: blur(30px) saturate(220%);
+  backdrop-filter: blur(30px) saturate(220%);
+  box-shadow:
+    inset 0 1.5px 0 rgba(255,255,255,0.75),
+    inset 0 0 0 1px rgba(255,255,255,0.10),
+    inset 0 -1.5px 0 rgba(255,255,255,0.20),
+    0 18px 40px -18px rgba(0,0,0,0.55);
+}
+.bp-gm--11:hover { background: rgba(255,255,255,0.22); }
+
+/* 12 Warm Amber Glass — ciepłe bursztynowe szkło */
+.bp-gm--12 {
+  background: rgba(245,158,11,0.16);
+  border-color: rgba(245,158,11,0.45);
+  color: #FFF2D6;
+}
+.bp-gm--12:hover { background: rgba(245,158,11,0.26); border-color: rgba(245,158,11,0.75); }
+
+@media (prefers-reduced-motion: reduce) {
+  .bp-gm { transition: none !important; }
+}
+

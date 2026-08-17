@@ -124,6 +124,7 @@ const ButtonPlaygroundSection = () => (
     />
     <GradientPrimaryPanel />
     <GlassHoverPanel />
+    <GlassMorphismPanel />
   </section>
 );
 
@@ -235,6 +236,61 @@ const GlassHoverPanel = () => (
     </div>
   </div>
 );
+
+/* ==========================================================================
+   Glass Morphism — 12 przycisków szklanych już w stanie spoczynku
+   ========================================================================== */
+const GM_VARIANTS = [
+  { n: 1,  name: "Frost Clear"       },
+  { n: 2,  name: "Cyan Tint"         },
+  { n: 3,  name: "Aqua Tint"         },
+  { n: 4,  name: "Dark Glass"        },
+  { n: 5,  name: "White Frost"       },
+  { n: 6,  name: "Purple Prism"      },
+  { n: 7,  name: "Ice Blue"          },
+  { n: 8,  name: "Neon Rim"          },
+  { n: 9,  name: "Bubble Glass"      },
+  { n: 10, name: "Chrome Reflect"    },
+  { n: 11, name: "Vision Bright"     },
+  { n: 12, name: "Warm Amber Glass"  },
+];
+
+const GlassMorphismPanel = () => (
+  <div className="bp-panel bp-panel--dark bp-panel--gm" data-testid="bp-panel-gm">
+    <div className="bp-panel__inner">
+      <div className="bp-panel__head">
+        <span className="bp-panel__tag">Glass Morphism · 12 wariantów w spoczynku</span>
+        <h2 className="bp-panel__title">Szkło od pierwszej chwili</h2>
+        <p className="bp-panel__sub">
+          Przyciski które w stanie spoczynku wyglądają jak matowe / przezroczyste szkło.
+          Backdrop-filter, rim light, subtelny tint. Efekt hover pogłębia szkło i podnosi
+          krawędź. Perfekcyjne na warstwy nad wideo/obrazem Hero.
+        </p>
+      </div>
+      <div className="bp-gm-grid">
+        {GM_VARIANTS.map((v) => (
+          <div key={v.n} className="bp-gm-cell" data-testid={`bp-gm-cell-${v.n}`}>
+            <div className="bp-gm-cell__stage">
+              <button
+                type="button"
+                className={`bp-gm bp-gm--${v.n}`}
+                data-testid={`bp-gm-btn-${v.n}`}
+              >
+                <span className="bp-gm__label">Sprawdź ofertę</span>
+                <ArrowRight size={14} />
+              </button>
+            </div>
+            <div className="bp-cell__label">
+              <span className="bp-cell__num">{String(v.n).padStart(2, "0")}</span>
+              <span className="bp-cell__name">{v.name}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+);
+
 
 
 export default ButtonPlaygroundSection;
