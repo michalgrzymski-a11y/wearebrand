@@ -15920,6 +15920,61 @@ html { scroll-padding-top: 92px; }
   .lp-recolor__arrow svg { transform: rotate(90deg); }
 }
 
+/* ---- Codec comparison preview ---- */
+.lp-codec {
+  display: grid;
+  grid-template-columns: 80px 1fr 1.4fr;
+  gap: 10px 16px;
+  align-items: center;
+  font-family: "Manrope", sans-serif;
+}
+.lp-codec__head {
+  display: contents;
+}
+.lp-codec__head span {
+  font-size: 10px; font-weight: 800; letter-spacing: 0.22em;
+  text-transform: uppercase; opacity: 0.55;
+  padding-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.lp-codec__row { display: contents; }
+.lp-codec__name {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 15px; font-weight: 800; letter-spacing: 0.02em;
+}
+.lp-codec__bar-wrap {
+  position: relative;
+  height: 26px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 6px;
+  overflow: hidden;
+  display: flex; align-items: center;
+}
+.lp-codec__bar {
+  height: 100%; border-radius: 6px;
+  background: currentColor;
+  box-shadow: 0 0 12px -4px currentColor;
+  animation: lp-codec-fill 900ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  transform-origin: left;
+}
+@keyframes lp-codec-fill {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+.lp-codec__val {
+  position: absolute; right: 10px; top: 50%;
+  transform: translateY(-50%);
+  font-size: 11px; font-weight: 800;
+  color: #FFF; letter-spacing: 0.02em;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.6);
+}
+.lp-codec__note { font-size: 12px; opacity: 0.75; line-height: 1.45; }
+
+@media (max-width: 700px) {
+  .lp-codec { grid-template-columns: 70px 1fr; }
+  .lp-codec__head span:last-child,
+  .lp-codec__row .lp-codec__note { grid-column: 1 / -1; padding-left: 82px; opacity: 0.6; font-size: 11px; }
+}
+
 @media (max-width: 768px) {
   .lp-hero { padding: 96px 20px 16px; }
   .lp-hero__title { font-size: 34px; }

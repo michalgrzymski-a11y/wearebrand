@@ -184,6 +184,63 @@ ffmpeg -i hero-cyan.mp4 -vf "fps=30,scale=1920:1080" \\
 ls -1 frames-desktop/*.avif | wc -l    # ⇒ 193
 ls -1 frames-mobile/*.webp  | wc -l    # ⇒ 30 (zredukowane dla mobile)`;
 
+/* Porównanie codec-ów wideo do produkcyjnego enkodowania Hero */
+const VideoOptimizationCSS = `# ===== Video optimization — H.264 / H.265 / VP9 / AV1 =====
+#
+# Porównanie 4 codec-ów przy takim samym budżecie jakości (perceptual).
+# Wartości CRF dobrane tak, żeby wynik był wizualnie zbliżony.
+# Wsad: hero-cyan.mp4 (4K, 30fps, ~6s pętla, docelowy plik ~5MB).
+#
+# +-------+-----------+-------------+----------------+--------------------------+
+# | Codec | Rozmiar   | Enkod. czas | Kompatybilność | Zastosowanie              |
+# +-------+-----------+-------------+----------------+--------------------------+
+# | H.264 |  100% ref | 1× ref      | 100% (fallback)| Universal fallback        |
+# | H.265 |    50-60% | 4-6× wolniej| ~94% (bez FF)  | Safari, iOS               |
+# | VP9   |    55-65% | 3-5× wolniej| ~97% (bez Sf.) | Chrome/FF/Android         |
+# | AV1   |    30-40% | 30-100× wol.| ~90%           | Najlepszy — nowy standard |
+# +-------+-----------+-------------+----------------+--------------------------+
+#
+# W praktyce serwuj AV1 jako pierwszy z <source> + H.265 → H.264 fallback.
+
+# --- 1) H.264 baseline (referencja rozmiaru) ---
+ffmpeg -i hero-cyan.mp4 \\
+       -c:v libx264 -crf 23 -preset slow -pix_fmt yuv420p \\
+       -movflags +faststart \\
+       hero-cyan.h264.mp4
+
+# --- 2) H.265 / HEVC (Safari + iOS friendly) ---
+ffmpeg -i hero-cyan.mp4 \\
+       -c:v libx265 -crf 28 -preset slow -pix_fmt yuv420p \\
+       -tag:v hvc1 \\
+       -movflags +faststart \\
+       hero-cyan.h265.mp4
+# Uwaga: tag hvc1 wymagany dla Safari/QuickTime.
+
+# --- 3) VP9 (Chrome, Firefox, Android) ---
+ffmpeg -i hero-cyan.mp4 \\
+       -c:v libvpx-vp9 -crf 32 -b:v 0 \\
+       -row-mt 1 -tile-columns 2 -threads 8 \\
+       -pix_fmt yuv420p \\
+       hero-cyan.vp9.webm
+
+# --- 4) AV1 (najlepsza kompresja, nowoczesne przeglądarki) ---
+ffmpeg -i hero-cyan.mp4 \\
+       -c:v libaom-av1 -crf 30 -b:v 0 \\
+       -cpu-used 4 -row-mt 1 -tiles 2x2 \\
+       -pix_fmt yuv420p \\
+       hero-cyan.av1.webm
+
+# --- 5) Serwowanie z HTML5 <video> z fallbackiem ---
+# <video autoplay muted loop playsinline>
+#   <source src="hero-cyan.av1.webm"  type='video/webm; codecs="av01.0.05M.08"'>
+#   <source src="hero-cyan.vp9.webm"  type='video/webm; codecs="vp9"'>
+#   <source src="hero-cyan.h265.mp4"  type='video/mp4;  codecs="hvc1"'>
+#   <source src="hero-cyan.h264.mp4"  type='video/mp4;  codecs="avc1"'>
+# </video>
+
+# --- 6) Sprawdzenie rozmiarów wynikowych ---
+du -h hero-cyan.*.mp4 hero-cyan.*.webm | sort -h`;
+
 /* --------------------------- UI --------------------------- */
 
 const CopyButton = ({ text, label = "Kopiuj CSS" }) => {
@@ -320,6 +377,38 @@ const HeroRecolorPreview = () => (
   </div>
 );
 
+/* Porównanie codec-ów wideo — wizualne bar-y rozmiaru pliku */
+const VideoCodecPreview = () => {
+  const rows = [
+    { c: "H.264", size: 100, note: "Referencja · Universal fallback",       color: "#94A3B8" },
+    { c: "H.265", size: 55,  note: "Safari / iOS · tag hvc1",                color: "#00B8D4" },
+    { c: "VP9",   size: 60,  note: "Chrome / Firefox / Android",             color: "#A855F7" },
+    { c: "AV1",   size: 35,  note: "Najlepsza kompresja · Nowoczesny stack", color: "#06FFE0" },
+  ];
+  return (
+    <div className="lp-codec" data-testid="lp-codec-preview">
+      <div className="lp-codec__head">
+        <span>Codec</span>
+        <span>Rozmiar (H.264 = 100%)</span>
+        <span>Zastosowanie</span>
+      </div>
+      {rows.map((r) => (
+        <div key={r.c} className="lp-codec__row" data-testid={`lp-codec-row-${r.c}`}>
+          <span className="lp-codec__name" style={{ color: r.color }}>{r.c}</span>
+          <div className="lp-codec__bar-wrap">
+            <div
+              className="lp-codec__bar"
+              style={{ width: `${r.size}%`, background: r.color }}
+            />
+            <span className="lp-codec__val">{r.size}%</span>
+          </div>
+          <span className="lp-codec__note">{r.note}</span>
+        </div>
+      ))}
+    </div>
+  );
+};
+
 const LayoutPage = () => (
   <main data-testid="layout-main" className="sc-app lp-page">
     <Navbar />
@@ -369,6 +458,14 @@ const LayoutPage = () => (
         code={HeroRecolorCSS}
         preview={<HeroRecolorPreview />}
         testid="lp-card-recolor"
+      />
+      <Card
+        n={5}
+        title="Video optimization — H.264 / H.265 / VP9 / AV1"
+        subtitle="Porównanie 4 codec-ów przy tej samej jakości. AV1 daje najmniejsze pliki, H.264 najszerszą kompatybilność."
+        code={VideoOptimizationCSS}
+        preview={<VideoCodecPreview />}
+        testid="lp-card-video-codec"
       />
     </div>
   </main>
