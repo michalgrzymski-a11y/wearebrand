@@ -15873,6 +15873,53 @@ html { scroll-padding-top: 92px; }
   box-shadow: 0 0 10px rgba(0,184,212,0.5);
 }
 
+/* ---- Recolor preview (zielony → cyan) ---- */
+.lp-recolor {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 16px;
+  align-items: center;
+}
+@media (max-width: 700px) { .lp-recolor { grid-template-columns: 1fr; } }
+.lp-recolor__col { display: flex; flex-direction: column; gap: 8px; }
+.lp-recolor__label {
+  font-size: 10px; font-weight: 800; letter-spacing: 0.24em;
+  text-transform: uppercase; opacity: 0.6;
+}
+.lp-recolor__frame {
+  height: 130px; border-radius: 10px; overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.08);
+  position: relative;
+}
+/* Frame „przed" — symulacja oryginalnego zielonego wideo */
+.lp-recolor__frame--green {
+  background:
+    radial-gradient(circle at 20% 20%, rgba(180,255,120,0.55), transparent 55%),
+    radial-gradient(circle at 80% 80%, rgba(0,220,60,0.45), transparent 55%),
+    linear-gradient(135deg, #0F5C1A 0%, #2AA050 55%, #1B7A2E 100%);
+}
+/* Frame „po" — ten sam gradient przepuszczony przez hue-rotate */
+.lp-recolor__frame--cyan {
+  background:
+    radial-gradient(circle at 20% 20%, rgba(180,255,120,0.55), transparent 55%),
+    radial-gradient(circle at 80% 80%, rgba(0,220,60,0.45), transparent 55%),
+    linear-gradient(135deg, #0F5C1A 0%, #2AA050 55%, #1B7A2E 100%);
+  filter: hue-rotate(60deg) saturate(1.5) brightness(1.15) contrast(1.05);
+}
+.lp-recolor__arrow {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  color: #06FFE0; padding: 0 8px;
+}
+.lp-recolor__arrow span {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px; letter-spacing: 0.02em;
+  color: rgba(232,244,245,0.65);
+}
+@media (max-width: 700px) {
+  .lp-recolor__arrow { flex-direction: row; }
+  .lp-recolor__arrow svg { transform: rotate(90deg); }
+}
+
 @media (max-width: 768px) {
   .lp-hero { padding: 96px 20px 16px; }
   .lp-hero__title { font-size: 34px; }

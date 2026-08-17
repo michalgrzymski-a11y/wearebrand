@@ -152,6 +152,38 @@ const HeroCSS = `/* ===== Hero — style bazowe (eyebrow, tytuł, gradient accen
 .sc-hero-neon-line--b { top: 66%; box-shadow: 0 0 10px rgba(0,184,212,0.5); }
 .sc-hero-neon-line--c { top: 82%; height: 0.6px; }`;
 
+/* Kod przekolorowania Hero — z zielonego na cyan (#06FFE0) */
+const HeroRecolorCSS = `# ===== Rekoloryzacja Hero: zielony → cyan (#06FFE0) =====
+#
+# Podejście: ffmpeg permanentne re-encoding klatek 4K.
+# Zielony (~120° na kole HSL) obracamy o +60° → cyan (~180°),
+# z podbiciem nasycenia i jasności. Kolor jest zaszyty w plikach
+# źródłowych — brak narzutu na klient, spójny wygląd w każdej
+# przeglądarce. Wymaga ffmpeg 5.0+.
+#
+# Uwaga: parametr h= w ffmpeg jest w tej samej skali stopni co
+# CSS hue-rotate — 60° to poprawny obrót green→cyan.
+
+# 1) Rekoloryzacja pełnego wideo źródłowego:
+ffmpeg -i hero-source-4k.mov \\
+       -vf "hue=h=60:s=1.5,eq=brightness=0.08:contrast=1.05" \\
+       -c:v libx264 -crf 18 -pix_fmt yuv420p \\
+       hero-cyan.mp4
+
+# 2) Ekstrakcja 193 klatek do AVIF (desktop 4K, ~30fps):
+ffmpeg -i hero-cyan.mp4 -vf "fps=30,scale=3840:2160" \\
+       -c:v libaom-av1 -crf 30 \\
+       frames-desktop/frame_%03d.avif
+
+# 3) Wariant mobile 1080p WebP (fallback dla urządzeń < 768px):
+ffmpeg -i hero-cyan.mp4 -vf "fps=30,scale=1920:1080" \\
+       -c:v libwebp -quality 85 \\
+       frames-mobile/frame_%03d.webp
+
+# 4) Sprawdzenie ile klatek zostało wygenerowanych:
+ls -1 frames-desktop/*.avif | wc -l    # ⇒ 193
+ls -1 frames-mobile/*.webp  | wc -l    # ⇒ 30 (zredukowane dla mobile)`;
+
 /* --------------------------- UI --------------------------- */
 
 const CopyButton = ({ text, label = "Kopiuj CSS" }) => {
@@ -269,6 +301,25 @@ const HeroPreview = () => (
   </div>
 );
 
+/* Podgląd rekoloryzacji — dwa kwadraty obok siebie: „przed" (zielone)
+   i „po" (cyan po filtrze hue-rotate). */
+const HeroRecolorPreview = () => (
+  <div className="lp-recolor" data-testid="lp-recolor-preview">
+    <div className="lp-recolor__col">
+      <span className="lp-recolor__label">Przed (zielony)</span>
+      <div className="lp-recolor__frame lp-recolor__frame--green" />
+    </div>
+    <div className="lp-recolor__arrow" aria-hidden="true">
+      <ArrowRight size={20}/>
+      <span>hue=h=60 (ffmpeg)</span>
+    </div>
+    <div className="lp-recolor__col">
+      <span className="lp-recolor__label">Po (cyan)</span>
+      <div className="lp-recolor__frame lp-recolor__frame--cyan" />
+    </div>
+  </div>
+);
+
 const LayoutPage = () => (
   <main data-testid="layout-main" className="sc-app lp-page">
     <Navbar />
@@ -310,6 +361,14 @@ const LayoutPage = () => (
         code={HeroCSS}
         preview={<HeroPreview />}
         testid="lp-card-hero"
+      />
+      <Card
+        n={4}
+        title="Hero — rekoloryzacja (zielony → cyan)"
+        subtitle="ffmpeg — permanentne re-encoding klatek 4K. Kolor zaszyty w plikach źródłowych, brak narzutu na klient."
+        code={HeroRecolorCSS}
+        preview={<HeroRecolorPreview />}
+        testid="lp-card-recolor"
       />
     </div>
   </main>
