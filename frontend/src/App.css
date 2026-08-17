@@ -15328,11 +15328,12 @@ html { scroll-padding-top: 92px; }
    ========================================================================== */
 .bp-panel--gg .bp-panel__inner { max-width: 1280px; }
 .bp-panel--gg {
-  /* delikatne kolorowe blob'y w tle żeby glass miał co blurować */
+  /* mocno wysycone blob'y w tle — daje frosted-glass co blurować */
   background:
-    radial-gradient(circle at 15% 30%, rgba(6,255,224,0.14), transparent 45%),
-    radial-gradient(circle at 85% 70%, rgba(0,184,212,0.14), transparent 45%),
-    radial-gradient(circle at 60% 10%, rgba(168,85,247,0.10), transparent 45%),
+    radial-gradient(circle at 15% 25%, rgba(6,255,224,0.25), transparent 40%),
+    radial-gradient(circle at 85% 65%, rgba(0,184,212,0.25), transparent 40%),
+    radial-gradient(circle at 55% 15%, rgba(168,85,247,0.20), transparent 40%),
+    radial-gradient(circle at 30% 85%, rgba(236,72,153,0.15), transparent 40%),
     linear-gradient(180deg, #040709 0%, #0A1418 100%);
 }
 .bp-gg-grid {
@@ -15355,16 +15356,18 @@ html { scroll-padding-top: 92px; }
 .bp-gg-cell:hover { border-color: rgba(6,255,224,0.35); }
 .bp-gg-cell__stage {
   display: flex; align-items: center; justify-content: center;
-  min-height: 60px;
-  padding: 8px;
+  min-height: 68px;
+  padding: 10px;
   border-radius: 10px;
+  /* stage też ma kolorowe blob'y — szkło ma czym się karmić */
   background:
-    radial-gradient(circle at 20% 20%, rgba(6,255,224,0.10), transparent 55%),
-    radial-gradient(circle at 80% 80%, rgba(0,184,212,0.10), transparent 55%),
+    radial-gradient(circle at 15% 15%, rgba(6,255,224,0.22), transparent 55%),
+    radial-gradient(circle at 85% 85%, rgba(168,85,247,0.16), transparent 55%),
+    radial-gradient(circle at 55% 50%, rgba(0,184,212,0.14), transparent 60%),
     rgba(255,255,255,0.02);
 }
 
-/* Baza dla wszystkich glass-hover buttons */
+/* Baza — cyan gradient w spoczynku */
 .bp-gg {
   --gg-c1: #06FFE0;
   --gg-c2: #00B8D4;
@@ -15372,14 +15375,14 @@ html { scroll-padding-top: 92px; }
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 12px 22px;
+  padding: 14px 24px;
   font-family: "Manrope", sans-serif;
   font-size: 13px;
   font-weight: 800;
   letter-spacing: 0.01em;
   line-height: 1;
   border: 1px solid transparent;
-  border-radius: 12px;
+  border-radius: 14px;
   cursor: pointer;
   white-space: nowrap;
   background: linear-gradient(135deg, var(--gg-c1) 0%, var(--gg-c2) 100%);
@@ -15387,12 +15390,22 @@ html { scroll-padding-top: 92px; }
   overflow: hidden;
   isolation: isolate;
   box-shadow: 0 8px 20px -8px rgba(6,255,224,0.55);
-  transition: transform 0.35s ease, box-shadow 0.35s ease, color 0.35s ease, border-color 0.35s ease, background 0.35s ease;
+  transition:
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.4s ease,
+    color 0.35s ease,
+    border-color 0.35s ease,
+    background 0.4s ease,
+    backdrop-filter 0.4s ease;
 }
 .bp-gg .bp-gg__label,
-.bp-gg svg { position: relative; z-index: 3; transition: color 0.35s ease; }
+.bp-gg svg {
+  position: relative;
+  z-index: 4;
+  transition: color 0.35s ease, transform 0.3s ease;
+}
 
-/* Wspólny „glass overlay" ::before — startuje niewidoczny */
+/* Warstwa 1 — matowy frost / główny szklany overlay */
 .bp-gg::before {
   content: "";
   position: absolute; inset: 0;
@@ -15404,150 +15417,252 @@ html { scroll-padding-top: 92px; }
   -webkit-backdrop-filter: blur(0);
   backdrop-filter: blur(0);
 }
+
+/* Warstwa 2 — mocny gloss/refleks (jasny highlight) */
 .bp-gg::after {
   content: "";
   position: absolute; inset: 0;
   border-radius: inherit;
   opacity: 0;
-  transition: opacity 0.4s ease;
+  transition: opacity 0.4s ease, transform 0.6s ease;
   z-index: 2;
   pointer-events: none;
+  mix-blend-mode: screen;
 }
-.bp-gg:hover { transform: translateY(-2px); }
 
-/* 1) Classic Frost — bazowy frosted glass overlay */
+.bp-gg:hover { transform: translateY(-3px); }
+
+/* ---------- 01 Classic Frost — masywne mleczne szkło + gloss góra ---------- */
 .bp-gg--1:hover::before {
   opacity: 1;
-  background: linear-gradient(180deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.25) 100%);
-  -webkit-backdrop-filter: blur(18px) saturate(140%);
-  backdrop-filter: blur(18px) saturate(140%);
-}
-.bp-gg--1:hover { border-color: rgba(255,255,255,0.55); box-shadow: 0 12px 30px -10px rgba(6,255,224,0.35); color: #003A44; }
-
-/* 2) Rim Light Glass — biała krawędź + light frost */
-.bp-gg--2:hover::before {
-  opacity: 1;
-  background: linear-gradient(180deg, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0.10) 100%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  backdrop-filter: blur(20px) saturate(180%);
-}
-.bp-gg--2:hover {
-  border-color: rgba(255,255,255,0.75);
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.8),
-    inset 0 -1px 0 rgba(255,255,255,0.15),
-    0 8px 24px -10px rgba(6,255,224,0.35);
-  color: #003A44;
-}
-
-/* 3) Liquid Glass — jasny gradient przecinający się z bazą */
-.bp-gg--3:hover::before {
-  opacity: 1;
-  background:
-    linear-gradient(135deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0.15) 40%, rgba(255,255,255,0.5) 100%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%) brightness(1.1);
-  backdrop-filter: blur(24px) saturate(180%) brightness(1.1);
-}
-.bp-gg--3:hover { border-color: rgba(255,255,255,0.4); color: #003A44; }
-
-/* 4) Frosted Halo — silny blur + zewnętrzna halo */
-.bp-gg--4:hover::before {
-  opacity: 1;
-  background: rgba(255,255,255,0.35);
-  -webkit-backdrop-filter: blur(28px) saturate(180%);
-  backdrop-filter: blur(28px) saturate(180%);
-}
-.bp-gg--4:hover {
-  border-color: rgba(255,255,255,0.5);
-  box-shadow:
-    0 0 0 6px rgba(6,255,224,0.15),
-    0 12px 32px -10px rgba(6,255,224,0.45);
-  color: #003A44;
-}
-
-/* 5) Aqua Squircle — iOS style, mocno przezroczysty */
-.bp-gg--5 { border-radius: 16px; }
-.bp-gg--5:hover::before {
-  opacity: 1;
-  background: linear-gradient(180deg, rgba(255,255,255,0.5), rgba(6,255,224,0.15));
-  -webkit-backdrop-filter: blur(20px) saturate(200%);
-  backdrop-filter: blur(20px) saturate(200%);
-}
-.bp-gg--5:hover {
-  border-color: rgba(255,255,255,0.4);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.7), 0 10px 24px -12px rgba(6,255,224,0.4);
-  color: #003A44;
-}
-
-/* 6) Depth Glass — dwie warstwy szkła (::before + ::after) */
-.bp-gg--6:hover::before {
-  opacity: 1;
-  background: rgba(255,255,255,0.20);
+  background: linear-gradient(180deg, rgba(255,255,255,0.70) 0%, rgba(255,255,255,0.35) 100%);
   -webkit-backdrop-filter: blur(22px) saturate(180%);
   backdrop-filter: blur(22px) saturate(180%);
 }
-.bp-gg--6:hover::after {
+.bp-gg--1:hover::after {
   opacity: 1;
-  background: linear-gradient(180deg, rgba(255,255,255,0.5) 0%, transparent 50%);
+  background: linear-gradient(180deg, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0) 42%);
 }
-.bp-gg--6:hover { border-color: rgba(255,255,255,0.4); color: #003A44; }
-
-/* 7) Chromatic Glass — iridescent tint (subtelnie przechodzi w purpurę) */
-.bp-gg--7:hover::before {
-  opacity: 1;
-  background: linear-gradient(135deg, rgba(255,255,255,0.4), rgba(168,85,247,0.15) 50%, rgba(255,255,255,0.4));
-  -webkit-backdrop-filter: blur(20px) saturate(200%);
-  backdrop-filter: blur(20px) saturate(200%);
-}
-.bp-gg--7:hover { border-color: rgba(255,255,255,0.4); color: #003A44; }
-
-/* 8) Ice Frost — chłodny biało-niebieski */
-.bp-gg--8:hover::before {
-  opacity: 1;
-  background: linear-gradient(180deg, rgba(214,242,255,0.6), rgba(190,230,255,0.25));
-  -webkit-backdrop-filter: blur(22px) saturate(160%) brightness(1.05);
-  backdrop-filter: blur(22px) saturate(160%) brightness(1.05);
-}
-.bp-gg--8:hover {
-  border-color: rgba(220,245,255,0.6);
-  box-shadow: 0 12px 30px -10px rgba(0,184,212,0.4), inset 0 1px 0 rgba(255,255,255,0.7);
-  color: #002830;
-}
-
-/* 9) Wet Glass — kropelkowy refrakt (jasny bąbel po lewej) */
-.bp-gg--9:hover::before {
-  opacity: 1;
-  background:
-    radial-gradient(circle at 25% 20%, rgba(255,255,255,0.7), transparent 45%),
-    linear-gradient(180deg, rgba(255,255,255,0.30), rgba(255,255,255,0.10));
-  -webkit-backdrop-filter: blur(18px) saturate(180%);
-  backdrop-filter: blur(18px) saturate(180%);
-}
-.bp-gg--9:hover { border-color: rgba(255,255,255,0.4); color: #003A44; }
-
-/* 10) Vision Pro Glass — visionOS/tinted glass, minimalistyczne */
-.bp-gg--10 { border-radius: 14px; }
-.bp-gg--10:hover::before {
-  opacity: 1;
-  background: rgba(255,255,255,0.18);
-  -webkit-backdrop-filter: blur(26px) saturate(180%);
-  backdrop-filter: blur(26px) saturate(180%);
-}
-.bp-gg--10:hover::after {
-  /* thin bright rim on top */
-  opacity: 1;
-  background: linear-gradient(180deg, rgba(255,255,255,0.35) 0%, transparent 12%);
-}
-.bp-gg--10:hover {
-  border-color: rgba(255,255,255,0.30);
+.bp-gg--1:hover {
+  border-color: rgba(255,255,255,0.7);
   box-shadow:
-    inset 0 0 0 1px rgba(255,255,255,0.15),
-    0 20px 40px -20px rgba(6,255,224,0.5),
-    0 4px 12px -6px rgba(0,0,0,0.4);
+    inset 0 1px 0 rgba(255,255,255,0.95),
+    inset 0 -1px 0 rgba(255,255,255,0.25),
+    0 14px 34px -10px rgba(6,255,224,0.45);
   color: #003A44;
 }
 
+/* ---------- 02 Rim Light Glass — mocna biała krawędź + mocno-frost środek ---------- */
+.bp-gg--2:hover::before {
+  opacity: 1;
+  background: linear-gradient(180deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.25) 100%);
+  -webkit-backdrop-filter: blur(24px) saturate(200%);
+  backdrop-filter: blur(24px) saturate(200%);
+}
+.bp-gg--2:hover::after {
+  opacity: 1;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.9) 0%, transparent 30%),
+    radial-gradient(ellipse at 30% 20%, rgba(255,255,255,0.5) 0%, transparent 45%);
+}
+.bp-gg--2:hover {
+  border-color: rgba(255,255,255,0.95);
+  box-shadow:
+    inset 0 1.5px 0 rgba(255,255,255,1),
+    inset 0 0 0 1px rgba(255,255,255,0.35),
+    inset 0 -1.5px 0 rgba(255,255,255,0.3),
+    0 12px 30px -10px rgba(6,255,224,0.5);
+  color: #003A44;
+}
+
+/* ---------- 03 Liquid Glass — mokry gloss z odbiciem "wave" ---------- */
+.bp-gg--3:hover::before {
+  opacity: 1;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.75) 0%, rgba(255,255,255,0.30) 45%, rgba(255,255,255,0.65) 100%);
+  -webkit-backdrop-filter: blur(26px) saturate(200%) brightness(1.1);
+  backdrop-filter: blur(26px) saturate(200%) brightness(1.1);
+}
+.bp-gg--3:hover::after {
+  opacity: 1;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.95) 0%, transparent 22%, transparent 78%, rgba(255,255,255,0.4) 100%),
+    linear-gradient(180deg, rgba(255,255,255,0.5) 0%, transparent 40%);
+}
+.bp-gg--3:hover {
+  border-color: rgba(255,255,255,0.7);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,1),
+    inset 1px 0 0 rgba(255,255,255,0.35),
+    0 16px 36px -12px rgba(6,255,224,0.45);
+  color: #003A44;
+}
+
+/* ---------- 04 Frosted Halo — grubszy blur + zewnętrzna aura ---------- */
+.bp-gg--4:hover::before {
+  opacity: 1;
+  background: linear-gradient(180deg, rgba(255,255,255,0.60), rgba(255,255,255,0.30));
+  -webkit-backdrop-filter: blur(30px) saturate(200%);
+  backdrop-filter: blur(30px) saturate(200%);
+}
+.bp-gg--4:hover::after {
+  opacity: 1;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.7) 0%, transparent 40%),
+    radial-gradient(ellipse at 70% 80%, rgba(255,255,255,0.35), transparent 55%);
+}
+.bp-gg--4:hover {
+  border-color: rgba(255,255,255,0.75);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.9),
+    0 0 0 4px rgba(6,255,224,0.20),
+    0 0 0 8px rgba(6,255,224,0.08),
+    0 16px 40px -10px rgba(6,255,224,0.55);
+  color: #003A44;
+}
+
+/* ---------- 05 Aqua Squircle — iOS liquid button z highlight top ---------- */
+.bp-gg--5 { border-radius: 18px; }
+.bp-gg--5:hover::before {
+  opacity: 1;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.70) 0%, rgba(6,255,224,0.35) 100%);
+  -webkit-backdrop-filter: blur(20px) saturate(220%) brightness(1.05);
+  backdrop-filter: blur(20px) saturate(220%) brightness(1.05);
+}
+.bp-gg--5:hover::after {
+  opacity: 1;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.4) 15%, transparent 45%);
+}
+.bp-gg--5:hover {
+  border-color: rgba(255,255,255,0.65);
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,1),
+    inset 0 -1px 0 rgba(255,255,255,0.2),
+    0 14px 32px -12px rgba(6,255,224,0.55);
+  color: #003A44;
+}
+
+/* ---------- 06 Depth Glass — 2 warstwy szkła + główny highlight diagonalny ---------- */
+.bp-gg--6:hover::before {
+  opacity: 1;
+  background: linear-gradient(180deg, rgba(255,255,255,0.35), rgba(255,255,255,0.15));
+  -webkit-backdrop-filter: blur(24px) saturate(200%);
+  backdrop-filter: blur(24px) saturate(200%);
+}
+.bp-gg--6:hover::after {
+  opacity: 1;
+  background:
+    linear-gradient(115deg, rgba(255,255,255,0.85) 0%, transparent 30%, transparent 65%, rgba(255,255,255,0.5) 100%),
+    linear-gradient(180deg, rgba(255,255,255,0.6) 0%, transparent 30%);
+}
+.bp-gg--6:hover {
+  border-color: rgba(255,255,255,0.55);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.9),
+    0 6px 12px -6px rgba(0,0,0,0.3),
+    0 18px 36px -12px rgba(6,255,224,0.45);
+  color: #003A44;
+}
+
+/* ---------- 07 Chromatic Glass — hue shift z sześciopromienicowym gloss ---------- */
+.bp-gg--7:hover::before {
+  opacity: 1;
+  background: linear-gradient(135deg, rgba(255,255,255,0.55), rgba(168,85,247,0.22) 50%, rgba(255,255,255,0.55));
+  -webkit-backdrop-filter: blur(22px) saturate(220%) hue-rotate(-8deg);
+  backdrop-filter: blur(22px) saturate(220%) hue-rotate(-8deg);
+}
+.bp-gg--7:hover::after {
+  opacity: 1;
+  background:
+    linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.75) 50%, transparent 70%),
+    linear-gradient(180deg, rgba(255,255,255,0.55) 0%, transparent 35%);
+}
+.bp-gg--7:hover {
+  border-color: rgba(255,255,255,0.65);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.95),
+    0 14px 32px -10px rgba(168,85,247,0.35);
+  color: #003A44;
+}
+
+/* ---------- 08 Ice Frost — biało-niebieskie mroźne szkło ---------- */
+.bp-gg--8:hover::before {
+  opacity: 1;
+  background: linear-gradient(180deg, rgba(214,242,255,0.80), rgba(190,230,255,0.45));
+  -webkit-backdrop-filter: blur(24px) saturate(180%) brightness(1.08);
+  backdrop-filter: blur(24px) saturate(180%) brightness(1.08);
+}
+.bp-gg--8:hover::after {
+  opacity: 1;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.95) 0%, transparent 35%),
+    radial-gradient(ellipse at 20% 100%, rgba(190,230,255,0.6), transparent 60%);
+}
+.bp-gg--8:hover {
+  border-color: rgba(220,245,255,0.85);
+  box-shadow:
+    inset 0 1.5px 0 rgba(255,255,255,1),
+    inset 0 -1px 0 rgba(190,230,255,0.4),
+    0 14px 36px -12px rgba(0,184,212,0.55);
+  color: #002830;
+}
+
+/* ---------- 09 Wet Glass — kropelkowy refrakt, mocny bąbel po lewej ---------- */
+.bp-gg--9:hover::before {
+  opacity: 1;
+  background:
+    radial-gradient(circle at 22% 18%, rgba(255,255,255,0.95), transparent 40%),
+    radial-gradient(circle at 75% 80%, rgba(255,255,255,0.55), transparent 45%),
+    linear-gradient(180deg, rgba(255,255,255,0.40), rgba(255,255,255,0.18));
+  -webkit-backdrop-filter: blur(20px) saturate(200%);
+  backdrop-filter: blur(20px) saturate(200%);
+}
+.bp-gg--9:hover::after {
+  opacity: 1;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.7) 0%, transparent 25%),
+    radial-gradient(ellipse at 100% 0%, rgba(255,255,255,0.5), transparent 40%);
+}
+.bp-gg--9:hover {
+  border-color: rgba(255,255,255,0.6);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.95),
+    0 16px 36px -12px rgba(6,255,224,0.45);
+  color: #003A44;
+}
+
+/* ---------- 10 Vision Pro Glass — visionOS ultra-clean, mocny rim ---------- */
+.bp-gg--10 { border-radius: 16px; }
+.bp-gg--10:hover::before {
+  opacity: 1;
+  background: linear-gradient(180deg, rgba(255,255,255,0.30) 0%, rgba(255,255,255,0.15) 100%);
+  -webkit-backdrop-filter: blur(30px) saturate(220%);
+  backdrop-filter: blur(30px) saturate(220%);
+}
+.bp-gg--10:hover::after {
+  opacity: 1;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.7) 0%, transparent 12%),
+    linear-gradient(180deg, transparent 88%, rgba(255,255,255,0.35) 100%);
+}
+.bp-gg--10:hover {
+  border-color: rgba(255,255,255,0.45);
+  box-shadow:
+    inset 0 1.5px 0 rgba(255,255,255,1),
+    inset 0 0 0 1px rgba(255,255,255,0.20),
+    inset 0 -1.5px 0 rgba(255,255,255,0.35),
+    0 26px 50px -20px rgba(6,255,224,0.55),
+    0 6px 16px -8px rgba(0,0,0,0.5);
+  color: #003A44;
+}
+
+/* Powiększ label na hover (Apple-ish spring feel) */
+.bp-gg:hover .bp-gg__label { text-shadow: 0 1px 0 rgba(255,255,255,0.45); }
+.bp-gg:hover svg { transform: translateX(2px); }
+
 @media (prefers-reduced-motion: reduce) {
-  .bp-gg, .bp-gg::before, .bp-gg::after { transition: none !important; }
+  .bp-gg, .bp-gg::before, .bp-gg::after, .bp-gg svg { transition: none !important; }
 }
 
