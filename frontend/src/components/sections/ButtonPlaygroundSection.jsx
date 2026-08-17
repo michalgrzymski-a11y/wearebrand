@@ -123,6 +123,7 @@ const ButtonPlaygroundSection = () => (
       subtitle="Ten sam zestaw na tle Hero/serwerowni — spójny z aktualnym layoutem."
     />
     <GradientPrimaryPanel />
+    <GlassHoverPanel />
   </section>
 );
 
@@ -182,5 +183,58 @@ const GradientPrimaryPanel = () => (
     </div>
   </div>
 );
+
+/* ==========================================================================
+   10 wariantów Gradient Primary z glassy hover (Apple-style frosted glass)
+   Każdy w stanie spoczynku ma bazę cyan gradient. Na hover overlay szklany.
+   ========================================================================== */
+const GG_VARIANTS = [
+  { n: 1,  name: "Classic Frost" },
+  { n: 2,  name: "Rim Light Glass" },
+  { n: 3,  name: "Liquid Glass" },
+  { n: 4,  name: "Frosted Halo" },
+  { n: 5,  name: "Aqua Squircle" },
+  { n: 6,  name: "Depth Glass" },
+  { n: 7,  name: "Chromatic Glass" },
+  { n: 8,  name: "Ice Frost" },
+  { n: 9,  name: "Wet Glass" },
+  { n: 10, name: "Vision Pro Glass" },
+];
+
+const GlassHoverPanel = () => (
+  <div className="bp-panel bp-panel--dark bp-panel--gg" data-testid="bp-panel-gg">
+    <div className="bp-panel__inner">
+      <div className="bp-panel__head">
+        <span className="bp-panel__tag">Glass Hover · 10 wariantów Apple-style</span>
+        <h2 className="bp-panel__title">Cyan w spoczynku, szkło na hover</h2>
+        <p className="bp-panel__sub">
+          Baza to Gradient Primary. Po najechaniu każdy wariant przechodzi w efekt
+          frosted glass w stylu visionOS/macOS. Najedź kursorem — zobaczysz różnicę.
+        </p>
+      </div>
+      <div className="bp-gg-grid">
+        {GG_VARIANTS.map((v) => (
+          <div key={v.n} className="bp-gg-cell" data-testid={`bp-gg-cell-${v.n}`}>
+            <div className="bp-gg-cell__stage">
+              <button
+                type="button"
+                className={`bp-gg bp-gg--${v.n}`}
+                data-testid={`bp-gg-btn-${v.n}`}
+              >
+                <span className="bp-gg__label">Sprawdź ofertę</span>
+                <ArrowRight size={14} />
+              </button>
+            </div>
+            <div className="bp-cell__label">
+              <span className="bp-cell__num">{String(v.n).padStart(2, "0")}</span>
+              <span className="bp-cell__name">{v.name}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+);
+
 
 export default ButtonPlaygroundSection;
