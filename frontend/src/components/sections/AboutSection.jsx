@@ -125,10 +125,10 @@ const BlueprintPanel = ({ pillar, index, total, lang }) => {
       <svg className="sc-blueprint__schema" viewBox="0 0 240 90" preserveAspectRatio="none">
         <defs>
           <linearGradient id="bp-line" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor="#49ADA5" stopOpacity="0" />
-            <stop offset="20%" stopColor="#49ADA5" stopOpacity="1" />
-            <stop offset="80%" stopColor="#49ADA5" stopOpacity="1" />
-            <stop offset="100%" stopColor="#49ADA5" stopOpacity="0" />
+            <stop offset="0%" stopColor="#00B8D4" stopOpacity="0" />
+            <stop offset="20%" stopColor="#00B8D4" stopOpacity="1" />
+            <stop offset="80%" stopColor="#00B8D4" stopOpacity="1" />
+            <stop offset="100%" stopColor="#00B8D4" stopOpacity="0" />
           </linearGradient>
         </defs>
         <line x1="0" y1="75" x2="240" y2="75" stroke="url(#bp-line)" strokeWidth="0.6" strokeDasharray="1 3" />
@@ -141,7 +141,7 @@ const BlueprintPanel = ({ pillar, index, total, lang }) => {
                 : "M0 70 L 40 55 L 80 42 L 120 30 L 160 22 L 200 15 L 240 8"
           }
           fill="none"
-          stroke="#49ADA5"
+          stroke="#00B8D4"
           strokeWidth="1.4"
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -158,7 +158,7 @@ const BlueprintPanel = ({ pillar, index, total, lang }) => {
                   : [70, 55, 42, 30, 22, 15, 8][i]
             }
             r="1.6"
-            fill="#49ADA5"
+            fill="#00B8D4"
           />
         ))}
       </svg>
@@ -202,7 +202,7 @@ const AboutSection = () => {
             className="flex items-center gap-4 text-[11px] uppercase tracking-[0.32em]"
             style={{ color: "#0C5C62" }}
           >
-            <span className="inline-block h-px w-10" style={{ background: "#49ADA5" }} />
+            <span className="inline-block h-px w-10" style={{ background: "#00B8D4" }} />
             {t.about.section_label}
           </div>
         </Reveal>

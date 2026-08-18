@@ -19,7 +19,7 @@ import {
  */
 
 const PRIMARY_COLOR = 0x0c5c62;
-const ACCENT_COLOR = 0x49ada5;
+const ACCENT_COLOR = 0x00b8d4;
 
 const DEVICE_META = [
   { id: "server",   Icon: Server,         pl: "Serwery",  en: "Servers",  sub_pl: "Compute",    sub_en: "Compute" },
@@ -226,7 +226,7 @@ const Datacenter3DScene = ({ lang = "pl" }) => {
         const groove = new THREE.Mesh(
           new THREE.BoxGeometry(0.85, 0.02, 0.01),
           new THREE.MeshBasicMaterial({
-            color: 0x49ada5,
+            color: 0x00b8d4,
             transparent: true,
             opacity: 0.7,
           }),

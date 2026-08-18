@@ -22,7 +22,7 @@ const Eyebrow = ({ children, dark }) => (
     className="flex items-center gap-4 text-[11px] uppercase tracking-[0.32em]"
     style={{ color: dark ? "#7CC4C0" : "#0C5C62" }}
   >
-    <span className="inline-block h-px w-10" style={{ background: "#49ADA5" }} />
+    <span className="inline-block h-px w-10" style={{ background: "#00B8D4" }} />
     {children}
   </div>
 );
@@ -247,7 +247,7 @@ const PortfolioOverview = () => {
               <a href={tile.href} className="sc-bento group block" data-testid={`netapp-tile-${i}`}>
                 <div className="flex items-start justify-between">
                   <div className="sc-bento__icon"><tile.icon size={24} strokeWidth={1.7} /></div>
-                  <span className="text-[10px] uppercase tracking-[0.32em]" style={{ color: "#49ADA5" }}>{tile.subtitle}</span>
+                  <span className="text-[10px] uppercase tracking-[0.32em]" style={{ color: "#00B8D4" }}>{tile.subtitle}</span>
                 </div>
                 <h3 className="mt-8 text-xl md:text-2xl font-semibold tracking-tight" style={{ color: "#0C5C62" }}>{tile.title}</h3>
                 <p className="mt-4 text-[14px] leading-relaxed" style={{ color: "rgba(28,40,51,0.72)" }}>{tile.desc}</p>

@@ -5,14 +5,14 @@ import React, { useEffect, useRef } from "react";
  * Optional mouse interaction: cursor becomes an attractor within a radius.
  *
  * Props:
- *  - color: primary node/line color (default "#49ADA5")
+ *  - color: primary node/line color (default "#00B8D4")
  *  - background: transparent | dark (positional only)
  *  - density: number of nodes (default 80, mobile falls back to 40)
  *  - interactive: enable mouse attraction (default false)
  *  - opacity: overall canvas opacity (default 0.7)
  */
 const NeuralNodeNetwork = ({
-  color = "#49ADA5",
+  color = "#00B8D4",
   density = 80,
   interactive = false,
   opacity = 0.7,

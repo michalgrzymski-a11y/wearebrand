@@ -102,7 +102,7 @@ const Partnerzy = () => {
           className="flex items-center gap-4 text-[11px] uppercase tracking-[0.32em]"
           style={{ color: "#0C5C62" }}
         >
-          <span className="inline-block h-px w-10" style={{ background: "#49ADA5" }} />
+          <span className="inline-block h-px w-10" style={{ background: "#00B8D4" }} />
           {label}
         </div>
         <div className="flex items-center gap-2">

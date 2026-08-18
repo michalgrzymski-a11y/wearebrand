@@ -36,7 +36,7 @@ const Portfolio = () => {
               className="flex items-center gap-4 text-[11px] uppercase tracking-[0.32em]"
               style={{ color: "#0C5C62" }}
             >
-              <span className="inline-block h-px w-10" style={{ background: "#49ADA5" }} />
+              <span className="inline-block h-px w-10" style={{ background: "#00B8D4" }} />
               {t.portfolio.section_label}
             </div>
             <h2
@@ -75,7 +75,7 @@ const Portfolio = () => {
                     </div>
                     <span
                       className="text-[10px] uppercase tracking-[0.32em]"
-                      style={{ color: "#49ADA5" }}
+                      style={{ color: "#00B8D4" }}
                     >
                       {tile.subtitle}
                     </span>

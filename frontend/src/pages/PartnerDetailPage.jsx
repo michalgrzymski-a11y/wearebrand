@@ -152,7 +152,7 @@ const PartnerDetailPage = () => {
               >
                 <span
                   className="inline-block h-px w-10"
-                  style={{ background: "#49ADA5" }}
+                  style={{ background: "#00B8D4" }}
                 />
                 {lang === "pl" ? "Partnerstwo" : "Partnership"}
               </div>

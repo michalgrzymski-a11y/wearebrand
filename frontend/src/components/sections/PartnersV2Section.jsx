@@ -119,7 +119,7 @@ const PartnersV2Section = () => {
             className="flex items-center gap-4 text-[11px] uppercase tracking-[0.32em]"
             style={{ color: "#7CC4C0" }}
           >
-            <span className="inline-block h-px w-10" style={{ background: "#49ADA5" }} />
+            <span className="inline-block h-px w-10" style={{ background: "#00B8D4" }} />
             {lang === "pl" ? "Stack technologiczny" : "Technology stack"}
           </div>
           <h2

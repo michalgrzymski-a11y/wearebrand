@@ -20,8 +20,8 @@ import {
  *    fewer particles, no shadow maps.
  */
 
-const ACCENT = 0x49ada5;
-const ACCENT_HEX = "#49ADA5";
+const ACCENT = 0x00b8d4;
+const ACCENT_HEX = "#00B8D4";
 const FRAME = 0x1a2431;
 const PANEL = 0x2a3846;
 const LIGHT = 0x3d5063;
@@ -470,7 +470,7 @@ const IsometricDatacenter = ({ lang = "pl" }) => {
     const key = new THREE.DirectionalLight(0xffffff, 0.55);
     key.position.set(6, 12, 4);
     scene.add(key);
-    const rim = new THREE.DirectionalLight(0x49ada5, 0.35);
+    const rim = new THREE.DirectionalLight(0x00b8d4, 0.35);
     rim.position.set(-6, 4, -3);
     scene.add(rim);
 

@@ -121,7 +121,7 @@ const BusinessContinuitySection = () => {
             className="flex items-center gap-4 text-[12px] uppercase tracking-[0.34em]"
             style={{ color: "#0C5C62" }}
           >
-            <span className="inline-block h-px w-12" style={{ background: "#49ADA5" }} />
+            <span className="inline-block h-px w-12" style={{ background: "#00B8D4" }} />
             {copy.section_label}
           </div>
           <h2

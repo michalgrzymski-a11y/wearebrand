@@ -126,3 +126,22 @@ Deep Teal `#0C5C62`, Accent Mint `#49ADA5`, White, Light gray `#F8FAFA`, Charcoa
 
 ## Test credentials
 N/A — the site has no authentication surface.
+
+
+## 2026-02 — NetApp Portfolio v2 (light theme, 6 families, real assets, horizontal scroll)
+- **P0 Fix (COMPLETE)** — Global "Cyan Core" hex-unification finished:
+  - `AmbientHeroScene.jsx`, `HeroCanvas.jsx`, `Datacenter3DScene.jsx`, `IsometricDatacenter.jsx` — all `0x49ada5` → `0x00b8d4`.
+  - `netappModels.js` `FAS.accent` `#49ADA5` → `#0EA5A0` (harmonised with palette).
+  - HeroCanvas rgba glow tokens also switched to `rgba(0,184,212,…)`.
+- **NetApp Portfolio Page — full rebuild** (`/app/frontend/src/pages/NetAppPortfolioPage.jsx` + `NetAppPortfolioPage.css`):
+  - **6 families** now (was 3): AFF · Performance, **ASA · SAN Flash** (new), C-Series · Capacity, FAS · Hybrid (models updated to FAS 2820/50/70/90), **E-Series · Block SAN** (new: E4012, E4060), **EF-Series · SAN NVMe** (new: EF50, EF80, EF300, EF600).
+  - **Horizontal scroll per family** (`scroll-snap-type: x mandatory` + prev/next controls with disabled-edge state) — as requested by user.
+  - **Real NetApp assets** copied to `/app/frontend/public/netapp-assets/` (39 PNG images: front bezels + rear views). Card image-box shows front by default; on `:hover` the rear view cross-fades in (where a rear asset exists).
+  - **Light "Cyan Core" theme** matching main-page aesthetic: `#F8FAFA` background, `#0C5C62` teal text, cyan gradient accents, ambient radial glows same as Portfolio.jsx.
+  - Summary comparison table redesigned as 6-column grid on light background.
+- **Data model additions** in `netappModels.js`: `img`, `imgRear`, `desc` on families; ASA/E-Series/EF-Series families added to `NETAPP_FAMILIES` and `NETAPP_SELECT_OPTIONS`.
+
+## Backlog additions
+- **P1** — Mobile responsiveness for legacy sections TCO/Portfolio/NetApp/Kontakt below 768px (from prev handoff).
+- **P2** — Verify GA4 analytics hook respects GDPR consent state.
+- **P3** — Modularize `App.css` (>15,000 lines) into CSS Modules.

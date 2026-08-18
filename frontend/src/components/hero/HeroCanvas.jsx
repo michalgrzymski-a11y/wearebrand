@@ -52,15 +52,15 @@ const HeroAmbient = () => {
     canvas.height = size;
     const ctx = canvas.getContext("2d");
     const grd = ctx.createRadialGradient(64, 64, 0, 64, 64, 64);
-    grd.addColorStop(0, "rgba(73,173,165,1)");
-    grd.addColorStop(0.4, "rgba(73,173,165,0.5)");
-    grd.addColorStop(1, "rgba(73,173,165,0)");
+    grd.addColorStop(0, "rgba(0,184,212,1)");
+    grd.addColorStop(0.4, "rgba(0,184,212,0.5)");
+    grd.addColorStop(1, "rgba(0,184,212,0)");
     ctx.fillStyle = grd;
     ctx.fillRect(0, 0, size, size);
     const tex = new THREE.CanvasTexture(canvas);
 
     const mat = new THREE.PointsMaterial({
-      color: 0x49ada5,
+      color: 0x00b8d4,
       size: 0.09,
       map: tex,
       transparent: true,
@@ -87,7 +87,7 @@ const HeroAmbient = () => {
     }
     rayGeom.setAttribute("position", new THREE.BufferAttribute(rayPos, 3));
     const rayMat = new THREE.LineBasicMaterial({
-      color: 0x49ada5,
+      color: 0x00b8d4,
       transparent: true,
       opacity: 0.08,
       blending: THREE.AdditiveBlending,

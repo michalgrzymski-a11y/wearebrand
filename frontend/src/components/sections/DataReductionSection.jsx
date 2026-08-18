@@ -290,7 +290,7 @@ const DataReductionSection = () => {
             className="flex items-center gap-4 text-[12px] uppercase tracking-[0.34em]"
             style={{ color: "#7CC4C0" }}
           >
-            <span className="inline-block h-px w-12" style={{ background: "#49ADA5" }} />
+            <span className="inline-block h-px w-12" style={{ background: "#00B8D4" }} />
             {copy.label}
           </div>
           <h2 className="mt-5 text-4xl md:text-6xl font-semibold leading-[1.02] tracking-tight text-white max-w-4xl">

@@ -1,228 +1,288 @@
-import React, { useState, useMemo } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Kontakt from "@/components/sections/Kontakt";
 import { NETAPP_MODELS, NETAPP_FAMILIES } from "@/data/netappModels";
 import {
-  Server, Zap, Layers, Gauge, Database, ArrowRight,
-  Cpu, HardDrive, Network, Timer, Boxes,
+  Zap, Database, HardDrive, Server, Cpu, ArrowRight,
+  ChevronLeft, ChevronRight, Shield, Rocket,
 } from "lucide-react";
+import "./NetAppPortfolioPage.css";
 
 /**
  * NetAppPortfolioPage — /netapp-portfolio
- * Wizualne porównanie portfolio: AFF Performance / C-Series Capacity Flash / FAS Hybrid.
- * Dwa poziomy:
- *   1) Szczegółowe karty modeli (dane z /data/netappModels.js)
- *   2) Podsumowanie porównawcze rodzin — jedna prosta wizualizacja
+ * Poziomy scroll per rodzina + duże assety front/rear (hover flip).
+ * Styl: light "Cyan Core" spójny ze stroną główną.
  */
 
 const FAMILY_ICON = {
-  AFF:    <Zap size={20} />,
-  CFLASH: <Database size={20} />,
-  FAS:    <HardDrive size={20} />,
+  AFF:      <Zap size={20} />,
+  ASA:      <Shield size={20} />,
+  CFLASH:   <Database size={20} />,
+  FAS:      <HardDrive size={20} />,
+  ESERIES:  <Server size={20} />,
+  EFSERIES: <Rocket size={20} />,
 };
 
-/* Wizualne kafelki dysków w macierzy — pokazuje symbolicznie ilość i typ */
-const DriveVisualization = ({ model }) => {
-  const count = Math.min(48, Math.max(6, Math.round(model.presetDisks / (model.presetDisks > 48 ? 6 : 1))));
-  const isFlash = model.family !== "FAS";
-  return (
-    <div className="np-drives" aria-hidden="true" data-testid={`np-drives-${model.id}`}>
-      {Array.from({ length: count }).map((_, i) => (
-        <span
-          key={i}
-          className={`np-drive np-drive--${isFlash ? "flash" : "hdd"}`}
-          style={{ animationDelay: `${i * 40}ms` }}
-        />
-      ))}
-    </div>
-  );
-};
+const FAMILY_ORDER = ["AFF", "ASA", "CFLASH", "FAS", "EFSERIES", "ESERIES"];
 
-/* Duża karta modelu */
+/* ---------- Model card ---------- */
 const ModelCard = ({ model }) => {
   const fam = NETAPP_FAMILIES[model.family];
+  const hasRear = Boolean(model.imgRear);
   return (
     <article
-      className="np-card"
-      data-testid={`np-model-${model.id}`}
+      className="npv2-card"
+      data-testid={`npv2-model-${model.id}`}
       style={{ "--fam": fam.accent }}
     >
-      <header className="np-card__head">
-        <div className="np-card__id">
-          <span className="np-card__fam">{fam.short}</span>
-          <span className="np-card__tier">{model.tier}</span>
-          <span className="np-card__chassis">{model.chassis}</span>
-        </div>
-        <h3 className="np-card__name">{model.name}</h3>
-        <p className="np-card__tagline">{model.tagline}</p>
-      </header>
+      {model.tier === "Flagship" && <span className="npv2-card__badge">Flagship</span>}
 
-      <DriveVisualization model={model} />
+      <div className="npv2-card__id">
+        <span>{fam.short}</span>
+        <span>{model.tier}</span>
+        <span>{model.chassis}</span>
+      </div>
 
-      <ul className="np-specs">
-        <li><HardDrive size={14} /><span>Dyski</span><em>{model.drives}</em></li>
-        <li><Boxes size={14} /><span>Max dysków</span><em>{model.maxDrives}</em></li>
-        <li><Database size={14} /><span>Max pojemność efekt.</span><em>{model.maxCapEff}</em></li>
-        <li><Gauge size={14} /><span>Przepustowość</span><em>{model.maxThroughput}</em></li>
-        <li><Timer size={14} /><span>Latencja</span><em>{model.latency}</em></li>
-        <li><Cpu size={14} /><span>CPU / RAM</span><em>{model.cpu} · {model.ram}</em></li>
-        <li><Network size={14} /><span>Porty</span><em>{model.ports}</em></li>
+      <h3 className="npv2-card__name">{model.name}</h3>
+      <p className="npv2-card__tagline">{model.tagline}</p>
+
+      <div className="npv2-card__imgbox">
+        {model.img && (
+          <img
+            className="npv2-card__img npv2-card__img--front"
+            src={model.img}
+            alt={`${model.name} front`}
+            loading="lazy"
+          />
+        )}
+        {hasRear && (
+          <img
+            className="npv2-card__img npv2-card__img--rear"
+            src={model.imgRear}
+            alt={`${model.name} rear`}
+            loading="lazy"
+          />
+        )}
+        {hasRear && <span className="npv2-card__imghint">Hover · Rear</span>}
+      </div>
+
+      <ul className="npv2-card__specs">
+        <li><span className="k">Max Cap</span><span className="v">{model.maxCapEff}</span></li>
+        <li><span className="k">Throughput</span><span className="v">{model.maxThroughput}</span></li>
+        <li><span className="k">Latencja</span><span className="v">{model.latency}</span></li>
+        <li><span className="k">Max Drives</span><span className="v">{model.maxDrives}</span></li>
+        <li><span className="k">RAM</span><span className="v">{model.ram}</span></li>
+        <li><span className="k">Porty</span><span className="v" style={{ fontSize: 11 }}>{model.ports}</span></li>
       </ul>
 
-      <footer className="np-card__foot">
-        <span className="np-card__highlight-label">Wyróżnik</span>
-        <p className="np-card__highlight">{model.highlight}</p>
-      </footer>
+      <p className="npv2-card__hi">{model.highlight}</p>
     </article>
   );
 };
 
-/* Rodzinowa sekcja — nagłówek + karty */
-const FamilySection = ({ family }) => {
+/* ---------- Family row with horizontal scroll ---------- */
+const FamilyRow = ({ family }) => {
+  const scrollerRef = useRef(null);
+  const [canL, setCanL] = useState(false);
+  const [canR, setCanR] = useState(true);
+
   const models = NETAPP_MODELS.filter((m) => m.family === family.key);
+
+  const updateArrows = () => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    setCanL(el.scrollLeft > 8);
+    setCanR(el.scrollLeft + el.clientWidth < el.scrollWidth - 8);
+  };
+
+  useEffect(() => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    updateArrows();
+    el.addEventListener("scroll", updateArrows, { passive: true });
+    window.addEventListener("resize", updateArrows);
+    return () => {
+      el.removeEventListener("scroll", updateArrows);
+      window.removeEventListener("resize", updateArrows);
+    };
+  }, []);
+
+  const scroll = (dir) => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    const step = Math.round(el.clientWidth * 0.7);
+    el.scrollBy({ left: dir * step, behavior: "smooth" });
+  };
+
   return (
     <section
-      className={`np-family np-family--${family.key.toLowerCase()}`}
-      data-testid={`np-family-${family.key}`}
-      id={`family-${family.key.toLowerCase()}`}
+      className="npv2-fam"
+      id={`fam-${family.key.toLowerCase()}`}
+      data-testid={`npv2-family-${family.key}`}
       style={{ "--fam": family.accent }}
     >
-      <header className="np-family__head">
-        <div className="np-family__icon">{FAMILY_ICON[family.key]}</div>
-        <div>
-          <h2 className="np-family__title">{family.label}</h2>
-          <p className="np-family__sub">
-            {family.key === "AFF"    && "Wysoka wydajność NVMe dla krytycznych workloadów, VMware, baz danych i analityki."}
-            {family.key === "CFLASH" && "Capacity flash QLC — pojemność jak HDD, opóźnienia jak SSD. Backup, archive, secondary storage."}
-            {family.key === "FAS"    && "Hybrydowe macierze z HDD + cache flash. Ekonomiczna konsolidacja file/block przy dużej skali."}
-          </p>
+      <header className="npv2-fam__head">
+        <div className="npv2-fam__title-wrap">
+          <div className="npv2-fam__icon" style={{ "--fam": family.accent, color: family.accent }}>
+            {FAMILY_ICON[family.key]}
+          </div>
+          <div>
+            <h2 className="npv2-fam__title">
+              {family.label.split("·")[0].trim()}{" "}
+              <span className="npv2-fam__title-accent" style={{ color: family.accent }}>
+                · {family.label.split("·")[1].trim()}
+              </span>
+            </h2>
+            <p className="npv2-fam__sub">{family.desc}</p>
+          </div>
+        </div>
+
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 8 }}>
+          <span className="npv2-fam__count">{models.length} {models.length === 1 ? "model" : "modeli"}</span>
+          <div className="npv2-fam__ctrls">
+            <button
+              className="npv2-fam__ctrl"
+              onClick={() => scroll(-1)}
+              disabled={!canL}
+              aria-label="Przewiń w lewo"
+              data-testid={`npv2-scroll-left-${family.key}`}
+            >
+              <ChevronLeft size={18} />
+            </button>
+            <button
+              className="npv2-fam__ctrl"
+              onClick={() => scroll(1)}
+              disabled={!canR}
+              aria-label="Przewiń w prawo"
+              data-testid={`npv2-scroll-right-${family.key}`}
+            >
+              <ChevronRight size={18} />
+            </button>
+          </div>
         </div>
       </header>
 
-      <div className="np-family__grid">
-        {models.map((m) => <ModelCard key={m.id} model={m} />)}
+      <div className="npv2-scroller-wrap">
+        <div className="npv2-scroller" ref={scrollerRef} data-testid={`npv2-scroller-${family.key}`}>
+          {models.map((m) => (
+            <ModelCard key={m.id} model={m} />
+          ))}
+        </div>
       </div>
     </section>
   );
 };
 
-/* Podsumowanie porównawcze — jedna prosta wizualizacja rodzin obok siebie */
+/* ---------- Summary comparison ---------- */
 const FamilySummary = () => {
   const rows = [
-    { label: "Warstwa dysków",         AFF: "NVMe SSD (TLC)",     CFLASH: "NVMe QLC",             FAS: "HDD + SSD cache" },
-    { label: "Latencja",                AFF: "< 500 μs",           CFLASH: "1-2 ms",               FAS: "3-8 ms" },
-    { label: "IOPS (relatywnie)",       AFF: "★★★★★",              CFLASH: "★★★☆☆",                FAS: "★★☆☆☆" },
-    { label: "Cena / TB",               AFF: "★★★★★ (wysoka)",     CFLASH: "★★★☆☆ (średnia)",      FAS: "★☆☆☆☆ (najniższa)" },
-    { label: "Pojemność max",           AFF: "do 100 PB",          CFLASH: "do 45 PB",             FAS: "do 100 PB" },
-    { label: "Zużycie energii / TB",    AFF: "niskie",             CFLASH: "bardzo niskie",        FAS: "wysokie" },
-    { label: "Typowe zastosowanie",     AFF: "Produkcja, VMware, DB, AI/ML", CFLASH: "Backup, archive, cyber-vault", FAS: "File-share, secondary, media library" },
-    { label: "Snapshoty / SnapMirror",  AFF: "✓ pełne ONTAP",      CFLASH: "✓ pełne ONTAP",        FAS: "✓ pełne ONTAP" },
-    { label: "Zalety",                  AFF: "Najwyższa wydajność, min. latencja", CFLASH: "Flash w cenie HDD, energooszczędność", FAS: "Najniższy koszt / TB przy dużej skali" },
+    { label: "Warstwa",           AFF: "NVMe TLC",    ASA: "NVMe TLC (SAN)", CFLASH: "NVMe QLC",    FAS: "HDD + SSD cache", ESERIES: "HDD/SAS", EFSERIES: "NVMe SSD" },
+    { label: "Latencja",          AFF: "< 500 μs",    ASA: "< 500 μs",       CFLASH: "1-2 ms",       FAS: "3-8 ms",           ESERIES: "1-6 ms",  EFSERIES: "< 100 μs" },
+    { label: "IOPS",              AFF: "★★★★★",       ASA: "★★★★★",         CFLASH: "★★★☆☆",       FAS: "★★☆☆☆",           ESERIES: "★★☆☆☆",  EFSERIES: "★★★★★" },
+    { label: "Cena / TB",         AFF: "★★★★★",       ASA: "★★★★☆",         CFLASH: "★★★☆☆",       FAS: "★★☆☆☆",           ESERIES: "★★☆☆☆",  EFSERIES: "★★★★★" },
+    { label: "Max pojemność",     AFF: "100 PB",      ASA: "100 PB",         CFLASH: "45 PB",        FAS: "100 PB",           ESERIES: "9.6 PB",  EFSERIES: "3 PB" },
+    { label: "System",            AFF: "ONTAP",       ASA: "ONTAP (SAN)",    CFLASH: "ONTAP",        FAS: "ONTAP",            ESERIES: "SANtricity", EFSERIES: "SANtricity" },
+    { label: "Zastosowanie",      AFF: "VMware, DB, AI/ML",    ASA: "Block-only, DB",   CFLASH: "Backup, archive",     FAS: "File-share, media",  ESERIES: "HPC, video, OT", EFSERIES: "HPC, trading" },
   ];
+
+  const cols = [
+    { key: "AFF",      title: "AFF",     sub: "Performance" },
+    { key: "ASA",      title: "ASA",     sub: "SAN Flash" },
+    { key: "CFLASH",   title: "C-Series",sub: "Capacity" },
+    { key: "FAS",      title: "FAS",     sub: "Hybrid" },
+    { key: "EFSERIES", title: "EF",      sub: "SAN NVMe" },
+    { key: "ESERIES",  title: "E",       sub: "Block SAN" },
+  ];
+
   return (
-    <section className="np-summary" data-testid="np-summary">
-      <header className="np-summary__head">
-        <span className="np-summary__tag">Porównanie rodzin · Podsumowanie</span>
-        <h2>Trzy rodziny, jedno spojrzenie</h2>
-        <p>Krótkie zestawienie do decyzji: Performance vs Capacity vs Hybrid.</p>
+    <section className="npv2-summary" data-testid="npv2-summary" id="npv2-summary">
+      <header className="npv2-summary__head">
+        <span className="npv2-summary__tag">Porównanie rodzin</span>
+        <h2>Sześć rodzin, jedno spojrzenie</h2>
+        <p>Krótkie zestawienie do decyzji: Performance vs Capacity vs Hybrid vs SAN.</p>
       </header>
 
-      <div className="np-summary__grid" role="table">
-        <div className="np-summary__col np-summary__col--label" role="rowgroup">
-          <div className="np-summary__cell np-summary__cell--head">&nbsp;</div>
-          {rows.map((r, i) => (
-            <div key={i} className="np-summary__cell np-summary__cell--label">{r.label}</div>
-          ))}
-        </div>
-
-        {[
-          { key: "AFF",    fam: NETAPP_FAMILIES.AFF,    icon: <Zap size={20}/>,      title: "AFF Performance" },
-          { key: "CFLASH", fam: NETAPP_FAMILIES.CFLASH, icon: <Database size={20}/>, title: "C-Series Capacity" },
-          { key: "FAS",    fam: NETAPP_FAMILIES.FAS,    icon: <HardDrive size={20}/>,title: "FAS Hybrid" },
-        ].map((col) => (
-          <div key={col.key} className="np-summary__col" role="rowgroup" style={{ "--fam": col.fam.accent }}>
-            <div className="np-summary__cell np-summary__cell--head">
-              <span className="np-summary__col-icon">{col.icon}</span>
-              <strong>{col.title}</strong>
-            </div>
-            {rows.map((r, i) => (
-              <div key={i} className="np-summary__cell">{r[col.key]}</div>
-            ))}
+      <div className="npv2-summary__grid" role="table">
+        <div className="npv2-summary__cell npv2-summary__cell--head">&nbsp;</div>
+        {cols.map((c) => (
+          <div key={c.key} className="npv2-summary__cell npv2-summary__cell--head">
+            <span className="fam-icon" style={{ "--fam": NETAPP_FAMILIES[c.key].accent, color: NETAPP_FAMILIES[c.key].accent }}>
+              {FAMILY_ICON[c.key]}<strong>{c.title}</strong>
+            </span>
+            <span style={{ fontSize: 11, opacity: 0.7, fontWeight: 500 }}>{c.sub}</span>
           </div>
+        ))}
+
+        {rows.map((r, i) => (
+          <React.Fragment key={i}>
+            <div className="npv2-summary__cell npv2-summary__cell--label">{r.label}</div>
+            {cols.map((c) => (
+              <div key={c.key} className="npv2-summary__cell">{r[c.key]}</div>
+            ))}
+          </React.Fragment>
         ))}
       </div>
     </section>
   );
 };
 
-/* Sticky filter — wybór rodziny */
-const FamilyFilter = ({ active, onChange }) => (
-  <div className="np-filter" data-testid="np-family-filter">
-    {[
-      { key: "ALL",    label: "Wszystkie" },
-      { key: "AFF",    label: NETAPP_FAMILIES.AFF.label },
-      { key: "CFLASH", label: NETAPP_FAMILIES.CFLASH.label },
-      { key: "FAS",    label: NETAPP_FAMILIES.FAS.label },
-    ].map((f) => (
-      <button
-        key={f.key}
-        className={`np-filter__btn ${active === f.key ? "is-active" : ""}`}
-        onClick={() => onChange(f.key)}
-        data-testid={`np-filter-${f.key}`}
-      >
-        {f.label}
-      </button>
-    ))}
-  </div>
-);
-
+/* ---------- Main page ---------- */
 const NetAppPortfolioPage = () => {
-  const [filter, setFilter] = useState("ALL");
-  const families = useMemo(() => {
-    if (filter === "ALL") return [NETAPP_FAMILIES.AFF, NETAPP_FAMILIES.CFLASH, NETAPP_FAMILIES.FAS];
-    return [NETAPP_FAMILIES[filter]];
-  }, [filter]);
+  const orderedFamilies = FAMILY_ORDER.map((k) => NETAPP_FAMILIES[k]);
 
   return (
-    <main data-testid="netapp-portfolio-main" className="sc-app np-page">
+    <main data-testid="netapp-portfolio-main" className="npv2">
       <Navbar />
 
-      <section className="np-hero">
-        <div className="np-hero__inner">
-          <span className="np-hero__tag">NetApp · Portfolio 2026</span>
-          <h1 className="np-hero__title">
-            Trzy rodziny macierzy, jedno <span className="np-hero__accent">ONTAP</span>
+      {/* HERO */}
+      <section className="npv2-hero">
+        <div className="npv2__bg" aria-hidden="true" />
+        <div className="npv2-hero__inner">
+          <div className="npv2-hero__label">NetApp · Portfolio 2026</div>
+          <h1 className="npv2-hero__title">
+            Sześć rodzin macierzy,{" "}
+            <span className="npv2-hero__grad">jedno ONTAP</span>
+            <br />
+            i jeden dostawca.
           </h1>
-          <p className="np-hero__sub">
-            Kompletne portfolio NetApp w jednym miejscu: <strong>AFF</strong> dla ekstremalnej wydajności,
-            <strong> C-Series</strong> dla capacity flash i <strong>FAS</strong> dla hybrydowej ekonomii skali.
-            Wybierz rodzinę żeby zobaczyć szczegóły modeli, lub zjedź niżej aby zobaczyć podsumowanie.
+          <p className="npv2-hero__sub">
+            Kompletne portfolio NetApp: <strong>AFF</strong> i <strong>ASA</strong> dla ekstremalnej
+            wydajności, <strong>C-Series</strong> dla capacity flash, <strong>FAS</strong> dla hybrydowej
+            ekonomii skali, oraz <strong>E/EF-Series</strong> dedykowane SAN dla HPC i OT.
+            Wybierz rodzinę żeby zobaczyć szczegóły, lub zjedź niżej do podsumowania.
           </p>
 
-          <div className="np-hero__jump">
-            <a href="#family-aff"    className="np-hero__jump-item" style={{ "--fam": NETAPP_FAMILIES.AFF.accent }}>
-              <Zap size={16}/> Performance
-            </a>
-            <a href="#family-cflash" className="np-hero__jump-item" style={{ "--fam": NETAPP_FAMILIES.CFLASH.accent }}>
-              <Database size={16}/> Capacity Flash
-            </a>
-            <a href="#family-fas"    className="np-hero__jump-item" style={{ "--fam": NETAPP_FAMILIES.FAS.accent }}>
-              <HardDrive size={16}/> Hybrid
-            </a>
-            <a href="#summary" className="np-hero__jump-item np-hero__jump-item--summary">
-              <Layers size={16}/> Podsumowanie <ArrowRight size={14}/>
+          <div className="npv2-jump">
+            {orderedFamilies.map((f) => (
+              <a
+                key={f.key}
+                href={`#fam-${f.key.toLowerCase()}`}
+                className="npv2-jump__item"
+                style={{ "--fam": f.accent }}
+                data-testid={`npv2-jump-${f.key}`}
+              >
+                {FAMILY_ICON[f.key]} {f.short} · {f.label.split("·")[1].trim()}
+              </a>
+            ))}
+            <a
+              href="#npv2-summary"
+              className="npv2-jump__item"
+              style={{ "--fam": "#0C5C62" }}
+              data-testid="npv2-jump-summary"
+            >
+              Porównanie <ArrowRight size={14} />
             </a>
           </div>
         </div>
       </section>
 
-      <FamilyFilter active={filter} onChange={setFilter} />
+      {/* FAMILY ROWS */}
+      {orderedFamilies.map((f) => (
+        <FamilyRow key={f.key} family={f} />
+      ))}
 
-      <div className="np-list">
-        {families.map((f) => <FamilySection key={f.key} family={f} />)}
-      </div>
-
-      <div id="summary"><FamilySummary /></div>
+      {/* SUMMARY */}
+      <FamilySummary />
 
       <Kontakt />
     </main>

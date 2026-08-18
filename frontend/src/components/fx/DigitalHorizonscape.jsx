@@ -48,8 +48,8 @@ const DigitalHorizonscape = ({ tone = "dark", scrollReactive = true }) => {
     };
   }, [scrollReactive]);
 
-  const stroke = tone === "dark" ? "#49ADA5" : "#0C5C62";
-  const bright = tone === "dark" ? "#06FFE0" : "#49ADA5";
+  const stroke = tone === "dark" ? "#00B8D4" : "#0C5C62";
+  const bright = tone === "dark" ? "#06FFE0" : "#00B8D4";
 
   return (
     <div

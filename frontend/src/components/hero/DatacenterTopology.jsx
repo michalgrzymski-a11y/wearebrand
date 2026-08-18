@@ -152,8 +152,8 @@ const DatacenterTopology = ({ lang = "pl" }) => {
         <defs>
           <radialGradient id="pulse" cx="50%" cy="50%" r="50%">
             <stop offset="0%" stopColor="#ffffff" stopOpacity="1" />
-            <stop offset="60%" stopColor="#49ADA5" stopOpacity="0.9" />
-            <stop offset="100%" stopColor="#49ADA5" stopOpacity="0" />
+            <stop offset="60%" stopColor="#00B8D4" stopOpacity="0.9" />
+            <stop offset="100%" stopColor="#00B8D4" stopOpacity="0" />
           </radialGradient>
           <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
             <feGaussianBlur stdDeviation="0.4" result="blur" />
@@ -212,7 +212,7 @@ const DatacenterTopology = ({ lang = "pl" }) => {
           cy={CENTER.y}
           r="7"
           fill="none"
-          stroke="#49ADA5"
+          stroke="#00B8D4"
           strokeOpacity="0.35"
           strokeWidth="0.2"
           vectorEffect="non-scaling-stroke"
@@ -235,7 +235,7 @@ const DatacenterTopology = ({ lang = "pl" }) => {
           cy={CENTER.y}
           r="11"
           fill="none"
-          stroke="#49ADA5"
+          stroke="#00B8D4"
           strokeOpacity="0.18"
           strokeWidth="0.2"
           vectorEffect="non-scaling-stroke"

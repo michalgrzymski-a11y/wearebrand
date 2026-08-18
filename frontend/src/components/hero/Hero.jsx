@@ -297,7 +297,7 @@ const Hero = () => {
       <div className="pointer-events-none absolute inset-0 sc-hero-photo-readable" aria-hidden="true" />
 
       {/* Neural Node Network — cursor-reactive particle web on top of the photo */}
-      <NeuralNodeNetwork color="#49ADA5" density={90} interactive opacity={0.6} />
+      <NeuralNodeNetwork color="#00B8D4" density={90} interactive opacity={0.6} />
 
       {/* Subtle cyan cursor-following glow (no dots) */}
       <div

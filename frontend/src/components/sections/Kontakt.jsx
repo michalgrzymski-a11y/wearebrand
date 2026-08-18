@@ -37,7 +37,7 @@ const Kontakt = () => {
 
       <div className="relative z-10 mx-auto max-w-7xl px-6 md:px-10 py-14 md:py-20">
         <div className="flex items-center gap-4 text-[11px] uppercase tracking-[0.32em] text-[#7CC4C0]">
-          <span className="inline-block h-px w-10 bg-[#49ADA5]" />
+          <span className="inline-block h-px w-10 bg-[#00B8D4]" />
           {t.contact.section_label}
         </div>
         <h2
@@ -130,7 +130,7 @@ const Kontakt = () => {
             >
               {t.footer.cookie_settings}
             </button>
-            <span className="uppercase tracking-[0.28em] text-[11px]" style={{ color: "#49ADA5" }}>
+            <span className="uppercase tracking-[0.28em] text-[11px]" style={{ color: "#00B8D4" }}>
               {t.footer.tagline}
             </span>
           </div>

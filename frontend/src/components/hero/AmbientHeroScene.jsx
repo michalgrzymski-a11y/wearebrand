@@ -21,8 +21,8 @@ import * as THREE from "three";
  *  no hard boundaries, no interactive labels. Reacts subtly to mouse.
  */
 
-const ACCENT = 0x49ada5;
-const ACCENT_HEX = "#49ADA5";
+const ACCENT = 0x00b8d4;
+const ACCENT_HEX = "#00B8D4";
 
 const AmbientHeroScene = () => {
   const mountRef = useRef(null);
