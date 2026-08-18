@@ -128,18 +128,21 @@ Deep Teal `#0C5C62`, Accent Mint `#49ADA5`, White, Light gray `#F8FAFA`, Charcoa
 N/A — the site has no authentication surface.
 
 
-## 2026-02 — NetApp Portfolio v2 (light theme, 6 families, real assets, horizontal scroll)
-- **P0 Fix (COMPLETE)** — Global "Cyan Core" hex-unification finished:
-  - `AmbientHeroScene.jsx`, `HeroCanvas.jsx`, `Datacenter3DScene.jsx`, `IsometricDatacenter.jsx` — all `0x49ada5` → `0x00b8d4`.
-  - `netappModels.js` `FAS.accent` `#49ADA5` → `#0EA5A0` (harmonised with palette).
-  - HeroCanvas rgba glow tokens also switched to `rgba(0,184,212,…)`.
+## 2026-02 — NetApp Portfolio v2 (jedna sekcja + dwuosiowe filtry)
+- **P0 Fix (COMPLETE)** — Global "Cyan Core" hex-unification finished: all `0x49ada5` → `0x00b8d4`.
 - **NetApp Portfolio Page — full rebuild** (`/app/frontend/src/pages/NetAppPortfolioPage.jsx` + `NetAppPortfolioPage.css`):
-  - **6 families** now (was 3): AFF · Performance, **ASA · SAN Flash** (new), C-Series · Capacity, FAS · Hybrid (models updated to FAS 2820/50/70/90), **E-Series · Block SAN** (new: E4012, E4060), **EF-Series · SAN NVMe** (new: EF50, EF80, EF300, EF600).
-  - **Horizontal scroll per family** (`scroll-snap-type: x mandatory` + prev/next controls with disabled-edge state) — as requested by user.
-  - **Real NetApp assets** copied to `/app/frontend/public/netapp-assets/` (39 PNG images: front bezels + rear views). Card image-box shows front by default; on `:hover` the rear view cross-fades in (where a rear asset exists).
-  - **Light "Cyan Core" theme** matching main-page aesthetic: `#F8FAFA` background, `#0C5C62` teal text, cyan gradient accents, ambient radial glows same as Portfolio.jsx.
-  - Summary comparison table redesigned as 6-column grid on light background.
-- **Data model additions** in `netappModels.js`: `img`, `imgRear`, `desc` on families; ASA/E-Series/EF-Series families added to `NETAPP_FAMILIES` and `NETAPP_SELECT_OPTIONS`.
+  - **6 rodzin macierzy w portfolio**: AFF (Performance), **ASA (SAN Flash)**, C-Series (Capacity), FAS (Hybrid — 2820/50/70/90), **E-Series (Block SAN)**, **EF-Series (SAN NVMe)**.
+  - **JEDNA sekcja z dwuosiowym filtrem** (wymaganie 2026-02):
+    - Oś 1: **Protokół** — Wszystkie · SAN · Unified (Plik/Blok/Obiekt)
+    - Oś 2: **Warstwa** — Wszystkie · Flash Performance · Capacity Flash · Hybrid
+    - Liczniki chip-ów są **crossed-filter** (przeliczają się z uwzględnieniem drugiego filtra)
+    - Empty-state + "Wyczyść filtry" pill
+    - Podsumowanie aktywnych filtrów jako pill-badges obok licznika modeli
+  - **Poziomy scroll** z prev/next controls, scroll-snap, fade-edges.
+  - **Real NetApp assets** (39 PNG) z `/public/netapp-assets/`. Front default + hover-flip do rear view.
+  - **Light "Cyan Core" theme** dopasowany do main-page.
+  - Summary: sekcja "Dwie osie decyzji" wyjaśniająca protokół × warstwę.
+- **Classification maps** (`PROTOCOL_BY_FAMILY`, `MCLASS_BY_FAMILY`, `MCLASS_OVERRIDE`) w komponencie strony — czyste rozdzielenie od modelu danych.
 
 ## Backlog additions
 - **P1** — Mobile responsiveness for legacy sections TCO/Portfolio/NetApp/Kontakt below 768px (from prev handoff).

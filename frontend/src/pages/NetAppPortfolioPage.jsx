@@ -1,34 +1,82 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useMemo } from "react";
 import Navbar from "@/components/Navbar";
 import Kontakt from "@/components/sections/Kontakt";
 import { NETAPP_MODELS, NETAPP_FAMILIES } from "@/data/netappModels";
 import {
-  Zap, Database, HardDrive, Server, Cpu, ArrowRight,
-  ChevronLeft, ChevronRight, Shield, Rocket,
+  Zap, Database, HardDrive, Server, ArrowRight,
+  ChevronLeft, ChevronRight, Shield, Rocket, X, Layers,
 } from "lucide-react";
 import "./NetAppPortfolioPage.css";
 
 /**
  * NetAppPortfolioPage — /netapp-portfolio
- * Poziomy scroll per rodzina + duże assety front/rear (hover flip).
- * Styl: light "Cyan Core" spójny ze stroną główną.
+ * Jedna sekcja, dwuosiowy filtr:
+ *   1) Protokół:  Wszystkie · SAN · Unified (Plik / Blok / Obiekt)
+ *   2) Warstwa:   Wszystkie · Flash Performance · Capacity Flash · Hybrid
+ * Wynik: horyzontalny scroll z odfiltrowanymi macierzami NetApp.
  */
 
-const FAMILY_ICON = {
-  AFF:      <Zap size={20} />,
-  ASA:      <Shield size={20} />,
-  CFLASH:   <Database size={20} />,
-  FAS:      <HardDrive size={20} />,
-  ESERIES:  <Server size={20} />,
-  EFSERIES: <Rocket size={20} />,
+/* ---- Klasyfikacja modeli (na bazie datasheetów NetApp) ---- */
+const PROTOCOL_BY_FAMILY = {
+  AFF:      "UNIFIED",  // NAS + SAN via ONTAP
+  ASA:      "SAN",      // block-only
+  CFLASH:   "UNIFIED",
+  FAS:      "UNIFIED",
+  ESERIES:  "SAN",
+  EFSERIES: "SAN",
 };
 
-const FAMILY_ORDER = ["AFF", "ASA", "CFLASH", "FAS", "EFSERIES", "ESERIES"];
+/* Media class — dla wyjątków (ASA C30) używamy per-model override */
+const MCLASS_BY_FAMILY = {
+  AFF:      "PERFORMANCE",
+  ASA:      "PERFORMANCE",
+  CFLASH:   "CAPACITY",
+  FAS:      "HYBRID",
+  ESERIES:  "HYBRID",
+  EFSERIES: "PERFORMANCE",
+};
+const MCLASS_OVERRIDE = {
+  "ASA-C30": "CAPACITY",
+};
+
+const getProtocol = (m) => PROTOCOL_BY_FAMILY[m.family];
+const getMClass  = (m) => MCLASS_OVERRIDE[m.id] || MCLASS_BY_FAMILY[m.family];
+
+const FAMILY_ICON = {
+  AFF:      <Zap size={16} />,
+  ASA:      <Shield size={16} />,
+  CFLASH:   <Database size={16} />,
+  FAS:      <HardDrive size={16} />,
+  ESERIES:  <Server size={16} />,
+  EFSERIES: <Rocket size={16} />,
+};
+
+const PROTOCOL_META = {
+  SAN: {
+    label: "SAN",
+    sub: "Block (FC / iSCSI / NVMe-oF)",
+    color: "#00B8D4",
+  },
+  UNIFIED: {
+    label: "Unified",
+    sub: "Plik · Blok · Obiekt (NFS/SMB · FC/iSCSI · S3)",
+    color: "#06FFE0",
+  },
+};
+
+const MCLASS_META = {
+  PERFORMANCE: { label: "Flash Performance", short: "Performance", desc: "NVMe TLC · sub-millisekundowa latencja", color: "#06FFE0" },
+  CAPACITY:    { label: "Capacity Flash",    short: "Capacity",    desc: "QLC NVMe · cena zbliżona do HDD",         color: "#00B8D4" },
+  HYBRID:      { label: "Hybrid",            short: "Hybrid",      desc: "HDD + flash cache · ekonomia skali",       color: "#0EA5A0" },
+};
 
 /* ---------- Model card ---------- */
 const ModelCard = ({ model }) => {
   const fam = NETAPP_FAMILIES[model.family];
   const hasRear = Boolean(model.imgRear);
+  const proto = PROTOCOL_META[getProtocol(model)];
+  const mclass = MCLASS_META[getMClass(model)];
+
   return (
     <article
       className="npv2-card"
@@ -45,6 +93,15 @@ const ModelCard = ({ model }) => {
 
       <h3 className="npv2-card__name">{model.name}</h3>
       <p className="npv2-card__tagline">{model.tagline}</p>
+
+      <div className="npv2-card__tagrow">
+        <span className="npv2-tag npv2-tag--proto" style={{ "--tc": proto.color }}>
+          {proto.label}
+        </span>
+        <span className="npv2-tag npv2-tag--tier" style={{ "--tc": mclass.color }}>
+          {mclass.short}
+        </span>
+      </div>
 
       <div className="npv2-card__imgbox">
         {model.img && (
@@ -80,13 +137,62 @@ const ModelCard = ({ model }) => {
   );
 };
 
-/* ---------- Family row with horizontal scroll ---------- */
-const FamilyRow = ({ family }) => {
+/* ---------- Filter chips ---------- */
+const FilterGroup = ({ label, options, active, onChange, testid }) => (
+  <div className="npv2-fgroup" data-testid={testid}>
+    <span className="npv2-fgroup__label">{label}</span>
+    <div className="npv2-fgroup__chips">
+      {options.map((o) => (
+        <button
+          key={o.value}
+          className={`npv2-chip ${active === o.value ? "is-active" : ""}`}
+          onClick={() => onChange(o.value)}
+          style={{ "--tc": o.color || "#00B8D4" }}
+          data-testid={`${testid}-${o.value}`}
+        >
+          {o.icon && <span className="npv2-chip__icon">{o.icon}</span>}
+          <span>{o.label}</span>
+          {o.count !== undefined && <span className="npv2-chip__count">{o.count}</span>}
+        </button>
+      ))}
+    </div>
+  </div>
+);
+
+/* ---------- Main page ---------- */
+const NetAppPortfolioPage = () => {
+  const [proto, setProto]   = useState("ALL");  // ALL | SAN | UNIFIED
+  const [mclass, setMclass] = useState("ALL");  // ALL | PERFORMANCE | CAPACITY | HYBRID
   const scrollerRef = useRef(null);
   const [canL, setCanL] = useState(false);
   const [canR, setCanR] = useState(true);
 
-  const models = NETAPP_MODELS.filter((m) => m.family === family.key);
+  const filtered = useMemo(() => {
+    return NETAPP_MODELS.filter((m) => {
+      if (proto  !== "ALL" && getProtocol(m) !== proto)   return false;
+      if (mclass !== "ALL" && getMClass(m)  !== mclass)   return false;
+      return true;
+    });
+  }, [proto, mclass]);
+
+  /* Counts for chip badges */
+  const counts = useMemo(() => {
+    const c = { proto: { ALL: 0, SAN: 0, UNIFIED: 0 },
+                mclass:{ ALL: 0, PERFORMANCE: 0, CAPACITY: 0, HYBRID: 0 } };
+    NETAPP_MODELS.forEach((m) => {
+      const p = getProtocol(m), t = getMClass(m);
+      // Wszystkie liczniki uwzględniają OBECNY drugi filtr (crossed)
+      if (mclass === "ALL" || t === mclass) {
+        c.proto.ALL++;
+        c.proto[p]++;
+      }
+      if (proto === "ALL" || p === proto) {
+        c.mclass.ALL++;
+        c.mclass[t]++;
+      }
+    });
+    return c;
+  }, [proto, mclass]);
 
   const updateArrows = () => {
     const el = scrollerRef.current;
@@ -107,6 +213,13 @@ const FamilyRow = ({ family }) => {
     };
   }, []);
 
+  // Reset scroll to left when filter changes
+  useEffect(() => {
+    const el = scrollerRef.current;
+    if (el) el.scrollTo({ left: 0, behavior: "smooth" });
+    setTimeout(updateArrows, 350);
+  }, [proto, mclass]);
+
   const scroll = (dir) => {
     const el = scrollerRef.current;
     if (!el) return;
@@ -114,121 +227,8 @@ const FamilyRow = ({ family }) => {
     el.scrollBy({ left: dir * step, behavior: "smooth" });
   };
 
-  return (
-    <section
-      className="npv2-fam"
-      id={`fam-${family.key.toLowerCase()}`}
-      data-testid={`npv2-family-${family.key}`}
-      style={{ "--fam": family.accent }}
-    >
-      <header className="npv2-fam__head">
-        <div className="npv2-fam__title-wrap">
-          <div className="npv2-fam__icon" style={{ "--fam": family.accent, color: family.accent }}>
-            {FAMILY_ICON[family.key]}
-          </div>
-          <div>
-            <h2 className="npv2-fam__title">
-              {family.label.split("·")[0].trim()}{" "}
-              <span className="npv2-fam__title-accent" style={{ color: family.accent }}>
-                · {family.label.split("·")[1].trim()}
-              </span>
-            </h2>
-            <p className="npv2-fam__sub">{family.desc}</p>
-          </div>
-        </div>
-
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 8 }}>
-          <span className="npv2-fam__count">{models.length} {models.length === 1 ? "model" : "modeli"}</span>
-          <div className="npv2-fam__ctrls">
-            <button
-              className="npv2-fam__ctrl"
-              onClick={() => scroll(-1)}
-              disabled={!canL}
-              aria-label="Przewiń w lewo"
-              data-testid={`npv2-scroll-left-${family.key}`}
-            >
-              <ChevronLeft size={18} />
-            </button>
-            <button
-              className="npv2-fam__ctrl"
-              onClick={() => scroll(1)}
-              disabled={!canR}
-              aria-label="Przewiń w prawo"
-              data-testid={`npv2-scroll-right-${family.key}`}
-            >
-              <ChevronRight size={18} />
-            </button>
-          </div>
-        </div>
-      </header>
-
-      <div className="npv2-scroller-wrap">
-        <div className="npv2-scroller" ref={scrollerRef} data-testid={`npv2-scroller-${family.key}`}>
-          {models.map((m) => (
-            <ModelCard key={m.id} model={m} />
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
-
-/* ---------- Summary comparison ---------- */
-const FamilySummary = () => {
-  const rows = [
-    { label: "Warstwa",           AFF: "NVMe TLC",    ASA: "NVMe TLC (SAN)", CFLASH: "NVMe QLC",    FAS: "HDD + SSD cache", ESERIES: "HDD/SAS", EFSERIES: "NVMe SSD" },
-    { label: "Latencja",          AFF: "< 500 μs",    ASA: "< 500 μs",       CFLASH: "1-2 ms",       FAS: "3-8 ms",           ESERIES: "1-6 ms",  EFSERIES: "< 100 μs" },
-    { label: "IOPS",              AFF: "★★★★★",       ASA: "★★★★★",         CFLASH: "★★★☆☆",       FAS: "★★☆☆☆",           ESERIES: "★★☆☆☆",  EFSERIES: "★★★★★" },
-    { label: "Cena / TB",         AFF: "★★★★★",       ASA: "★★★★☆",         CFLASH: "★★★☆☆",       FAS: "★★☆☆☆",           ESERIES: "★★☆☆☆",  EFSERIES: "★★★★★" },
-    { label: "Max pojemność",     AFF: "100 PB",      ASA: "100 PB",         CFLASH: "45 PB",        FAS: "100 PB",           ESERIES: "9.6 PB",  EFSERIES: "3 PB" },
-    { label: "System",            AFF: "ONTAP",       ASA: "ONTAP (SAN)",    CFLASH: "ONTAP",        FAS: "ONTAP",            ESERIES: "SANtricity", EFSERIES: "SANtricity" },
-    { label: "Zastosowanie",      AFF: "VMware, DB, AI/ML",    ASA: "Block-only, DB",   CFLASH: "Backup, archive",     FAS: "File-share, media",  ESERIES: "HPC, video, OT", EFSERIES: "HPC, trading" },
-  ];
-
-  const cols = [
-    { key: "AFF",      title: "AFF",     sub: "Performance" },
-    { key: "ASA",      title: "ASA",     sub: "SAN Flash" },
-    { key: "CFLASH",   title: "C-Series",sub: "Capacity" },
-    { key: "FAS",      title: "FAS",     sub: "Hybrid" },
-    { key: "EFSERIES", title: "EF",      sub: "SAN NVMe" },
-    { key: "ESERIES",  title: "E",       sub: "Block SAN" },
-  ];
-
-  return (
-    <section className="npv2-summary" data-testid="npv2-summary" id="npv2-summary">
-      <header className="npv2-summary__head">
-        <span className="npv2-summary__tag">Porównanie rodzin</span>
-        <h2>Sześć rodzin, jedno spojrzenie</h2>
-        <p>Krótkie zestawienie do decyzji: Performance vs Capacity vs Hybrid vs SAN.</p>
-      </header>
-
-      <div className="npv2-summary__grid" role="table">
-        <div className="npv2-summary__cell npv2-summary__cell--head">&nbsp;</div>
-        {cols.map((c) => (
-          <div key={c.key} className="npv2-summary__cell npv2-summary__cell--head">
-            <span className="fam-icon" style={{ "--fam": NETAPP_FAMILIES[c.key].accent, color: NETAPP_FAMILIES[c.key].accent }}>
-              {FAMILY_ICON[c.key]}<strong>{c.title}</strong>
-            </span>
-            <span style={{ fontSize: 11, opacity: 0.7, fontWeight: 500 }}>{c.sub}</span>
-          </div>
-        ))}
-
-        {rows.map((r, i) => (
-          <React.Fragment key={i}>
-            <div className="npv2-summary__cell npv2-summary__cell--label">{r.label}</div>
-            {cols.map((c) => (
-              <div key={c.key} className="npv2-summary__cell">{r[c.key]}</div>
-            ))}
-          </React.Fragment>
-        ))}
-      </div>
-    </section>
-  );
-};
-
-/* ---------- Main page ---------- */
-const NetAppPortfolioPage = () => {
-  const orderedFamilies = FAMILY_ORDER.map((k) => NETAPP_FAMILIES[k]);
+  const resetFilters = () => { setProto("ALL"); setMclass("ALL"); };
+  const anyActive = proto !== "ALL" || mclass !== "ALL";
 
   return (
     <main data-testid="netapp-portfolio-main" className="npv2">
@@ -240,49 +240,161 @@ const NetAppPortfolioPage = () => {
         <div className="npv2-hero__inner">
           <div className="npv2-hero__label">NetApp · Portfolio 2026</div>
           <h1 className="npv2-hero__title">
-            Sześć rodzin macierzy,{" "}
-            <span className="npv2-hero__grad">jedno ONTAP</span>
+            Całe portfolio NetApp,{" "}
+            <span className="npv2-hero__grad">jeden filtr</span>
             <br />
             i jeden dostawca.
           </h1>
           <p className="npv2-hero__sub">
-            Kompletne portfolio NetApp: <strong>AFF</strong> i <strong>ASA</strong> dla ekstremalnej
-            wydajności, <strong>C-Series</strong> dla capacity flash, <strong>FAS</strong> dla hybrydowej
-            ekonomii skali, oraz <strong>E/EF-Series</strong> dedykowane SAN dla HPC i OT.
-            Wybierz rodzinę żeby zobaczyć szczegóły, lub zjedź niżej do podsumowania.
+            Wszystkie macierze NetApp w jednej sekcji. Wybierz{" "}
+            <strong>protokół</strong> (SAN vs Unified — Plik/Blok/Obiekt) oraz{" "}
+            <strong>warstwę wydajności</strong> (Performance / Capacity / Hybrid),
+            a poniżej pokażemy pasujące modele — od entry do flagowych.
           </p>
+        </div>
+      </section>
 
-          <div className="npv2-jump">
-            {orderedFamilies.map((f) => (
-              <a
-                key={f.key}
-                href={`#fam-${f.key.toLowerCase()}`}
-                className="npv2-jump__item"
-                style={{ "--fam": f.accent }}
-                data-testid={`npv2-jump-${f.key}`}
+      {/* FILTERS + SCROLLER — jedna sekcja */}
+      <section className="npv2-onerow" data-testid="npv2-onerow">
+        <div className="npv2-onerow__inner">
+          <div className="npv2-filters">
+            <FilterGroup
+              label="Protokół"
+              testid="npv2-filter-proto"
+              active={proto}
+              onChange={setProto}
+              options={[
+                { value: "ALL",     label: "Wszystkie", count: counts.proto.ALL, color: "#0C5C62" },
+                { value: "SAN",     label: "SAN",       count: counts.proto.SAN,     color: PROTOCOL_META.SAN.color,     icon: <Shield size={14} /> },
+                { value: "UNIFIED", label: "Unified",   count: counts.proto.UNIFIED, color: PROTOCOL_META.UNIFIED.color, icon: <Layers size={14} /> },
+              ]}
+            />
+
+            <FilterGroup
+              label="Warstwa"
+              testid="npv2-filter-mclass"
+              active={mclass}
+              onChange={setMclass}
+              options={[
+                { value: "ALL",         label: "Wszystkie",         count: counts.mclass.ALL,         color: "#0C5C62" },
+                { value: "PERFORMANCE", label: "Flash Performance", count: counts.mclass.PERFORMANCE, color: MCLASS_META.PERFORMANCE.color, icon: <Zap size={14} /> },
+                { value: "CAPACITY",    label: "Capacity Flash",    count: counts.mclass.CAPACITY,    color: MCLASS_META.CAPACITY.color,    icon: <Database size={14} /> },
+                { value: "HYBRID",      label: "Hybrid",            count: counts.mclass.HYBRID,      color: MCLASS_META.HYBRID.color,      icon: <HardDrive size={14} /> },
+              ]}
+            />
+
+            {anyActive && (
+              <button
+                className="npv2-filters__reset"
+                onClick={resetFilters}
+                data-testid="npv2-filter-reset"
               >
-                {FAMILY_ICON[f.key]} {f.short} · {f.label.split("·")[1].trim()}
-              </a>
-            ))}
-            <a
-              href="#npv2-summary"
-              className="npv2-jump__item"
-              style={{ "--fam": "#0C5C62" }}
-              data-testid="npv2-jump-summary"
-            >
-              Porównanie <ArrowRight size={14} />
-            </a>
+                <X size={14} /> Wyczyść filtry
+              </button>
+            )}
+          </div>
+
+          {/* Active filter summary + scroll controls */}
+          <div className="npv2-onerow__head">
+            <div className="npv2-onerow__summary">
+              <span className="npv2-onerow__count" data-testid="npv2-result-count">
+                {filtered.length} {filtered.length === 1 ? "model" : filtered.length < 5 ? "modele" : "modeli"}
+              </span>
+              {proto !== "ALL" && (
+                <span className="npv2-onerow__badge" style={{ "--tc": PROTOCOL_META[proto].color }}>
+                  {PROTOCOL_META[proto].label}
+                </span>
+              )}
+              {mclass !== "ALL" && (
+                <span className="npv2-onerow__badge" style={{ "--tc": MCLASS_META[mclass].color }}>
+                  {MCLASS_META[mclass].label}
+                </span>
+              )}
+            </div>
+
+            <div className="npv2-fam__ctrls">
+              <button
+                className="npv2-fam__ctrl"
+                onClick={() => scroll(-1)}
+                disabled={!canL}
+                aria-label="Przewiń w lewo"
+                data-testid="npv2-scroll-left"
+              >
+                <ChevronLeft size={18} />
+              </button>
+              <button
+                className="npv2-fam__ctrl"
+                onClick={() => scroll(1)}
+                disabled={!canR}
+                aria-label="Przewiń w prawo"
+                data-testid="npv2-scroll-right"
+              >
+                <ChevronRight size={18} />
+              </button>
+            </div>
+          </div>
+
+          <div className="npv2-scroller-wrap">
+            {filtered.length === 0 ? (
+              <div className="npv2-empty" data-testid="npv2-empty">
+                <p>Brak modeli dla wybranej kombinacji filtrów.</p>
+                <button className="npv2-filters__reset" onClick={resetFilters}>
+                  <X size={14} /> Wyczyść filtry
+                </button>
+              </div>
+            ) : (
+              <div className="npv2-scroller" ref={scrollerRef} data-testid="npv2-scroller">
+                {filtered.map((m) => (
+                  <ModelCard key={m.id} model={m} />
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </section>
 
-      {/* FAMILY ROWS */}
-      {orderedFamilies.map((f) => (
-        <FamilyRow key={f.key} family={f} />
-      ))}
+      {/* SUMMARY / KEY DIFFERENCES */}
+      <section className="npv2-summary" data-testid="npv2-summary" id="npv2-summary">
+        <header className="npv2-summary__head">
+          <span className="npv2-summary__tag">Jak wybrać</span>
+          <h2>Dwie osie decyzji</h2>
+          <p>Zdecyduj o protokole i warstwie — reszta to szczegóły modelu.</p>
+        </header>
 
-      {/* SUMMARY */}
-      <FamilySummary />
+        <div className="npv2-axes">
+          {/* Axis 1: Protocol */}
+          <div className="npv2-axis" data-testid="npv2-axis-proto">
+            <h3 className="npv2-axis__title">Protokół</h3>
+            <div className="npv2-axis__grid">
+              {Object.entries(PROTOCOL_META).map(([k, v]) => (
+                <div key={k} className="npv2-axis__card" style={{ "--tc": v.color }}>
+                  <div className="npv2-axis__ico">
+                    {k === "SAN" ? <Shield size={20} /> : <Layers size={20} />}
+                  </div>
+                  <strong>{v.label}</strong>
+                  <p>{v.sub}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Axis 2: Media class */}
+          <div className="npv2-axis" data-testid="npv2-axis-mclass">
+            <h3 className="npv2-axis__title">Warstwa wydajności</h3>
+            <div className="npv2-axis__grid">
+              {Object.entries(MCLASS_META).map(([k, v]) => (
+                <div key={k} className="npv2-axis__card" style={{ "--tc": v.color }}>
+                  <div className="npv2-axis__ico">
+                    {k === "PERFORMANCE" ? <Zap size={20} /> : k === "CAPACITY" ? <Database size={20} /> : <HardDrive size={20} />}
+                  </div>
+                  <strong>{v.label}</strong>
+                  <p>{v.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
 
       <Kontakt />
     </main>
