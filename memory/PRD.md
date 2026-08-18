@@ -139,6 +139,13 @@ N/A — the site has no authentication surface.
     - Wszystkie 3 liczniki są **crossed-filter** (każdy uwzględnia 2 pozostałe aktywne filtry)
   - **Sekcja "Kiedy wybrać rodzinę"** (`FamilyGuideSection`, id `#npv2-family-guide`) — 4-kolumnowy porównywacz AFF / C-Series / FAS / E-Series z barami rankingowymi (Wydajność/Pojemność/Koszt), listą "Wybierz gdy", chipami workloadów i ostrzeżeniem "Unikaj gdy".
   - **Sekcja "ONTAP vs SANtricity"** (`OSCompareSection`, id `#npv2-os-compare`) — 2 karty side-by-side z feature-checklistą, "Najlepszy do" callout + tabela porównawcza 10 kryteriów (typ, protokoły, snapshoty, replikacja, data services, multi-tenancy, zarządzanie, rodziny, use case, krzywa nauki).
+  - **Sekcja "Konfigurator"** (`NetAppConfigurator`, id `#npv2-configurator`) — interaktywny 8-pytaniowy wizard z:
+    - Progress bar + 8 dotów (current glowing / done cyan / pending grey)
+    - 8 pytań: access · workload · latency · capacity · cost · ontap · scale · cloud
+    - Każde pytanie ma 2-6 opcji-kart z labelem + krótkim opisem + arrow-on-hover
+    - Silnik rekomendacji `recommendModel()` mapuje odpowiedzi na rodzinę (AFF / ASA / C / FAS / E / EF) i tier (Entry/Mid/Enterprise/Flagship)
+    - **Karta wyniku**: nazwa modelu + tagline + 4 tagi klasyfikacji + front-image + lista uzasadnień (3-5 punktów kontekstowych) + spec-grid + CTA "Umów rozmowę o {model}" + "Zacznij od nowa"
+    - Przycisk "Wstecz" na każdym kroku po pierwszym
     - Empty-state + "Wyczyść filtry" pill
     - Podsumowanie aktywnych filtrów jako pill-badges obok licznika modeli
   - **Poziomy scroll** z prev/next controls, scroll-snap, fade-edges.

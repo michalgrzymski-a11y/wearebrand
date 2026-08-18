@@ -409,6 +409,348 @@ const OSCompareSection = () => (
   </section>
 );
 
+/* ---------- SEKCJA: KONFIGURATOR (8 pytań → rekomendacja modelu) ---------- */
+const CONFIG_QUESTIONS = [
+  {
+    id: "access",
+    icon: <Layers size={20} />,
+    q: "Jaki typ dostępu do danych potrzebujesz?",
+    sub: "Ta decyzja determinuje protokół i rodzinę macierzy.",
+    options: [
+      { v: "FILE",     label: "Głównie plikowy",       desc: "NAS (NFS / SMB) — home dirs, file-share" },
+      { v: "BLOCK",    label: "Głównie blokowy",       desc: "LUN-y dla VMware, Hyper-V, baz danych" },
+      { v: "MULTI",    label: "Multi-protocol",        desc: "Plik + Blok + Obiekt (S3) w jednym systemie" },
+      { v: "SAN_ONLY", label: "Dedykowany blok SAN",   desc: "Bez NAS — prosty, wydajny blok" },
+    ],
+  },
+  {
+    id: "workload",
+    icon: <Server size={20} />,
+    q: "Jaki jest twój główny workload?",
+    sub: "Wybierz to co dominuje — jeśli jest ich kilka, wybierz najkrytyczniejszy.",
+    options: [
+      { v: "VMWARE", label: "VMware / hyper-visory",             desc: "Konsolidacja maszyn wirtualnych" },
+      { v: "DB",     label: "Krytyczne bazy danych",             desc: "Oracle, SQL, SAP HANA" },
+      { v: "FILE",   label: "File-share / home dirs",            desc: "Dokumenty, projekty, użytkownicy" },
+      { v: "BACKUP", label: "Backup / archive / cyber-vault",    desc: "Retention, immutability, DR" },
+      { v: "HPC",    label: "HPC / trading / analytics",         desc: "Extreme IOPS, sub-ms latencja" },
+      { v: "VIDEO",  label: "Video-surveillance / seismic / OT", desc: "24/7 write, high-BW, prostota" },
+    ],
+  },
+  {
+    id: "latency",
+    icon: <Zap size={20} />,
+    q: "Jaka jest wymagana latencja?",
+    sub: "Latencja to najważniejszy wskaźnik responsywności macierzy.",
+    options: [
+      { v: "EXTREME", label: "< 500 μs",  desc: "Trading, HFT, ekstremalne workloady" },
+      { v: "HIGH",    label: "< 1 ms",    desc: "Bazy krytyczne, produkcja, VMware core" },
+      { v: "MID",     label: "1-3 ms",    desc: "Aplikacje, file-share aktywny, VDI" },
+      { v: "LOW",     label: "3-10 ms",   desc: "Backup, archive, secondary storage" },
+    ],
+  },
+  {
+    id: "capacity",
+    icon: <Database size={20} />,
+    q: "Jaka docelowa pojemność użyteczna?",
+    sub: "Uwzględnij wzrost na 3-5 lat — nie tylko obecne zapotrzebowanie.",
+    options: [
+      { v: "SMALL", label: "do 100 TB",    desc: "Oddział, SMB, jeden departament" },
+      { v: "MID",   label: "100 TB - 1 PB",desc: "Mid-market, wielo-oddziałowa firma" },
+      { v: "LARGE", label: "1 - 10 PB",    desc: "Enterprise, centralne repozytorium" },
+      { v: "HYPER", label: "> 10 PB",      desc: "Hyperscale, bank, telco, cloud provider" },
+    ],
+  },
+  {
+    id: "cost",
+    icon: <HardDrive size={20} />,
+    q: "Jaki jest priorytet kosztowy?",
+    sub: "Znajdź balans między wydajnością a budżetem.",
+    options: [
+      { v: "LOWEST",  label: "Najniższy $/TB",           desc: "Cena jest kluczowa, wydajność drugorzędna" },
+      { v: "BALANCE", label: "Balans cena / wydajność",  desc: "Rozsądny koszt przy dobrym performance" },
+      { v: "PERF",    label: "Wydajność ponad koszt",    desc: "Krytyczne workloady, budżet elastyczny" },
+    ],
+  },
+  {
+    id: "ontap",
+    icon: <Cpu size={20} />,
+    q: "Czy potrzebujesz funkcji ONTAP?",
+    sub: "SnapShoty, SnapMirror, FabricPool, deduplikacja, kompresja inline.",
+    options: [
+      { v: "YES",     label: "Tak — kluczowe",    desc: "Snapshoty, replikacja, hybrid-cloud tiering" },
+      { v: "NEUTRAL", label: "Obojętne",          desc: "Nie mam preferencji, dostosuj do potrzeb" },
+      { v: "NO",      label: "Nie — prosty blok", desc: "Nie chcę narzutu ONTAP, prosta obsługa" },
+    ],
+  },
+  {
+    id: "scale",
+    icon: <Shield size={20} />,
+    q: "Jaka jest skala twojego środowiska?",
+    sub: "Determinuje klasę controllera i limity maks. dysków.",
+    options: [
+      { v: "SMB",        label: "Oddział / SMB",           desc: "<50 użytkowników, prosty stack" },
+      { v: "MID",        label: "Mid-market",              desc: "50-500 użytkowników, wielo-workload" },
+      { v: "ENT",        label: "Enterprise",              desc: "500-5000+, redundancja, DR" },
+      { v: "HYPERSCALE", label: "Hyperscale / bank / telco", desc: "Krytyczne SLA, MetroCluster, hyperscale" },
+    ],
+  },
+  {
+    id: "cloud",
+    icon: <Rocket size={20} />,
+    q: "Integracja z chmurą publiczną?",
+    sub: "FabricPool tiering, backup do S3/Azure Blob, hybrid-cloud strategy.",
+    options: [
+      { v: "YES", label: "Tak — hybrid cloud", desc: "Tiering, backup, DR do public cloud" },
+      { v: "NO",  label: "Nie — tylko on-prem",desc: "Chmura publiczna nie jest w planach" },
+    ],
+  },
+];
+
+/* ---------- Silnik rekomendacji ---------- */
+function recommendModel(a) {
+  const { access, workload, latency, capacity, cost, ontap, scale, cloud } = a;
+
+  // 1) Wybór rodziny
+  let family;
+  const reasons = [];
+
+  const isDedicatedBlock =
+    access === "SAN_ONLY" ||
+    workload === "HPC" ||
+    workload === "VIDEO" ||
+    ontap === "NO";
+
+  if (isDedicatedBlock) {
+    // Dedykowany SAN → E/EF
+    if (latency === "EXTREME" || workload === "HPC" || cost === "PERF") {
+      family = "EFSERIES";
+      reasons.push("Ekstremalne IOPS + prosty stack SAN NVMe (bez ONTAP-overhead)");
+    } else {
+      family = "ESERIES";
+      reasons.push("Dedykowany blok dla HPC/video/OT — prosty, przewidywalny");
+    }
+    if (ontap === "NO") reasons.push("SANtricity — brak narzutu ONTAP");
+  }
+  else if (access === "BLOCK" && workload !== "BACKUP" && workload !== "FILE") {
+    // SAN + ONTAP → ASA
+    family = "ASA";
+    reasons.push("SAN-first NVMe z pełnym feature-setem ONTAP");
+    if (workload === "DB")    reasons.push("Symmetric active-active + NVMe/TCP dla baz");
+    if (workload === "VMWARE") reasons.push("Optymalizacja pod block-storage VMware");
+  }
+  else if (workload === "BACKUP" || (cost === "LOWEST" && latency !== "EXTREME" && latency !== "HIGH")) {
+    // Backup / archive / low-cost secondary → C-Series
+    family = "CFLASH";
+    reasons.push("Capacity Flash QLC — cena zbliżona do HDD, wydajność flash");
+    if (workload === "BACKUP") reasons.push("Idealna do backupu, retention i cyber-vault (immutable)");
+    if (cloud === "YES") reasons.push("FabricPool tier do S3/Azure — hybrid cloud");
+  }
+  else if ((workload === "FILE" || workload === "VIDEO") && cost === "LOWEST" && latency !== "EXTREME" && latency !== "HIGH") {
+    // File-share cheap → FAS
+    family = "FAS";
+    reasons.push("Hybrydowa ekonomia skali — HDD + flash cache");
+    reasons.push("Najniższy $/TB dla file-share, media, home dirs");
+  }
+  else {
+    // Default → AFF (unified performance)
+    family = "AFF";
+    reasons.push("Unified NVMe all-flash — NAS + SAN + snapshots + hybrid cloud");
+    if (workload === "VMWARE" || workload === "DB") reasons.push("Sub-ms latencja dla krytycznych baz i VMware");
+    if (cloud === "YES") reasons.push("FabricPool tiering do S3/Azure Blob/GCP");
+  }
+
+  // 2) Wybór modelu z rodziny (na podstawie skali / pojemności)
+  const familyModels = NETAPP_MODELS.filter((m) => m.family === family);
+  const desiredTier = (() => {
+    if (scale === "HYPERSCALE" || capacity === "HYPER") return "FLAGSHIP";
+    if (scale === "ENT" || capacity === "LARGE")        return "ENTERPRISE";
+    if (scale === "MID" || capacity === "MID")          return "MID";
+    return "ENTRY";
+  })();
+
+  const tierOrder = ["Entry", "Capacity", "Mid", "Mid-High", "High", "Enterprise", "Flagship", "High-Density"];
+  const tierRank = { ENTRY: 0, MID: 2, ENTERPRISE: 5, FLAGSHIP: 6 };
+  const targetIdx = tierRank[desiredTier];
+
+  // Sort by tier proximity to target
+  const sorted = [...familyModels].sort((a, b) => {
+    const ai = tierOrder.indexOf(a.tier);
+    const bi = tierOrder.indexOf(b.tier);
+    return Math.abs(ai - targetIdx) - Math.abs(bi - targetIdx);
+  });
+  const model = sorted[0] || familyModels[0];
+
+  // 3) Dodatkowe reasons (workload-specific)
+  if (latency === "EXTREME" && (family === "AFF" || family === "ASA" || family === "EFSERIES"))
+    reasons.push(`Latencja ${model.latency} — spełnia wymóg sub-500 μs`);
+  if (capacity === "HYPER" && model.tier === "Flagship")
+    reasons.push(`Skala ${model.maxCapEff} — max pojemność w rodzinie`);
+  if (cloud === "YES" && (family === "AFF" || family === "CFLASH" || family === "FAS" || family === "ASA"))
+    reasons.push("FabricPool: tiering danych zimnych do public cloud");
+
+  return { family, model, reasons };
+}
+
+/* ---------- Komponent konfiguratora ---------- */
+const NetAppConfigurator = () => {
+  const [step, setStep] = useState(0);         // 0..7 (pytania), 8 = wynik
+  const [answers, setAnswers] = useState({});
+  const totalSteps = CONFIG_QUESTIONS.length;
+
+  const current = CONFIG_QUESTIONS[step];
+  const isResult = step >= totalSteps;
+  const result = useMemo(() => (isResult ? recommendModel(answers) : null), [isResult, answers]);
+
+  const answer = (value) => {
+    setAnswers((prev) => ({ ...prev, [current.id]: value }));
+    setStep((s) => s + 1);
+  };
+  const back = () => setStep((s) => Math.max(0, s - 1));
+  const restart = () => { setAnswers({}); setStep(0); };
+
+  return (
+    <section className="npv2-cfg" data-testid="npv2-configurator" id="npv2-configurator">
+      <div className="npv2-cfg__bg" aria-hidden="true" />
+      <div className="npv2-cfg__inner">
+        <header className="npv2-fg__head">
+          <span className="npv2-summary__tag">Konfigurator · 8 pytań</span>
+          <h2>Znajdź swoją macierz w 2 minuty</h2>
+          <p>Odpowiedz na 8 krótkich pytań — algorytm dobierze konkretny model NetApp pasujący do twoich potrzeb.</p>
+        </header>
+
+        <div className="npv2-cfg__card" data-testid="npv2-cfg-card">
+          {!isResult ? (
+            <>
+              {/* Progress */}
+              <div className="npv2-cfg__progress">
+                <div className="npv2-cfg__pheader">
+                  <span className="npv2-cfg__step">Pytanie {step + 1} / {totalSteps}</span>
+                  <span className="npv2-cfg__pct">{Math.round(((step) / totalSteps) * 100)}%</span>
+                </div>
+                <div className="npv2-cfg__pbar">
+                  <div className="npv2-cfg__pfill" style={{ width: `${((step) / totalSteps) * 100}%` }} />
+                </div>
+                <div className="npv2-cfg__dots">
+                  {CONFIG_QUESTIONS.map((_, i) => (
+                    <span
+                      key={i}
+                      className={`npv2-cfg__dot ${i < step ? "is-done" : ""} ${i === step ? "is-current" : ""}`}
+                    />
+                  ))}
+                </div>
+              </div>
+
+              {/* Question */}
+              <div className="npv2-cfg__qbox">
+                <div className="npv2-cfg__qico">{current.icon}</div>
+                <h3 className="npv2-cfg__q">{current.q}</h3>
+                <p className="npv2-cfg__qsub">{current.sub}</p>
+              </div>
+
+              {/* Options */}
+              <div className={`npv2-cfg__opts npv2-cfg__opts--${current.options.length}`}>
+                {current.options.map((opt) => (
+                  <button
+                    key={opt.v}
+                    className="npv2-cfg__opt"
+                    onClick={() => answer(opt.v)}
+                    data-testid={`npv2-cfg-${current.id}-${opt.v}`}
+                  >
+                    <span className="npv2-cfg__opt-label">{opt.label}</span>
+                    <span className="npv2-cfg__opt-desc">{opt.desc}</span>
+                    <ArrowRight size={16} className="npv2-cfg__opt-arrow" />
+                  </button>
+                ))}
+              </div>
+
+              {/* Back */}
+              <div className="npv2-cfg__nav">
+                {step > 0 && (
+                  <button className="npv2-filters__reset" onClick={back} data-testid="npv2-cfg-back">
+                    <ChevronLeft size={14} /> Wstecz
+                  </button>
+                )}
+              </div>
+            </>
+          ) : (
+            /* RESULT */
+            <ConfigResult result={result} onRestart={restart} answers={answers} />
+          )}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+/* ---------- Karta wyniku ---------- */
+const ConfigResult = ({ result, onRestart, answers }) => {
+  const { family, model, reasons } = result;
+  const fam = NETAPP_FAMILIES[family];
+  const proto = PROTOCOL_META[PROTOCOL_BY_FAMILY[family]];
+  const mclass = MCLASS_META[MCLASS_OVERRIDE[model.id] || MCLASS_BY_FAMILY[family]];
+  const os = OS_META[OS_BY_FAMILY[family]];
+
+  return (
+    <div className="npv2-cfg__result" data-testid="npv2-cfg-result" style={{ "--fam": fam.accent }}>
+      <div className="npv2-cfg__result-tag">
+        <Rocket size={14} /> Rekomendacja
+      </div>
+
+      <div className="npv2-cfg__result-head">
+        <div>
+          <div className="npv2-cfg__result-family">{fam.label}</div>
+          <h3 className="npv2-cfg__result-name">{model.name}</h3>
+          <p className="npv2-cfg__result-tagline">{model.tagline}</p>
+
+          <div className="npv2-cfg__result-tags">
+            <span className="npv2-tag" style={{ "--tc": proto.color }}>{proto.label}</span>
+            <span className="npv2-tag" style={{ "--tc": mclass.color }}>{mclass.short}</span>
+            <span className="npv2-tag" style={{ "--tc": os.color }}>{os.label}</span>
+            <span className="npv2-tag" style={{ "--tc": fam.accent }}>{model.tier} · {model.chassis}</span>
+          </div>
+        </div>
+
+        {model.img && (
+          <div className="npv2-cfg__result-imgbox">
+            <img src={model.img} alt={model.name} className="npv2-cfg__result-img" />
+          </div>
+        )}
+      </div>
+
+      <div className="npv2-cfg__result-grid">
+        <div className="npv2-cfg__result-block">
+          <h4>Dlaczego {model.name}?</h4>
+          <ul className="npv2-fg__list" style={{ "--tc": fam.accent }}>
+            {reasons.map((r, i) => <li key={i}>{r}</li>)}
+          </ul>
+        </div>
+
+        <div className="npv2-cfg__result-block">
+          <h4>Kluczowe specyfikacje</h4>
+          <ul className="npv2-cfg__result-specs">
+            <li><span>Max pojemność efekt.</span><em>{model.maxCapEff}</em></li>
+            <li><span>Przepustowość</span><em>{model.maxThroughput}</em></li>
+            <li><span>Latencja</span><em>{model.latency}</em></li>
+            <li><span>Max dysków</span><em>{model.maxDrives}</em></li>
+            <li><span>RAM controller</span><em>{model.ram}</em></li>
+            <li><span>Porty</span><em>{model.ports}</em></li>
+          </ul>
+        </div>
+      </div>
+
+      <div className="npv2-cfg__result-cta">
+        <a href="#kontakt" className="sc-btn-primary" data-testid="npv2-cfg-cta-contact">
+          Umów rozmowę o {model.name} <ArrowRight size={16} />
+        </a>
+        <button className="npv2-filters__reset" onClick={onRestart} data-testid="npv2-cfg-restart">
+          <X size={14} /> Zacznij od nowa
+        </button>
+      </div>
+    </div>
+  );
+};
+
 /* ---------- Main page ---------- */
 const NetAppPortfolioPage = () => {
   const [proto, setProto]   = useState("ALL");  // ALL | SAN | UNIFIED
@@ -634,6 +976,9 @@ const NetAppPortfolioPage = () => {
 
       {/* SECTION: ONTAP vs SANtricity */}
       <OSCompareSection />
+
+      {/* SECTION: KONFIGURATOR (8 pytań → rekomendacja) */}
+      <NetAppConfigurator />
 
       {/* SUMMARY / KEY DIFFERENCES */}
       <section className="npv2-summary" data-testid="npv2-summary" id="npv2-summary">
