@@ -214,6 +214,12 @@
   gap: 32px;
   margin-top: 32px;
 }
+.npv2-axes--3 {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+@media (max-width: 1024px) {
+  .npv2-axes--3 { grid-template-columns: 1fr; }
+}
 .npv2-axis {
   background: #FFF;
   border: 1px solid var(--cc-line);

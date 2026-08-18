@@ -4,7 +4,7 @@ import Kontakt from "@/components/sections/Kontakt";
 import { NETAPP_MODELS, NETAPP_FAMILIES } from "@/data/netappModels";
 import {
   Zap, Database, HardDrive, Server, ArrowRight,
-  ChevronLeft, ChevronRight, Shield, Rocket, X, Layers,
+  ChevronLeft, ChevronRight, Shield, Rocket, X, Layers, Cpu,
 } from "lucide-react";
 import "./NetAppPortfolioPage.css";
 
@@ -39,8 +39,19 @@ const MCLASS_OVERRIDE = {
   "ASA-C30": "CAPACITY",
 };
 
+/* System operacyjny — per family */
+const OS_BY_FAMILY = {
+  AFF:      "ONTAP",
+  ASA:      "ONTAP",
+  CFLASH:   "ONTAP",
+  FAS:      "ONTAP",
+  ESERIES:  "SANTRICITY",
+  EFSERIES: "SANTRICITY",
+};
+
 const getProtocol = (m) => PROTOCOL_BY_FAMILY[m.family];
 const getMClass  = (m) => MCLASS_OVERRIDE[m.id] || MCLASS_BY_FAMILY[m.family];
+const getOS      = (m) => OS_BY_FAMILY[m.family];
 
 const FAMILY_ICON = {
   AFF:      <Zap size={16} />,
@@ -70,12 +81,18 @@ const MCLASS_META = {
   HYBRID:      { label: "Hybrid",            short: "Hybrid",      desc: "HDD + flash cache · ekonomia skali",       color: "#0EA5A0" },
 };
 
+const OS_META = {
+  ONTAP:      { label: "ONTAP",      short: "ONTAP",      desc: "Unified OS — NAS + SAN, snapshoty, SnapMirror, FabricPool", color: "#06FFE0" },
+  SANTRICITY: { label: "SANtricity", short: "SANtricity", desc: "Prosty, wydajny OS dla dedykowanego bloku (E/EF-Series)",   color: "#00D4B8" },
+};
+
 /* ---------- Model card ---------- */
 const ModelCard = ({ model }) => {
   const fam = NETAPP_FAMILIES[model.family];
   const hasRear = Boolean(model.imgRear);
   const proto = PROTOCOL_META[getProtocol(model)];
   const mclass = MCLASS_META[getMClass(model)];
+  const os = OS_META[getOS(model)];
 
   return (
     <article
@@ -100,6 +117,9 @@ const ModelCard = ({ model }) => {
         </span>
         <span className="npv2-tag npv2-tag--tier" style={{ "--tc": mclass.color }}>
           {mclass.short}
+        </span>
+        <span className="npv2-tag npv2-tag--os" style={{ "--tc": os.color }}>
+          {os.label}
         </span>
       </div>
 
@@ -163,6 +183,7 @@ const FilterGroup = ({ label, options, active, onChange, testid }) => (
 const NetAppPortfolioPage = () => {
   const [proto, setProto]   = useState("ALL");  // ALL | SAN | UNIFIED
   const [mclass, setMclass] = useState("ALL");  // ALL | PERFORMANCE | CAPACITY | HYBRID
+  const [os, setOs]         = useState("ALL");  // ALL | ONTAP | SANTRICITY
   const scrollerRef = useRef(null);
   const [canL, setCanL] = useState(false);
   const [canR, setCanR] = useState(true);
@@ -171,28 +192,35 @@ const NetAppPortfolioPage = () => {
     return NETAPP_MODELS.filter((m) => {
       if (proto  !== "ALL" && getProtocol(m) !== proto)   return false;
       if (mclass !== "ALL" && getMClass(m)  !== mclass)   return false;
+      if (os     !== "ALL" && getOS(m)      !== os)       return false;
       return true;
     });
-  }, [proto, mclass]);
+  }, [proto, mclass, os]);
 
-  /* Counts for chip badges */
+  /* Counts for chip badges — every counter respects the OTHER two active filters (crossed) */
   const counts = useMemo(() => {
-    const c = { proto: { ALL: 0, SAN: 0, UNIFIED: 0 },
-                mclass:{ ALL: 0, PERFORMANCE: 0, CAPACITY: 0, HYBRID: 0 } };
+    const c = {
+      proto:  { ALL: 0, SAN: 0, UNIFIED: 0 },
+      mclass: { ALL: 0, PERFORMANCE: 0, CAPACITY: 0, HYBRID: 0 },
+      os:     { ALL: 0, ONTAP: 0, SANTRICITY: 0 },
+    };
     NETAPP_MODELS.forEach((m) => {
-      const p = getProtocol(m), t = getMClass(m);
-      // Wszystkie liczniki uwzględniają OBECNY drugi filtr (crossed)
-      if (mclass === "ALL" || t === mclass) {
+      const p = getProtocol(m), t = getMClass(m), o = getOS(m);
+      if ((mclass === "ALL" || t === mclass) && (os === "ALL" || o === os)) {
         c.proto.ALL++;
         c.proto[p]++;
       }
-      if (proto === "ALL" || p === proto) {
+      if ((proto === "ALL" || p === proto) && (os === "ALL" || o === os)) {
         c.mclass.ALL++;
         c.mclass[t]++;
       }
+      if ((proto === "ALL" || p === proto) && (mclass === "ALL" || t === mclass)) {
+        c.os.ALL++;
+        c.os[o]++;
+      }
     });
     return c;
-  }, [proto, mclass]);
+  }, [proto, mclass, os]);
 
   const updateArrows = () => {
     const el = scrollerRef.current;
@@ -218,7 +246,7 @@ const NetAppPortfolioPage = () => {
     const el = scrollerRef.current;
     if (el) el.scrollTo({ left: 0, behavior: "smooth" });
     setTimeout(updateArrows, 350);
-  }, [proto, mclass]);
+  }, [proto, mclass, os]);
 
   const scroll = (dir) => {
     const el = scrollerRef.current;
@@ -227,8 +255,8 @@ const NetAppPortfolioPage = () => {
     el.scrollBy({ left: dir * step, behavior: "smooth" });
   };
 
-  const resetFilters = () => { setProto("ALL"); setMclass("ALL"); };
-  const anyActive = proto !== "ALL" || mclass !== "ALL";
+  const resetFilters = () => { setProto("ALL"); setMclass("ALL"); setOs("ALL"); };
+  const anyActive = proto !== "ALL" || mclass !== "ALL" || os !== "ALL";
 
   return (
     <main data-testid="netapp-portfolio-main" className="npv2">
@@ -247,9 +275,10 @@ const NetAppPortfolioPage = () => {
           </h1>
           <p className="npv2-hero__sub">
             Wszystkie macierze NetApp w jednej sekcji. Wybierz{" "}
-            <strong>protokół</strong> (SAN vs Unified — Plik/Blok/Obiekt) oraz{" "}
-            <strong>warstwę wydajności</strong> (Performance / Capacity / Hybrid),
-            a poniżej pokażemy pasujące modele — od entry do flagowych.
+            <strong>protokół</strong> (SAN vs Unified — Plik/Blok/Obiekt),{" "}
+            <strong>warstwę wydajności</strong> (Performance / Capacity / Hybrid) oraz{" "}
+            <strong>system operacyjny</strong> (ONTAP / SANtricity),
+            a poniżej pokażemy pasujące modele.
           </p>
         </div>
       </section>
@@ -283,6 +312,18 @@ const NetAppPortfolioPage = () => {
               ]}
             />
 
+            <FilterGroup
+              label="System"
+              testid="npv2-filter-os"
+              active={os}
+              onChange={setOs}
+              options={[
+                { value: "ALL",        label: "Wszystkie", count: counts.os.ALL,        color: "#0C5C62" },
+                { value: "ONTAP",      label: "ONTAP",     count: counts.os.ONTAP,      color: OS_META.ONTAP.color,      icon: <Layers size={14} /> },
+                { value: "SANTRICITY", label: "SANtricity",count: counts.os.SANTRICITY, color: OS_META.SANTRICITY.color, icon: <Cpu size={14} /> },
+              ]}
+            />
+
             {anyActive && (
               <button
                 className="npv2-filters__reset"
@@ -308,6 +349,11 @@ const NetAppPortfolioPage = () => {
               {mclass !== "ALL" && (
                 <span className="npv2-onerow__badge" style={{ "--tc": MCLASS_META[mclass].color }}>
                   {MCLASS_META[mclass].label}
+                </span>
+              )}
+              {os !== "ALL" && (
+                <span className="npv2-onerow__badge" style={{ "--tc": OS_META[os].color }}>
+                  {OS_META[os].label}
                 </span>
               )}
             </div>
@@ -357,11 +403,11 @@ const NetAppPortfolioPage = () => {
       <section className="npv2-summary" data-testid="npv2-summary" id="npv2-summary">
         <header className="npv2-summary__head">
           <span className="npv2-summary__tag">Jak wybrać</span>
-          <h2>Dwie osie decyzji</h2>
-          <p>Zdecyduj o protokole i warstwie — reszta to szczegóły modelu.</p>
+          <h2>Trzy osie decyzji</h2>
+          <p>Protokół, warstwa i system — reszta to szczegóły modelu.</p>
         </header>
 
-        <div className="npv2-axes">
+        <div className="npv2-axes npv2-axes--3">
           {/* Axis 1: Protocol */}
           <div className="npv2-axis" data-testid="npv2-axis-proto">
             <h3 className="npv2-axis__title">Protokół</h3>
@@ -386,6 +432,22 @@ const NetAppPortfolioPage = () => {
                 <div key={k} className="npv2-axis__card" style={{ "--tc": v.color }}>
                   <div className="npv2-axis__ico">
                     {k === "PERFORMANCE" ? <Zap size={20} /> : k === "CAPACITY" ? <Database size={20} /> : <HardDrive size={20} />}
+                  </div>
+                  <strong>{v.label}</strong>
+                  <p>{v.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Axis 3: OS */}
+          <div className="npv2-axis" data-testid="npv2-axis-os">
+            <h3 className="npv2-axis__title">System operacyjny</h3>
+            <div className="npv2-axis__grid">
+              {Object.entries(OS_META).map(([k, v]) => (
+                <div key={k} className="npv2-axis__card" style={{ "--tc": v.color }}>
+                  <div className="npv2-axis__ico">
+                    {k === "ONTAP" ? <Layers size={20} /> : <Cpu size={20} />}
                   </div>
                   <strong>{v.label}</strong>
                   <p>{v.desc}</p>

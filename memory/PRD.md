@@ -132,10 +132,11 @@ N/A — the site has no authentication surface.
 - **P0 Fix (COMPLETE)** — Global "Cyan Core" hex-unification finished: all `0x49ada5` → `0x00b8d4`.
 - **NetApp Portfolio Page — full rebuild** (`/app/frontend/src/pages/NetAppPortfolioPage.jsx` + `NetAppPortfolioPage.css`):
   - **6 rodzin macierzy w portfolio**: AFF (Performance), **ASA (SAN Flash)**, C-Series (Capacity), FAS (Hybrid — 2820/50/70/90), **E-Series (Block SAN)**, **EF-Series (SAN NVMe)**.
-  - **JEDNA sekcja z dwuosiowym filtrem** (wymaganie 2026-02):
+  - **JEDNA sekcja z trójosiowym filtrem** (2026-02):
     - Oś 1: **Protokół** — Wszystkie · SAN · Unified (Plik/Blok/Obiekt)
     - Oś 2: **Warstwa** — Wszystkie · Flash Performance · Capacity Flash · Hybrid
-    - Liczniki chip-ów są **crossed-filter** (przeliczają się z uwzględnieniem drugiego filtra)
+    - Oś 3: **System** — Wszystkie · ONTAP · SANtricity
+    - Wszystkie 3 liczniki są **crossed-filter** (każdy uwzględnia 2 pozostałe aktywne filtry)
     - Empty-state + "Wyczyść filtry" pill
     - Podsumowanie aktywnych filtrów jako pill-badges obok licznika modeli
   - **Poziomy scroll** z prev/next controls, scroll-snap, fade-edges.
