@@ -9,6 +9,30 @@ import {
 import "./NetAppPortfolioPage.css";
 
 /**
+ * NpHeader — ujednolicony nagłówek sekcji w stylu strony głównej:
+ * hairline (h-px w-12 cyan) + label uppercase + tytuł z akcentem gradientowym.
+ * Wariant dark używa jaśniejszego tekstu labelu.
+ */
+const NpHeader = ({ label, title, accent, sub, center = false, dark = false, tag }) => (
+  <header className={`np-shdr ${center ? "np-shdr--center" : ""} ${dark ? "np-shdr--dark" : ""}`} data-testid={tag}>
+    <div className="np-shdr__label">
+      <span className="np-shdr__hair" />
+      {label}
+    </div>
+    <h2 className="np-shdr__title">
+      {title}
+      {accent && (
+        <>
+          {" "}
+          <span className="np-shdr__accent">{accent}</span>
+        </>
+      )}
+    </h2>
+    {sub && <p className="np-shdr__sub">{sub}</p>}
+  </header>
+);
+
+/**
  * NetAppPortfolioPage — /netapp-portfolio
  * Jedna sekcja, dwuosiowy filtr:
  *   1) Protokół:  Wszystkie · SAN · Unified (Plik / Blok / Obiekt)
@@ -259,11 +283,15 @@ const Bar = ({ label, level, color }) => (
 const FamilyGuideSection = () => (
   <section className="npv2-fg" data-testid="npv2-family-guide" id="npv2-family-guide">
     <div className="npv2-fg__inner">
-      <header className="npv2-fg__head">
-        <span className="npv2-summary__tag">Rodziny NetApp · kiedy wybrać</span>
-        <h2>AFF, C-Series, FAS czy E-Series?</h2>
-        <p>Cztery rodziny, cztery różne odpowiedzi. Sprawdź gdzie każda z nich świeci najjaśniej — i gdzie lepiej wybrać inną.</p>
-      </header>
+      <NpHeader
+        center
+        dark
+        label="Rodziny NetApp · kiedy wybrać"
+        title="AFF, C-Series, FAS czy"
+        accent="E-Series?"
+        sub="Cztery rodziny, cztery różne odpowiedzi. Sprawdź gdzie każda z nich świeci najjaśniej — i gdzie lepiej wybrać inną."
+        tag="npv2-fg-header"
+      />
 
       <div className="npv2-fg__grid">
         {FAMILY_GUIDE.map((f) => {
@@ -334,11 +362,14 @@ const OSCompareSection = () => (
   <section className="npv2-osc" data-testid="npv2-os-compare" id="npv2-os-compare">
     <div className="npv2-osc__bg" aria-hidden="true" />
     <div className="npv2-osc__inner">
-      <header className="npv2-fg__head">
-        <span className="npv2-summary__tag">System operacyjny</span>
-        <h2>ONTAP vs SANtricity</h2>
-        <p>Dwa różne systemy operacyjne NetApp — dwie różne filozofie. Wybór OS jest równie ważny co wybór macierzy.</p>
-      </header>
+      <NpHeader
+        center
+        label="System operacyjny"
+        title="ONTAP vs"
+        accent="SANtricity"
+        sub="Dwa różne systemy operacyjne NetApp — dwie różne filozofie. Wybór OS jest równie ważny co wybór macierzy."
+        tag="npv2-osc-header"
+      />
 
       <div className="npv2-osc__grid">
         {/* ONTAP */}
@@ -613,11 +644,15 @@ const NetAppConfigurator = () => {
     <section className="npv2-cfg" data-testid="npv2-configurator" id="npv2-configurator">
       <div className="npv2-cfg__bg" aria-hidden="true" />
       <div className="npv2-cfg__inner">
-        <header className="npv2-fg__head">
-          <span className="npv2-summary__tag">Konfigurator · 8 pytań</span>
-          <h2>Znajdź swoją macierz w 2 minuty</h2>
-          <p>Odpowiedz na 8 krótkich pytań — algorytm dobierze konkretny model NetApp pasujący do twoich potrzeb.</p>
-        </header>
+        <NpHeader
+          center
+          dark
+          label="Konfigurator · 8 pytań"
+          title="Znajdź swoją macierz w"
+          accent="2 minuty."
+          sub="Odpowiedz na 8 krótkich pytań — algorytm dobierze konkretny model NetApp pasujący do twoich potrzeb."
+          tag="npv2-cfg-header"
+        />
 
         <div className="npv2-cfg__card" data-testid="npv2-cfg-card">
           {!isResult ? (
@@ -667,7 +702,7 @@ const NetAppConfigurator = () => {
               {/* Back */}
               <div className="npv2-cfg__nav">
                 {step > 0 && (
-                  <button className="npv2-filters__reset" onClick={back} data-testid="npv2-cfg-back">
+                  <button className="sc-btn-ghost" onClick={back} data-testid="npv2-cfg-back">
                     <ChevronLeft size={14} /> Wstecz
                   </button>
                 )}
@@ -743,7 +778,7 @@ const ConfigResult = ({ result, onRestart, answers }) => {
         <a href="#kontakt" className="sc-btn-primary" data-testid="npv2-cfg-cta-contact">
           Umów rozmowę o {model.name} <ArrowRight size={16} />
         </a>
-        <button className="npv2-filters__reset" onClick={onRestart} data-testid="npv2-cfg-restart">
+        <button className="sc-btn-ghost" onClick={onRestart} data-testid="npv2-cfg-restart">
           <X size={14} /> Zacznij od nowa
         </button>
       </div>
@@ -838,20 +873,13 @@ const NetAppPortfolioPage = () => {
       <section className="npv2-hero">
         <div className="npv2__bg" aria-hidden="true" />
         <div className="npv2-hero__inner">
-          <div className="npv2-hero__label">NetApp · Portfolio 2026</div>
-          <h1 className="npv2-hero__title">
-            Całe portfolio NetApp,{" "}
-            <span className="npv2-hero__grad">jeden filtr</span>
-            <br />
-            i jeden dostawca.
-          </h1>
-          <p className="npv2-hero__sub">
-            Wszystkie macierze NetApp w jednej sekcji. Wybierz{" "}
-            <strong>protokół</strong> (SAN vs Unified — Plik/Blok/Obiekt),{" "}
-            <strong>warstwę wydajności</strong> (Performance / Capacity / Hybrid) oraz{" "}
-            <strong>system operacyjny</strong> (ONTAP / SANtricity),
-            a poniżej pokażemy pasujące modele.
-          </p>
+          <NpHeader
+            label="NetApp · Portfolio 2026"
+            title="Całe portfolio NetApp,"
+            accent="jeden filtr."
+            sub={<>Wszystkie macierze NetApp w jednej sekcji. Wybierz <strong>protokół</strong> (SAN vs Unified), <strong>warstwę wydajności</strong> (Performance / Capacity / Hybrid) oraz <strong>system operacyjny</strong> (ONTAP / SANtricity), a poniżej pokażemy pasujące modele.</>}
+            tag="npv2-hero-header"
+          />
         </div>
       </section>
 
@@ -898,7 +926,7 @@ const NetAppPortfolioPage = () => {
 
             {anyActive && (
               <button
-                className="npv2-filters__reset"
+                className="sc-btn-ghost sc-btn-ghost--light"
                 onClick={resetFilters}
                 data-testid="npv2-filter-reset"
               >
@@ -956,7 +984,7 @@ const NetAppPortfolioPage = () => {
             {filtered.length === 0 ? (
               <div className="npv2-empty" data-testid="npv2-empty">
                 <p>Brak modeli dla wybranej kombinacji filtrów.</p>
-                <button className="npv2-filters__reset" onClick={resetFilters}>
+                <button className="sc-btn-ghost sc-btn-ghost--light" onClick={resetFilters}>
                   <X size={14} /> Wyczyść filtry
                 </button>
               </div>
@@ -980,13 +1008,16 @@ const NetAppPortfolioPage = () => {
       {/* SECTION: KONFIGURATOR (8 pytań → rekomendacja) */}
       <NetAppConfigurator />
 
-      {/* SUMMARY / KEY DIFFERENCES */}
+      {/* SUMMARY */}
       <section className="npv2-summary" data-testid="npv2-summary" id="npv2-summary">
-        <header className="npv2-summary__head">
-          <span className="npv2-summary__tag">Jak wybrać</span>
-          <h2>Trzy osie decyzji</h2>
-          <p>Protokół, warstwa i system — reszta to szczegóły modelu.</p>
-        </header>
+        <NpHeader
+          center
+          label="Jak wybrać"
+          title="Trzy osie"
+          accent="decyzji."
+          sub="Protokół, warstwa i system — reszta to szczegóły modelu."
+          tag="npv2-summary-header"
+        />
 
         <div className="npv2-axes npv2-axes--3">
           {/* Axis 1: Protocol */}

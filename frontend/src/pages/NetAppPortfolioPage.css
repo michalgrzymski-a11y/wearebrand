@@ -12,10 +12,80 @@
   --cc-frost-2: #EEF4F5;
   --cc-line: rgba(12, 92, 98, 0.10);
   --cc-line-strong: rgba(12, 92, 98, 0.18);
+  --np-container: 1280px;      /* == Tailwind max-w-7xl */
+  --np-px: 24px;                /* mobile */
+  --np-px-lg: 40px;             /* desktop (md:px-10) */
+  --np-py: 80px;                /* mobile (py-20) */
+  --np-py-lg: 96px;             /* desktop (md:py-24) */
   background: var(--cc-frost);
   color: var(--cc-teal);
   min-height: 100vh;
   font-family: "Manrope", sans-serif;
+}
+
+/* -------------------- SEKCJA HEADER (ujednolicony ze stroną główną) -------------------- */
+.np-shdr {
+  display: flex; flex-direction: column; gap: 20px;
+  max-width: 900px;
+  margin-bottom: 56px;
+}
+.np-shdr--center {
+  align-items: center; text-align: center;
+  margin-left: auto; margin-right: auto;
+}
+.np-shdr__label {
+  display: inline-flex; align-items: center; gap: 16px;
+  font-size: 12px; font-weight: 700; letter-spacing: 0.34em;
+  text-transform: uppercase; color: var(--cc-teal);
+}
+.np-shdr__hair {
+  display: inline-block; height: 1px; width: 48px;
+  background: var(--cc-aqua);
+}
+.np-shdr__title {
+  margin: 0;
+  font-size: clamp(28px, 3.8vw, 48px);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--cc-teal);
+}
+.np-shdr__accent {
+  font-weight: 600;
+  background: linear-gradient(135deg, #06FFE0 0%, #00B8D4 100%);
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent;
+}
+.np-shdr__sub {
+  margin: 0;
+  font-size: clamp(15px, 1.4vw, 18px);
+  line-height: 1.6;
+  color: rgba(28,40,51,0.72);
+  max-width: 720px;
+}
+/* Dark scope */
+.np-shdr--dark .np-shdr__label { color: #7CC4C0; }
+.np-shdr--dark .np-shdr__title { color: #FFF; }
+.np-shdr--dark .np-shdr__sub   { color: rgba(255,255,255,0.70); }
+
+/* -------------------- SEKCJE — spacing zgodny ze stroną główną -------------------- */
+.npv2-hero,
+.npv2-onerow,
+.npv2-fg,
+.npv2-osc,
+.npv2-cfg,
+.npv2-summary {
+  padding-left: 0;
+  padding-right: 0;
+}
+.npv2-hero__inner,
+.npv2-onerow__inner,
+.npv2-fg__inner,
+.npv2-osc__inner,
+.npv2-cfg__inner,
+.npv2-summary {
+  max-width: var(--np-container);
+  margin-left: auto; margin-right: auto;
 }
 
 /* Ambient background glows — matching Portfolio.jsx radial style */
@@ -29,8 +99,11 @@
 /* -------------------- HERO -------------------- */
 .npv2-hero {
   position: relative;
-  padding: 152px 24px 56px;
+  padding: 152px var(--np-px) var(--np-py);
   overflow: hidden;
+}
+@media (min-width: 768px) {
+  .npv2-hero { padding: 168px var(--np-px-lg) var(--np-py-lg); }
 }
 .npv2-hero__inner { position: relative; z-index: 1; max-width: 1280px; margin: 0 auto; }
 .npv2-hero__label {
@@ -79,10 +152,13 @@
 
 /* -------------------- FILTERS + ONEROW -------------------- */
 .npv2-onerow {
-  padding: 24px 0 40px;
+  padding: var(--np-py) var(--np-px);
+}
+@media (min-width: 768px) {
+  .npv2-onerow { padding: var(--np-py-lg) var(--np-px-lg); }
 }
 .npv2-onerow__inner {
-  max-width: 1280px; margin: 0 auto; padding: 0 24px;
+  max-width: var(--np-container); margin: 0 auto; padding: 0;
 }
 
 .npv2-filters {
@@ -210,11 +286,14 @@
 /* -------------------- SEKCJA: KIEDY WYBRAĆ RODZINĘ (FG = Family Guide) — DARK -------------------- */
 .npv2-fg {
   position: relative;
-  padding: 96px 0 96px;
+  padding: var(--np-py) var(--np-px);
   border-top: 1px solid rgba(6,255,224,0.10);
   background: #040709;
   color: #E8F4F5;
   overflow: hidden;
+}
+@media (min-width: 768px) {
+  .npv2-fg { padding: var(--np-py-lg) var(--np-px-lg); }
 }
 .npv2-fg::before {
   content: ""; position: absolute; inset: 0; pointer-events: none;
@@ -391,10 +470,13 @@
 /* -------------------- SEKCJA: ONTAP vs SANtricity (OSC = OS Compare) -------------------- */
 .npv2-osc {
   position: relative;
-  padding: 96px 0 64px;
+  padding: var(--np-py) var(--np-px);
   overflow: hidden;
   background: linear-gradient(180deg, #FFF 0%, var(--cc-frost) 100%);
   border-top: 1px solid var(--cc-line);
+}
+@media (min-width: 768px) {
+  .npv2-osc { padding: var(--np-py-lg) var(--np-px-lg); }
 }
 .npv2-osc__bg {
   position: absolute; inset: 0; pointer-events: none;
@@ -404,7 +486,7 @@
 }
 .npv2-osc__inner {
   position: relative; z-index: 1;
-  max-width: 1280px; margin: 0 auto; padding: 0 24px;
+  max-width: var(--np-container); margin: 0 auto; padding: 0;
 }
 
 .npv2-osc__grid {
@@ -517,11 +599,14 @@
 /* -------------------- SEKCJA: KONFIGURATOR (CFG) — DARK -------------------- */
 .npv2-cfg {
   position: relative;
-  padding: 96px 0 96px;
+  padding: var(--np-py) var(--np-px);
   overflow: hidden;
   border-top: 1px solid rgba(6,255,224,0.10);
   background: #040709;
   color: #E8F4F5;
+}
+@media (min-width: 768px) {
+  .npv2-cfg { padding: var(--np-py-lg) var(--np-px-lg); }
 }
 .npv2-cfg__bg {
   position: absolute; inset: 0; pointer-events: none;
@@ -1078,10 +1163,13 @@
   text-transform: uppercase; color: var(--fam); margin-bottom: 4px;
 }
 
-/* -------------------- SUMMARY TABLE -------------------- */
+/* -------------------- SUMMARY -------------------- */
 .npv2-summary {
-  max-width: 1280px; margin: 0 auto;
-  padding: 96px 24px;
+  max-width: var(--np-container); margin: 0 auto;
+  padding: var(--np-py) var(--np-px);
+}
+@media (min-width: 768px) {
+  .npv2-summary { padding: var(--np-py-lg) var(--np-px-lg); }
 }
 .npv2-summary__head { text-align: center; margin-bottom: 40px; }
 .npv2-summary__tag {
