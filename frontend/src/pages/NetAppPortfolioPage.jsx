@@ -179,6 +179,236 @@ const FilterGroup = ({ label, options, active, onChange, testid }) => (
   </div>
 );
 
+/* ---------- SEKCJA: KIEDY WYBRAĆ (AFF / C-Series / FAS / E-Series) ---------- */
+const FAMILY_GUIDE = [
+  {
+    key: "AFF",
+    icon: <Zap size={22} />,
+    color: "#06FFE0",
+    tagline: "Najwyższa wydajność NVMe dla mission-critical",
+    price: 5, perf: 5, cap: 3,   // 1-5 skala do wizualizacji barów
+    whenChoose: [
+      "Krytyczne bazy: Oracle, SAP HANA, MS SQL",
+      "VMware / Hyper-V na dużą skalę",
+      "AI/ML training pipelines i analytics",
+      "Trading, telko, real-time processing",
+    ],
+    workloads: ["VMware", "Oracle DB", "SAP HANA", "AI/ML", "Analytics"],
+    avoidWhen: "Backup, archive lub gdy priorytet to $/TB.",
+  },
+  {
+    key: "CFLASH",
+    icon: <Database size={22} />,
+    color: "#00B8D4",
+    tagline: "Capacity flash QLC — pojemność jak HDD, latencja jak SSD",
+    price: 3, perf: 3, cap: 5,
+    whenChoose: [
+      "Backup enterprise i długi retention",
+      "Archive i cyber-vault (immutable)",
+      "Secondary storage / DR target",
+      "FabricPool tier dla ONTAP AFF",
+    ],
+    workloads: ["Backup", "Archive", "Cyber-vault", "DR", "Cold data"],
+    avoidWhen: "Real-time trading lub bazy OLTP z ekstremalnymi IOPS.",
+  },
+  {
+    key: "FAS",
+    icon: <HardDrive size={22} />,
+    color: "#0EA5A0",
+    tagline: "Hybrydowa ekonomia skali — HDD + flash cache",
+    price: 1, perf: 2, cap: 5,
+    whenChoose: [
+      "File-share (NFS/SMB) o dużej pojemności",
+      "Media library, video repository",
+      "Konsolidacja plików w oddziałach",
+      "Secondary tier tam gdzie budżet jest kluczowy",
+    ],
+    workloads: ["File-share", "Media", "Konsolidacja", "Home dirs", "Archive"],
+    avoidWhen: "Latencja < 1 ms lub wysokie IOPS random.",
+  },
+  {
+    key: "ESERIES",
+    icon: <Server size={22} />,
+    color: "#7ED9CE",
+    tagline: "Dedykowany blok SAN dla HPC/OT — bez ONTAP-overhead",
+    price: 2, perf: 3, cap: 4,
+    whenChoose: [
+      "HPC, seismic, high-throughput computing",
+      "Video-surveillance (24/7 write)",
+      "OT / automatyka przemysłowa",
+      "Prostota — jeden LUN, jeden host, high-BW",
+    ],
+    workloads: ["HPC", "Video surveillance", "Seismic", "OT", "Media ingest"],
+    avoidWhen: "Potrzeba NAS, snapshotów NetApp lub FabricPool.",
+  },
+];
+
+const Bar = ({ label, level, color }) => (
+  <div className="npv2-fg__bar">
+    <span className="npv2-fg__bar-label">{label}</span>
+    <div className="npv2-fg__bar-track">
+      <div
+        className="npv2-fg__bar-fill"
+        style={{ width: `${(level / 5) * 100}%`, background: color }}
+      />
+    </div>
+    <span className="npv2-fg__bar-val">{level}/5</span>
+  </div>
+);
+
+const FamilyGuideSection = () => (
+  <section className="npv2-fg" data-testid="npv2-family-guide" id="npv2-family-guide">
+    <div className="npv2-fg__inner">
+      <header className="npv2-fg__head">
+        <span className="npv2-summary__tag">Rodziny NetApp · kiedy wybrać</span>
+        <h2>AFF, C-Series, FAS czy E-Series?</h2>
+        <p>Cztery rodziny, cztery różne odpowiedzi. Sprawdź gdzie każda z nich świeci najjaśniej — i gdzie lepiej wybrać inną.</p>
+      </header>
+
+      <div className="npv2-fg__grid">
+        {FAMILY_GUIDE.map((f) => {
+          const fam = NETAPP_FAMILIES[f.key];
+          return (
+            <article
+              key={f.key}
+              className="npv2-fg__card"
+              style={{ "--tc": f.color }}
+              data-testid={`npv2-fg-card-${f.key}`}
+            >
+              <div className="npv2-fg__head-row">
+                <div className="npv2-fg__ico">{f.icon}</div>
+                <div>
+                  <h3 className="npv2-fg__name">{fam.label.split("·")[0].trim()}</h3>
+                  <p className="npv2-fg__tag">{f.tagline}</p>
+                </div>
+              </div>
+
+              <div className="npv2-fg__bars">
+                <Bar label="Wydajność" level={f.perf}  color={f.color} />
+                <Bar label="Pojemność" level={f.cap}   color={f.color} />
+                <Bar label="Koszt / TB" level={6 - f.price} color={f.color} />
+                {/* Bar "Koszt/TB" odwrócony: wyższy słupek = lepszy $/TB */}
+              </div>
+
+              <div className="npv2-fg__block">
+                <h4 className="npv2-fg__block-title">Wybierz gdy:</h4>
+                <ul className="npv2-fg__list">
+                  {f.whenChoose.map((w, i) => (
+                    <li key={i}>{w}</li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="npv2-fg__chips">
+                {f.workloads.map((w, i) => (
+                  <span key={i} className="npv2-fg__chip">{w}</span>
+                ))}
+              </div>
+
+              <p className="npv2-fg__avoid">
+                <strong>Unikaj gdy:</strong> {f.avoidWhen}
+              </p>
+            </article>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+);
+
+/* ---------- SEKCJA: ONTAP vs SANtricity ---------- */
+const OS_COMPARE = [
+  { row: "Typ systemu",         ONTAP: "Unified — NAS + SAN",             SANTRICITY: "Dedykowany blokowy" },
+  { row: "Protokoły",           ONTAP: "NFS · SMB · S3 · FC · iSCSI · NVMe-oF", SANTRICITY: "FC · iSCSI · SAS · NVMe-oF" },
+  { row: "Snapshoty",           ONTAP: "SnapShot, SnapMirror, SnapVault",  SANTRICITY: "Ograniczone (copy-services)" },
+  { row: "Replikacja",          ONTAP: "SnapMirror async/sync + MetroCluster", SANTRICITY: "Async Mirroring 1:1" },
+  { row: "Data services",       ONTAP: "Kompresja, dedup, kompaksja, tiering FabricPool", SANTRICITY: "Podstawowa kompresja + Data Assurance" },
+  { row: "Multi-tenancy",       ONTAP: "SVMs (Storage VMs)",              SANTRICITY: "Volume groups + host groups" },
+  { row: "Zarządzanie",         ONTAP: "System Manager / Active IQ / REST", SANTRICITY: "SANtricity System Manager" },
+  { row: "Rodziny wspierane",   ONTAP: "AFF · ASA · C-Series · FAS",       SANTRICITY: "E-Series · EF-Series" },
+  { row: "Idealne dla",         ONTAP: "Enterprise, VMware, DB, backup",  SANTRICITY: "HPC, video-surveillance, OT, HPC block" },
+  { row: "Krzywa nauki",        ONTAP: "Średnia (bogaty feature-set)",     SANTRICITY: "Niska (prosty, przewidywalny)" },
+];
+
+const OSCompareSection = () => (
+  <section className="npv2-osc" data-testid="npv2-os-compare" id="npv2-os-compare">
+    <div className="npv2-osc__bg" aria-hidden="true" />
+    <div className="npv2-osc__inner">
+      <header className="npv2-fg__head">
+        <span className="npv2-summary__tag">System operacyjny</span>
+        <h2>ONTAP vs SANtricity</h2>
+        <p>Dwa różne systemy operacyjne NetApp — dwie różne filozofie. Wybór OS jest równie ważny co wybór macierzy.</p>
+      </header>
+
+      <div className="npv2-osc__grid">
+        {/* ONTAP */}
+        <article className="npv2-osc__card npv2-osc__card--ontap" data-testid="npv2-osc-ontap">
+          <div className="npv2-osc__header">
+            <div className="npv2-osc__ico"><Layers size={24} /></div>
+            <div>
+              <h3>ONTAP</h3>
+              <p>Unified data platform</p>
+            </div>
+          </div>
+          <ul className="npv2-osc__feats">
+            <li>NAS <em>i</em> SAN w jednym systemie (multi-protocol)</li>
+            <li>Snapshoty, SnapMirror, SnapVault out-of-the-box</li>
+            <li>FabricPool tiering do S3 / Azure Blob / GCP</li>
+            <li>Kompresja, deduplikacja, kompaksja — inline</li>
+            <li>MetroCluster synchroniczna replikacja &lt; 100 km</li>
+            <li>REST API, Ansible, Terraform providers</li>
+          </ul>
+          <div className="npv2-osc__bestfor">
+            <strong>Najlepszy do:</strong> Enterprise, VMware, bazy, backup, hybrid-cloud
+          </div>
+        </article>
+
+        {/* SANtricity */}
+        <article className="npv2-osc__card npv2-osc__card--santricity" data-testid="npv2-osc-santricity">
+          <div className="npv2-osc__header">
+            <div className="npv2-osc__ico"><Cpu size={24} /></div>
+            <div>
+              <h3>SANtricity</h3>
+              <p>Dedicated block platform</p>
+            </div>
+          </div>
+          <ul className="npv2-osc__feats">
+            <li>Blok-only — prosty, przewidywalny performance</li>
+            <li>Data Assurance (T10 PI) — end-to-end integrity</li>
+            <li>Async Mirroring 1:1 pomiędzy macierzami</li>
+            <li>Dynamic Disk Pools (DDP) — szybszy rebuild niż RAID</li>
+            <li>Zero-config high availability (dual-active controllers)</li>
+            <li>SANtricity System Manager — prosty UI</li>
+          </ul>
+          <div className="npv2-osc__bestfor">
+            <strong>Najlepszy do:</strong> HPC, video-surveillance, seismic, OT, dedykowany SAN
+          </div>
+        </article>
+      </div>
+
+      {/* Table */}
+      <div className="npv2-osc__table" role="table">
+        <div className="npv2-osc__trow npv2-osc__trow--head">
+          <div className="npv2-osc__tcell npv2-osc__tcell--label">Kryterium</div>
+          <div className="npv2-osc__tcell npv2-osc__tcell--head" style={{ color: OS_META.ONTAP.color }}>
+            <Layers size={16}/> ONTAP
+          </div>
+          <div className="npv2-osc__tcell npv2-osc__tcell--head" style={{ color: OS_META.SANTRICITY.color }}>
+            <Cpu size={16}/> SANtricity
+          </div>
+        </div>
+        {OS_COMPARE.map((r, i) => (
+          <div key={i} className="npv2-osc__trow">
+            <div className="npv2-osc__tcell npv2-osc__tcell--label">{r.row}</div>
+            <div className="npv2-osc__tcell">{r.ONTAP}</div>
+            <div className="npv2-osc__tcell">{r.SANTRICITY}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+);
+
 /* ---------- Main page ---------- */
 const NetAppPortfolioPage = () => {
   const [proto, setProto]   = useState("ALL");  // ALL | SAN | UNIFIED
@@ -398,6 +628,12 @@ const NetAppPortfolioPage = () => {
           </div>
         </div>
       </section>
+
+      {/* SECTION: KIEDY WYBRAĆ RODZINĘ */}
+      <FamilyGuideSection />
+
+      {/* SECTION: ONTAP vs SANtricity */}
+      <OSCompareSection />
 
       {/* SUMMARY / KEY DIFFERENCES */}
       <section className="npv2-summary" data-testid="npv2-summary" id="npv2-summary">

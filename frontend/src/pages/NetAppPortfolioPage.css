@@ -207,6 +207,274 @@
 }
 .npv2-empty p { margin: 0 0 16px; font-size: 14px; }
 
+/* -------------------- SEKCJA: KIEDY WYBRAĆ RODZINĘ (FG = Family Guide) -------------------- */
+.npv2-fg {
+  position: relative;
+  padding: 96px 0 64px;
+  border-top: 1px solid var(--cc-line);
+  background: linear-gradient(180deg, var(--cc-frost) 0%, #FFF 100%);
+}
+.npv2-fg__inner {
+  max-width: 1280px; margin: 0 auto; padding: 0 24px;
+}
+.npv2-fg__head { text-align: center; margin-bottom: 48px; max-width: 720px; margin-left: auto; margin-right: auto; }
+.npv2-fg__head h2 { margin: 16px 0 8px; font-size: clamp(28px, 3vw, 40px); font-weight: 700; color: var(--cc-teal); letter-spacing: -0.02em; }
+.npv2-fg__head p { margin: 0; color: var(--cc-teal-soft); font-size: 15px; line-height: 1.6; }
+
+.npv2-fg__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+.npv2-fg__card {
+  --tc: #00B8D4;
+  display: flex; flex-direction: column; gap: 16px;
+  background: #FFF;
+  border: 1px solid var(--cc-line);
+  border-radius: 20px;
+  padding: 22px 20px;
+  transition: transform 0.3s ease, box-shadow 0.35s ease, border-color 0.3s ease;
+  position: relative; overflow: hidden;
+}
+.npv2-fg__card::before {
+  content: "";
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--tc) 0%, color-mix(in oklch, var(--tc) 30%, transparent) 100%);
+}
+.npv2-fg__card:hover {
+  transform: translateY(-4px);
+  border-color: var(--tc);
+  box-shadow: 0 20px 48px -20px color-mix(in oklch, var(--tc) 30%, transparent);
+}
+
+.npv2-fg__head-row {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding-top: 6px;
+}
+.npv2-fg__ico {
+  width: 44px; height: 44px; flex-shrink: 0;
+  display: grid; place-items: center;
+  border-radius: 12px;
+  background: color-mix(in oklch, var(--tc) 15%, #FFF);
+  color: var(--tc);
+}
+.npv2-fg__name {
+  margin: 0 0 4px; font-size: 20px; font-weight: 700;
+  color: var(--cc-teal); letter-spacing: -0.01em;
+}
+.npv2-fg__tag {
+  margin: 0; font-size: 12px; line-height: 1.5;
+  color: var(--cc-teal-soft);
+}
+
+/* Bars */
+.npv2-fg__bars {
+  display: flex; flex-direction: column; gap: 8px;
+  padding: 12px 14px;
+  background: rgba(12,92,98,0.03);
+  border-radius: 12px;
+}
+.npv2-fg__bar {
+  display: grid;
+  grid-template-columns: 80px 1fr 32px;
+  align-items: center;
+  gap: 10px;
+}
+.npv2-fg__bar-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--cc-teal-soft);
+}
+.npv2-fg__bar-track {
+  height: 6px; border-radius: 999px;
+  background: rgba(12,92,98,0.08);
+  overflow: hidden;
+}
+.npv2-fg__bar-fill {
+  height: 100%; border-radius: 999px;
+  transition: width 0.5s ease;
+}
+.npv2-fg__bar-val {
+  font-size: 10px; font-weight: 800; color: var(--cc-teal);
+  text-align: right;
+}
+
+/* Blocks */
+.npv2-fg__block-title {
+  margin: 0 0 8px;
+  font-size: 10px; font-weight: 800; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--tc);
+}
+.npv2-fg__list {
+  margin: 0; padding: 0; list-style: none;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.npv2-fg__list li {
+  position: relative; padding-left: 18px;
+  font-size: 12.5px; line-height: 1.45; color: var(--cc-teal);
+}
+.npv2-fg__list li::before {
+  content: ""; position: absolute; left: 0; top: 8px;
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--tc);
+}
+
+.npv2-fg__chips {
+  display: flex; flex-wrap: wrap; gap: 6px;
+}
+.npv2-fg__chip {
+  padding: 4px 10px;
+  font-size: 11px; font-weight: 600;
+  color: var(--cc-teal);
+  background: color-mix(in oklch, var(--tc) 12%, transparent);
+  border: 1px solid color-mix(in oklch, var(--tc) 25%, transparent);
+  border-radius: 999px;
+}
+
+.npv2-fg__avoid {
+  margin: 0;
+  padding: 10px 12px;
+  font-size: 11.5px; line-height: 1.5;
+  color: var(--cc-teal-soft);
+  background: rgba(233, 91, 60, 0.05);
+  border-left: 3px solid rgba(233, 91, 60, 0.35);
+  border-radius: 6px;
+}
+.npv2-fg__avoid strong { color: rgba(184, 60, 30, 1); font-weight: 700; }
+
+@media (max-width: 1024px) {
+  .npv2-fg__grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 640px) {
+  .npv2-fg__grid { grid-template-columns: 1fr; }
+}
+
+/* -------------------- SEKCJA: ONTAP vs SANtricity (OSC = OS Compare) -------------------- */
+.npv2-osc {
+  position: relative;
+  padding: 96px 0 64px;
+  overflow: hidden;
+  background: linear-gradient(180deg, #FFF 0%, var(--cc-frost) 100%);
+  border-top: 1px solid var(--cc-line);
+}
+.npv2-osc__bg {
+  position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(50% 55% at 15% 20%, rgba(6,255,224,0.06) 0%, transparent 60%),
+    radial-gradient(50% 60% at 85% 80%, rgba(0,212,184,0.06) 0%, transparent 60%);
+}
+.npv2-osc__inner {
+  position: relative; z-index: 1;
+  max-width: 1280px; margin: 0 auto; padding: 0 24px;
+}
+
+.npv2-osc__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin: 32px 0 40px;
+}
+.npv2-osc__card {
+  --tc: #06FFE0;
+  position: relative;
+  background: #FFF;
+  border: 1px solid var(--cc-line);
+  border-radius: 24px;
+  padding: 28px;
+  overflow: hidden;
+  box-shadow: 0 20px 48px -24px rgba(12,92,98,0.20);
+}
+.npv2-osc__card--ontap      { --tc: #06FFE0; }
+.npv2-osc__card--santricity { --tc: #00D4B8; }
+.npv2-osc__card::before {
+  content: "";
+  position: absolute; top: 0; left: 0; right: 0; height: 6px;
+  background: linear-gradient(90deg, var(--tc) 0%, color-mix(in oklch, var(--tc) 40%, transparent) 100%);
+}
+
+.npv2-osc__header {
+  display: flex; align-items: center; gap: 14px;
+  margin-bottom: 20px;
+}
+.npv2-osc__ico {
+  width: 56px; height: 56px;
+  display: grid; place-items: center;
+  border-radius: 14px;
+  background: linear-gradient(135deg, color-mix(in oklch, var(--tc) 20%, #FFF) 0%, #FFF 100%);
+  color: var(--tc);
+  border: 1px solid color-mix(in oklch, var(--tc) 30%, transparent);
+}
+.npv2-osc__header h3 {
+  margin: 0; font-size: 26px; font-weight: 700;
+  color: var(--cc-teal); letter-spacing: -0.01em;
+}
+.npv2-osc__header p {
+  margin: 2px 0 0; font-size: 12px; font-weight: 700;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--tc);
+}
+
+.npv2-osc__feats {
+  list-style: none; margin: 0 0 20px; padding: 0;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.npv2-osc__feats li {
+  position: relative; padding-left: 24px;
+  font-size: 13.5px; line-height: 1.55; color: var(--cc-teal);
+}
+.npv2-osc__feats li::before {
+  content: "✓";
+  position: absolute; left: 0; top: 0;
+  color: var(--tc); font-weight: 800; font-size: 14px;
+}
+.npv2-osc__feats em { font-style: italic; color: var(--tc); font-weight: 700; }
+
+.npv2-osc__bestfor {
+  padding: 12px 14px; border-radius: 10px;
+  background: color-mix(in oklch, var(--tc) 8%, transparent);
+  border: 1px solid color-mix(in oklch, var(--tc) 25%, transparent);
+  font-size: 12.5px; line-height: 1.5; color: var(--cc-teal);
+}
+.npv2-osc__bestfor strong { color: var(--tc); font-weight: 800; text-transform: uppercase; font-size: 10px; letter-spacing: 0.16em; }
+
+/* Feature-matrix table */
+.npv2-osc__table {
+  background: #FFF;
+  border: 1px solid var(--cc-line);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 12px 32px -20px rgba(12,92,98,0.15);
+}
+.npv2-osc__trow {
+  display: grid;
+  grid-template-columns: 220px 1fr 1fr;
+}
+.npv2-osc__trow + .npv2-osc__trow { border-top: 1px solid var(--cc-line); }
+.npv2-osc__tcell {
+  padding: 14px 18px;
+  font-size: 13px; line-height: 1.5; color: var(--cc-teal);
+}
+.npv2-osc__tcell--label {
+  background: rgba(12,92,98,0.03);
+  font-size: 11px; font-weight: 700; letter-spacing: 0.10em;
+  text-transform: uppercase; color: var(--cc-teal-soft);
+}
+.npv2-osc__tcell--head {
+  background: linear-gradient(135deg, #FFF 0%, rgba(6,255,224,0.05) 100%);
+  font-weight: 800; letter-spacing: 0.05em;
+  display: flex; align-items: center; gap: 8px;
+  font-size: 14px;
+}
+.npv2-osc__trow--head .npv2-osc__tcell--label { background: rgba(12,92,98,0.06); }
+
+@media (max-width: 768px) {
+  .npv2-osc__grid { grid-template-columns: 1fr; }
+  .npv2-osc__trow {
+    grid-template-columns: 1fr;
+  }
+  .npv2-osc__tcell--label { border-bottom: 1px solid var(--cc-line); }
+}
+
 /* -------------------- SUMMARY (redesigned: 2 axes) -------------------- */
 .npv2-axes {
   display: grid;

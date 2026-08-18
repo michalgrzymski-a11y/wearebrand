@@ -137,6 +137,8 @@ N/A — the site has no authentication surface.
     - Oś 2: **Warstwa** — Wszystkie · Flash Performance · Capacity Flash · Hybrid
     - Oś 3: **System** — Wszystkie · ONTAP · SANtricity
     - Wszystkie 3 liczniki są **crossed-filter** (każdy uwzględnia 2 pozostałe aktywne filtry)
+  - **Sekcja "Kiedy wybrać rodzinę"** (`FamilyGuideSection`, id `#npv2-family-guide`) — 4-kolumnowy porównywacz AFF / C-Series / FAS / E-Series z barami rankingowymi (Wydajność/Pojemność/Koszt), listą "Wybierz gdy", chipami workloadów i ostrzeżeniem "Unikaj gdy".
+  - **Sekcja "ONTAP vs SANtricity"** (`OSCompareSection`, id `#npv2-os-compare`) — 2 karty side-by-side z feature-checklistą, "Najlepszy do" callout + tabela porównawcza 10 kryteriów (typ, protokoły, snapshoty, replikacja, data services, multi-tenancy, zarządzanie, rodziny, use case, krzywa nauki).
     - Empty-state + "Wyczyść filtry" pill
     - Podsumowanie aktywnych filtrów jako pill-badges obok licznika modeli
   - **Poziomy scroll** z prev/next controls, scroll-snap, fade-edges.
