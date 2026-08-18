@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect, useMemo } from "react";
 import Navbar from "@/components/Navbar";
 import Kontakt from "@/components/sections/Kontakt";
+import Reveal from "@/components/Reveal";
 import { NETAPP_MODELS, NETAPP_FAMILIES } from "@/data/netappModels";
 import {
   Zap, Database, HardDrive, Server, ArrowRight,
@@ -283,26 +284,28 @@ const Bar = ({ label, level, color }) => (
 const FamilyGuideSection = () => (
   <section className="npv2-fg" data-testid="npv2-family-guide" id="npv2-family-guide">
     <div className="npv2-fg__inner">
-      <NpHeader
-        center
-        dark
-        label="Rodziny NetApp · kiedy wybrać"
-        title="AFF, C-Series, FAS czy"
-        accent="E-Series?"
-        sub="Cztery rodziny, cztery różne odpowiedzi. Sprawdź gdzie każda z nich świeci najjaśniej — i gdzie lepiej wybrać inną."
-        tag="npv2-fg-header"
-      />
+      <Reveal>
+        <NpHeader
+          center
+          dark
+          label="Rodziny NetApp · kiedy wybrać"
+          title="AFF, C-Series, FAS czy"
+          accent="E-Series?"
+          sub="Cztery rodziny, cztery różne odpowiedzi. Sprawdź gdzie każda z nich świeci najjaśniej — i gdzie lepiej wybrać inną."
+          tag="npv2-fg-header"
+        />
+      </Reveal>
 
       <div className="npv2-fg__grid">
-        {FAMILY_GUIDE.map((f) => {
+        {FAMILY_GUIDE.map((f, i) => {
           const fam = NETAPP_FAMILIES[f.key];
           return (
-            <article
-              key={f.key}
-              className="npv2-fg__card"
-              style={{ "--tc": f.color }}
-              data-testid={`npv2-fg-card-${f.key}`}
-            >
+            <Reveal key={f.key} delay={i * 120}>
+              <article
+                className="npv2-fg__card"
+                style={{ "--tc": f.color }}
+                data-testid={`npv2-fg-card-${f.key}`}
+              >
               <div className="npv2-fg__head-row">
                 <div className="npv2-fg__ico">{f.icon}</div>
                 <div>
@@ -337,6 +340,7 @@ const FamilyGuideSection = () => (
                 <strong>Unikaj gdy:</strong> {f.avoidWhen}
               </p>
             </article>
+            </Reveal>
           );
         })}
       </div>
@@ -362,63 +366,70 @@ const OSCompareSection = () => (
   <section className="npv2-osc" data-testid="npv2-os-compare" id="npv2-os-compare">
     <div className="npv2-osc__bg" aria-hidden="true" />
     <div className="npv2-osc__inner">
-      <NpHeader
-        center
-        label="System operacyjny"
-        title="ONTAP vs"
-        accent="SANtricity"
-        sub="Dwa różne systemy operacyjne NetApp — dwie różne filozofie. Wybór OS jest równie ważny co wybór macierzy."
-        tag="npv2-osc-header"
-      />
+      <Reveal>
+        <NpHeader
+          center
+          label="System operacyjny"
+          title="ONTAP vs"
+          accent="SANtricity"
+          sub="Dwa różne systemy operacyjne NetApp — dwie różne filozofie. Wybór OS jest równie ważny co wybór macierzy."
+          tag="npv2-osc-header"
+        />
+      </Reveal>
 
       <div className="npv2-osc__grid">
         {/* ONTAP */}
-        <article className="npv2-osc__card npv2-osc__card--ontap" data-testid="npv2-osc-ontap">
-          <div className="npv2-osc__header">
-            <div className="npv2-osc__ico"><Layers size={24} /></div>
-            <div>
-              <h3>ONTAP</h3>
-              <p>Unified data platform</p>
+        <Reveal delay={60}>
+          <article className="npv2-osc__card npv2-osc__card--ontap" data-testid="npv2-osc-ontap">
+            <div className="npv2-osc__header">
+              <div className="npv2-osc__ico"><Layers size={24} /></div>
+              <div>
+                <h3>ONTAP</h3>
+                <p>Unified data platform</p>
+              </div>
             </div>
-          </div>
-          <ul className="npv2-osc__feats">
-            <li>NAS <em>i</em> SAN w jednym systemie (multi-protocol)</li>
-            <li>Snapshoty, SnapMirror, SnapVault out-of-the-box</li>
-            <li>FabricPool tiering do S3 / Azure Blob / GCP</li>
-            <li>Kompresja, deduplikacja, kompaksja — inline</li>
-            <li>MetroCluster synchroniczna replikacja &lt; 100 km</li>
-            <li>REST API, Ansible, Terraform providers</li>
-          </ul>
-          <div className="npv2-osc__bestfor">
-            <strong>Najlepszy do:</strong> Enterprise, VMware, bazy, backup, hybrid-cloud
-          </div>
-        </article>
+            <ul className="npv2-osc__feats">
+              <li>NAS <em>i</em> SAN w jednym systemie (multi-protocol)</li>
+              <li>Snapshoty, SnapMirror, SnapVault out-of-the-box</li>
+              <li>FabricPool tiering do S3 / Azure Blob / GCP</li>
+              <li>Kompresja, deduplikacja, kompaksja — inline</li>
+              <li>MetroCluster synchroniczna replikacja &lt; 100 km</li>
+              <li>REST API, Ansible, Terraform providers</li>
+            </ul>
+            <div className="npv2-osc__bestfor">
+              <strong>Najlepszy do:</strong> Enterprise, VMware, bazy, backup, hybrid-cloud
+            </div>
+          </article>
+        </Reveal>
 
         {/* SANtricity */}
-        <article className="npv2-osc__card npv2-osc__card--santricity" data-testid="npv2-osc-santricity">
-          <div className="npv2-osc__header">
-            <div className="npv2-osc__ico"><Cpu size={24} /></div>
-            <div>
-              <h3>SANtricity</h3>
-              <p>Dedicated block platform</p>
+        <Reveal delay={140}>
+          <article className="npv2-osc__card npv2-osc__card--santricity" data-testid="npv2-osc-santricity">
+            <div className="npv2-osc__header">
+              <div className="npv2-osc__ico"><Cpu size={24} /></div>
+              <div>
+                <h3>SANtricity</h3>
+                <p>Dedicated block platform</p>
+              </div>
             </div>
-          </div>
-          <ul className="npv2-osc__feats">
-            <li>Blok-only — prosty, przewidywalny performance</li>
-            <li>Data Assurance (T10 PI) — end-to-end integrity</li>
-            <li>Async Mirroring 1:1 pomiędzy macierzami</li>
-            <li>Dynamic Disk Pools (DDP) — szybszy rebuild niż RAID</li>
-            <li>Zero-config high availability (dual-active controllers)</li>
-            <li>SANtricity System Manager — prosty UI</li>
-          </ul>
-          <div className="npv2-osc__bestfor">
-            <strong>Najlepszy do:</strong> HPC, video-surveillance, seismic, OT, dedykowany SAN
-          </div>
-        </article>
+            <ul className="npv2-osc__feats">
+              <li>Blok-only — prosty, przewidywalny performance</li>
+              <li>Data Assurance (T10 PI) — end-to-end integrity</li>
+              <li>Async Mirroring 1:1 pomiędzy macierzami</li>
+              <li>Dynamic Disk Pools (DDP) — szybszy rebuild niż RAID</li>
+              <li>Zero-config high availability (dual-active controllers)</li>
+              <li>SANtricity System Manager — prosty UI</li>
+            </ul>
+            <div className="npv2-osc__bestfor">
+              <strong>Najlepszy do:</strong> HPC, video-surveillance, seismic, OT, dedykowany SAN
+            </div>
+          </article>
+        </Reveal>
       </div>
 
       {/* Table */}
-      <div className="npv2-osc__table" role="table">
+      <Reveal delay={200}>
+        <div className="npv2-osc__table" role="table">
         <div className="npv2-osc__trow npv2-osc__trow--head">
           <div className="npv2-osc__tcell npv2-osc__tcell--label">Kryterium</div>
           <div className="npv2-osc__tcell npv2-osc__tcell--head" style={{ color: OS_META.ONTAP.color }}>
@@ -435,7 +446,8 @@ const OSCompareSection = () => (
             <div className="npv2-osc__tcell">{r.SANTRICITY}</div>
           </div>
         ))}
-      </div>
+        </div>
+      </Reveal>
     </div>
   </section>
 );
@@ -644,17 +656,20 @@ const NetAppConfigurator = () => {
     <section className="npv2-cfg" data-testid="npv2-configurator" id="npv2-configurator">
       <div className="npv2-cfg__bg" aria-hidden="true" />
       <div className="npv2-cfg__inner">
-        <NpHeader
-          center
-          dark
-          label="Konfigurator · 8 pytań"
-          title="Znajdź swoją macierz w"
-          accent="2 minuty."
-          sub="Odpowiedz na 8 krótkich pytań — algorytm dobierze konkretny model NetApp pasujący do twoich potrzeb."
-          tag="npv2-cfg-header"
-        />
+        <Reveal>
+          <NpHeader
+            center
+            dark
+            label="Konfigurator · 8 pytań"
+            title="Znajdź swoją macierz w"
+            accent="2 minuty."
+            sub="Odpowiedz na 8 krótkich pytań — algorytm dobierze konkretny model NetApp pasujący do twoich potrzeb."
+            tag="npv2-cfg-header"
+          />
+        </Reveal>
 
-        <div className="npv2-cfg__card" data-testid="npv2-cfg-card">
+        <Reveal delay={100}>
+          <div className="npv2-cfg__card" data-testid="npv2-cfg-card">
           {!isResult ? (
             <>
               {/* Progress */}
@@ -712,7 +727,8 @@ const NetAppConfigurator = () => {
             /* RESULT */
             <ConfigResult result={result} onRestart={restart} answers={answers} />
           )}
-        </div>
+          </div>
+        </Reveal>
       </div>
     </section>
   );
@@ -873,13 +889,15 @@ const NetAppPortfolioPage = () => {
       <section className="npv2-hero">
         <div className="npv2__bg" aria-hidden="true" />
         <div className="npv2-hero__inner">
-          <NpHeader
-            label="NetApp · Portfolio 2026"
-            title="Całe portfolio NetApp,"
-            accent="jeden filtr."
-            sub={<>Wszystkie macierze NetApp w jednej sekcji. Wybierz <strong>protokół</strong> (SAN vs Unified), <strong>warstwę wydajności</strong> (Performance / Capacity / Hybrid) oraz <strong>system operacyjny</strong> (ONTAP / SANtricity), a poniżej pokażemy pasujące modele.</>}
-            tag="npv2-hero-header"
-          />
+          <Reveal>
+            <NpHeader
+              label="NetApp · Portfolio 2026"
+              title="Całe portfolio NetApp,"
+              accent="jeden filtr."
+              sub={<>Wszystkie macierze NetApp w jednej sekcji. Wybierz <strong>protokół</strong> (SAN vs Unified), <strong>warstwę wydajności</strong> (Performance / Capacity / Hybrid) oraz <strong>system operacyjny</strong> (ONTAP / SANtricity), a poniżej pokażemy pasujące modele.</>}
+              tag="npv2-hero-header"
+            />
+          </Reveal>
         </div>
       </section>
 
@@ -1010,63 +1028,71 @@ const NetAppPortfolioPage = () => {
 
       {/* SUMMARY */}
       <section className="npv2-summary" data-testid="npv2-summary" id="npv2-summary">
-        <NpHeader
-          center
-          label="Jak wybrać"
-          title="Trzy osie"
-          accent="decyzji."
-          sub="Protokół, warstwa i system — reszta to szczegóły modelu."
-          tag="npv2-summary-header"
-        />
+        <Reveal>
+          <NpHeader
+            center
+            label="Jak wybrać"
+            title="Trzy osie"
+            accent="decyzji."
+            sub="Protokół, warstwa i system — reszta to szczegóły modelu."
+            tag="npv2-summary-header"
+          />
+        </Reveal>
 
         <div className="npv2-axes npv2-axes--3">
           {/* Axis 1: Protocol */}
-          <div className="npv2-axis" data-testid="npv2-axis-proto">
-            <h3 className="npv2-axis__title">Protokół</h3>
-            <div className="npv2-axis__grid">
-              {Object.entries(PROTOCOL_META).map(([k, v]) => (
-                <div key={k} className="npv2-axis__card" style={{ "--tc": v.color }}>
-                  <div className="npv2-axis__ico">
-                    {k === "SAN" ? <Shield size={20} /> : <Layers size={20} />}
+          <Reveal delay={80}>
+            <div className="npv2-axis" data-testid="npv2-axis-proto">
+              <h3 className="npv2-axis__title">Protokół</h3>
+              <div className="npv2-axis__grid">
+                {Object.entries(PROTOCOL_META).map(([k, v]) => (
+                  <div key={k} className="npv2-axis__card" style={{ "--tc": v.color }}>
+                    <div className="npv2-axis__ico">
+                      {k === "SAN" ? <Shield size={20} /> : <Layers size={20} />}
+                    </div>
+                    <strong>{v.label}</strong>
+                    <p>{v.sub}</p>
                   </div>
-                  <strong>{v.label}</strong>
-                  <p>{v.sub}</p>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </div>
+          </Reveal>
 
           {/* Axis 2: Media class */}
-          <div className="npv2-axis" data-testid="npv2-axis-mclass">
-            <h3 className="npv2-axis__title">Warstwa wydajności</h3>
-            <div className="npv2-axis__grid">
-              {Object.entries(MCLASS_META).map(([k, v]) => (
-                <div key={k} className="npv2-axis__card" style={{ "--tc": v.color }}>
-                  <div className="npv2-axis__ico">
-                    {k === "PERFORMANCE" ? <Zap size={20} /> : k === "CAPACITY" ? <Database size={20} /> : <HardDrive size={20} />}
+          <Reveal delay={160}>
+            <div className="npv2-axis" data-testid="npv2-axis-mclass">
+              <h3 className="npv2-axis__title">Warstwa wydajności</h3>
+              <div className="npv2-axis__grid">
+                {Object.entries(MCLASS_META).map(([k, v]) => (
+                  <div key={k} className="npv2-axis__card" style={{ "--tc": v.color }}>
+                    <div className="npv2-axis__ico">
+                      {k === "PERFORMANCE" ? <Zap size={20} /> : k === "CAPACITY" ? <Database size={20} /> : <HardDrive size={20} />}
+                    </div>
+                    <strong>{v.label}</strong>
+                    <p>{v.desc}</p>
                   </div>
-                  <strong>{v.label}</strong>
-                  <p>{v.desc}</p>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </div>
+          </Reveal>
 
           {/* Axis 3: OS */}
-          <div className="npv2-axis" data-testid="npv2-axis-os">
-            <h3 className="npv2-axis__title">System operacyjny</h3>
-            <div className="npv2-axis__grid">
-              {Object.entries(OS_META).map(([k, v]) => (
-                <div key={k} className="npv2-axis__card" style={{ "--tc": v.color }}>
-                  <div className="npv2-axis__ico">
-                    {k === "ONTAP" ? <Layers size={20} /> : <Cpu size={20} />}
+          <Reveal delay={240}>
+            <div className="npv2-axis" data-testid="npv2-axis-os">
+              <h3 className="npv2-axis__title">System operacyjny</h3>
+              <div className="npv2-axis__grid">
+                {Object.entries(OS_META).map(([k, v]) => (
+                  <div key={k} className="npv2-axis__card" style={{ "--tc": v.color }}>
+                    <div className="npv2-axis__ico">
+                      {k === "ONTAP" ? <Layers size={20} /> : <Cpu size={20} />}
+                    </div>
+                    <strong>{v.label}</strong>
+                    <p>{v.desc}</p>
                   </div>
-                  <strong>{v.label}</strong>
-                  <p>{v.desc}</p>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </div>
+          </Reveal>
         </div>
       </section>
 
