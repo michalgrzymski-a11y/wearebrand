@@ -23,6 +23,207 @@
   font-family: "Manrope", sans-serif;
 }
 
+/* -------------------- HERO SLIDER (4 rodziny) -------------------- */
+.np-hs {
+  position: relative;
+  min-height: 720px;
+  background: #040709;
+  color: #E8F4F5;
+  overflow: hidden;
+  padding-top: 96px; /* under navbar */
+}
+.np-hs__bg {
+  position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(60% 60% at 20% 30%, rgba(6,255,224,0.10) 0%, transparent 60%),
+    radial-gradient(60% 60% at 80% 70%, rgba(0,184,212,0.10) 0%, transparent 60%);
+}
+.np-hs__inner {
+  position: relative; z-index: 1;
+  max-width: var(--np-container);
+  margin: 0 auto;
+  padding: 40px var(--np-px) 24px;
+  min-height: 620px;
+}
+@media (min-width: 768px) {
+  .np-hs__inner { padding: 56px var(--np-px-lg) 32px; }
+}
+
+.np-hs__slide {
+  --acc: #06FFE0;
+  position: absolute;
+  inset: 40px var(--np-px) 96px;
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  gap: 40px;
+  align-items: center;
+  opacity: 0;
+  transform: translateY(24px);
+  pointer-events: none;
+  transition: opacity 0.7s ease, transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+@media (min-width: 768px) {
+  .np-hs__slide { inset: 56px var(--np-px-lg) 108px; }
+}
+.np-hs__slide.is-active {
+  opacity: 1; transform: translateY(0);
+  pointer-events: auto;
+}
+
+@media (max-width: 960px) {
+  .np-hs__slide { grid-template-columns: 1fr; gap: 32px; }
+  .np-hs { min-height: 900px; }
+}
+
+/* --- Copy column --- */
+.np-hs__label {
+  display: inline-flex; align-items: center; gap: 14px;
+  font-size: 12px; font-weight: 700; letter-spacing: 0.34em;
+  text-transform: uppercase; color: var(--acc);
+}
+.np-hs__hair {
+  display: inline-block; height: 1px; width: 48px;
+  background: var(--acc);
+  box-shadow: 0 0 12px 0 var(--acc);
+}
+.np-hs__title {
+  margin: 20px 0 16px;
+  font-size: clamp(34px, 4.4vw, 60px);
+  font-weight: 600; line-height: 1.02; letter-spacing: -0.02em;
+  color: #FFF;
+}
+.np-hs__accent {
+  background: linear-gradient(135deg, var(--acc) 0%, #00B8D4 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.np-hs__tag {
+  margin: 0 0 32px; max-width: 560px;
+  font-size: clamp(15px, 1.4vw, 18px); line-height: 1.6;
+  color: rgba(232,244,245,0.75);
+}
+.np-hs__ctas { display: flex; flex-wrap: wrap; gap: 12px; }
+
+/* --- Stage: array collection --- */
+.np-hs__stage {
+  position: relative;
+  min-height: 380px;
+  display: flex; flex-direction: column;
+  gap: 14px;
+  padding: 20px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
+  border: 1px solid rgba(255,255,255,0.06);
+  backdrop-filter: blur(10px);
+}
+.np-hs__stage::before {
+  content: ""; position: absolute; inset: 0; border-radius: 20px;
+  background: radial-gradient(60% 60% at 50% 50%, color-mix(in oklch, var(--acc) 8%, transparent) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.np-hs__array {
+  position: relative;
+  display: flex; align-items: center; gap: 14px;
+  padding: 8px 14px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  transform: translateX(40px);
+  opacity: 0;
+  animation: hsSlideIn 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+  animation-delay: calc(300ms + var(--i, 0) * 120ms);
+}
+.np-hs__slide:not(.is-active) .np-hs__array {
+  animation: none; opacity: 0; transform: translateX(40px);
+}
+@keyframes hsSlideIn {
+  to { transform: translateX(0); opacity: 1; }
+}
+.np-hs__array img {
+  height: 44px; width: auto; max-width: 180px; object-fit: contain;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4));
+}
+.np-hs__aname {
+  font-size: 13px; font-weight: 700; color: #FFF;
+  padding: 3px 10px; border-radius: 6px;
+  background: color-mix(in oklch, var(--acc) 18%, transparent);
+  border: 1px solid color-mix(in oklch, var(--acc) 35%, transparent);
+  color: var(--acc);
+  letter-spacing: 0.04em;
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+/* --- Controls --- */
+.np-hs__controls {
+  position: absolute; left: var(--np-px); right: var(--np-px); bottom: 24px;
+  display: flex; align-items: center; gap: 16px; justify-content: center;
+  z-index: 2;
+}
+@media (min-width: 768px) {
+  .np-hs__controls { left: var(--np-px-lg); right: var(--np-px-lg); }
+}
+.np-hs__nav {
+  width: 44px; height: 44px; border-radius: 999px;
+  display: grid; place-items: center;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.10);
+  color: #E8F4F5;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.np-hs__nav:hover {
+  background: rgba(6,255,224,0.12);
+  border-color: #06FFE0;
+  color: #06FFE0;
+  transform: translateY(-1px);
+}
+.np-hs__dots {
+  display: flex; gap: 8px; flex: 1; max-width: 640px;
+}
+.np-hs__dot {
+  position: relative; flex: 1;
+  padding: 12px 10px 8px;
+  border-radius: 8px;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  text-align: left;
+  color: rgba(232,244,245,0.55);
+  font-family: "Manrope", sans-serif;
+  font-size: 10px; font-weight: 800; letter-spacing: 0.18em;
+  text-transform: uppercase;
+  transition: color 0.25s ease;
+  overflow: hidden;
+}
+.np-hs__dot:hover { color: #E8F4F5; }
+.np-hs__dot.is-active { color: #FFF; }
+.np-hs__dot-label {
+  display: block; margin-bottom: 8px;
+}
+.np-hs__dot-bar {
+  display: block; position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 2px;
+  background: rgba(255,255,255,0.10);
+  overflow: hidden;
+}
+.np-hs__dot-bar::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(90deg, #06FFE0 0%, #00B8D4 100%);
+  transform: scaleX(0); transform-origin: left;
+  box-shadow: 0 0 8px 0 rgba(6,255,224,0.6);
+}
+.np-hs__dot.is-active .np-hs__dot-bar::after {
+  animation: hsProgress linear forwards;
+  animation-duration: var(--np-hs-dur, 7000ms);
+  animation-play-state: var(--np-hs-play, running);
+}
+@keyframes hsProgress {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
 /* -------------------- SEKCJA HEADER (ujednolicony ze stroną główną) -------------------- */
 .np-shdr {
   display: flex; flex-direction: column; gap: 20px;

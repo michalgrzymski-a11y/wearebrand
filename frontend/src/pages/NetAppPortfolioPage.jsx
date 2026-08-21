@@ -9,6 +9,172 @@ import {
 } from "lucide-react";
 import "./NetAppPortfolioPage.css";
 
+/* ---------- HERO SLIDER — 4 rodziny macierzy z auto-rotacją ---------- */
+const HERO_SLIDES = [
+  {
+    id: "AFF",
+    label: "AFF · Performance Flash",
+    title: "NVMe all-flash dla",
+    accent: "mission-critical.",
+    tagline: "Sub-millisekundowa latencja, ekstremalne IOPS i pełny stack ONTAP — dla krytycznych baz, VMware i workloadów AI/ML.",
+    color: "#06FFE0",
+    arrays: [
+      { name: "A20",  img: "/netapp-assets/AFF_A20_Bezel.png" },
+      { name: "A50",  img: "/netapp-assets/AFF_A50_Bezel.png" },
+      { name: "A70",  img: "/netapp-assets/AFF_A70_Bezel.png" },
+      { name: "A90",  img: "/netapp-assets/AFF_A90_Bezel.png" },
+      { name: "A1K",  img: "/netapp-assets/AFF_A1K_Bezel.png" },
+    ],
+  },
+  {
+    id: "CFLASH",
+    label: "C-Series · Capacity Flash",
+    title: "Pojemność jak HDD,",
+    accent: "wydajność jak SSD.",
+    tagline: "QLC NVMe — flash w cenie zbliżonej do HDD. Idealne dla backupu, archive i cyber-vault z immutability.",
+    color: "#00B8D4",
+    arrays: [
+      { name: "C30", img: "/netapp-assets/AFF_C30_Bezel.png" },
+      { name: "C60", img: "/netapp-assets/AFF_C60_Bezel.png" },
+      { name: "C80", img: "/netapp-assets/AFF_C80_Front_Bezel.png" },
+    ],
+  },
+  {
+    id: "ASA",
+    label: "ASA · SAN Flash",
+    title: "SAN-first NVMe",
+    accent: "bez kompromisów.",
+    tagline: "Symmetric active-active dla FC / iSCSI / NVMe-oF. Dedykowana klasa dla enterprise-block: banki, telco, cloud provider.",
+    color: "#00E0C6",
+    arrays: [
+      { name: "A20",  img: "/netapp-assets/ASA_A20_Front_Bezel.png" },
+      { name: "A50",  img: "/netapp-assets/ASA_A50_Front_Bezel.png" },
+      { name: "A70",  img: "/netapp-assets/ASA_A70_Front_Bezel.png" },
+      { name: "A90",  img: "/netapp-assets/ASA_A90_Front_Bezel.png" },
+      { name: "A1K",  img: "/netapp-assets/ASA_A1K_Front_Bezel.png" },
+    ],
+  },
+  {
+    id: "ESERIES",
+    label: "E-Series & EF-Series · Block SAN",
+    title: "Dedykowany blok dla",
+    accent: "HPC i przemysłu.",
+    tagline: "SANtricity: prosty, przewidywalny performance dla HPC, video-surveillance, seismic i OT. Bez ONTAP-overhead.",
+    color: "#00D4B8",
+    arrays: [
+      { name: "E4012",  img: "/netapp-assets/E4012_front_view.png" },
+      { name: "E4060",  img: "/netapp-assets/E4060_front_view.png" },
+      { name: "EF50",   img: "/netapp-assets/EF50_Front.png" },
+      { name: "EF300",  img: "/netapp-assets/EF300_Front.png" },
+      { name: "EF600",  img: "/netapp-assets/EF600_Front.png" },
+    ],
+  },
+];
+
+const HeroSlider = () => {
+  const [active, setActive] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const total = HERO_SLIDES.length;
+  const DURATION = 7000; // 7s per slide
+
+  useEffect(() => {
+    if (paused) return;
+    const t = setTimeout(() => setActive((a) => (a + 1) % total), DURATION);
+    return () => clearTimeout(t);
+  }, [active, paused, total]);
+
+  const goTo = (i) => setActive(((i % total) + total) % total);
+  const next = () => goTo(active + 1);
+  const prev = () => goTo(active - 1);
+
+  return (
+    <section
+      className="np-hs"
+      data-testid="netapp-hero-slider"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
+      <div className="np-hs__bg" aria-hidden="true" />
+      <div className="np-hs__inner">
+        {HERO_SLIDES.map((s, i) => (
+          <div
+            key={s.id}
+            className={`np-hs__slide ${i === active ? "is-active" : ""}`}
+            style={{ "--acc": s.color }}
+            aria-hidden={i !== active}
+            data-testid={`np-hs-slide-${s.id}`}
+          >
+            <div className="np-hs__copy">
+              <div className="np-hs__label">
+                <span className="np-hs__hair" />
+                {s.label}
+              </div>
+              <h1 className="np-hs__title">
+                {s.title}{" "}
+                <span className="np-hs__accent">{s.accent}</span>
+              </h1>
+              <p className="np-hs__tag">{s.tagline}</p>
+
+              <div className="np-hs__ctas">
+                <a href="#npv2-onerow" className="sc-btn-primary" data-testid={`np-hs-cta-${s.id}`}>
+                  Zobacz modele {s.id === "CFLASH" ? "C-Series" : s.id === "ESERIES" ? "E-Series" : s.id}
+                  <ArrowRight size={16} />
+                </a>
+                <a href="#npv2-configurator" className="sc-btn-ghost">
+                  Konfigurator dopasowania
+                </a>
+              </div>
+            </div>
+
+            <div className="np-hs__stage">
+              {s.arrays.map((a, idx) => (
+                <div
+                  key={a.name}
+                  className="np-hs__array"
+                  style={{ "--i": idx, "--n": s.arrays.length }}
+                >
+                  <img src={a.img} alt={a.name} loading="eager" />
+                  <span className="np-hs__aname">{a.name}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+
+        {/* Controls */}
+        <div className="np-hs__controls">
+          <button className="np-hs__nav" onClick={prev} aria-label="Poprzedni" data-testid="np-hs-prev">
+            <ChevronLeft size={20} />
+          </button>
+          <div className="np-hs__dots" role="tablist">
+            {HERO_SLIDES.map((s, i) => (
+              <button
+                key={s.id}
+                className={`np-hs__dot ${i === active ? "is-active" : ""}`}
+                onClick={() => goTo(i)}
+                aria-label={s.label}
+                data-testid={`np-hs-dot-${s.id}`}
+              >
+                <span className="np-hs__dot-label">{s.id === "CFLASH" ? "C" : s.id === "ESERIES" ? "E/EF" : s.id}</span>
+                <span
+                  className="np-hs__dot-bar"
+                  style={{
+                    "--np-hs-dur": `${DURATION}ms`,
+                    "--np-hs-play": paused ? "paused" : "running",
+                  }}
+                />
+              </button>
+            ))}
+          </div>
+          <button className="np-hs__nav" onClick={next} aria-label="Następny" data-testid="np-hs-next">
+            <ChevronRight size={20} />
+          </button>
+        </div>
+      </div>
+    </section>
+  );
+};
+
 /**
  * NpHeader — ujednolicony nagłówek sekcji w stylu strony głównej:
  * hairline (h-px w-12 cyan) + label uppercase + tytuł z akcentem gradientowym.
@@ -885,24 +1051,11 @@ const NetAppPortfolioPage = () => {
     <main data-testid="netapp-portfolio-main" className="npv2">
       <Navbar />
 
-      {/* HERO */}
-      <section className="npv2-hero">
-        <div className="npv2__bg" aria-hidden="true" />
-        <div className="npv2-hero__inner">
-          <Reveal>
-            <NpHeader
-              label="NetApp · Portfolio 2026"
-              title="Całe portfolio NetApp,"
-              accent="jeden filtr."
-              sub={<>Wszystkie macierze NetApp w jednej sekcji. Wybierz <strong>protokół</strong> (SAN vs Unified), <strong>warstwę wydajności</strong> (Performance / Capacity / Hybrid) oraz <strong>system operacyjny</strong> (ONTAP / SANtricity), a poniżej pokażemy pasujące modele.</>}
-              tag="npv2-hero-header"
-            />
-          </Reveal>
-        </div>
-      </section>
+      {/* HERO SLIDER — 4 rodziny z auto-rotacją */}
+      <HeroSlider />
 
       {/* FILTERS + SCROLLER — jedna sekcja */}
-      <section className="npv2-onerow" data-testid="npv2-onerow">
+      <section className="npv2-onerow" data-testid="npv2-onerow" id="npv2-onerow">
         <div className="npv2-onerow__inner">
           <div className="npv2-filters">
             <FilterGroup
