@@ -126,17 +126,33 @@ const HeroSlider = () => {
               </div>
             </div>
 
-            <div className="np-hs__stage">
-              {s.arrays.map((a, idx) => (
-                <div
-                  key={a.name}
-                  className="np-hs__array"
-                  style={{ "--i": idx, "--n": s.arrays.length }}
-                >
-                  <img src={a.img} alt={a.name} loading="eager" />
-                  <span className="np-hs__aname">{a.name}</span>
+            <div className="np-hs__rack">
+              <div className="np-hs__rack-top" aria-hidden="true">
+                <span className="np-hs__vent" />
+                <span className="np-hs__vent" />
+                <span className="np-hs__vent" />
+              </div>
+              <div className="np-hs__rack-body">
+                <span className="np-hs__rail np-hs__rail--l" />
+                <span className="np-hs__rail np-hs__rail--r" />
+                <div className="np-hs__slots">
+                  {s.arrays.map((a, idx) => (
+                    <div
+                      key={a.name}
+                      className="np-hs__slot"
+                      style={{ "--i": idx }}
+                    >
+                      <img src={a.img} alt="" aria-hidden="true" loading="eager" />
+                      <span className="np-hs__led" />
+                    </div>
+                  ))}
                 </div>
-              ))}
+              </div>
+              <div className="np-hs__rack-bot" aria-hidden="true">
+                <span className="np-hs__vent" />
+                <span className="np-hs__vent" />
+                <span className="np-hs__vent" />
+              </div>
             </div>
           </div>
         ))}
