@@ -126,33 +126,20 @@ const HeroSlider = () => {
               </div>
             </div>
 
-            <div className="np-hs__rack">
-              <div className="np-hs__rack-top" aria-hidden="true">
-                <span className="np-hs__vent" />
-                <span className="np-hs__vent" />
-                <span className="np-hs__vent" />
+            <div className="np-hs__stack" style={{ "--n": s.arrays.length }}>
+              <div className="np-hs__stack-inner">
+                {s.arrays.map((a, idx) => (
+                  <div
+                    key={a.name}
+                    className="np-hs__slab"
+                    style={{ "--i": idx, "--n": s.arrays.length }}
+                  >
+                    <img src={a.img} alt="" aria-hidden="true" loading="eager" />
+                  </div>
+                ))}
               </div>
-              <div className="np-hs__rack-body">
-                <span className="np-hs__rail np-hs__rail--l" />
-                <span className="np-hs__rail np-hs__rail--r" />
-                <div className="np-hs__slots">
-                  {s.arrays.map((a, idx) => (
-                    <div
-                      key={a.name}
-                      className="np-hs__slot"
-                      style={{ "--i": idx }}
-                    >
-                      <img src={a.img} alt="" aria-hidden="true" loading="eager" />
-                      <span className="np-hs__led" />
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <div className="np-hs__rack-bot" aria-hidden="true">
-                <span className="np-hs__vent" />
-                <span className="np-hs__vent" />
-                <span className="np-hs__vent" />
-              </div>
+              <div className="np-hs__reflection" aria-hidden="true" />
+              <div className="np-hs__pedestal" aria-hidden="true" />
             </div>
           </div>
         ))}
