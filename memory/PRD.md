@@ -158,3 +158,9 @@ N/A — the site has no authentication surface.
 - **P1** — Mobile responsiveness for legacy sections TCO/Portfolio/NetApp/Kontakt below 768px (from prev handoff).
 - **P2** — Verify GA4 analytics hook respects GDPR consent state.
 - **P3** — Modularize `App.css` (>15,000 lines) into CSS Modules.
+
+## 2026-06 — NetApp page V3 polish (DONE, tested iteration_24)
+- Hero: 1 frontal chassis per family (AFF A90, C80, ASA A90, E4060), reflection + light sweep + float, 3 key stats per slide, no 3D angle (flat image).
+- New `components/fx/Tilt.jsx` (hover 3D tilt + cursor spotlight) applied to model cards, family-guide, OS cards, axis cards; spotlight-only on configurator options.
+- Glass filter command bar (3-col grid ≥1200px), film grain on dark sections, animated family-guide bars, OS "vs" badge, configurator step/option entrance animations, equal-height axis cards.
+- User chose: desktop only for now (mobile responsiveness still P1 backlog).
