@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect, useMemo } from "react";
 import Navbar from "@/components/Navbar";
 import Kontakt from "@/components/sections/Kontakt";
 import Reveal from "@/components/Reveal";
+import Tilt from "@/components/fx/Tilt";
 import { NETAPP_MODELS, NETAPP_FAMILIES } from "@/data/netappModels";
 import {
   Zap, Database, HardDrive, Server, ArrowRight,
@@ -18,13 +19,8 @@ const HERO_SLIDES = [
     accent: "mission-critical.",
     tagline: "Sub-millisekundowa latencja, ekstremalne IOPS i pełny stack ONTAP — dla krytycznych baz, VMware i workloadów AI/ML.",
     color: "#06FFE0",
-    arrays: [
-      { name: "A20",  img: "/netapp-assets/AFF_A20_Bezel.png" },
-      { name: "A50",  img: "/netapp-assets/AFF_A50_Bezel.png" },
-      { name: "A70",  img: "/netapp-assets/AFF_A70_Bezel.png" },
-      { name: "A90",  img: "/netapp-assets/AFF_A90_Bezel.png" },
-      { name: "A1K",  img: "/netapp-assets/AFF_A1K_Bezel.png" },
-    ],
+    stats: [["< 1 ms", "latencja"], ["NVMe", "TLC · end-to-end"], ["6:1", "redukcja danych"]],
+    arrays: [{ name: "A90", img: "/netapp-assets/AFF_A90_Bezel.png" }],
   },
   {
     id: "CFLASH",
@@ -33,11 +29,8 @@ const HERO_SLIDES = [
     accent: "wydajność jak SSD.",
     tagline: "QLC NVMe — flash w cenie zbliżonej do HDD. Idealne dla backupu, archive i cyber-vault z immutability.",
     color: "#00B8D4",
-    arrays: [
-      { name: "C30", img: "/netapp-assets/AFF_C30_Bezel.png" },
-      { name: "C60", img: "/netapp-assets/AFF_C60_Bezel.png" },
-      { name: "C80", img: "/netapp-assets/AFF_C80_Front_Bezel.png" },
-    ],
+    stats: [["QLC", "NVMe flash"], ["~HDD", "cena za TB"], ["Immutable", "SnapLock vault"]],
+    arrays: [{ name: "C80", img: "/netapp-assets/AFF_C80_Front_Bezel.png" }],
   },
   {
     id: "ASA",
@@ -46,13 +39,8 @@ const HERO_SLIDES = [
     accent: "bez kompromisów.",
     tagline: "Symmetric active-active dla FC / iSCSI / NVMe-oF. Dedykowana klasa dla enterprise-block: banki, telco, cloud provider.",
     color: "#00E0C6",
-    arrays: [
-      { name: "A20",  img: "/netapp-assets/ASA_A20_Front_Bezel.png" },
-      { name: "A50",  img: "/netapp-assets/ASA_A50_Front_Bezel.png" },
-      { name: "A70",  img: "/netapp-assets/ASA_A70_Front_Bezel.png" },
-      { name: "A90",  img: "/netapp-assets/ASA_A90_Front_Bezel.png" },
-      { name: "A1K",  img: "/netapp-assets/ASA_A1K_Front_Bezel.png" },
-    ],
+    stats: [["Active-Active", "symetryczne"], ["FC · iSCSI", "NVMe-oF"], ["99.9999%", "dostępność"]],
+    arrays: [{ name: "A90", img: "/netapp-assets/ASA_A90_Front_Bezel.png" }],
   },
   {
     id: "ESERIES",
@@ -61,13 +49,8 @@ const HERO_SLIDES = [
     accent: "HPC i przemysłu.",
     tagline: "SANtricity: prosty, przewidywalny performance dla HPC, video-surveillance, seismic i OT. Bez ONTAP-overhead.",
     color: "#00D4B8",
-    arrays: [
-      { name: "E4012",  img: "/netapp-assets/E4012_front_view.png" },
-      { name: "E4060",  img: "/netapp-assets/E4060_front_view.png" },
-      { name: "EF50",   img: "/netapp-assets/EF50_Front.png" },
-      { name: "EF300",  img: "/netapp-assets/EF300_Front.png" },
-      { name: "EF600",  img: "/netapp-assets/EF600_Front.png" },
-    ],
+    stats: [["2M+", "IOPS"], ["SANtricity", "prosty OS"], ["DDP", "szybki rebuild"]],
+    arrays: [{ name: "E4060", img: "/netapp-assets/E4060_front_view.png" }],
   },
 ];
 
@@ -115,6 +98,15 @@ const HeroSlider = () => {
               </h1>
               <p className="np-hs__tag">{s.tagline}</p>
 
+              <div className="np-hs__stats" data-testid={`np-hs-stats-${s.id}`}>
+                {s.stats.map(([v, l], k) => (
+                  <div key={k} className="np-hs__stat" style={{ "--k": k }}>
+                    <strong>{v}</strong>
+                    <span>{l}</span>
+                  </div>
+                ))}
+              </div>
+
               <div className="np-hs__ctas">
                 <a href="#npv2-onerow" className="sc-btn-primary" data-testid={`np-hs-cta-${s.id}`}>
                   Zobacz modele {s.id === "CFLASH" ? "C-Series" : s.id === "ESERIES" ? "E-Series" : s.id}
@@ -135,6 +127,8 @@ const HeroSlider = () => {
                     style={{ "--i": idx, "--n": s.arrays.length }}
                   >
                     <img src={a.img} alt="" aria-hidden="true" loading="eager" />
+                    <span className="np-hs__sheen" style={{ "--img": `url(${a.img})` }} aria-hidden="true" />
+                    <img className="np-hs__mirror" src={a.img} alt="" aria-hidden="true" loading="eager" />
                   </div>
                 ))}
               </div>
@@ -289,11 +283,14 @@ const ModelCard = ({ model }) => {
   const os = OS_META[getOS(model)];
 
   return (
-    <article
+    <Tilt
+      as="article"
+      max={6}
       className="npv2-card"
       data-testid={`npv2-model-${model.id}`}
       style={{ "--fam": fam.accent }}
     >
+      <span className="npv2-card__accent" aria-hidden="true" />
       {model.tier === "Flagship" && <span className="npv2-card__badge">Flagship</span>}
 
       <div className="npv2-card__id">
@@ -347,7 +344,7 @@ const ModelCard = ({ model }) => {
       </ul>
 
       <p className="npv2-card__hi">{model.highlight}</p>
-    </article>
+    </Tilt>
   );
 };
 
@@ -443,7 +440,7 @@ const Bar = ({ label, level, color }) => (
     <div className="npv2-fg__bar-track">
       <div
         className="npv2-fg__bar-fill"
-        style={{ width: `${(level / 5) * 100}%`, background: color }}
+        style={{ "--w": `${(level / 5) * 100}%`, background: color, color }}
       />
     </div>
     <span className="npv2-fg__bar-val">{level}/5</span>
@@ -470,11 +467,14 @@ const FamilyGuideSection = () => (
           const fam = NETAPP_FAMILIES[f.key];
           return (
             <Reveal key={f.key} delay={i * 120}>
-              <article
+              <Tilt
+                as="article"
+                max={5}
                 className="npv2-fg__card"
                 style={{ "--tc": f.color }}
                 data-testid={`npv2-fg-card-${f.key}`}
               >
+              <span className="npv2-fg__num" aria-hidden="true">0{i + 1}</span>
               <div className="npv2-fg__head-row">
                 <div className="npv2-fg__ico">{f.icon}</div>
                 <div>
@@ -508,7 +508,7 @@ const FamilyGuideSection = () => (
               <p className="npv2-fg__avoid">
                 <strong>Unikaj gdy:</strong> {f.avoidWhen}
               </p>
-            </article>
+            </Tilt>
             </Reveal>
           );
         })}
@@ -547,9 +547,10 @@ const OSCompareSection = () => (
       </Reveal>
 
       <div className="npv2-osc__grid">
+        <span className="npv2-osc__vs" aria-hidden="true">vs</span>
         {/* ONTAP */}
         <Reveal delay={60}>
-          <article className="npv2-osc__card npv2-osc__card--ontap" data-testid="npv2-osc-ontap">
+          <Tilt as="article" max={4} className="npv2-osc__card npv2-osc__card--ontap" data-testid="npv2-osc-ontap">
             <div className="npv2-osc__header">
               <div className="npv2-osc__ico"><Layers size={24} /></div>
               <div>
@@ -568,12 +569,12 @@ const OSCompareSection = () => (
             <div className="npv2-osc__bestfor">
               <strong>Najlepszy do:</strong> Enterprise, VMware, bazy, backup, hybrid-cloud
             </div>
-          </article>
+          </Tilt>
         </Reveal>
 
         {/* SANtricity */}
         <Reveal delay={140}>
-          <article className="npv2-osc__card npv2-osc__card--santricity" data-testid="npv2-osc-santricity">
+          <Tilt as="article" max={4} className="npv2-osc__card npv2-osc__card--santricity" data-testid="npv2-osc-santricity">
             <div className="npv2-osc__header">
               <div className="npv2-osc__ico"><Cpu size={24} /></div>
               <div>
@@ -592,7 +593,7 @@ const OSCompareSection = () => (
             <div className="npv2-osc__bestfor">
               <strong>Najlepszy do:</strong> HPC, video-surveillance, seismic, OT, dedykowany SAN
             </div>
-          </article>
+          </Tilt>
         </Reveal>
       </div>
 
@@ -861,25 +862,28 @@ const NetAppConfigurator = () => {
               </div>
 
               {/* Question */}
-              <div className="npv2-cfg__qbox">
+              <div className="npv2-cfg__qbox" key={`q-${step}`}>
                 <div className="npv2-cfg__qico">{current.icon}</div>
                 <h3 className="npv2-cfg__q">{current.q}</h3>
                 <p className="npv2-cfg__qsub">{current.sub}</p>
               </div>
 
               {/* Options */}
-              <div className={`npv2-cfg__opts npv2-cfg__opts--${current.options.length}`}>
-                {current.options.map((opt) => (
-                  <button
+              <div className={`npv2-cfg__opts npv2-cfg__opts--${current.options.length}`} key={`o-${step}`}>
+                {current.options.map((opt, oi) => (
+                  <Tilt
+                    as="button"
+                    tilt={false}
                     key={opt.v}
                     className="npv2-cfg__opt"
+                    style={{ "--k": oi }}
                     onClick={() => answer(opt.v)}
                     data-testid={`npv2-cfg-${current.id}-${opt.v}`}
                   >
                     <span className="npv2-cfg__opt-label">{opt.label}</span>
                     <span className="npv2-cfg__opt-desc">{opt.desc}</span>
                     <ArrowRight size={16} className="npv2-cfg__opt-arrow" />
-                  </button>
+                  </Tilt>
                 ))}
               </div>
 
@@ -1202,13 +1206,13 @@ const NetAppPortfolioPage = () => {
               <h3 className="npv2-axis__title">Protokół</h3>
               <div className="npv2-axis__grid">
                 {Object.entries(PROTOCOL_META).map(([k, v]) => (
-                  <div key={k} className="npv2-axis__card" style={{ "--tc": v.color }}>
+                  <Tilt key={k} max={4} className="npv2-axis__card" style={{ "--tc": v.color }}>
                     <div className="npv2-axis__ico">
                       {k === "SAN" ? <Shield size={20} /> : <Layers size={20} />}
                     </div>
                     <strong>{v.label}</strong>
                     <p>{v.sub}</p>
-                  </div>
+                  </Tilt>
                 ))}
               </div>
             </div>
@@ -1220,13 +1224,13 @@ const NetAppPortfolioPage = () => {
               <h3 className="npv2-axis__title">Warstwa wydajności</h3>
               <div className="npv2-axis__grid">
                 {Object.entries(MCLASS_META).map(([k, v]) => (
-                  <div key={k} className="npv2-axis__card" style={{ "--tc": v.color }}>
+                  <Tilt key={k} max={4} className="npv2-axis__card" style={{ "--tc": v.color }}>
                     <div className="npv2-axis__ico">
                       {k === "PERFORMANCE" ? <Zap size={20} /> : k === "CAPACITY" ? <Database size={20} /> : <HardDrive size={20} />}
                     </div>
                     <strong>{v.label}</strong>
                     <p>{v.desc}</p>
-                  </div>
+                  </Tilt>
                 ))}
               </div>
             </div>
@@ -1238,13 +1242,13 @@ const NetAppPortfolioPage = () => {
               <h3 className="npv2-axis__title">System operacyjny</h3>
               <div className="npv2-axis__grid">
                 {Object.entries(OS_META).map(([k, v]) => (
-                  <div key={k} className="npv2-axis__card" style={{ "--tc": v.color }}>
+                  <Tilt key={k} max={4} className="npv2-axis__card" style={{ "--tc": v.color }}>
                     <div className="npv2-axis__ico">
                       {k === "ONTAP" ? <Layers size={20} /> : <Cpu size={20} />}
                     </div>
                     <strong>{v.label}</strong>
                     <p>{v.desc}</p>
-                  </div>
+                  </Tilt>
                 ))}
               </div>
             </div>
