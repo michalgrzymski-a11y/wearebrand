@@ -16,7 +16,6 @@ import NGFWSection from "@/components/sections/NGFWSection";
 import ThreatWiseSection from "@/components/sections/ThreatWiseSection";
 import NetAppAFFSection from "@/components/sections/NetAppAFFSection";
 import ServerAssemblySection from "@/components/sections/ServerAssemblySection";
-import DataReductionSection from "@/components/sections/DataReductionSection";
 import BaramundiSection from "@/components/sections/BaramundiSection";
 import Kontakt from "@/components/sections/Kontakt";
 
@@ -44,7 +43,6 @@ const RoboczePage = () => (
     <ThreatWiseSection />
     <NetAppAFFSection />
     <ServerAssemblySection />
-    <DataReductionSection />
     <BaramundiSection />
     <Kontakt />
   </main>

@@ -3,10 +3,12 @@ import Navbar from "@/components/Navbar";
 import Kontakt from "@/components/sections/Kontakt";
 import Reveal from "@/components/Reveal";
 import Tilt from "@/components/fx/Tilt";
+import OntapBackupSection from "@/components/sections/OntapBackupSection";
+import DataReductionSection from "@/components/sections/DataReductionSection";
 import { NETAPP_MODELS, NETAPP_FAMILIES } from "@/data/netappModels";
 import {
   Zap, Database, HardDrive, Server, ArrowRight,
-  ChevronLeft, ChevronRight, Shield, Rocket, X, Layers, Cpu,
+  ChevronLeft, ChevronRight, Shield, Rocket, X, Layers, Cpu, Info,
 } from "lucide-react";
 import "./NetAppPortfolioPage.css";
 
@@ -335,12 +337,13 @@ const ModelCard = ({ model }) => {
       </div>
 
       <ul className="npv2-card__specs">
-        <li><span className="k">Max Cap</span><span className="v">{model.maxCapEff}</span></li>
-        <li><span className="k">Throughput</span><span className="v">{model.maxThroughput}</span></li>
+        <li><span className="k">Raw (1 macierz)</span><span className="v">{model.maxRaw}</span></li>
+        <li><span className="k">Efektywna</span><span className="v">{model.maxCapEff}</span></li>
         <li><span className="k">Latencja</span><span className="v">{model.latency}</span></li>
-        <li><span className="k">Max Drives</span><span className="v">{model.maxDrives}</span></li>
-        <li><span className="k">RAM</span><span className="v">{model.ram}</span></li>
-        <li><span className="k">Porty</span><span className="v" style={{ fontSize: 11 }}>{model.ports}</span></li>
+        <li><span className="k">Dyski</span><span className="v">{model.maxDrives}</span></li>
+        <li><span className="k">RAM (para HA)</span><span className="v">{model.ram}</span></li>
+        <li><span className="k">Porty (max)</span><span className="v" style={{ fontSize: 11 }}>{model.ports}</span></li>
+        <li className="npv2-card__specs-wide"><span className="k">Skalowanie</span><span className="v" style={{ fontSize: 11 }}>{model.scaleOut}</span></li>
       </ul>
 
       <p className="npv2-card__hi">{model.highlight}</p>
@@ -798,7 +801,7 @@ function recommendModel(a) {
   if (latency === "EXTREME" && (family === "AFF" || family === "ASA" || family === "EFSERIES"))
     reasons.push(`Latencja ${model.latency} — spełnia wymóg sub-500 μs`);
   if (capacity === "HYPER" && model.tier === "Flagship")
-    reasons.push(`Skala ${model.maxCapEff} — max pojemność w rodzinie`);
+    reasons.push(`Pojemność ${model.maxRaw} raw na jedną macierz — max w rodzinie`);
   if (cloud === "YES" && (family === "AFF" || family === "CFLASH" || family === "FAS" || family === "ASA"))
     reasons.push("FabricPool: tiering danych zimnych do public cloud");
 
@@ -953,18 +956,19 @@ const ConfigResult = ({ result, onRestart, answers }) => {
         <div className="npv2-cfg__result-block">
           <h4>Kluczowe specyfikacje</h4>
           <ul className="npv2-cfg__result-specs">
-            <li><span>Max pojemność efekt.</span><em>{model.maxCapEff}</em></li>
-            <li><span>Przepustowość</span><em>{model.maxThroughput}</em></li>
+            <li><span>Pojemność raw (1 macierz)</span><em>{model.maxRaw}</em></li>
+            <li><span>Pojemność efektywna</span><em>{model.maxCapEff}</em></li>
             <li><span>Latencja</span><em>{model.latency}</em></li>
-            <li><span>Max dysków</span><em>{model.maxDrives}</em></li>
-            <li><span>RAM controller</span><em>{model.ram}</em></li>
-            <li><span>Porty</span><em>{model.ports}</em></li>
+            <li><span>Dyski</span><em>{model.maxDrives}</em></li>
+            <li><span>RAM (para HA)</span><em>{model.ram}</em></li>
+            <li><span>Porty (max)</span><em>{model.ports}</em></li>
+            <li><span>Skalowanie</span><em>{model.scaleOut}</em></li>
           </ul>
         </div>
       </div>
 
       <div className="npv2-cfg__result-cta">
-        <a href="#kontakt" className="sc-btn-primary" data-testid="npv2-cfg-cta-contact">
+        <a href="#contact" className="sc-btn-primary" data-testid="npv2-cfg-cta-contact">
           Umów rozmowę o {model.name} <ArrowRight size={16} />
         </a>
         <button className="sc-btn-ghost" onClick={onRestart} data-testid="npv2-cfg-restart">
@@ -1119,6 +1123,9 @@ const NetAppPortfolioPage = () => {
               <span className="npv2-onerow__count" data-testid="npv2-result-count">
                 {filtered.length} {filtered.length === 1 ? "model" : filtered.length < 5 ? "modele" : "modeli"}
               </span>
+              <span className="npv2-onerow__note" data-testid="npv2-per-array-note">
+                <Info size={13} /> Parametry dla <strong>jednej macierzy</strong> (para HA / 1 system) — nie dla klastra
+              </span>
               {proto !== "ALL" && (
                 <span className="npv2-onerow__badge" style={{ "--tc": PROTOCOL_META[proto].color }}>
                   {PROTOCOL_META[proto].label}
@@ -1179,6 +1186,12 @@ const NetAppPortfolioPage = () => {
 
       {/* SECTION: KIEDY WYBRAĆ RODZINĘ */}
       <FamilyGuideSection />
+
+      {/* SECTION: ONTAP POD BACKUP — WORM, bunkier, Veeam/Commvault, replikacja */}
+      <OntapBackupSection Header={NpHeader} />
+
+      {/* SECTION: KALKULATOR REDUKCJI DANYCH (przeniesiony z /robocze) */}
+      <DataReductionSection />
 
       {/* SECTION: ONTAP vs SANtricity */}
       <OSCompareSection />
