@@ -164,3 +164,11 @@ N/A — the site has no authentication surface.
 - New `components/fx/Tilt.jsx` (hover 3D tilt + cursor spotlight) applied to model cards, family-guide, OS cards, axis cards; spotlight-only on configurator options.
 - Glass filter command bar (3-col grid ≥1200px), film grain on dark sections, animated family-guide bars, OS "vs" badge, configurator step/option entrance animations, equal-height axis cards.
 - User chose: desktop only for now (mobile responsiveness still P1 backlog).
+
+
+## 2026-06 — NetApp: per-array specs, backup section, calculator move (DONE, tested iteration_25)
+- `netappModels.js`: all 26 models now describe ONE array (HA pair / single system): maxRaw, maxCapEff (≈4:1 AFF/ASA/C, ≈2:1 FAS, raw for E/EF), maxDrives (internal · max per HA pair), ram (per HA pair), ports (max per HA pair), scaleOut. Removed maxThroughput. Sources: NetApp HWU key-spec pages + 2024/25 datasheets.
+- Card + configurator rows relabelled ("Raw (1 macierz)", "RAM (para HA)", "Skalowanie"); note badge `npv2-per-array-note`.
+- New `components/sections/OntapBackupSection.jsx` (WORM/SnapLock, Cyber Vault, Veeam/Commvault/SnapCenter, SnapMirror/SnapVault, ONTAP security) with animated prod→backup→vault flow, 5 tilt cards, stats + CTA.
+- `DataReductionSection` moved from /robocze into /netapp-portfolio (after backup section).
+- Section order: hero → models → family guide → backup → data reduction → OS compare → configurator → summary → contact.

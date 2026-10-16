@@ -1,0 +1,28 @@
+{
+  "summary": "Frontend-only test of /netapp-portfolio changes at 1920x900 (per-array specs, backup section, moved data-reduction calculator, configurator result) plus /robocze regression. Every requested check passed. No runtime overlay and zero console errors on either page.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "/netapp-portfolio model cards (data accuracy)", "issues": ["AFF A20, A30 and A50 (and the matching ASA models, lines 32/44/56/106/118/130 in netappModels.js) all show 'Raw (1 macierz) 4.0 PB', but their drive limits are 48/72/120. 48 drives x 30.72 TB is about 1.5 PB, so 4.0 PB on A20/A30 does not match the drive count for a single HA pair. Check against NetApp Hardware Universe."]},
+      {"screen": "/netapp-portfolio configurator result", "issues": ["For C-Series with cloud=YES, the 'Dlaczego' list shows two near-duplicate FabricPool reasons ('FabricPool tier do S3/Azure — hybrid cloud' and 'FabricPool: tiering danych zimnych do public cloud'). Cause: recommendModel() adds a FabricPool reason inside the CFLASH branch and again in the generic cloud check (also duplicated for AFF)."]}
+    ]
+  },
+  "test_report_links": [],
+  "action_items": [
+    "Remove duplicate FabricPool reasons in recommendModel() (CFLASH/AFF branch vs. generic cloud check)",
+    "Check maxRaw for AFF/ASA A20/A30 (4.0 PB) against their max drive counts"
+  ],
+  "critical_code_review_comments": [
+    "NetAppPortfolioPage.jsx is 1277 lines. Split it: HeroSlider, FamilyGuideSection, OSCompareSection, Configurator (+recommendModel) and ConfigResult should be separate modules.",
+    "Review request mentioned npv2-fam-next, but the actual testid is npv2-scroll-right / npv2-scroll-left (works fine).",
+    "Capacity=HYPER: reason 'Pojemność ... max w rodzinie' only fires when tier === 'Flagship'. For C-Series the top model C80 is tier 'High', so the reason never shows."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A", "frontend": "100%"},
+  "seed_data_creation": "none",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Verified: section order onerow→family-guide→backup→data-reduction→os-compare→configurator→summary→contact; 26 cards all have the 7 spec rows (Raw (1 macierz)/Efektywna/Latencja/Dyski/RAM (para HA)/Porty (max)/Skalowanie), none empty or 'undefined'; npv2-per-array-note is visible above the scroller and contains 'jednej macierzy'; npv2-scroll-right scrolls 0→720. Backup section: 3 flow nodes, each with a loaded image and 3 chips; packet animation bkPacket; 5 cards each with title, lead and 4 bullets; 4 stats; CTA #contact scrolls contact to top ~92px. DR calculator: slider max → 6,0:1, 10 TiB→1,67 TiB; input 500 → 83,33 TiB; preset and reset work. Configurator paths MULTI/BACKUP/HYPER→AFF C80 and SAN_ONLY/HPC/EXTREME→EF50 show the new rows with no undefined; CTA href #contact. /robocze has no data-reduction-section and no errors."
+}
