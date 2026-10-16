@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "@/App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LanguageProvider } from "@/i18n/LanguageContext";
@@ -19,11 +19,30 @@ import LayoutPage from "@/pages/LayoutPage";
 import PrivacyPolicyPage from "@/pages/PrivacyPolicyPage";
 import NetappPage from "@/pages/NetappPage";
 import NetAppPortfolioPage from "@/pages/NetAppPortfolioPage";
+import NotFoundPage from "@/pages/NotFoundPage";
 import CookieConsent from "@/components/CookieConsent";
 import UtilityBar from "@/components/UtilityBar";
 import Analytics from "@/components/Analytics";
 
-const Home = () => (
+const useHashScroll = () => {
+  useEffect(() => {
+    const id = window.location.hash.slice(1);
+    if (!id) return;
+    let tries = 0;
+    const timer = setInterval(() => {
+      const el = document.getElementById(id);
+      if (el || ++tries > 20) {
+        clearInterval(timer);
+        el?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }, 150);
+    return () => clearInterval(timer);
+  }, []);
+};
+
+const Home = () => {
+  useHashScroll();
+  return (
   <main data-testid="home-main" className="sc-app">
     <Navbar />
     <UtilityBar />
@@ -37,7 +56,8 @@ const Home = () => (
     <Partnerzy />
     <Kontakt />
   </main>
-);
+  );
+};
 
 function App() {
   return (
@@ -53,6 +73,7 @@ function App() {
             <Route path="/polityka-prywatnosci" element={<PrivacyPolicyPage />} />
             <Route path="/netapp" element={<NetappPage />} />
             <Route path="/netapp-portfolio" element={<NetAppPortfolioPage />} />
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
           <CookieConsent />
           <Analytics />

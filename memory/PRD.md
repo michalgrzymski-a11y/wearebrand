@@ -172,3 +172,8 @@ N/A — the site has no authentication surface.
 - New `components/sections/OntapBackupSection.jsx` (WORM/SnapLock, Cyber Vault, Veeam/Commvault/SnapCenter, SnapMirror/SnapVault, ONTAP security) with animated prod→backup→vault flow, 5 tilt cards, stats + CTA.
 - `DataReductionSection` moved from /robocze into /netapp-portfolio (after backup section).
 - Section order: hero → models → family guide → backup → data reduction → OS compare → configurator → summary → contact.
+
+## 2026-06 — 404 page
+- Added `/app/frontend/src/pages/NotFoundPage.jsx` + `.css` (catch-all route `*` in App.js): dark cinematic 404, animated digits/grid/scan, PL/EN copy, home button, quick links (NetApp portfolio, Kalkulatory, Kontakt).
+- Home now scrolls to `/#hash` anchors on load (fixes `/#contact` links from subpages).
+- Self-tested via screenshots (PL/EN, all links).
